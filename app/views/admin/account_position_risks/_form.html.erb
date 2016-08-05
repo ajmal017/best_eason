@@ -1,0 +1,41 @@
+<%= form_for [:admin, @account_position_risk] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b></b><%= f.label :stock_focus_score %></td>
+        <td><%= f.text_field :stock_focus_score, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :industry_focus_score %></td>
+        <td><%= f.text_field :industry_focus_score, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :plate_focus_score %></td>
+        <td><%= f.text_field :plate_focus_score, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b><%= f.label :trading_account_id %></td>
+        <td><%= f.number_field :trading_account_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :date %></td>
+        <td><%= f.date_select :date, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :var95 %></td>
+        <td><%= f.text_field :var95, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :basket_fluctuation %></td>
+        <td><%= f.text_field :basket_fluctuation, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+

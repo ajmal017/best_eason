@@ -1,0 +1,14 @@
+<tr data-id="<%=stock.id%>" data-name="<%=stock.com_name%>" data-symbol="<%=stock.symbol%>" class="<%= 'stock-closed' if stock.trading_halt? %>">
+  <td>
+    <span class="stock-name"><%= stock.com_name %></span>
+    <span class="stock-code"><%= stock.symbol %></span>
+  </td>
+  <td><%= stock.realtime_price %></td>
+  <td>
+    <% if stock.trading_halt? %>
+      <span class="price"></span>
+    <% else %>
+      <span class="key price <%= up_or_down_class(stock.change_percent) %>"><%= number_with_operator(stock.change_percent) %>%</span>
+    <% end %>
+  </td>
+</tr>

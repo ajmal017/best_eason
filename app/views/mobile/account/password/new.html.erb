@@ -1,0 +1,63 @@
+<div class="container">
+	<form class="container" id="password" action="/mobile/account/password" method="post" onsubmit="return checkForm()">
+	    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+	    <div class="logo"></div>
+	    <div id="errorTip">&nbsp;</div>
+	    <ul class="account">
+	        <li><input type="text" id="account" name="email_or_phone" placeholder="输入手机号或电子邮箱地址" ><span class="empty"></span></li>
+	        <li class="emailcaptcha"><input type="text" id="captcha" placeholder="" maxlength="4" /><span class="empty" style="right:120px;"></span><span id="captchaBtn"><a href="javascript:void(0);"><%= captcha_tag({id: 'img_captcha', alt: '点击刷新图片', onclick: 'javascript:refresh_captcha();', style: 'cursor:pointer;', width: 92}) %></a></span></li>
+	    </ul>
+	    <dl class="confirm">
+	        <dd onclick="$('form#password').submit()">重设密码</dd>
+	        <dt class="agreement"><a href="/mobile/account/sessions/new">返回登录</a></dt>
+	    </dl>
+	</form>
+</div>
+<script type="text/javascript">
+    // 找回密码页面-刷新验证码
+    function refresh_captcha(){
+      var current_date = new Date();
+      var captcha_url = "/captcha?i=" + current_date.getTime().toString();
+      $("#img_captcha").attr("src", captcha_url);
+    }
+
+    function checkForm(){
+        var accountval = $('#account').val();
+
+        var can_use = false;
+
+        $.ajax({
+          url: "/ajax/users/check_mobile_or_email?user%5Baccount%5D="+$('#account').val(),
+          type: "GET",
+          async: false,
+          success: function(data){can_use=data}
+        });
+
+        if (!accountval){
+            return showError('请输入手机号/邮箱', 1800);
+        }else if (accountval.indexOf('@') < 0 && !phoneParten.test(accountval)){
+            return showError('请输入正确的手机号', 1800);
+        }else if (accountval.indexOf('@') > 0 && !emailParten.test(accountval)){
+            return showError('请输入正确的邮箱', 1800);
+        }else if (!can_use){
+            return showError('该账户不存在', 1800);
+        }else {
+            if (accountval.indexOf('@') > 0){
+                if ($('.emailcaptcha').is(':visible')){
+                    if (!$('#captcha').val().length){
+                        return showError('请输入验证码', 1800);
+                    }else{
+                      var is = false;
+                      $.ajax({
+                        url: "/ajax/users/check_captcha?user%5Bcaptcha%5D="+$('#captcha').val(),
+                        type: "GET",
+                        async: false,
+                        success: function(data){is=data}
+                      });
+                      if (!is){return showError('验证码不正确', 1800)}
+                    }
+                }
+            }
+        }
+    }
+</script>

@@ -1,0 +1,57 @@
+<tbody class="">
+  <tr>
+    <td colspan="8">
+      <span>订单编号:<b><%= order.sn %></b></span>
+      <span>
+        <%= order.trading_account.broker_name %><%= order.trading_account.broker_no %>
+      </span>
+      <span><%= order.created_at %></span>
+    </td>
+  </tr>
+  <tr>
+    <td><%= order.product_type_desc %></td>
+    <td class="black">
+      <% if order.basket? %>
+        <a href="<%= basket_path(order.basket_id) %>" class="black" target="_blank">
+          <%= order.basket.title %>
+        </a>
+      <% else %>
+        <a href="<%= stock_path(order.order_details.first.base_stock_id) %>" class="black" target="_blank">
+          <%= order.stock_detail.stock.com_name %>
+          </br><i class="gray"><%= order.stock_detail.stock.symbol %></i>
+        </a>
+      <% end %>
+    </td>
+    <td class="text-center">
+      <%= buy_or_sell(order.type) %> <br/>
+      <%= order.market? ? "市价单" : "限价单" %>
+      <% if !order.market? %>
+        <%= currency_money(order.stock_detail.limit_price, order.currency_unit) %>
+      <% end %>
+    </td>
+    <td class="text-center black">
+      <%= order.real_shares %>/<%= order.est_shares %>
+    </td>
+    <td class="black blod">
+      <% if order.basket? %>
+        --
+      <% else %>
+        <%= currency_money(order.stock_detail.avg_price, order.currency_unit) %>
+      <% end %>
+      </br><%= currency_money(order.real_cost.to_f, order.currency_unit) %>
+    </td>
+    <td class="blod">
+      <% if order.buy_order? %>
+        --
+      <% else %>
+        <%= up_down_style(order.real_profit, prefix: order.currency_unit, currency_format: true) %>
+      <% end %>
+    </td>
+    <td class="text-center">
+      <%= order_status_with_style(order.status_name) %>
+    </td>
+    <td class="text-center" data-order-id="<%= order.id %>">
+      <a href="javascript:;" class="blue order_details view">查看</a>
+    </td>
+  </tr>
+</tbody>

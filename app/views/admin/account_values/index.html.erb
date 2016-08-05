@@ -1,0 +1,57 @@
+<h1 class="title">
+  <span class="title_left">Account value列表页</span>
+  <span class="title_right">
+    <%#= link_to "新建Account value", new_admin_account_value_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_account_values_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :user_id_eq, :placeholder => 'UserId', class: 'form-control' %>
+    <%= f.text_field :trading_account_id_eq, :placeholder => 'TradingAccountId', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @account_values.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>User</th>
+      <th>Broker user</th>
+      <th>Key</th>
+      <th>Currency</th>
+      <th>Value</th>
+      <th>User binding</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+      <th>Trading account</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @account_values.each do |account_value| %>
+    <tr>
+      <td><%= account_value.id %></td>
+      <td><%= account_value.user_id %></td>
+      <td><%= account_value.broker_user_id %></td>
+      <td><%= account_value.key %></td>
+      <td><%= account_value.currency %></td>
+      <td><%= account_value.value %></td>
+      <td><%= account_value.user_binding_id %></td>
+      <td><%= account_value.created_at %></td>
+      <td><%= account_value.updated_at %></td>
+      <td><%= account_value.trading_account_id %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @account_values %>

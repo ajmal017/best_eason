@@ -1,0 +1,19 @@
+<tr shares="<%= position.can_selled_shares %>" board_lot="<%= position.base_stock.get_board_lot %>"  class="sell_order_details">
+  <input type="hidden" value="<%= position.base_stock.id %>" name="order[order_details_attributes][<%=index%>][base_stock_id]" class="j_stock_id">
+  <!-- <input type="hidden" value="OrderSell" name="order[order_details_attributes][<%=index%>][trade_type]" class="trade_type"> -->
+  <input type="hidden" value="<%= position.base_stock.realtime_price %>" class="j_stock_price">
+  <input type="hidden" value="" name="order[order_details_attributes][<%=index%>][est_shares]" class="j_stock_est_shares">
+
+  <td><%= link_to position.base_stock.symbol, stock_path(position.base_stock_id), target: "_blank", class: 'limitLength maxWidth flag ' + @selled_basket.get_area.to_s %></td>
+  <td><%= link_to position.base_stock.com_name, stock_path(position.base_stock_id), target: "_blank" %></td>
+  <td class="j_stock_weight"></td>
+  <td>
+    <%= position.base_stock.currency_unit %><%= position.base_stock.realtime_price %> 
+    <%= up_down_style(position.base_stock.change_percent, postfix: "%") %>
+  </td>
+  <td>
+    <%= up_down_style(position.base_stock.one_year_return.to_f, postfix: "%") %>
+  </td>
+  <td class="j_stock_count"><%= position.can_selled_shares %></td>
+  <td class="stock_sell_number"></td>
+</tr>

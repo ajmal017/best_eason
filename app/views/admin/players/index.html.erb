@@ -1,0 +1,82 @@
+<h1 class="title">
+  <span class="title_left">参赛选手列表页</span>
+  <span class="title_right">
+    <%= link_to "新建", new_admin_player_path %>
+  </span>   
+</h1>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_players_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.select :contest_id_eq, Contest.all.pluck(:name, :id).unshift(['大赛名称', nil]), class: 'form-control' %>
+    <%= f.search_field :user_username_cont, placeholder: '用户名' %>
+    <%= f.search_field :user_id_eq, placeholder: '用户ID' %>
+    <%= f.search_field :user_mobile_cont, placeholder: 'Email' %>
+    <%= f.search_field :user_email_cont, placeholder: 'Mobile' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<!--子导航-->
+<div class="box">
+  <% link_params = params.dup %>
+  <% link_params.fetch(:q, {}).delete(:trading_account_extend_status_eq) %>
+  <% params_extend_status = request.params.fetch("q", {})["trading_account_extend_status_eq"] %>
+  <%= link_to '全部', link_params, class: params_extend_status ? '' : 'current' %>
+  <%= link_to '未同步', link_params.deep_merge({q: {trading_account_extend_status_eq: nil}}), class: params_extend_status == '' ? 'current' : '' %>
+  <% TradingAccountPT::PT_STATUS_NAMES.each_with_index do |name, index| %>
+    <%= link_to name, link_params.deep_merge({q: {trading_account_extend_status_eq: index}}), class: params_extend_status == index.to_s ? 'current' : '' %>
+  <% end %><br />
+  <% link_params.delete(:pt_data_error) %>
+  <%= link_to '全部', link_params, class: params[:pt_data_error] ? '' : 'current'  %>
+  <%= link_to 'PT数据异常', link_params.merge(pt_data_error: true), class: params[:pt_data_error] ? 'current' : '' %>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @players.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>财说ID</th>
+      <th>财说昵称</th>
+      <th>大赛</th>
+      <th>初始资金</th>
+      <th>总资产</th>
+      <th>可用资金</th>
+      <th>状态</th>
+      <th>扩展状态</th>
+      <th>交易账号ID</th>
+      <th>券商账号</th>
+      <th>交易账号</th>
+      <th colspan="4">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @players.each do |player| %>
+    <tr>
+      <td><%= player.id %></td>
+      <td><%= player.user_id %></td>
+      <td><%= player.user.try(:username) %></td>
+      <td><%= player.contest.try(:name) %></td>
+      <td><%= player.original_cash %></td>
+      <td><%= player.asset %></td>
+      <td><%= player.useable_money %></td>
+      <td><%= player.status %></td>
+      <td><%= player.trading_account.extend_status_name %></td>
+      <td><%= player.trading_account.try :id %></td>
+      <td><%= player.trading_account.try :broker_no %></td>
+      <td><%= player.trading_account.try :cash_id %></td>
+      <td class="action"><%= link_to 'Login', [:login, :admin, player] %></td>
+      <td class="action"><%= link_to '详情', [:admin, player] %></td>
+      <td class="action"><%= link_to '编辑', [:edit, :admin, player] %></td>
+      <td class="action"><%= link_to '删除', [:admin, player], method: :delete, data: { confirm: '你确定删除吗?' } %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @players %>

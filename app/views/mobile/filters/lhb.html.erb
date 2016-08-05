@@ -1,0 +1,23 @@
+<%= render partial: '/mobile/filters/style' %>
+<%= javascript_include_tag "/javascripts/mo.stocklist.js" %>
+<div class="stockholder">
+  <label><%= @page_title %><div class="last-update"><em><%= @update_date %></em> 更新</div></label>
+  <div class="stocks">
+    <table>
+      <thead>
+        <tr>
+          <td>名称</td>
+          <td>最新价</td>
+          <td class="sortable"><span class="name desc">涨跌幅</span></td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @stocks.each do |stock| %>
+          <%= render partial: "stock_item", locals: {stock: stock} %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= render partial: '/mobile/filters/base' %>

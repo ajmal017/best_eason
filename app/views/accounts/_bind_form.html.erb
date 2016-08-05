@@ -1,0 +1,94 @@
+<div style="display:none;">
+    <!-- 中信证券 -->
+    <%=form_for TradingAccount.new, url: broker_accounts_path('icitics'), method: :post, remote: true, :html => {id: 'authZhongxin', class: 'j_account_new'} do |f|%>
+      <%=f.hidden_field :cash_id%>
+      <table style="width:100%;">
+        <tr>
+          <th align="right" width="120">资金账号：</th>
+          <td><%=f.text_field :broker_no, placeholder: '请输入资金账号', class: 'validate'%></td>
+        </tr>
+        <tr>
+          <th align="right">密码：</th>
+          <td><%=f.password_field :password, placeholder: '请输入密码', class: 'validate'%></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td><span class="errorTip" style="display:none;" notice="资金账号和密码不能为空"></span></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td><%=f.submit "授权", class: 'btn_blue' %></td>
+        </tr>
+      </table>
+    <% end %>
+    <!-- 益群证券 -->
+    <%=form_for TradingAccount.new, url: broker_accounts_path('unicorn'), method: :post, remote: true, :html => {id: 'authYiqun', class: 'j_account_new'} do |f|%>
+      <dl>
+        <dd class="active">
+          <h4>请您输入您在【益群证券】的客户编号</h4>
+          <%=image_tag "/images/v3/trader/yiqun-1.jpg", alt: "益群证券"%>
+          <div>
+            <%=f.text_field :broker_no, placeholder: "益群证券用户编号", id: 'j_unicorn_broker_name', class: 'validate'%> <span class="errorTip" style="display:none;" notice="证券编号不能为空"></span>
+            <%=f.submit '授权', class: 'btn_blue float-right'%>
+          </div>
+        </dd>
+        <dd>
+          <h4>收到激活邮件后，点击链接确认授权。</h4>
+          <%=image_tag "/images/v3/tmp/email.jpg", alt: "益群证券"%>
+          <div class="clearfix">
+            <a href="javascript:void(0)" class="btn_blue float-right" onclick="location=location">完成</a>
+          </div>
+        </dd>
+      </dl>
+    <% end %>
+    <!-- 盈透证券 -->
+    <%=form_for TradingAccount.new, url: broker_accounts_path('ib'), method: :post, remote: true, html: {id: 'authYingtou', class: 'j_account_new'} do |f|%>
+      <dl>
+        <dd class="active">
+          <h4>在授权之前，请确认您已经完成以下操作</h4>
+          <%=image_tag "/images/v3/trader/yingtou-1.jpg"%>
+          <table>
+            <caption>请使用如下信息</caption>
+            <tr>
+              <td>顾问/经销商管理账户号码：</td>
+              <td><input value="I8019219" readonly="readonly"></td>
+            </tr>
+            <tr>
+              <td>顾问/经销商管理账户名称：</td>
+              <td><input value="unicorn securities co ltd" readonly="readonly"></td>
+            </tr>
+          </table>
+          <div>
+            <a href="http://unicornsecurities.hk/kaihu.html" target="_blank" class="btn_blue btn_red">尚未连接，现在去连接账户</a>
+            <a href="javascript:void(0)" class="btn_blue float-right" onclick="authstep('#authYingtou');">已经连接，继续授权</a>
+          </div>
+        </dd>
+        <dd>
+          <h4>请您输入您在【盈透证券】的客户编号</h4>
+          <%=image_tag "/images/v3/trader/yingtou-2.jpg", alt: "盈透证券"%>
+          <div>
+            <%=f.text_field :broker_no, placeholder: '盈透证券用户编号', class: 'validate'%> <span class="errorTip" style="display:none;" notice="证券编号不能为空"></span>
+            <%=f.submit '授权', class: 'btn_blue float-right'%>
+          </div>
+        </dd>
+        <dd>
+          <h4>收到激活邮件后，点击链接确认授权。</h4>
+          <%=image_tag "/images/v3/tmp/email.jpg", alt: "盈透证券"%>
+          <div class="clearfix">
+            <a href="javascript:void(0)" class="btn_blue float-right" onclick="location=location">完成</a>
+          </div>
+        </dd>
+      </dl>
+    <% end %>
+
+    <form id="bindPhone" onsubmit="return false;">
+      <table style="width:100%;">
+        <tr><th>手机号:</th><td><input name="phone" type="text" /> <br /><span class="errorTip"></span></td></tr>
+        <tr><th>验证码:</th><td><input name="code" type="text" size="6" /><span class="w_btn">发送验证码</span> <br /><span class="errorTip"></span></td></tr>
+        <tr><th></th><td><button class="b_btn middle">绑定</button></td></tr>
+      </table>
+      <div>
+        您已经成功绑定手机, 稍后将继续授权操作。
+      </div>
+    </form>
+  </div>

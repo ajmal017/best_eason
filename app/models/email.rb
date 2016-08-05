@@ -1,0 +1,38 @@
+module Email
+  # 登录入口
+  LOGIN_PAGE = { 
+    "163.com" => "http://mail.163.com/",
+    "yeat.net" => "http://www.yeah.net/",
+    "126.com" => "http://www.126.com/",
+    "188.com" => "http://www.188.com/",
+    "139.com  " => "http://mail.10086.cn/",
+    "sohu.com" => "http://mail.sohu.com/",
+    "qq.com" => "http://mail.qq.com/",
+    "vip.qq.com" => "http://vip.mail.qq.com",
+    "foxmail.com" => "http://www.foxmail.com/",
+    "gmail.com" => "http://gmail.google.com/",
+    "sina.com" => "http://mail.sina.com.cn/",
+    "sina.com.cn" => "http://mail.sina.com.cn/",
+    "sina.cn" => "http://mail.sina.com.cn/",
+    "vip.sina.com" => "http://vip.sina.com.cn/",
+    "hotmail.com" => "http://www.hotmail.com",
+    "outlook.com" => "http://www.outlook.com",
+    "msn.com" => "http://hotmail.msn.com/",
+    "live.com" => "http://login.live.com/",
+    "live.com.cn" => "http://login.live.com/",
+    "live.cn" => "http://login.live.com/",
+    "yahoo.cn" => "http://mail.cn.yahoo.com/",
+    "yahoo.com.cn" => "http://mail.cn.yahoo.com/",
+    "yahoo.com" => "https://login.yahoo.com/config/login_verify2?.intl=us&.src=ym",
+    "tom.com" => "http://mail.tom.com/",
+    "sogou.com" => "http://mail.sogou.com/",
+    "21cn.com" => "http://mail.21cn.com/",
+    "263.net" => "http://www.263.net/",
+    "eyou.com" => "http://www.eyou.com/",
+    "citiz.net" => "http://www.citiz.net",
+    "vip.citiz.net" => "http://www.citiz.net",
+    "wo.com.cn" => "http://mail.wo.com.cn/",
+    "189.cn" => "http://webmail27.189.cn/webmail/",
+    "caishuo.com" => "http://mail.caishuo.com/"
+  }
+end

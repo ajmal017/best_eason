@@ -1,0 +1,31 @@
+<div class="baskets">
+  <h3>TA创建的组合(<%= @baskets.total_entries %>)</h3>
+  <% if @baskets.total_entries.zero? %>
+  <div class="noContents">还没有创建过组合</div>
+  <% else %>
+  <table>
+    <thead>
+      <tr>
+        <td>名称</td>
+        <td>一月回报</td>
+        <td>累计回报</td>
+        <td>净值</td>
+        <td>创建天数</td>
+        <td>关注&nbsp;</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @baskets.each do |basket| %>
+        <%= render partial: "profiles/profile/basket_item_other", locals: {basket: basket, followed:  basket.followed_by_user?(current_user.try(:id))} %>
+      <% end %>
+    </tbody>
+    <% if @baskets.next_page %>
+    <tfoot>
+      <tr>
+        <th colspan="6"><a href="javascript:" class="viewmore" data-last-id="<%= @baskets.last.id %>" data-show-num="5">查看全部</a></th>
+      </tr>
+    </tfoot>
+    <% end %>
+  </table>
+  <% end %>
+</div>

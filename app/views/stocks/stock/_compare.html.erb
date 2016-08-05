@@ -1,0 +1,36 @@
+<div class="compare_stock">
+  <table>
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th><span id="col_a" class="sortcolumn">市盈率</span></th>
+        <th><span id="col_b" class="sortcolumn"><%= stock_lpg_name(@stock) %></span></th>
+        <th><span id="col_c" class="sortcolumn">现金流</span></th>
+        <th><span id="col_d" class="sortcolumn">毛利率</span></th>
+        <th><span id="col_e" class="sortcolumn"><%= stock_target_price_name(@stock) %></span></th>
+        <th><span id="col_f" class="sortcolumn"><%= stock_bonus_name(@stock) %></span></th>
+        <th><span class="sortcolumn">评分</span></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% (@stock_screener.try(:competitors) || []).each do |stock| %>
+      <% screener = stock.try(:stock_screener) %>
+      <tr class="<%= 'current' if stock.id == @stock.id %>">
+        <td title="<%= stock.com_name %>"><%= link_to stock.truncated_com_name, stock_path(stock), target: "_blank" %></td>
+        <td><%= screener.try(:pe).present? ? screener.try(:pe) : "--" %></td>
+        <td><%= format_number(screener.try(:lpg)) %>%</td>
+        <td><%= format_number(screener.try(:cf)) %>%</td>
+        <td><%= format_number(screener.try(:gm)) %>%</td>
+        <% if stock.is_cn? %>
+          <td><%= format_number(screener.try(:wst)) %>%</td>
+          <td><%= format_number(screener.try(:div)) %></td>
+        <% else %>
+          <td><%= stock.currency_unit %><%= format_number(screener.try(:wst_2)) %></td>
+          <td><%= stock.currency_unit %><%= format_number(screener.try(:div_2)) %></td>
+        <% end %>
+        <td><em class="<%= format_number(screener.try(:score), 1) >= format_number(@stock.try(:stock_screener).try(:score), 1) ? 'raise' : 'drop' %>"><%= format_number(screener.try(:score), 1) %></em></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

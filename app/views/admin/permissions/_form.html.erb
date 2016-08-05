@@ -1,0 +1,185 @@
+<%= form_for @permission  do |f|%>
+  <table class="grid_form" onload="load_change()">
+    <tbody>
+      <tr>
+        <% if params[:action] == "edit" && @permission.father_id == 0 %>
+          <td class="field">所属权限类别:</td>
+          <td>一级权限</td>
+        <% elsif params[:action] == "edit" && @permission.father_id != 0 %>
+          <td class="field">所属权限类别:</td>
+          <td>二级权限</td>
+        <% elsif params[:action] == "new" && params[:father_id] == "0" %>
+          <td class="field">添加权限类别:</td>
+          <td>二级权限</td>
+        <% elsif params[:action] == "new" && params[:father_id] == nil %>
+          <td class="field">选择权限类别:</td>
+          <td>
+            <%= radio_button("permission","father_id","father") %>&nbsp;一级权限<br/>
+            <%= radio_button("permission","father_id","child",:checked => true) %>&nbsp;二级权限
+          </td>
+        <% elsif $father_temp=="0" && params[:action] == "create" && params[:admin_permission][:father_id] != nil %>
+          <td class="field">添加权限类别:</td>
+          <td>二级权限</td>
+        <% elsif params[:action] == "create" && params[:permission] == nil %>
+          <td class="field">所属权限类别:</td>
+          <td>
+            <%= radio_button("permission","father_id","father") %>&nbsp;一级权限<br/>
+            <%= radio_button("permission","father_id","child") %>&nbsp;二级权限&nbsp;&nbsp;&nbsp;<span style="color:red;"><%= @error %></span>
+          </td>
+        <% elsif  params[:action] == "create" && params[:permission][:father_id] == "child" %>
+          <td class="field">所属权限类别:</td>
+          <td>
+            <%= radio_button("permission","father_id","father",disabled:true) %>&nbsp;一级权限<br/>
+            <%= radio_button("permission","father_id","child",:checked => true) %>&nbsp;二级权限
+          </td>
+        <% elsif params[:action] == "create" && params[:permission][:father_id] == "father" %>
+          <td class="field">所属权限类别:</td>
+          <td>
+            <%= radio_button("permission","father_id","father",:checked => true) %>&nbsp;一级权限<br/>
+            <%= radio_button("permission","father_id","child",disabled:true) %>&nbsp;二级权限
+          </td>
+        <% elsif params[:action] == "update" && @permission.father_id == 0 %>
+          <td class="field">所属权限类别:</td>
+          <td>一级权限</td>
+        <% elsif params[:action] == "update" && @permission.father_id != 0 %>
+          <td class="field">所属权限类别:</td>
+          <td>二级权限</td>
+        <% end %>
+      </tr>
+
+      <tr id="father_name">
+        <td class="field">权限名称:</td>
+        <td>
+          <%= f.text_field :name, :size=>50 %>
+        </td>
+      </tr>
+
+      <tr id="father_url">
+        <% if params[:action] == "edit" && @permission.father_id != 0%>
+          <td class="field">URL:</td>
+          <td>
+            <%= f.text_field :url, :size=>50 %>
+          </td>
+        <% elsif params[:action] == "new" %>
+          <td class="field">URL:</td>
+          <td>
+            <%= f.text_field :url, :size=>50 %>
+          </td>
+        <% elsif params[:action] == "create" && params[:permission]==nil %>
+          <td class="field">URL:</td>
+          <td>
+            <%= f.text_field :url, :size=>50 %>
+          </td>
+        <% elsif params[:action] == "create" && params[:permission][:father_id]=="child" %>
+          <td class="field">URL:</td>
+          <td>
+            <%= f.text_field :url, :size=>50 %>
+          </td>
+        <% elsif params[:action] == "update" && @permission.father_id != 0 %>
+          <td class="field">URL:</td>
+          <td>
+            <%= f.text_field :url, :size=>50 %>
+          </td>
+        <% else %>
+        <% end %>
+      </tr>
+      <tr id="menu">
+        <% if params[:action] == "edit" && @permission.father_id != 0 %>
+          <td class="field">所属父类权限:</td>
+          <td id="father_id">
+            <%= f.select :father_id, @father_permissions.collect { |fp| [fp.name,fp.id]} %>
+          </td>
+        <% elsif params[:action] == "new" && params[:father_id].to_i == 0 %>
+          <td class="field">所属父类权限:</td>
+          <td id="father_id">
+            <%= f.select :father_id, @father_permissions.collect { |fp| [fp.name,fp.id]},:selected => params[:id] %>
+          </td>
+        <% elsif params[:action] == "update" && @permission.father_id != 0 %>
+          <td class="field">所属父类权限:</td>
+          <td id="father_id">
+
+            <%= f.select :father_id, @father_permissions.collect { |fp| [fp.name,fp.id]},:selected => @permission.father_id %>
+          </td>
+        <% elsif params[:action] == "edit" && params[:father_id].to_i == 0 %>
+        <% elsif params[:action] == "update" && params[:father_id].to_i == 0 %>
+        <% else %>
+          <td class="field">所属父类权限:</td>
+          <td id="father_id">
+            <%= f.select :father_id, @father_permissions.collect { |fp| [fp.name,fp.id]} %>
+          </td>
+        <% end %>
+      </tr>
+      <tr id="menu2">
+        <% if params[:action] == "create" && params[:admin_permission][:father_id] == "child" %>
+          <td class="field">负责人:</td>
+          <td>
+            <%= f.select :staffer_id, @staffers.collect {|sf| [sf.fullname, sf.id]} %>
+          </td>
+        <% elsif params[:action] == "new" && params[:father_id] == "0" %>
+          <td class="field">负责人:</td>
+          <td>
+            <%= f.select :staffer_id, @staffers.collect {|sf| [sf.fullname, sf.id]} %>
+          </td>
+        <% elsif params[:action] == "create" && params[:admin_permission][:father_id] != "0" %>
+          <td class="field">负责人:</td>
+          <td>
+            <%= f.select :staffer_id, @staffers.collect {|sf| [sf.fullname, sf.id]} %>
+          </td>
+        <% elsif params[:action] == "edit" && @permission.father_id == 0%>
+        <% elsif params[:action] == "update" && @permission.father_id == 0%>
+        <% elsif params[:action] == "update" && @permission.father_id != 0%>
+          <td class="field">负责人:</td>
+          <td>
+            <%= f.select :staffer_id, @staffers.collect {|sf| [sf.fullname, sf.id]} %>
+          </td>
+        <% else %>
+          <td class="field">负责人:</td>
+          <td>
+            <%= f.select :staffer_id, @staffers.collect {|sf| [sf.fullname, sf.id]} %>
+          </td>
+        <% end %>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td>
+          <%= f.submit params[:action] == "edit" ? "修改权限" : "创建权限" %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<% end -%>
+
+<script type="text/javascript">
+	$("input[name='permission[father_id]']").on("change", function(){
+		var radio_value = $("input[name='permission[father_id]']:checked").val();
+		if (radio_value == "father") {
+			$("#admin_permission_father_id").attr("disabled", "disabled");
+      $("#admin_permission_staffer_id").attr("disabled", "disabled");
+			$("#father_id").val(0);
+      $("#father_url").hide();
+      $("#menu").hide();
+      $("#menu2").hide();
+		} else {
+			$("#admin_permission_father_id").removeAttr("disabled");
+      $("#admin_permission_staffer_id").removeAttr("disabled");
+      $("#father_url").show();
+      $("#menu").show();
+      $("#men2").show();
+		}
+	});
+  function load_change(){
+    var radio_value = $("input[name='permission[father_id]']:checked").val();
+    if (radio_value == "father") {
+      $("#admin_permission_father_id").attr("disabled", "disabled");
+      $("#admin_permission_staffer_id").attr("disabled", "disabled");
+      $("#menu").hide();
+      $("#menu2").hide();
+    } else {
+      $("#admin_permission_father_id").removeAttr("disabled");
+      $("#admin_permission_staffer_id").removeAttr("disabled");
+      $("#menu").show();
+      $("#menu2").show();
+    }
+  }
+  window.onload=load_change;
+</script>

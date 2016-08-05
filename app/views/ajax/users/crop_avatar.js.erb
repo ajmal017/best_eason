@@ -1,0 +1,8 @@
+<% if current_user.temp_image.errors.present? %>
+  alert("<%=current_user.temp_image.errors.first%>");
+<% else %>
+  $("#j_crop_logo").modal('hide')
+  $("#j_avatar_preview").find('img:first').attr('src', '<%=current_user.temp_image.image.url(:large)%>');
+  $("#j_avatar_preview").find('img:last').attr('src', '<%=current_user.temp_image.image.url(:small)%>');
+  $("#user_copy_temp_image").attr('value', true);
+<% end %>

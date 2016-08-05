@@ -1,0 +1,14 @@
+var comment_obj = $(".comments li").filter("[comment_id=<%= @comment.id %>]");
+var exist_comment_ids = [];
+$(comment_obj).find(".commentReplies article").each(function(){
+  exist_comment_ids.push($(this).attr("comment_id"));
+})
+<% @replies.each do |reply| %>
+  if (exist_comment_ids.indexOf('<%= reply.id %>') < 0){
+    comment_obj.find(".expandlist").before("<%= j render partial: '/shared/comments/reply_item', locals: {reply: reply} %>")
+  }
+<% end %>
+comment_obj.find(".expandlist").attr("loaded", "true").attr("showall", "true");
+comment_obj.find(".expandlist").addClass("up").text("点击收起部分评论");
+
+initBubbleBox();

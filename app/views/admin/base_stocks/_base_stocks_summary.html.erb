@@ -1,0 +1,11 @@
+<div class="box">
+  <%= link_to raw("全部(#{BaseStock.count})"), admin_base_stocks_path, class: (@exchange_eq.blank? ? "current" : nil)%>
+  <%= link_to raw("港交所(#{BaseStock.sehk_count})"), admin_base_stocks_path(:q => {:exchange_eq => "SEHK"}), class: (@exchange_eq == "SEHK" ? "current" : nil)%>
+  <%= link_to raw("纳斯达克(#{BaseStock.nasdaq_count})"), admin_base_stocks_path(:q => {:exchange_eq => "NASDAQ"}), class: (@exchange_eq == "NASDAQ" ? "current" : nil) %>
+  <%= link_to raw("纽交所(#{BaseStock.nyse_count})"), admin_base_stocks_path(:q => {:exchange_eq => "NYSE"}), class: (@exchange_eq == "NYSE" ? "current" : nil)%>
+  <%= link_to raw("停牌"), admin_base_stocks_path(:q => {:listed_state_eq => 0}), class: (params[:q] && params[:q][:listed_state_eq] == "0" && params[:q][:type_eq].blank? ? "current" : nil)%>
+  <%= link_to raw("A股停牌"), admin_base_stocks_path(:q => {:listed_state_eq => 0, :type_eq => 'Stock::Cn'}), class: (params[:q] && params[:q][:listed_state_eq] == "0" && params[:q][:type_eq] == "Stock::Cn" ? "current" : nil)%>
+  <%= link_to raw("港股停牌"), admin_base_stocks_path(:q => {:listed_state_eq => 0, :type_eq => 'Stock::Hk'}), class: (params[:q] && params[:q][:listed_state_eq] == "0" && params[:q][:type_eq] == "Stock::Hk" ? "current" : nil)%>
+  <%= link_to raw("未上市"), admin_base_stocks_path(:q => {:listed_state_eq => 3}), class: (params[:q] && params[:q][:listed_state_eq] == "3" ? "current" : nil)%>
+  <%= link_to raw("退市"), admin_base_stocks_path(:q => {:listed_state_eq => 2}), class: (params[:q] && params[:q][:listed_state_eq] == "2" && params[:q][:type_eq].blank? ? "current" : nil)%>
+</div>

@@ -1,0 +1,40 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <a href="/admin/es/spider_news">返回列表</a>
+  </span>
+</h1>
+<div class="box">
+  <% {'today' => '今日',
+      'yesterday' => '昨日',
+      'week' => '7天',
+      'month' => '30天'}.each_pair do |k,name| %>
+    <%= link_to name, log_admin_es_spider_news_index_path(date: k), {class: params[:date] == k ? 'current' : ''} %>
+  <% end %>
+</div>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>渠道</th>
+      <th>名称</th>
+      <th>数量</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% total = 0 %>
+    <% @logs.fetch("sources",{})['terms'].each do |log| %>
+      <% total += log['count'].to_i %>
+      <tr>
+        <% cate = (log['term']||'').split('::').last.downcase %>
+        <td><%= link_to log['term'], admin_es_spider_news_index_path(index: log['term'], begin_date: @begin_date.to_s(:db), end_date: @end_date.to_s(:db)) %></td>
+        <td><%= link_to ES::SpiderNews.cate_trans(cate), admin_es_spider_news_index_path(index: log['term'], begin_date: @begin_date.to_s(:db), end_date: @end_date.to_s(:db)) %></td>
+        <td><%= link_to log['count'], admin_es_spider_news_index_path(index: log['term'], begin_date: @begin_date.to_s(:db), end_date: @end_date.to_s(:db)) %></td>
+      </tr>
+    <% end -%>
+    <tr>
+      <td>合计</td>
+      <td></td>
+      <td><%= total %></td>
+    </tr>
+  </tbody>
+</table>

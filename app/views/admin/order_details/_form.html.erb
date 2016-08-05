@@ -1,0 +1,117 @@
+<%= form_for [:admin, @order_detail] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b><%= f.label :order_id %></td>
+        <td><%= f.number_field :order_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b><%= f.label :instance_id %></td>
+        <td><%= f.text_field :instance_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b><%= f.label :base_stock_id %></td>
+        <td><%= f.number_field :base_stock_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b><%= f.label :user_id %></td>
+        <td><%= f.number_field :user_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :basket_id %></td>
+        <td><%= f.number_field :basket_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :est_shares %></td>
+        <td><%= f.text_field :est_shares, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :real_shares %></td>
+        <td><%= f.text_field :real_shares, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :est_cost %></td>
+        <td><%= f.text_field :est_cost, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :real_cost %></td>
+        <td><%= f.text_field :real_cost, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :status %></td>
+        <td><%= f.text_field :status, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b><%= f.label :symbol %></td>
+        <td><%= f.text_field :symbol, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :ib_order_id %></td>
+        <td><%= f.text_field :ib_order_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :trade_type %></td>
+        <td><%= f.text_field :trade_type, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :trade_time %></td>
+        <td><%= f.datetime_select :trade_time, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :order_type %></td>
+        <td><%= f.text_field :order_type, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :limit_price %></td>
+        <td><%= f.text_field :limit_price, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :updated_by %></td>
+        <td><%= f.text_field :updated_by, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :commission %></td>
+        <td><%= f.text_field :commission, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :background %></td>
+        <td><%= f.check_box :background, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :average_cost %></td>
+        <td><%= f.text_field :average_cost, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :market %></td>
+        <td><%= f.text_field :market, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :currency %></td>
+        <td><%= f.text_field :currency, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :cash_id %></td>
+        <td><%= f.text_field :cash_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b><%= f.label :trading_account_id %></td>
+        <td><%= f.number_field :trading_account_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :rt_order_id %></td>
+        <td><%= f.text_field :rt_order_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :result %></td>
+        <td><%= f.text_field :result, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+

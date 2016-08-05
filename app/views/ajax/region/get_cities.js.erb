@@ -1,0 +1,12 @@
+$(".cities").empty();
+
+<% if @cities.blank? %>
+  $(".cities").append("<li data-value="" class="">区县</li>");
+<% end %>
+
+<% @cities.each do |city| %>
+  $(".cities").append("<li data-value='<%= city.code %>'><%= city.name %></li>");
+<% end %>
+
+area.updateCity();
+area.liveClick();

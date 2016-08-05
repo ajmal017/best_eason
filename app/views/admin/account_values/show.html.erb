@@ -1,0 +1,72 @@
+<h1 class="title">
+  <span class="title_left">Account value详情页面</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @account_value], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_account_values_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Id</td>
+      <td>
+        <%= @account_value.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">User</td>
+      <td>
+        <%= @account_value.user_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Broker user</td>
+      <td>
+        <%= @account_value.broker_user_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Key</td>
+      <td>
+        <%= @account_value.key %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Currency</td>
+      <td>
+        <%= @account_value.currency %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Value</td>
+      <td>
+        <%= @account_value.value %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">User binding</td>
+      <td>
+        <%= @account_value.user_binding_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Created at</td>
+      <td>
+        <%= @account_value.created_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Updated at</td>
+      <td>
+        <%= @account_value.updated_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Trading account</td>
+      <td>
+        <%= @account_value.trading_account_id %>
+      </td>
+    </tr>
+  </tbody>
+</table>

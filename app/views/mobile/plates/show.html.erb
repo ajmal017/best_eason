@@ -1,0 +1,132 @@
+  
+  <%= content_for :header do%>
+
+    <%= stylesheet_link_tag "/stylesheets/mobile/mo.stocklist.css" %>
+    
+    <style>
+        body {background-color: white;}
+        .stocks {margin: 0; border: 0;}
+    </style>
+  <% end %>
+
+  <!-- 股票列表 【单列排序 - 默认降序 - JSON填充列表】 -->
+  <div class="stocks">
+    <table>
+      <thead>
+        <tr>
+          <td>名称</td>
+          <td>最新价</td>
+          <td class="sortable"><span class="name desc">涨跌幅</span></td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
+
+  <script type="text/javascript" role="rick">
+    Caishuo.connect("event", function(){
+      $(".stocks tbody").on('click', 'tr', function(){
+        var data = $(this).data();
+        Caishuo.trigger("openpage", {"goto":"stock","id":data.id,"name":data.name,"symbol":data.symbol});
+      });
+    });
+
+    $(function(){
+
+      /* 测试代码开始 */
+      var $stocks = <%= @stocks.to_json.html_safe %>
+      stocks = {
+        limit: <%= @limit_count %>,
+        list: $stocks
+      };
+      /* 测试代码结束 */
+
+      var init_stock_list = function(json, $container, order){
+        var len = json.list.length;
+        var limit = json.limit;
+        if (len == 0 || limit <= 0 || typeof(order) === 'undefined')
+          return;
+
+        var list = [],
+          closed_list = [];
+
+        var init_row = function(d){
+          var row = '\
+            <tr data-id="%id%" data-name="%name%" data-symbol="%symbol%" class="%closed%">\
+                <td><span class="stock-name">%name%</span><span class="stock-code">%symbol%</span></td>\
+                <td>%price%</td>\
+                <td><span class="key price %price_class%">%pct%</span></td>\
+              </tr>';
+
+          if (d['closed'] == 0)
+          {
+            var bool = d['pct'][0] == "-"; 
+            var price_class = (bool ? 'mins' : 'plus');
+            row = row
+              .replace(/%id%/g, d['id'])
+              .replace(/%name%/g, d['name'])
+              .replace(/%symbol%/g, d['symbol'])
+              .replace(/%price%/g, d['price'])
+              .replace(/%price_class%/g, price_class)
+              .replace(/%pct%/g, (bool ? "" : "+") + d['pct'] + "%")
+              .replace(/%closed%/g, '');
+            list.push(row);
+          }
+          else
+          {
+            row = row
+              .replace(/%id%/g, d['id'])
+              .replace(/%name%/g, d['name'])
+              .replace(/%symbol%/g, d['symbol'])
+              .replace(/%price%/g, d['price'])
+              .replace(/%price_class%/g, '')
+              .replace(/%pct%/g, '')
+              .replace(/%closed%/g, 'stock-closed');
+            closed_list.push(row);
+          }
+        };
+
+        if (order == 'desc')
+        {
+          for(var i = 0; i < limit && i < len; i++)
+          {
+            init_row(json.list[i]);
+          }
+        }
+        else {
+          for(var i = 0, j = len-1; i < limit && j >= 0; i++, j--)
+          {
+            init_row(json.list[j]);
+          }
+        }
+
+        var s = $.merge(list, closed_list).join('');
+        $container.data(order, s);
+
+        if (order == 'desc')
+          $container.empty().append(s);
+      };
+
+      var $tbody = $(".stocks tbody");
+
+      // 初始化降序股票列表
+      init_stock_list(stocks, $tbody, 'desc');
+
+      // 初始化升序股票列表
+      init_stock_list(stocks, $tbody, 'asc');
+
+      $('.stocks thead').on('click', '.sortable', function(){
+        var $name = $(this).find('.name');
+        if ($name.hasClass('desc')) {
+          $name.removeClass('desc').addClass('asc');
+          $tbody.empty().append($tbody.data('asc'));
+        }
+        else {
+          $name.removeClass('asc').addClass('desc');
+          $tbody.empty().append($tbody.data('desc'));
+        }
+      });
+    });
+  </script>
+</html>

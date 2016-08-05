@@ -1,0 +1,35 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+      <a href="/admin/base_stocks">返回列表</a>
+  </span>
+</h1>
+
+<%=form_for @stock, url: admin_base_stock_path(@stock), method: :put do |f| %>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>symbol:</td>
+      <td>
+         <%= @stock.symbol %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>个股图片:</td>
+      <td>
+         <div id="avator">
+          <%=image_tag @stock.img_url(:large), width: 180, height: 180%><br/>
+          <%=f.file_field :img, id: 'real_setting_img', accept:".jpg,.jpeg,.png,.gif"%>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"></td>
+      <td>
+      <%=f.submit '更新图片' %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end -%>
+

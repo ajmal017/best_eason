@@ -1,0 +1,72 @@
+<div class="searchmenu">
+  <h2>发现<a href="/stocks"><del>x</del></a></h2>
+  <dl class="exchange_market">
+    <dt><span class="ico1">交易市场</span><del>x</del></dt>
+    <dd data-name="market_region">
+      <% BaseStock::MARKET_AREA_NAMES.each do |area, name| %>
+        <%= link_to name + "市场", stocks_path(search: @search.merge(market_region: area)), "data-filter" => area %>
+      <% end %>
+    </dd>
+  </dl>
+  <dl id="filterstar">
+    <dt><span class="ico2">财说SCORE</span><del>x</del><label>集合市盈率、长期增长率、现金流、毛利率、华尔街目标价、现金分红6项对单只股票的综合评分。</label></dt>
+    <dd data-name="score">
+      <a href="<%= stocks_path(search: @search.merge(score: 5)) %>" data-filter="0"><span class="ratestar1"><span style="width:0%;"></span></span></a>
+    </dd>
+  </dl>
+  <dl class="industry">
+    <dt><span class="ico3">行业</span><del>x</del></dt>
+    <dd data-name="sector">
+      <% Sector::MAPPING.each do |code, c_name| %>
+        <%= link_to c_name, stocks_path(search: @search.merge(sector: code)), "data-filter" => code %>
+      <% end %>
+    </dd>
+  </dl>
+  <dl class="manner">
+    <dt><span class="ico4">投资风格</span><del>x</del></dt>
+    <dd data-name="style">
+      <a href="<%= stocks_path(search: @search.merge(style: "style_lp")) %>" data-filter="style_lp"><strong>价格低（市盈率低）</strong>股价比竞争对手便宜</a>
+      <a href="<%= stocks_path(search: @search.merge(style: "style_hg")) %>" data-filter="style_hg"><strong>高增长</strong>成长性强于竞争对手</a>
+      <a href="<%= stocks_path(search: @search.merge(style: "style_hq")) %>" data-filter="style_hq"><strong>高质量</strong>既便宜成长性展望又好</a>
+    </dd>
+  </dl>
+  <dl class="without_market_cn">
+    <dt><span class="ico5">华尔街观点</span><del>x</del></dt>
+    <dd data-name="opinion">
+      <a href="<%= stocks_path(search: @search.merge(opinion: "opinion_l")) %>" data-filter="opinion_l">华尔街看多</a>
+      <a href="<%= stocks_path(search: @search.merge(opinion: "opinion_s")) %>" data-filter="opinion_s">华尔街看空</a>
+    </dd>
+  </dl>
+  <dl>
+    <dt><span class="ico6">价格趋势</span><del>x</del></dt>
+    <dd data-name="trend">
+      <a href="<%= stocks_path(search: @search.merge(trend: "trend_g10")) %>" data-filter="trend_g10">当前价高于十日均线</a>
+      <a href="<%= stocks_path(search: @search.merge(trend: "trend_l10")) %>" data-filter="trend_l10">当前价低于十日均线</a>
+      <a href="<%= stocks_path(search: @search.merge(trend: "trend_h52")) %>" data-filter="trend_h52">当前价逼近52周最高</a>
+      <a href="<%= stocks_path(search: @search.merge(trend: "trend_l52")) %>" data-filter="trend_l52">当前价逼近52周最低</a>
+    </dd>
+  </dl>
+  <dl class="business">
+    <dt><span class="ico7">商业考量</span><del>x</del></dt>
+    <dd data-name="consideration">
+      <a href="<%= stocks_path(search: @search.merge(consideration: "consideration_sc")) %>" data-filter="consideration_sc"><strong>小市值</strong>&lt;十亿美金</a>
+      <a href="<%= stocks_path(search: @search.merge(consideration: "consideration_bc")) %>" data-filter="consideration_bc"><strong>大市值</strong>&gt;百亿美金</a>
+      <a href="<%= stocks_path(search: @search.merge(consideration: "consideration_tg")) %>" data-filter="consideration_tg" class="without_market_cn"><strong>去年盈利且今年展望盈利</strong></a>
+      <a href="<%= stocks_path(search: @search.merge(consideration: "consideration_bg")) %>" data-filter="consideration_bg" class="without_market_cn"><strong>盈利反转</strong>去年亏损今年展望盈利</a>
+      <a href="<%= stocks_path(search: @search.merge(consideration: "consideration_gg")) %>" data-filter="consideration_gg" class="without_market_cn"><strong>持续增长</strong>营收及每股盈利展望高于去年</a>
+      <a href="<%= stocks_path(search: @search.merge(consideration: "consideration_hg")) %>" data-filter="consideration_hg" class="without_market_cn"><strong>高增长</strong>营收增长预期 &gt; 16%</a>
+      <a href="<%= stocks_path(search: @search.merge(consideration: "consideration_div")) %>" data-filter="consideration_div"><strong>有分红</strong></a>
+      <a href="<%= stocks_path(search: @search.merge(consideration: "consideration_dgc")) %>" data-filter="consideration_dgc"><strong>现金及投资超过借贷的</strong></a>
+    </dd>
+  </dl>
+  <dl class="value">
+    <dt><span class="ico8">价值考量</span><del>x</del></dt>
+    <dd data-name="capitalization">
+      <a href="<%= stocks_path(search: @search.merge(capitalization: "capitalization_pe10")) %>" data-filter="capitalization_pe10">PE &lt; 10</a>
+      <a href="<%= stocks_path(search: @search.merge(capitalization: "capitalization_dy4")) %>" data-filter="capitalization_dy4">股息收益率 &gt; 4%</a>
+      <a href="<%= stocks_path(search: @search.merge(capitalization: "capitalization_clb")) %>" data-filter="capitalization_clb">市值低于账面价值</a>
+      <a href="<%= stocks_path(search: @search.merge(capitalization: "capitalization_cl1s")) %>" data-filter="capitalization_cl1s">市值低于1倍销售额</a>
+      <a href="<%= stocks_path(search: @search.merge(capitalization: "capitalization_cl7p")) %>" data-filter="capitalization_cl7p">市值低于7倍经营利润</a>
+    </dd>
+  </dl>
+</div>

@@ -1,0 +1,101 @@
+/* ----- SimpleForm Styles ----- */
+
+.simple_form div.input {
+  clear: both;
+  height: auto;
+  overflow: hidden;
+  margin-bottom: 10px
+}
+
+.simple_form label {
+  float: left;
+  width: 130px;
+  text-align: right;
+  margin: 2px 10px;
+}
+
+.simple_form label abbr {
+  border: 0 none;
+  font-variant: normal;
+}
+
+.simple_form div.input input {
+  float: left;
+}
+
+div.boolean, .simple_form input[type='submit'] {
+  margin-left: 150px;
+}
+
+div.boolean label, label.collection_radio_buttons {
+  float: none;
+  margin: 0;
+}
+
+label.collection_radio_buttons {
+  margin-right: 10px;
+  vertical-align: -2px;
+  margin-left: 2px;
+}
+
+.field_with_errors input, .field_with_errors select, .field_with_errors textarea {
+  border: 2px solid #990000;
+}
+
+.simple_form .error {
+  clear: left;
+  color: #990000;
+  display: block;
+  margin-left: 150px;
+  font-size: 12px;
+}
+
+.simple_form .inline-error {
+  float: left;
+  clear: none;
+  margin-left: 10px;
+}
+
+.simple_form .hint {
+  clear: left;
+  margin-left: 150px;
+  font-size: 12px;
+  color: #555;
+  display: block;
+  font-style: italic;
+}
+
+input.radio {
+  margin-right: 5px;
+  vertical-align: -3px;
+}
+
+input.check_boxes {
+  margin-left: 3px;
+  vertical-align: -3px;
+}
+
+label.collection_check_boxes {
+  float: none;
+  margin: 0;
+  vertical-align: -2px;
+  margin-left: 2px;
+}
+
+.simple_form div.form-inputs, .simple_form div.form-actions {
+  clear: both;
+  height: auto;
+  overflow: hidden;
+}
+
+.simple_form div.form-inputs {
+  padding-top: 20px;
+}
+
+.simple_form div.indent-container {
+  padding-left: 150px;
+}
+
+.simple_form span.required-mark {
+  color: #C00;
+}

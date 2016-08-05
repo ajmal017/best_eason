@@ -1,0 +1,25 @@
+<%= form_for @recommend, as: "recommend", url: "/admin/recommends", html: {method: "post"} do |f|%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b>url:</td>
+        <td>
+          <%= f.text_field :original_url %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>分类:</td>
+        <td>
+        <%= f.collection_select :category_id, MD::Source::SpiderNewsCategory.all, :category_id, :pretty_print, prompt: '-----请选择-----' %>
+        <%= f.hidden_field :status, value: BaseRecommend::STATUS.keys.first %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td>
+          <%= f.submit "提交" %>
+        </td>
+      </tr>
+     </tbody>
+  </table>
+<% end -%>

@@ -1,0 +1,27 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/register.css" %>
+<% end %>
+    
+<div class="container registration forget_password reset">
+  <h4>重置密码</h4>
+  <% if @user && @user.reset_password_period_valid? %>
+    <%=form_for @user || User.new, url: account_password_path, method: :put, html: {id: 'reset_password_form'} do |f| %>
+    <%=f.hidden_field :reset_password_token, value: params[:reset_password_token] %>    
+    <dl>
+      <dd>
+        <%=f.password_field :password, class: 'medium', placeholder: "重置密码" %>
+        <span class="prompt" style="display:none;">6位以上任意字符、数字、标点（不包括空格）</span>  
+      </dd>
+      <dd>
+        <%=f.password_field :password_confirmation, class: 'medium', placeholder: "确认密码"%>
+      </dd>
+      <dd>
+        <input type="submit" class="b_btn register btn_phone" value="确定" />
+      </dd>
+    </dl>
+    <% end %>
+  <% else %>
+    <center>重置密码链接失效，请重新发送</center>
+  <% end %>
+
+</div>

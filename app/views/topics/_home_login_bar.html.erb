@@ -1,0 +1,41 @@
+<div class="home_login">
+  <dl class="clearfix">
+    <dt class="otherLogin">
+      <p>
+        <span>使用其它账号登录</span>
+        <a onclick="openProviderWindow('wechat')" href="#" class="weixin"><%= "微信" if defined?(show_text).nil? %></a>
+        <a onclick="openProviderWindow('qq')" href="#" class="qq"><%= "QQ" if defined?(show_text).nil? %></a>
+        <a onclick="openProviderWindow('weibo')" href="#" class="weibo"><%= "微博" if defined?(show_text).nil? %></a>
+      </p>
+    </dt>
+    <dd>
+      <%=form_for @user || User.new, url: login_url, method: :post, remote: true, onsubmit: "javascript:$('.home_login .error').hide();" do |f| %>
+        <%= hidden_field_tag :return_to, '/topics' %>
+        <%= hidden_field_tag :from, 'topics' %>
+        <%= f.text_field :email, value: cookies[:email], class: 'medium', placeholder: "登录帐号" %>
+        <%= f.password_field :password, class: 'medium', autocomplete: :off, placeholder: "密码" %>
+        <%= f.submit '登录', class: 'b_btn btn_phone' %>
+        <span class="error" style="display:none;">账号或密码不正确</span>
+        <span>
+          <%= link_to '注册', signup_path %><i></i>
+          <%= link_to '忘记密码', new_account_password_path %>
+        </span>
+      <% end %>
+    </dd>
+  </dl>
+</div>
+<script>
+  var navH = $(".home_login").offset().top;
+  $(window).scroll(function(){
+    var scroH = $(this).scrollTop();
+    if(scroH >= navH){
+      $(".home_login").css({"position":"fixed","top":0});
+    }else if(scroH < navH){
+      $(".home_login").css({"position":"static"});
+    }
+  });
+
+  function openProviderWindow(provider){
+    window.open ('/auth/'+provider,'newwindow','height=500,width=700,top=20,left=20,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no')
+  }
+</script>

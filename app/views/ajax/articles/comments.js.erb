@@ -1,0 +1,12 @@
+$(".comments li:not(:last)").remove();
+
+<% @comments.each do |comment| %>
+  $(".comments li:last").before("<%= j render partial: 'articles/comment_item', locals: {comment: comment} %>");
+<% end %>
+
+var paginate_parent = $("#page_paginate").parent();
+$("#page_paginate").remove();
+paginate_parent.append("<%= j render partial: '/articles/show_comments_paginate', locals: {comments: @comments} %>");
+Article.convertCommentPaginateToAjaxLink();
+
+initBubbleBox();

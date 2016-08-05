@@ -1,0 +1,20 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/register.css" %>
+<% end %>
+
+<%- @page_title = "注册 验证邮件提示" -%>
+
+	<div class="container check_email">
+		<p>
+			<strong>验证邮件已经发送到邮箱</strong> <span class="span-red">&nbsp;<%=params[:email]%></span>
+			<br />请在24小时内点击邮箱中的链接完成注册
+			<br /><br /><%=link_to '立即查收邮件', email_login_page(params[:email]), class: 'b_btn register', target: '_blank'%>
+			<span class="plus">没有收到邮件？
+        <a href="javascript:void(0);" class="resend" onclick="javascript:$('form').submit();">重新发送></a>
+      </span>
+		</p>
+	</div>
+
+<%= form_tag account_confirmations_path, method: :post, remote: true do %>
+  <%=hidden_field_tag "user[email]", params[:email]%>
+<% end %>

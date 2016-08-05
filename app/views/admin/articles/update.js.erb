@@ -1,0 +1,3 @@
+$("#article_<%= @article.id%>").children("td:eq(0)").text("<%= @article.title%>");
+$("#article_<%= @article.id%>").children("td:eq(1)").text("<%= @article.categories.map(&:name).join(',')%>");
+$('#article').modal('hide');

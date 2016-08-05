@@ -1,0 +1,67 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/focus.css" %>
+<% end %>
+<%- @page_title = "我的组合" -%>
+
+<div class="container">
+  <%= render :partial => "/shared/sub_menus/following" %>
+  
+  <div class="all_subjects">
+    <% @basket_follows.map{|bf| [bf, bf.followable]}.each do |basket_follow, basket| %>
+      <div class="a_theme">
+        <%= image_tag "/images/v2/Delete.png", class: "delete", onclick: "javascript:Baskets.unfollowBasket(#{basket.id}, this);", "basket-title" => basket.title.to_s %>
+        <dl>
+          <dt>
+            <%=image_tag basket.img_url(:small), style: 'width:62px;height:50px;' %>
+          </dt>
+          <dd>
+            <h3>
+              <%= link_to basket.title.to_s, basket_path(basket), target: '_blank' %>
+            </h3>
+            <span>作者：<%= basket.author.try(:username) %><em>关注日期：<%= basket_follow.created_at.to_date.to_s(:db) %></em></span>
+          </dd>
+        </dl>
+        <ol>
+          <li>
+            组合指数<br>
+            <span>
+              <% if basket.realtime_index.present? %>
+                <%= basket.realtime_index.try(:to_i) %> (<%= up_down_style(basket.change_percent, postfix: "%") %>)
+              <% else %>
+                --(--)
+              <% end %>
+            </span>
+          </li>
+          <li class="li_two">
+            关注至今回报<br>
+            <%= up_down_style(basket_follow.return_from_follow, postfix: "%") %>
+          </li>
+          <li class="li_three">
+            1年回报<br>
+            <%= up_down_style(basket.one_year_return, postfix: "%") %>
+          </li>
+          <li class="sharebox">
+            <span class="sharing weixin">
+              <code class="shareCode">
+                <%=image_tag wechat_qr_code_by_url(basket.screenshot), alt: '分享财说' %>
+              </code>
+            </span>
+            <span class="weibo" onclick="javascript:share_to_sina_weibo('<%= basket_url(basket)%>', '<%= basket.share_text %>', '<%=basket.screenshot%>');"></span>
+          </li>
+        </ol>
+      </div>
+    <% end %>
+    
+    <%= will_paginate @basket_follows, :class => "pageNav whiteBox", inner_window: 2, outer_window: 0, previous_label: "上一页", next_label: "下一页" %>
+
+    <% if @basket_follows.blank? %>
+      <p class="noContent">
+        您还没有关注任何主题
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<div id="FloatWindow" class="j_view_archive float_dialog">
+</div>
+

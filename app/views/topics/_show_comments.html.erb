@@ -1,0 +1,21 @@
+<div class="clearfix section4">
+  <a name="seciton4"></a>
+    <div id="Comments" class="comments review">
+    <h3>大家怎么看 <span>(0)</span></h3>
+      <%= render partial: '/comments/base' %>
+    </div>
+    <div class="experts">
+        <h3>最活跃的人</h3>
+        <ul>
+          <% @commenters.each do |user| %>
+            <li>
+              <%=link_to_user user, inner: image_tag(user.avatar_url(:small), width: 30, height: 30, class: 'head_portrait'), target: '_blank', class: 'comment_avator', card: true%>
+              <div class="ranking">
+                <%=link_to_user user, inner: user.username, class: 'username', target: '_blank', card: true%><br/>
+                <label><%= user.try(:headline) %></label>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+    </div>
+</div>

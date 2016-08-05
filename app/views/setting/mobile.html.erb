@@ -1,0 +1,77 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+
+<div class="container userEdit clearfix">
+  <%=render partial: 'shared/setting_left_box'%>
+
+  <div class="rightBox">
+    <h2>绑定手机号</h2>
+    <% if current_user.mobile.nil? %>
+      <%=form_for current_user, url: bind_mobile_ajax_users_path, method: :put, remote: true, html: {id: 'bind_mobile_form'} do |f| %>
+        <dl class="password">
+          <dt>手机号</dt>
+          <dd>
+            <%= f.text_field :mobile, autocomplete: :off %>
+          </dd>
+          <dt>验证码</dt>
+          <dd>
+            <%= text_field_tag "user[code]", nil, style: "width: 45px;"%>
+            <input type="button" id="btnSendCode" value="发送验证码" class="btn" onclick="sendMessage()"/>
+          </dd>
+          <dd>
+            <%= f.submit '保存', class: 'b_btn dialog_btn_y'%>
+          </dd>
+        </dl>
+      <% end %>
+    <% else %>
+      <p>已绑定手机号: <%= hide_mobile(current_user.mobile) %></p>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var InterValObj; //timer变量，控制时间
+  var curCount = 60;//当前剩余秒数
+
+  function sendMessage() {
+    //如果手机号验证没有通过，不发送验证码
+    if(!$("#user_mobile").valid()){return false;}
+    //向后台发送处理数据
+    $.ajax({
+        type: "PUT",
+        url: '/ajax/users/send_sms_code',
+        data: { mobile: $("#user_mobile").val() },
+        error: function (XMLHttpRequest, textStatus, errorThrown) { },
+        success: function (msg){
+          if(msg['status']){
+            Countdown();
+          } else {
+            console.log(msg['msg'])
+            CaishuoAlert(msg['msg']);
+          }
+        }
+    });
+  }
+  //timer处理函数
+  function SetRemainTime() {
+    if (curCount == 1) {
+      window.clearInterval(InterValObj);//停止计时器
+      $("#btnSendCode").removeAttr("disabled");//启用按钮
+      $("#btnSendCode").val("重新发送");
+      curCount = 60; //重置时间
+    }
+    else {
+      curCount--;
+      $("#btnSendCode").val("重新发送(" + curCount + ")");
+    }
+  }
+
+  function Countdown() {
+    //设置button效果，开始计时
+    $("#btnSendCode").attr("disabled", "true");
+    $("#btnSendCode").val("重新发送(" + curCount + ")");
+    InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+  }
+
+</script>

@@ -1,0 +1,61 @@
+<h1 class="title">
+  <span class="title_left">Account position risk列表页</span>
+  <span class="title_right">
+    <%#= link_to "新建Account position risk", new_admin_account_position_risk_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_account_position_risks_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :trading_account_id_eq, :placeholder => 'TradingAccountId', class: 'form-control' %>
+    <%= f.text_field :date_eq, :placeholder => 'Date', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @account_position_risks.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>个股集中度得分</th>
+      <th>行业集中度得分</th>
+      <th>板块集中度得分</th>
+      <th>TradingAccountId</th>
+      <th>日期</th>
+      <th>创建时间</th>
+      <th>更新日期</th>
+      <th>Var95</th>
+      <th>组合波动</th>
+      <th colspan="3">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @account_position_risks.each do |account_position_risk| %>
+    <tr>
+      <td><%= account_position_risk.id %></td>
+      <td><%= account_position_risk.stock_focus_score %></td>
+      <td><%= account_position_risk.industry_focus_score %></td>
+      <td><%= account_position_risk.plate_focus_score %></td>
+      <td><%= account_position_risk.trading_account_id %></td>
+      <td><%= account_position_risk.date %></td>
+      <td><%= account_position_risk.created_at %></td>
+      <td><%= account_position_risk.updated_at %></td>
+      <td><%= account_position_risk.var95 %></td>
+      <td><%= account_position_risk.basket_fluctuation %></td>
+      <td class="action"><%= link_to '详情', [:admin, account_position_risk] %></td>
+      <td class="action"><%= link_to '编辑', [:edit, :admin, account_position_risk] %></td>
+      <td class="action"><%= link_to '删除', [:admin, account_position_risk], method: :delete, data: { confirm: '你确定删除吗?' } %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @account_position_risks %>

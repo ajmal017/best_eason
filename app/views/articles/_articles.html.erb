@@ -1,0 +1,18 @@
+<div class="content clearfix column_area">
+	<%= render :partial => 'menu' %>
+  
+	<div class="column_content">
+		
+    <% if @articles.present? %>
+      <% @articles.each do |article| %>
+        <%= render 'article_item', article: article %>
+      <% end %>
+    <% else %>
+      <p class="noContent">暂无内容</p>
+    <% end %>
+		
+    <%= will_paginate @articles, :class => "pageNav noBorder", inner_window: 2, outer_window: 0, previous_label: "上一页", next_label: "下一页" %>
+    
+	</div>
+</div>
+

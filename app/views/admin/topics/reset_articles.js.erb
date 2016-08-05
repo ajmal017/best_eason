@@ -1,0 +1,4 @@
+$("#topic_articles_list tr").remove();
+<% @topic.topic_articles.each do |topic_article| %>
+  $("#topic_articles_list").append('<%= j render partial: "article_item", locals: {topic_article: topic_article, article: topic_article.article} %>');
+<% end %>

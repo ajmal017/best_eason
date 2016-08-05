@@ -1,0 +1,3 @@
+$('#history').append("<%= j render partial: 'cash', collection: @data %>")
+$('#more').data('position_str', '<%= @data.last.try(:[],'position_str') %>')
+<% unless @data.size == '1000' %>$('#more').remove()<% end %>

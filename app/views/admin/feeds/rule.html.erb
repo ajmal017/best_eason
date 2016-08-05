@@ -1,0 +1,103 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%= link_to "返回Feed推荐池", "/admin/feeds/hub" %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+
+    <tr>
+      <td class="field">每次刷新Feed数量:</td>
+      <td>
+        <%= MD::FeedHub::FEEDS_COUNT_TOTAL %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="field">Feed配比 (Filter:事件:内容):</td>
+      <td>
+        <%= MD::FeedHub::FEEDS_COUNT_FILTER %>:<%= MD::FeedHub::FEEDS_COUNT_EVENTS %>:<%= MD::FeedHub::FEEDS_COUNT_CONTENT %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="field">当前生效的时间策略:</td>
+      <td><%= MD::FeedRule::TimeRule.get_rule_name * "+" %></td>
+    </tr>
+
+
+    <tr>
+      <td class="field">Feed时间规则详情:</td>
+      <td>
+      <b>实时(24小时)</b>
+      <ul>
+        <li>宏观头条</li>
+        <li>行业</li>
+        <li class="gray">公告</li>
+        <li>研报</li>
+        <li>已关注用户动作</li>
+        <li class="gray">人，组合，个股（随荐随推）</li>
+      </ul>
+
+      <b>盘前(03:00 ~ 09:15)</b>
+      <ul>
+        <li class='gray'>期指</li>
+        <li>早报</li>
+      </ul>
+
+      <b>盘中(09:15 ~ 11:30 13:00 ~ 15:00 即: 早盘 + 午盘)</b>
+      <ul>
+        <li class='gray'>个股filter（次新开板之类的）</li>
+      </ul>
+
+      <b>早盘(09:15 ~ 11:30)</b>
+      <ul>
+        <li class='gray'>个股filter（次新开板之类的）</li>
+      </ul>
+
+      <b>午盘(13:00 ~ 15:00)</b>
+      <ul>
+        <li class='gray'>个股filter（次新开板之类的）</li>
+      </ul>
+
+      <b>中场休息(11:30 ~ 13:00)</b>
+      <ul>
+        <li>板块资金</li>
+        <li>个股资金</li>
+        <li>微博，博客，社区，热门帖子</li>
+        <li>微信公众号</li>
+      </ul>
+
+      <b>盘后(11:30 ~ 13:00, 15:00 ~ 次日03:00)</b>
+      <ul>
+        <li>板块资金</li>
+        <li>个股资金</li>
+        <li class="gray">当日收益情况</li>
+        <li>龙虎榜</li>
+        <li>微信公众号</li>
+        <li>炒股学堂（初级班，高级版）</li>
+        <li>微博，博客，社区，热门帖子</li>
+      </ul>
+
+      <b>周末(周六、周日)</b>
+      <ul>
+        <li>新闻资讯</li>
+        <li>炒股学堂（初级班，高级版）</li>
+        <li>微博，博客，社区，热门帖子</li>
+      </ul>
+
+      </td>
+    </tr>
+
+
+
+  </tbody>
+</table>
+
+<style type="text/css">
+  .grid_form ul li{margin: 0;}
+  .grid_form ul .gray{color: #DDD !important;}
+</style>
+

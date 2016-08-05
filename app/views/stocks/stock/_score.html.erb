@@ -1,0 +1,154 @@
+<div class="compare_chart">
+      <table>
+        <tr>
+          <td>
+            <div class="chart_title" data-hover-tip="#tip3">
+              <div class="showFLoatTip">
+                市盈率 <%= stock_pe_comparison(@stock_screener) %> <span class="score"><%= stock_screener_score(@stock_screener.try(:pe_r)) %></span>
+              </div>
+              <span class="description"><%= stock_pe_desc(@stock_screener) %></span>
+            </div>
+            <div class="chart reverse">
+              <div class="left <%= stock_screener_column_class(@stock_screener.try(:pe), @stock_screener.try(:pe_c)) %>" data-value="<%= @stock_screener.try(:pe) %>">
+                <div onclick="gotoCompare('col_a')"></div>
+                <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:pe), "x") %></span>
+                <span class="bottom"><%= @stock.symbol %></span>
+              </div>
+              
+              <div class="right" data-value="<%= @stock_screener.try(:pe_c) %>">
+                <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:pe_c), "x") %></span>
+                <span class="bottom">竞争对手平均值</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="chart_title">
+              <div class="showFLoatTip" data-hover-tip="<%= @stock.is_cn? ? "#tip11" : "#tip4" %>">
+                <%=stock_lpg_name(@stock)%> <%= stock_lpg_comparison(@stock_screener) %>
+                <span class="score"><%= stock_screener_score(@stock_screener.try(:lpg_r)) %></span>
+              </div>
+              <span class="description"><%= stock_lpg_desc(@stock, @stock_screener) %></span>
+            </div>
+            <div class="chart">
+              <div class="left <%= stock_screener_column_class(@stock_screener.try(:lpg), @stock_screener.try(:lpg_c)) %>" data-value="<%= @stock_screener.try(:lpg) %>">
+              <div onclick="gotoCompare('col_b')"></div>
+                <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:lpg), "%") %></span>
+                <span class="bottom"><%= @stock.symbol %></span>
+              </div>
+              <div class="right" data-value="<%= @stock_screener.try(:lpg_c) %>">
+                <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:lpg_c), "%") %></span>
+                <span class="bottom">竞争对手平均值</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="chart_title">
+              <div class="showFLoatTip" data-hover-tip="#tip5">
+                现金流 <%= stock_cf_comparison(@stock_screener) %> <span class="score"><%= stock_screener_score(@stock_screener.try(:cf_r)) %></span>
+              </div>
+              <span class="description"><%= stock_cf_desc(@stock_screener) %></span>
+            </div>
+            <div class="chart">
+              <div class="left <%= stock_screener_column_class(@stock_screener.try(:cf), @stock_screener.try(:cf_c)) %>" data-value="<%= @stock_screener.try(:cf) %>">
+                <div onclick="gotoCompare('col_c')"></div>
+                <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:cf), "%") %></span>
+                <span class="bottom"><%= @stock.symbol %></span>
+              </div>
+              <div class="right" data-value="<%= @stock_screener.try(:cf_c) %>">
+                <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:cf_c), "%") %></span>
+                <span class="bottom">竞争对手平均值</span>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="chart_title">
+              <div class="showFLoatTip" data-hover-tip="#tip6">
+                毛利润率 <%= stock_gm_comparison(@stock_screener) %> <span class="score"><%= stock_screener_score(@stock_screener.try(:gm_r)) %></span>
+              </div>
+              <span class="description"><%= stock_gm_desc(@stock_screener) %></span>
+            </div>
+            <div class="chart">
+              <div class="left <%= stock_screener_column_class(@stock_screener.try(:gm), @stock_screener.try(:gm_c)) %>" data-value="<%= @stock_screener.try(:gm) %>">
+                <div onclick="gotoCompare('col_d')"></div>
+                <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:gm), "%") %></span>
+                <span class="bottom"><%= @stock.symbol %></span>
+              </div>
+              <div class="right" data-value="<%= @stock_screener.try(:gm_c) %>">
+                <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:gm_c), "%") %></span>
+                <span class="bottom">竞争对手平均值</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <% if @stock.is_cn? %>
+              <div class="chart_title">
+                <div class="showFLoatTip" data-hover-tip="#tip9">
+                  资产回报率 <%= stock_wst_comparison(@stock_screener) %> <span class="score"><%= stock_screener_score(@stock_screener.try(:wst_r)) %></span>
+                </div>
+                <span class="description"><%= stock_wst_cn_desc(@stock_screener) %></span>
+              </div>
+              <div class="chart">
+                <div class="left <%= stock_screener_column_class(@stock_screener.try(:wst), @stock_screener.try(:wst_c)) %>" data-value="<%= @stock_screener.try(:wst) %>">
+                  <div onclick="gotoCompare('col_e')"></div>
+                  <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:wst), "x", 1) %></span>
+                  <span class="bottom"><%= @stock.symbol %></span>
+                </div>
+                <div class="right" data-value="<%= @stock_screener.try(:wst_c) %>">
+                  <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:wst_c), "x", 1) %></span>
+                  <span class="bottom">竞争对手平均值</span>
+                </div>
+              </div>
+            <% else %>
+              <div class="chart_title showFLoatTip" data-hover-tip="#tip7">
+                华尔街目标价格 <span class="score"><%= stock_screener_score(@stock_screener.try(:wst_r)) %></span>
+              </div>
+              <div class="purenumber">
+                <% if @stock_screener.try(:wst_2) %>
+                  <em onclick="gotoCompare('col_e')"><%= @currency_unit %><%= format_number(@stock_screener.try(:wst_2)) %></em>
+                  <span><%= format_number(@stock_screener.try(:wst), 1) %>% 上涨空间</span>
+                  <span class="description"><%= stock_wst_desc(@stock_screener) %></span>
+                <% else %>
+                  <em class="nodata">暂无数据</em>
+                <% end %>
+              </div>
+            <% end %>
+          </td>
+          <td>
+            <% if @stock.is_cn? %>
+              <div class="chart_title">
+                <div class="showFLoatTip" data-hover-tip="#tip10">
+                  市净率 <%= stock_div_cn_comparison(@stock_screener) %> <span class="score"><%= stock_screener_score(@stock_screener.try(:div_r)) %></span>
+                </div>
+                <span class="description"><%= stock_div_cn_desc(@stock_screener) %></span>
+              </div>
+              <div class="chart">
+                <div class="left <%= stock_screener_column_class(@stock_screener.try(:div_c), @stock_screener.try(:div)) %>" data-value="<%= @stock_screener.try(:div) %>">
+                  <div onclick="gotoCompare('col_f')"></div>
+                  <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:div), "x", 1) %></span>
+                  <span class="bottom"><%= @stock.symbol %></span>
+                </div>
+                <div class="right" data-value="<%= @stock_screener.try(:div_c) %>">
+                  <span class="top"><%= stock_screener_data_desc(@stock_screener.try(:div_c), "x", 1) %></span>
+                  <span class="bottom">竞争对手平均值</span>
+                </div>
+              </div>
+            <% else %>
+              <div class="chart_title showFLoatTip" data-hover-tip="#tip8">
+                现金分红 <span class="score"><%= stock_screener_score(@stock_screener.try(:div_r)) %></span>
+              </div>
+              <div class="purenumber">
+                <% if @stock_screener.try(:div_2) %>
+                  <em onclick="gotoCompare('col_f')"><%= @currency_unit %><%= format_number(@stock_screener.try(:div_2)) %></em>
+                  <span><%= stock_screener_score(@stock_screener.try(:div)) %>% 现金分红</span>
+                  <span class="description"><%= stock_div_desc(@stock_screener) %></span>
+                <% else %>
+                  <em class="nodata">暂无数据</em>
+                <% end %>
+              </div>
+            <% end %>
+          </td>
+        </tr>
+      </table>
+    </div>

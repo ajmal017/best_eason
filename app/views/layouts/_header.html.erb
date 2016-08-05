@@ -1,0 +1,22 @@
+<header class="SiteHeader <%= 'head_margin' unless user_signed_in? %> <%= @header_class %>">
+  <%#= render "/shared/stock_bar" if @require_stock_bar -%>
+  <div class="MainDock">
+    <div class="container clearfix">
+      <div class="SiteLink">
+        <%= link_to "财说", "/", title: "财说", class: top_menu_tab_class('index', @top_menu_tab), id: "SiteLogo" %>
+        <%= link_to "头条", "/topics", title: "头条", class: top_menu_tab_class('topics', @top_menu_tab) -%>
+        <%= link_to "投组合", "/baskets", title: "投组合", class: top_menu_tab_class('baskets', @top_menu_tab) -%>
+        <%= link_to "选个股", "/stocks", title: "选个股", class: top_menu_tab_class('stock', @top_menu_tab) -%>
+        <%= link_to "专栏", "/articles", title: "专栏", class: top_menu_tab_class('articles', @top_menu_tab) -%>
+        <%= link_to '下载APP', '/app?from=header', id: 'downapp', class: "new" %>
+      </div>
+      
+      <%= render partial: "layouts/header_right" %>
+    </div>
+  </div>
+
+  <%= yield :sub_menu %>
+  
+</header>
+
+<%= render :partial => "shared/browser_upgrade" %>

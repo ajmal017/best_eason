@@ -1,0 +1,223 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.makemoney.css" %>
+  <%= javascript_include_tag "/javascripts/utils.js", "/javascripts/jquery.textfill.min.js" %>
+<% end %>
+
+<div class="mm" data-key="type" data-convert='{"hook_dom":"toggle_type_class", "no_update":"true"}'>
+    <!-- <div class="summary">
+      <div class="revenue">
+        <span class="base" data-key="base" data-convert='{"method":"percent", "prefix":"", "demicals":1, "suffix":""}'>15.0</span><span class="suffix">%</span><span class="linker">~</span><span class="extra" data-key="extra" data-convert='{"method":"percent", "prefix":"", "demicals":1, "suffix":""}'>40.0</span><span class="suffix">%</span>
+      </div>
+
+      <table class="amount">
+        <tbody>
+          <tr>
+            <td class="total">
+              <div class="value" data-key="amount" data-convert='human_money'>100,000.00</div>
+              <div class="label">项目金额(元)</div>
+            </td>
+            <td class="remaining">
+              <div class="value" data-key="amount_remaining" data-convert='human_money'>38,249.00</div>
+              <div class="label">可投金额(元)</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
+    <div class="summary">
+      <table class="revenue">
+        <thead>
+          <tr>
+            <td class="textfill"><span><span data-key="index"></span><span class="what"></span>幅</span></td>
+            <td>+</td>
+            <td class="textfill"><span>稳赚</span></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="extra" data-key="extra_min"></span><span class="suffix">%</span><span class="extra">-</span><span class="extra" data-key="extra_max" data-convert='{"method":"percent", "prefix":"", "demicals":0, "suffix":""}'></span><span class="suffix">%年化</span></td>
+            <td></td>
+            <td><span class="base" data-key="base" data-convert='{"method":"percent", "prefix":"", "demicals":0, "suffix":""}'></span><span class="suffix">%年化</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="property">
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <div class="label">封闭期</div>
+              <div class="value"><span data-key="property.holding"></span><span data-key="property.holding_unit"></span></div>
+            </td>
+            <td>
+              <div class="label">起投金额</div>
+              <div class="value" data-key="property.min">10</div>
+            </td>
+            <td>
+              <div class="label">起始日</div>
+              <div class="value" data-key="property.start">2015.11.31</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="separator top-border"></div>
+
+    <div class="rules top-border">
+      <a href="<%= mobile_link '/mobile/p2p/return_rule' %>" class="header" target="_blank">
+        <div class="col50">规则</div>
+        <div class="col50"></div>
+      </a>
+      <!-- <p class="note">买<span class="what"></span>：保底<span class="base" data-key="base" data-convert='{"method":"percent", "prefix":"", "demicals":1, "suffix":""}'>21.0</span>% + 当月<span class="what"></span>幅（最高<span class="extra" data-key="extra" data-convert='{"method":"percent", "prefix":"", "demicals":1, "suffix":""}'>80.0</span>%）= 最终收益</p> -->
+      <!-- <div class="chart"></div> -->
+      <p class="note" data-key="note"></p>
+      <img src="<%= @product.trend_image %>" alt="" class="chart">
+    </div>
+    <div class="separator top-border"></div>
+
+    <table class="description">
+      <tbody data-key="description" data-convert='{"hook_dom":"init_description_list", "no_update":"true"}'>
+      </tbody>
+    </table>
+    <div class="separator top-border"></div>
+
+    <div class="detail top-border">
+      <div class="nav">
+        <ul>
+          <li class="tab active">投资记录</li>
+          <li class="tab">项目详情</li>
+          <li class="tab">保障措施</li>
+        </ul>
+      </div>
+      <div class="tabs-body">
+        <div class="active">
+          <div class="text no-record hide">没有投资记录</div>
+          <table class="user-activity">
+            <thead>
+              <tr>
+                <td>投资人</td>
+                <td>投资金额(元)</td>
+                <td>投资时间</td>
+              </tr>
+            </thead>
+            <!-- <tbody data-key="user_activity" data-convert='{"hook_dom":"init_user_activity_list", "no_update":"true"}'></tbody> -->
+            <tbody></tbody>
+          </table>
+
+          <!-- 加载更多 - 此行不可以换行 -->
+          <div id="loadMore"><a style="display:none;">加载更多</a><div class="barloading"></div></div>
+
+        </div>
+        <div class="text" data-key="detail.project"></div>
+        <div class="text" data-key="detail.safeguard"></div>
+      </div>
+    </div>
+    <div class="separator top-border" style="clear: left;"></div>
+
+    <div class="fixed-bar">
+      <a href="<%= mobile_link("/mobile/downloads/redirect") %>" target="_blank" class="text"></a>
+    </div>
+
+    <a id="goto" target="_blank" href="javascript:void(0);" onclick="window.open(this.href); return false;" style="display: none;"><span></span></a>
+
+  </div>
+
+  <script>
+    /* 测试代码 - 开始 */
+    var data = <%= raw @data %>
+    // var user_activity = [];
+    /* 测试代码 - 结束 */
+  </script>
+
+  <script>
+    $('.mm .detail ul').on('click', 'li', function() {
+      $(this).addClass('active').siblings().removeClass('active');
+      $('.mm .detail .tabs-body').children().eq($(this).index()).addClass('active').siblings().removeClass('active');
+    });
+
+    var append_user_activity = function(data){
+      var len = data.length;
+      var rows = [];
+      if ($.isArray(data) && len > 0) {
+        for (var i = 0; i < len; i++) {
+          var row = caishuo.tplFormat('<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>', data[i].mobile, convert.human_money(data[i].amount), data[i].created_at);
+          rows.push(row);
+
+          if (i === (len - 1)) {
+            $('#loadMore').data('last_id', data[i].last_id ? data[i].last_id : 0);
+          }
+        }
+        $('.mm .detail .tabs-body .user-activity tbody').append(rows.join(''));
+      } else {
+        if ($('.user-activity tbody tr').length === 0) {
+          $('.tabs-body .no-record').removeClass('hide');
+          $('.user-activity').addClass('hide');
+        }
+      }
+      $('#loadMore').contents().toggle();
+
+      if (!$('#loadMore').data('last_id')) {
+        $("#loadMore").hide();
+      }
+    };
+
+    $(function(){
+
+      // 用户投资记录
+      $.get("<%=mobile_link @inverst_records_url%>", {id: <%=@product.id%>}, function(data) {
+        append_user_activity(data);
+      }, 'json');
+
+      $("#loadMore").on('click', 'a', function(){
+        $('#loadMore').contents().toggle();
+
+        var last_id = $('#loadMore').data('last_id');
+        if (last_id) {
+        $.get("<%=mobile_link @inverst_records_url%>", {last_id: last_id, id: <%=@product.id%>}, function(data) {
+            append_user_activity(data);
+          }, 'json');
+        }
+      });
+
+      $('.rules .note, .rules .chart').on('click', function(){
+        var url = $(this).siblings('.header').attr('href');
+        $('#goto').attr('href', url).find('span').click();
+      });
+
+      convert.setData(data);
+      convert.toggle_type_class = function(v){
+        if (typeof(v) == "string" && ['up', 'down'].indexOf(v.toLowerCase()) >= 0) {
+          $(this).removeClass('up down').addClass(v);
+        }
+      };
+      convert.init_description_list = function(v){
+        var row_tpl = '<tr><th>{0}</th><td>{1}</td></tr>',
+          len = v.length,
+          list = [];
+        for (var i = 0; i < len; i++) {
+          list.push(caishuo.tplFormat(row_tpl, v[i][0], v[i][1]));
+        }
+        $(this).append(list.join(''));
+      };
+      convert.init_user_activity_list = function(v){
+        var row_tpl = '<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>',
+          len = v.length,
+          list = [];
+        for (var i = 0; i < len; i++) {
+          list.push(caishuo.tplFormat(row_tpl, v[i][0], convert.human_money(v[i][1]), v[i][2]));
+        }
+        if (len === 0) {
+          $('.no-record').removeClass('hide');
+          $('.user-activity, #load-more').addClass('hide');
+        } else {
+          $('.no-record').addClass('hide');
+          $('.user-activity, #load-more').removeClass('hide');
+          $(this).append(list.join(''));
+        }
+      };
+      $('[data-key]').each(convert.$action);
+      $('.mm .summary .revenue thead td').textfill();
+    });
+  </script>

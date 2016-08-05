@@ -1,0 +1,29 @@
+<div class="clearfix">
+  <div class="userAvator float-left">
+    <a class="avator">
+      <%= image_tag @user.avatar_url(:large) %>
+    </a>
+    <% if user_signed_in? %>
+      <a class="mailmeBtn" href="/messages?user_id=<%=@user.id%>">私信</a>
+    <% else %>
+      <a class="j-login-popup mailmeBtn" href="javascript:void(0);">私信</a>
+    <% end %>
+  </div>
+  <div class="userInfo float-right">
+    <div class="float-right">
+      <%= following_or_followed(current_user, @user) %>
+    </div>
+    <label><strong><%= @user.username %></strong><%= @user.headline %></label>
+    <div class="wherefrom">
+      <span>
+        <% if @user.gender_name.present? && @user.city.present? %>
+          <%= @user.gender_name %>，来自<%= @user.city %>
+        <% else %>
+          性别、城市未填写
+        <% end %>
+      </span> 
+      <span>加入财说<%= @user.joined_days %>天</span>
+    </div>
+    <p>简介：<%= @user.profile.try(:intro) %></p>
+  </div>
+</div>

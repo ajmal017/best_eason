@@ -1,0 +1,2 @@
+$(".notice > .news").prepend("<%= j render partial: 'layouts/unread_notifications', locals: {notifications: @notifications} %>");
+setNotificationsReaded(<%= @notifications.map(&:id).to_s %>);

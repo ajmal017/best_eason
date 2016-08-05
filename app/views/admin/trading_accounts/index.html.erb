@@ -1,0 +1,100 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+</h1>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_trading_accounts_path, class: "form-inline", role: "form" do |f| %>
+    <%= f.text_field :broker_no_cont, :placeholder => "证券编号" %>
+    <%= f.text_field :user_id_eq, placeholder: "财说ID"%>
+    <%= f.select :broker_id_eq, Broker.all.map{|b| [b.cname, b.id]}, { include_blank: "全部券商" } %>
+    <%= f.select :status_eq, TradingAccount::STATUS_DESC.map{|k, v| [v, k]}, { include_blank: "全部状态" }%>
+    <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+  <% end %>
+</div>
+
+<div class="box">
+  <%= link_to '全部', admin_trading_accounts_path, class: (params[:q].blank? ? "current" : nil) %>
+  <% Broker.published.all.each do |broker| %>
+    <%= link_to broker.cname, admin_trading_accounts_path(:q => {:broker_name_eq => broker.name}), class: (params[:q] && params[:q][:broker_name_eq] == broker.name ? "current" : nil) %>
+  <% end %>
+</div>
+
+<div class="box">
+  <%= link_to '全部', admin_trading_accounts_path, class: (params[:q].blank? ? "current" : nil) %>
+  <% TradingAccount::STATUS_DESC.each do |value, desc| %>
+    <%= link_to desc, admin_trading_accounts_path(:q => {:status_eq => value}), class: (params[:q] && params[:q][:status_eq] == value.to_s ? "current" : nil) %>
+  <% end %>
+</div>
+
+<%= page_info(@accounts) %>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>用户ID</th>
+      <th>券商名称</th>
+      <th>券商no</th>
+      <th>状态</th>
+      <th>可用资金</th>
+      <th>创建时间</th>
+      <th>券商邮箱</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @accounts.each do |account| %>
+    <tr>
+    <td><%= link_to account.id, admin_users_path(q: {id_eq: account.user_id}), target: '_blank', style:'color:#329BCB;' %></td>
+    <td><%= account.user_id %></td>
+    <td><%= account.broker.name %></td>
+    <td><%= account.broker_no %></td>
+    <td><%= account.status_name %></td>
+    <td><%= account.usable_cash %></td>
+    <td><%= account.created_at %></td>
+    <td><input type="text" value="<%= account.email %>" size="30"/></td>
+    <td class="action">
+      <% if account.is_a?(TradingAccountEmail) %>
+        <%= link_to '通过', audited_admin_trading_account_path(account.id), method: :post, remote: true, data: {confirm: '你确认审核通过吗？'}, class: 'j_audit_pass' if account.auditing? || account.unaudited? %>
+        
+        <%= link_to '不通过', unaudited_admin_trading_account_path(account.id), method: :post, remote: true, data: { confirm: '你确认不通过吗?' } if account.auditing? || account.audited? %>
+        <% if account.active? %>
+          <%=link_to('资金同步', sync_cash_admin_trading_account_path(account.id), method: :post, remote: true, data: { alert: '你确认同步资金吗?' }) %>
+          <%=link_to '订单管理', admin_orders_path(q: {trading_account_id_eq: account.id}) %>
+        <% end %>
+      <% elsif account.is_a?(TradingAccountPassword) %>
+        <% if account.active? %>
+          <%=link_to('资金同步', sync_cash_admin_trading_account_path(account.id), method: :post, remote: true, data: { alert: '你确认同步资金吗?' }) %>
+          <%=link_to '订单管理', admin_orders_path(q: {trading_account_id_eq: account.id}) %>
+          <%=link_to '当前持仓', remote_positions_admin_trading_account_path(account.id) %>
+          <%=link_to '当日成交', remote_today_executions_admin_trading_account_path(account.id) %>
+          <%=link_to '当日委托', remote_today_orders_admin_trading_account_path(account.id) %>
+          <%=link_to '历史委托', order_history_admin_trading_account_path(account.id) %>
+          <%=link_to '历史成交', execution_history_admin_trading_account_path(account.id) %>
+          <%=link_to '历史资金流水', cash_history_admin_trading_account_path(account.id) %>
+        <% end %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>
+  </tbody>
+</table>
+<%= will_paginate @accounts %>  
+
+<script>
+  $(function(){
+    
+    $('.j_audit_pass').click(function(){
+      var _broker_email = $(this).parent().prev().find('input').val();
+      
+      if($.trim(_broker_email).length == 0){
+        alert('请输入该用户在券商处的邮箱!!!');
+        return false;
+      }
+      
+      $.post($(this).attr('href'), {email: _broker_email})
+      
+      return false;
+    })
+  })
+</script>

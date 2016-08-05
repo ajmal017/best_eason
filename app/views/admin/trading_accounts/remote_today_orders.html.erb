@@ -1,0 +1,45 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+ <span class="title_right"><%= link_to '返回', admin_trading_accounts_path %></span>
+</h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>委托编号</th>
+      <th>可撤单标志</th>
+      <th>证券账号</th>
+      <th>证券代码</th>
+      <th>证券名称</th>
+      <th>买入方向</th>
+      <th>委托价格</th>
+      <th>手续费</th>
+      <th>委托数量</th>
+      <th>成交数量</th>
+      <th>委托状态</th>
+      <th>委托日期</th>
+      <th>委托时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.each_with_index do |order, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= order['entrust_no'] %></td>
+        <td><%= order['withdraw_flag'] %></td>
+        <td><%= order['stock_account'] %></td>
+        <td><%= order['stock_code'] %></td>
+        <td><%= order['stock_name'] %></td>
+        <td><%= order['entrust_bs'] %></td>
+        <td><%= order['entrust_price'] %></td>
+        <td><%= order['commission'] %></td>
+        <td><%= order['entrust_amount'] %></td>
+        <td><%= order['business_amount'] %></td>
+        <td><%= order['entrust_status'] %></td>
+        <td><%= order['entrust_date'] %></td>
+        <td><%= order['entrust_time'] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

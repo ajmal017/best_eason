@@ -1,0 +1,73 @@
+<h1 class="title">
+  <span class="title_left">板块列表页</span>
+  <span class="title_right">
+    <%#= link_to "新建Plate", new_admin_plate_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_plates_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :name_eq, :placeholder => '名称', class: 'form-control' %>
+    <%= f.text_field :base_stock_id_eq, :placeholder => 'BaseStockId', class: 'form-control' %>
+    <%= f.text_field :type_eq, :placeholder => '类型', class: 'form-control' %>
+    <%= f.select :status_eq, Plate::Base::STATUSES.zip(["新建", "正常", "失效"]).map{|k, v| [v, k]}, { include_blank: "全部状态" }%>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<!--子导航-->
+<div class="box">
+  <a href="/admin/plates?q[type_eq]=Plate::JYConcept" class="<%='current' if params[:q].try(:[], :type_eq) == 'Plate::JYConcept'%>">聚源概念板块</a>
+  <a href="/admin/plates?q[type_eq]=Plate::JYRegion" class="<%='current' if params[:q].try(:[], :type_eq) == 'Plate::JYRegion'%>">聚源地域板块</a>
+  <a href="/admin/plates?q[type_eq]=Plate::SWIndustry" class="<%='current' if params[:q].try(:[], :type_eq) == 'Plate::SWIndustry'%>">申万行业板块</a>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @plates.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>类型</th>
+      <th>市场</th>
+      <th>名称</th>
+      <th>内部ID</th>
+      <th>源代码</th>
+      <th>开始日期</th>
+      <th>截止日期</th>
+      <th>状态</th>
+      <th>股票数量</th>
+      <th>脚本更新</th>
+      <th>更新时间</th>
+      <th colspan="3">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @plates.each do |plate| %>
+    <tr>
+      <td><%= plate.id %></td>
+      <td><%= plate.type %></td>
+      <td><%= plate.market %></td>
+      <td><%= plate.name %></td>
+      <td><%= plate.base_stock_id %></td>
+      <td><%= plate.source_symbol %></td>
+      <td><%= plate.start_on %></td>
+      <td><%= plate.end_on %></td>
+      <td><%= plate.status %></td>
+      <td><%= plate.stocks_count %></td>
+      <td><%= plate.update_time %></td>
+      <td><%= plate.updated_at %></td>
+      <td class="action"><%= link_to '股票列表', admin_plate_stocks_path(q: {plate_id_eq: plate.id}), target: '_blank' %></td>
+      <td class="action"><%= link_to '预览', "/stocks/#{plate.base_stock_id}", target: '_blank' %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @plates %>

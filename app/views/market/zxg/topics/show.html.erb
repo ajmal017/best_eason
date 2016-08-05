@@ -1,0 +1,89 @@
+<% content_for :header do %>
+  <%= stylesheet_link_tag "/zt/F1778/attach/style.css?v=0.1" %>
+  <%= javascript_include_tag "market/zxg/topics.js", "highcharts" %>
+  <base target="_blank"/>
+<% end %>
+
+<%= render partial: "shared/download_bar" %>
+
+<div class="wrapper">
+  <h1 class="shadowbox caption">相关主题：<%= @topic.title %></h1>
+</div>
+<div class="wrapper">
+  <div class="shadowbox">
+    <div class="article wrapper">
+      <h2>
+        <a href="<%= topic_path(@topic) %>" class="flag <%= @topic.market %>">
+          <%= @topic.title %>：<%= @topic.sub_title %>
+        </a>
+        <a href="<%= topic_path(@topic) %>" class="readMore">更多信息</a>
+      </h2>
+      <div class="content">
+        <%= image_tag @topic.img_url(:large), size: "160x129", class: "cover" %>
+        <div class="infoContent">
+          <%= @topic.safe_description.html_safe %>
+        </div>
+      </div>
+    </div>
+
+    <div class="baskets wrapper">
+      <h3>
+        关于「<%= @topic.title %>」的组合
+        <a class="linkmore" href="<%= baskets_path(search: {tag: @topic.tag_id}) %>">更多</a>
+      </h3>
+      <div class="clearfix list">
+        <% @topic.selected_topic_baskets.limit(3).each do |basket| %>
+          <a href="<%= basket_path(basket) %>">
+            <span class="title">
+              <%= basket.title.truncate(28) rescue nil %>
+            </span>
+            <label class="chart clearfix">
+              <%= image_tag basket.try(:mini_chart_url) %>
+              <% basket.basket_stocks.order(weight: :desc).limit(3).includes(:stock).each do |bs| %>
+                <span><i><%= bs.weight_percent %>%</i><%= bs.stock.short_com_name %></span>
+              <% end %>
+            </label>
+            <span class="summury clearfix">
+              <span class="avator">
+                <%= image_tag basket.author.try(:avatar_url, :normal) %>
+                <%= basket.author.try(:username) %>
+              </span>
+              累计 <%= up_down_style(basket.total_return, postfix: "%", force_precision: 2) %>
+            </span>
+          </a>
+        <% end %>
+        <div class="clear"></div>
+      </div>
+    </div>
+
+    <div class="stocks wrapper">
+      <h3>
+        「<%= @topic.title %>」的最受益个股
+        <a class="linkmore" href="<%= topic_path(@topic) %>#seciton2">更多</a>
+      </h3>
+      <div class="clearfix list">
+        <% @topic_stocks.each do |ts| %>
+          <a href="<%= stock_path(ts.base_stock) %>" stock-id="<%= ts.base_stock_id %>">
+            <span class="name">
+              <%= ts.base_stock.symbol %> <em><%= ts.base_stock.truncated_com_name %></em>
+            </span>
+            <span class="price" data-unit="<%= ts.base_stock.currency_unit %>"> 
+              <em class="">--</em>
+            </span>
+            <span class="chart" style="width:220px;height:101px;"></span>
+            <span class="score">
+              财说评分 
+              <em><b style="width:<%= stock_ratestar_width(ts.base_stock.stock_screener.try(:score).try(:round, 1)) %>%"></b></em>
+            </span>
+          </a>
+        <% end %>
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var stock_chart_datas = <%= @chart_datas.to_json.html_safe %>;
+</script>
+<script type="text/javascript" src="http://mat1.gtimg.com/finance/js/xdh/1.1.js"></script>

@@ -1,0 +1,40 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+<%- @page_title = "问题反馈" -%>
+<div class="container userEdit clearfix aboutCS">
+    <%= render :partial => "left_bar" %>
+
+    <div class="rightBox">
+        <h2>问题反馈</h2>
+        <div class="about_right problem_feedback" id="feedback_div">
+          <%= form_for Feedback.new, url: ajax_feedbacks_path, :html => {onsubmit: "return false;"} do |f| %>
+            <p>意见, 建议, 吐槽, 任性？<br />财说是社区共建的互联网金融证券服务平台，欢迎任何形式的添砖加瓦。随时惊<br/>喜奖品送上。</p>
+            <%= f.text_area :content, placeholder: "具体描述" %><br/><br/>
+            <%= f.text_field :contact_way, value: "", placeholder: "请输入您的联系方式", class: "normal" %>
+            <button class="b_btn btn_attend" type="submit" onclick="javascript: sendFeedback();">发送</button>
+          <% end %>
+        </div>
+
+        <div class="about_right problem_feedback thanks_feedback" style="display:none;">
+          <p>感谢反馈！点滴进步，一路有你！</p>
+          <button class="w_btn middle" type="submit" onclick="javascript:$(this).parent().hide();$('#feedback_div').show();">继续反馈</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+  function sendFeedback(){
+      var content = $("#feedback_content").val();
+      var contact_way = $("#feedback_contact_way").val();
+      if (content == "" || contact_way == ""){
+        alert("请填写反馈内容或者联系方式！");
+      }else{
+        $.post("/ajax/feedbacks.json", {feedback: {content: content, contact_way: contact_way}}, function(){
+          $("#feedback_content").val("");
+          $("#feedback_contact_way").val("");
+          $("#feedback_div").hide();
+          $(".thanks_feedback").show();
+        })
+      }
+    }
+</script>

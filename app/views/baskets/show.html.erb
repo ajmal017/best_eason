@@ -1,0 +1,85 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/commentPack.css"%>
+  <style type="text/css">
+    #Comments {float: left;padding:20px;width: 632px;border-right: 1px solid #d5d8dd;}
+    .community_views {border-left: 1px solid #d5d8dd;margin-left: -1px;}
+    #CaishuoDialog .dialogBody {padding: 0;}
+    #CaishuoDialog .record {border: 0; margin: 0;}
+  </style>
+  <%= javascript_include_tag "highstock", "basket_show", "/javascripts/highcharts.js", "/javascripts/kindeditor/kindeditor.js" %>
+<% end %>
+<%- @page_title = "#{@basket.title} - 投资组合" -%>
+
+<div class="container">
+  <%= render :partial => "show_title" %>
+
+  <%= render :partial => "show_trend" %>
+
+  <div class="comprehensive" id="navCanFloat">
+    <h2 class="asNav center">
+      <span><a href="#basicInfo" class="active" id="nav_basic_info">基本信息</a></span>
+      <span><a href="#Combination" id="nav_stocks">个股组合</a></span>
+      <span class="noBorder"><a href="#Comment" id="nav_comments">观点评论 <em class="plus" style="display:none;">( <i><%= @basket.comments_count.to_i %></i> )</em></a></span>
+    </h2>
+
+    <%= render :partial => "show_basic_info" %>
+
+    <%= render :partial => "show_stocks" %>
+  </div>
+  <%= render :partial => "show_review" %>
+</div>
+
+
+<div id="stockTipBox" style="display:none;"></div>
+
+<div class="FloatPicBox">
+  <div class="floatcontent">
+    <div><span class="prev"></span>
+    <img src="" alt="">
+    <span class="next"></span></div>
+  </div>
+</div>
+
+<div id="basket_adjust_div">
+</div>
+
+
+<%=render partial: '/comments/script' %>
+<%=content_for :script do %>
+<script type="text/javascript">
+  var _user_signed_in = <%= current_user.present? %>;
+  var _basket_id = <%= params[:id] %>, _top_commentable_id = <%= params[:id] %>, _top_commentable_type = 'baskets';
+  var comment_editor;
+  var weights_data = {cash: <%= @cash_percent/100 %>, sectors: <%= @sector_percents.values.map{|v| (v/100).to_f }.to_json.html_safe %>}
+
+  $(function(){
+
+    Opinion.init({opinionable_type: 'Basket', opinionable_id: _basket_id});
+    CommentExt.getOpinionersAvatar("");
+
+    <% if params[:adjust] %>
+      $(".j_adjust_records:first").trigger("click");
+    <% end %>
+  })
+
+  commentPack.init({
+    Emotion: {imagePrefix: '<%= Setting.cdn_host %>/images/emotions/'},
+    Completer:{},
+    Comments: {
+      ajaxpath: "baskets/<%=params[:id]%>",
+      afterloadEvent: function(totalNumber){
+        initBubbleBox();
+        $(".timeago").timeago();
+        caishuo.adjustFooter();
+        $("#nav_comments > em").find('i').text(totalNumber).end().show();
+      }
+    },
+    isloginEvent: function(){
+      return isLogined();
+    },
+    dologinEvent:function(){
+      openLoginDialog();
+    }
+  });
+</script>
+<% end %>

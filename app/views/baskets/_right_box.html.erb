@@ -1,0 +1,51 @@
+<div class="rightBox" id="hasContent" style="display:<%= @baskets.present? ? "block" : "none" %>;">
+    <div class="themeListNav clearfix">
+        <div class="top-bar">
+            <label class="selname">排序</label>
+            <div class="selectbox dropdlst">
+                <input type="hidden" value="">
+                <label>一月回报</label><kbd></kbd>
+                <ul class="selectoption j_filter_order" style="min-height: 192px;">
+                    <% if params[:search] and params[:search][:market] == 'contest' %>
+                        <li data-value="contest_return">大赛成绩</li>
+                    <% end -%>
+                    <li data-value="1d_return">一日回报</li>
+                    <li data-value="1m_return" class="active">一月回报</li>
+                    <li data-value="1y_return">一年回报</li>
+                    <li data-value="total_return">累计回报</li>
+                    <li data-value="start_date">最新创建</li>
+                    <li data-value="bullish">最多看涨</li>
+                    <li data-value="hot">最热</li>
+                </ul>
+            </div>
+            <span>共<i class="j_baskets_count"><%= @baskets_results.total_entries %></i>支组合</span>
+        </div>
+    </div>
+    <div class="contentlist">
+      <ul class="themeListUl clearfix j_baskets">
+        <% @baskets.each do |basket| %>
+          <%= render partial: 'basket_item', locals: {basket: basket, order_param: @search[:order], special_class: nil} %>
+        <% end %>
+      </ul>
+    </div>
+    <div class="morebtn j_page">
+      <%= render partial: 'page', locals: {baskets: @baskets_results}%>
+    </div>
+    <br class="break" />
+</div>
+
+
+<div class="rightBox" id="noContent" style="display:<%= @baskets.present? ? "none" : "block" %>;">
+    <div class="theme_msg">
+        <h3>非常抱歉，没有找到相关的内容</h3>
+        <a class="theme_create-btn middle j_theme_others">查看其它组合</a>
+    </div>
+    <div class="noThemes clearfix">
+        <%= image_tag "/images/v3/default_theme.png" %>
+        <div>
+            <h3>创建您自己的组合</h3>
+            <span>没找到您想要的组合？尝试快速自己创建一个吧～</span>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,47 @@
+<% content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/download.css" %>
+<% end %>
+
+<div class="download_con">
+  <div class="edition"></div>
+  <div class="down_button">
+    <a href="/mobile/market/download/redirect?channel=<%= channel %>" class="downAng j_event_tracking" target="_blank" data-ga-category="WEB_APP" data-ga-action="Download" data-ga-label="Android" id="android_down_btn"></a>
+    <a href="https://itunes.apple.com/us/app/cai-shuo/id983525941" class="downIos j_event_tracking" data-ga-category="WEB_APP" data-ga-action="Download" data-ga-label="IOS" id="ios_down_btn" target="_blank"></a><br />
+    <span class="down_ercode">二维码以及其他下载方式</span>
+  </div>
+  <div class="downClient"></div>
+</div>
+
+<div style="display:none;">
+  <div id="downcode"><i class="close-window" onclick="CaishuoDialog.close();"></i>
+    <h2>扫描二维码下载</h2>
+    <div>使用手机上的二维码扫描软件拍摄以下二维码即可立即下载</div>
+    <div class="down_and">
+      <%= image_tag download_qrcode_img_by(channel), class: "code" %>
+      <div class="downLink">
+        <label>其他下载方式</label>
+        <a href="http://zhushou.360.cn/detail/index/soft_id/2986695?recrefer=SE_D_%E8%B4%A2%E8%AF%B4" target="_blank" class="j_event_tracking" data-ga-category="WEB_APP" data-ga-action="Download" data-ga-label="Android" id="android_down_360_btn">
+          <%= image_tag "/images/v3/down_360.jpg" %>
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.caishuo.stock" target="_blank" class="j_event_tracking" data-ga-category="WEB_APP" data-ga-action="Download" data-ga-label="Android" id="android_down_google_btn">
+          <%= image_tag "/images/v3/down_gogl.jpg" %>
+        </a>
+        <a href="http://shouji.baidu.com/soft/item?docid=7930124&from=&f=search_app_%E8%B4%A2%E8%AF%B4%40list_1_image%401%40header_all_input" target="_blank"  class="j_event_tracking" data-ga-category="WEB_APP" data-ga-action="Download" data-ga-label="Android" id="android_down_baidu_btn">
+          <%= image_tag "/images/v3/down_bidu.jpg" %>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style type="text/css">body.fixed {overflow: hidden;}</style>
+<script type="text/javascript">
+  $('.down_ercode').click(function(){
+    CaishuoDialog.open({theme:'custom',skin:'download',content:$('#downcode')});
+    addTrackEvent('WEB_APP','QRCode');
+  });
+
+  $(function(){
+    addTrackEvent('WEB_APP','View');
+  })
+</script>

@@ -1,0 +1,81 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%= link_to "修改新闻", [:edit, :admin, @spider_news] %>
+    <a href="/admin/es/spider_news">返回列表</a>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">id:</td>
+      <td>
+        <%= @spider_news.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">crawler:</td>
+      <td>
+        <%= @spider_news.source_class %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">分类:</td>
+      <td>
+        <%= @spider_news.category %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">相关股票:</td>
+      <td>
+        <%= @spider_news.stock_ids.try(:join, ',') %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">行业:</td>
+      <td>
+        <%= @spider_news.industry_names.join(',') %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">概念:</td>
+      <td>
+        <%= @spider_news.component_names.join(',') %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">标题:</td>
+      <td>
+        <%= @spider_news.title %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">URL:</td>
+      <td>
+        <%= link_to @spider_news.url, @spider_news.url, target: "_blank" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">缩略图:</td>
+      <td>
+        <% @spider_news.styled_pic_urls(150, 0, 2).each do |pic_url| %>
+          <%= image_tag pic_url %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">来源:</td>
+      <td>
+        <%= @spider_news.source %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">内容:</td>
+      <td>
+        <%= raw @spider_news.content %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+

@@ -1,0 +1,7 @@
+$(".rankingList tbody").append("<%= j render partial: "rank_list", locals: {ranks: @ranks, page: params[:page]} %>");
+$(".btn-more").attr("data-page", <%= params[:page] %>);
+<% if @ranks.size>0 %>
+  setLoaded();
+<% else %>
+  setNoMore();
+<% end %>

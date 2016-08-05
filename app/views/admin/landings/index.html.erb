@@ -1,0 +1,44 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+</h1>
+<div class="box">
+  <%= search_form_for @q, url: "", class: "form-inline", role: "form" do |f| %>
+    <%= f.text_field :email_cont, :placeholder => "申请邮箱" %>
+    <label>申请时间：</label>
+    <%= text_field_tag :created_at_gteq, params[:created_at_gteq], class: "datetimepicker", :placeholder => "注册时间大于", "data-date-format" => "yyyy-mm-dd" %>
+    ~
+    <%= text_field_tag :created_at_lteq, params[:created_at_lteq], class: "datetimepicker", :placeholder => "注册时间小于", "data-date-format" => "yyyy-mm-dd" %>
+
+    <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+  <% end %>
+</div>
+<div class="box">
+申请时间: &nbsp;&nbsp;
+  <a href="/admin/landings" class="<%='current' if params[:created_at_lteq].blank? and params[:created_at_gteq].blank? %>">全部</a>
+  <a href="?created_at_gteq=<%=Date.today.to_s(:db)%>" class="<%='current' if params[:created_at_lteq].blank? and Date.today.to_s(:db) == params[:created_at_gteq] %>">今天</a>
+  <a href="?created_at_gteq=<%=Date.yesterday.to_s(:db)%>" class="<%='current' if params[:created_at_lteq].blank? and Date.yesterday.to_s(:db) == params[:created_at_gteq] %>">昨天</a>
+  <a href="?created_at_gteq=<%=(Date.today - 7).to_s(:db)%>" class="<%='current' if params[:created_at_lteq].blank? and (Date.today - 7).to_s(:db) == params[:created_at_gteq] %>">7日</a>
+  <a href="?created_at_gteq=<%=(Date.today - 30).to_s(:db)%>" class="<%='current' if params[:created_at_lteq].blank? and (Date.today - 30).to_s(:db) == params[:created_at_gteq] %>">30日</a>
+</div>
+<%=page_info @landings%>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Email</th>
+      <th>申请时间</th>
+      <th width="200">注册IP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @landings.each do |landing| %>
+      <tr>
+        <td><%= landing.id %></td>
+        <td><%= landing.email %></td>
+        <td><%= landing.created_at.try(:to_s) %></td>
+        <td><%= landing.request_ip %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @landings %>

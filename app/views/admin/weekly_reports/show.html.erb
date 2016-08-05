@@ -1,0 +1,27 @@
+<!--页面标题-->
+<h1 class="title">
+  <span class="title_left">周报详情页面</span>
+  <span class="title_right">
+    <%=link_to '测试发送', deliver_admin_weekly_reports_path(mode: 'test'), method: :post, data: {confirm: '你确定测试发送周报邮件吗?'}, remote: true%>
+    <%=link_to '正式发送', deliver_admin_weekly_reports_path(mode: 'formal'), method: :post, data: {confirm: '你确定正式发送周报邮件吗?'}, remote: true %>
+  </span>  
+</h1>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>标题:</td>
+      <td>
+        <%= @report["title"] %><br/>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>内容:</td>
+      <td>
+        <%= raw @report["content"] %><br/>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+

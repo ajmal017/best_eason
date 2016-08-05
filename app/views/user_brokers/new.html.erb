@@ -1,0 +1,62 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/investment.css", "/stylesheets/v3/creat1.css" %>
+<% end %>
+
+<div class="container">
+  <%= render :partial => "/shared/sub_menus/positions" %>
+
+  <div class="content">
+      <nav class="createStep">
+        <strong>绑定交易账号</strong>
+        <span class="current"><i>1</i> 绑定交易账号</span><span><i>2</i> 绑定状态</span>
+      </nav>
+      <div class="bindaccountbox">
+        <div class="entercode">
+          <!-- <h2 class="noBorder">快速绑定盈透证券账户到财说，只需两步：</h2> -->
+          <strong>绑定<%= @broker.cname %>账号至财说：</strong>
+          <p>
+            <% if params[:name] == "unicorn" %>
+              <%=image_tag "/images/v3/bind-samp0.jpg", width: 550, alt: '益群证券'%> 
+            <% else %>
+              <%=image_tag "/images/v3/bind-samp1.jpg", width: 550, alt: '盈透证券'%> 
+            <% end %>
+          </p>
+          <br />
+          <br />
+          <p>
+            <label class="alert">请参考上图，输入您在<%= @broker.cname %>的客户编号</label>
+            <%= form_for UserBroker.new, url: user_brokers_path, method: :post, remote: true do |f| %>
+              <%= f.hidden_field :broker_id, value: @broker.id %>
+              <input type="text" style="width:330px;" placeholder="请输入您在<%= @broker.cname %>的客户编号：Uxxxxxx" class="large" name="user_broker[broker_no]"/> &nbsp;
+            <button class="b_btn btn_attend ">绑定</button>
+            <br /><span class="errorTip" style="display:none;">&nbsp;请输入正确的客户编号</span>
+            <% end %>
+          </p>
+          <br />
+          <br />
+        </div>
+      </div>
+    </div>
+
+</div>
+
+<script>
+  $(function(){
+      
+    $("#new_user_broker").submit(function(){
+      var brokerNo = $("input[name='user_broker[broker_no]']").val();
+      if($.trim(brokerNo).length == 0){
+        $('.errorTip').show();
+        return false;
+      }else{
+        return true;
+      }
+    }) 
+    
+    $("input[name='user_broker[broker_no]']").on('focus', function(){
+      $('.errorTip').hide();  
+    })
+
+  })
+
+</script>

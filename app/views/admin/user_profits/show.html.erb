@@ -1,0 +1,60 @@
+<h1 class="title">
+  <span class="title_left">User profit详情页面</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @user_profit], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_user_profits_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Id</td>
+      <td>
+        <%= @user_profit.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">User</td>
+      <td>
+        <%= @user_profit.user_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Today pnl</td>
+      <td>
+        <%= @user_profit.today_pnl %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Total pnl</td>
+      <td>
+        <%= @user_profit.total_pnl %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Date</td>
+      <td>
+        <%= @user_profit.date %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Created at</td>
+      <td>
+        <%= @user_profit.created_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Updated at</td>
+      <td>
+        <%= @user_profit.updated_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Trading account</td>
+      <td>
+        <%= @user_profit.trading_account_id %>
+      </td>
+    </tr>
+  </tbody>
+</table>

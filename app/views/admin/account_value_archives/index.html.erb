@@ -1,0 +1,61 @@
+<h1 class="title">
+  <span class="title_left">Account value archive列表页</span>
+  <span class="title_right">
+    <%#= link_to "新建Account value archive", new_admin_account_value_archive_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_account_value_archives_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :user_id_eq, :placeholder => 'UserID', class: 'form-control' %>
+    <%= f.text_field :trading_account_id_eq, :placeholder => 'TradingAccountID', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @account_value_archives.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>User</th>
+      <th>Broker user</th>
+      <th>Key</th>
+      <th>Currency</th>
+      <th>Value</th>
+      <th>User binding</th>
+      <th>Archive date</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+      <th>Base currency</th>
+      <th>Trading account</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @account_value_archives.each do |account_value_archive| %>
+    <tr>
+      <td><%= account_value_archive.id %></td>
+      <td><%= account_value_archive.user_id %></td>
+      <td><%= account_value_archive.broker_user_id %></td>
+      <td><%= account_value_archive.key %></td>
+      <td><%= account_value_archive.currency %></td>
+      <td><%= account_value_archive.value %></td>
+      <td><%= account_value_archive.user_binding_id %></td>
+      <td><%= account_value_archive.archive_date %></td>
+      <td><%= account_value_archive.created_at %></td>
+      <td><%= account_value_archive.updated_at %></td>
+      <td><%= account_value_archive.base_currency %></td>
+      <td><%= account_value_archive.trading_account_id %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @account_value_archives %>

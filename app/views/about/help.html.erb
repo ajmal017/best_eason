@@ -1,0 +1,18 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+<%- @page_title = "交易帮助" -%>
+<div class="container userEdit clearfix contactUs">
+  <%= render :partial => "left_bar" %>
+  <div class="rightBox">
+    <h2>交易帮助</h2>
+    <div class="about_right">
+      <h5>一、个股交易（以美股为例）</h5>
+      <p>到达您想交易的个股页面，您就能看到交易入口，整个流程在财说即可完成，无需单独登录券商页面，稳定、安全、便捷！</p>
+      <p>如：</p>
+      <%= image_tag "/images/v3/help/viewfile9.png" %>
+      <%= image_tag "/images/v3/help/viewfile10.png" %>
+      <%= image_tag "/images/v3/help/viewfile11.png" %>
+    </div>
+  </div>
+</div>

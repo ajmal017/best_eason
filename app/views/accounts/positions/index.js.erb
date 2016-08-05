@@ -1,0 +1,4 @@
+var html = "<%= j render partial: 'user/positions/position_detail', locals: {account: @trading_account, stocks_infos: @stocks_infos, total_stocks: @total_stocks, baskets_infos: @baskets_infos, unllocate_positions: @unllocate_positions, total_cash: @total_cash, cash_unit: @cash_unit} %>";
+setAccountDetails("<%= params[:account_id] %>", html);
+sortColumn();
+caishuo.adjustFooter();

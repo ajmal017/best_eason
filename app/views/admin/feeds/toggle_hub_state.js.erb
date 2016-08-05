@@ -1,0 +1,11 @@
+<% if @feed_hub.deleted? %>
+  var html = "已删除（<a href='javascript:' class='toggle_state'>恢复</a>）";
+<% else %>
+  var html = "";
+  <% if @feed_hub.weight < 10 %>
+	  html += '<a href="javascript:" onclick="javascript:setWeightTop(this);" class="action">发送Feed</a>&nbsp;';
+  <% end %>
+  html += "<%= j link_to "修改", @feed_hub.edit_source_url, target: "_blank", class: :action %>&nbsp;";
+  html += '<a href="javascript:" class="toggle_state">删除</a>';
+<% end %>
+$("table.grid tbody tr[data-id=<%= @feed_hub.id %>] td.action").html(html);

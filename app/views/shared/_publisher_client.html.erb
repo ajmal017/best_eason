@@ -1,0 +1,7 @@
+<%= content_for :script do -%>
+<script type="text/javascript">
+if(gon.publisher != null && gon.publisher.events.length > 0){
+  document.writeln("<%= j(javascript_include_tag("publisher-client.js"))-%>");
+}
+</script>
+<%- end -%>

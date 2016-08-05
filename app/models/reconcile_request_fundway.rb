@@ -1,0 +1,2 @@
+class ReconcileRequestFundway < ReconcileRequestList
+end

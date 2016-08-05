@@ -1,0 +1,81 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "jquery-ui" %>
+  <%= javascript_include_tag "jquery-ui.min" %>
+<% end %>
+
+<h1 class="title">
+  <span class="title_left">为组合打标签</span>
+  <span class="title_right">
+    <%= link_to "返回列表", admin_tag_commons_url %>
+  </span>
+</h1>
+<br/>
+<br/>
+<div class="ui-widget box" >
+  <input style="width:500px;" id="basket" placeholder="搜索组合名称、作者昵称">
+</div>
+
+<table class="grid">
+  <thead>
+    <th>标签归属</th>
+    <th>组合名称</th>
+    <th>组合创建人</th>
+  </thead>
+  <tbody class="j_baskets">
+    <% @taggings.each do |tagging| %>
+      <tr basket_id="<%= tagging.taggable_id %>">
+        <td><input class='tag' type='checkbox' checked name='text'></td>
+        <td><%= tagging.taggable.newest_version.title %></td>
+        <td><%= tagging.taggable.newest_version.author.try(:username) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<script type="text/javascript">
+
+$(function(){
+  $(document).on('click', '.tag', function(){
+    
+    var tag_id = "<%= params[:id] %>"
+    var basket_id = $(this).parent().parent().attr('basket_id');
+    if($(this).is(':checked')){
+      $.post("/ajax/baskets/" + basket_id + "/tagged", {tag_id: tag_id}, function(response){
+      })
+    }else{
+      $.post("/ajax/baskets/" + basket_id + "/untagged", {tag_id: tag_id}, function(response){
+      })
+    }
+    
+  });
+  
+  function checkExists(basket_id){
+    return $(".j_baskets tr").filter(function(){ return $(this).attr("basket_id") == basket_id}).length > 0
+  };
+  
+  $("#basket").autocomplete({
+    source: function( request, response ) {
+      $.ajax({
+        url: "/ajax/baskets/fuzzy_query",
+        dataType: "json",
+        data: {
+          term: request.term
+        },
+        success: function( data ) {
+          response( data.baskets );
+        }
+      });
+    },
+    minLength: 1,
+    select: function( event, ui ) {
+      if(!checkExists(ui.item.basket_id)){
+        $(".j_baskets").append("<tr basket_id='" + ui.item.basket_id + "'><td ><input class='tag' type='checkbox' name='text'></td><td>" + ui.item.title + "</td><td>" + ui.item.username + "</td></tr>");
+      }
+    }
+  }).autocomplete( "instance" )._renderItem = function( ul, item ) {
+    return $( "<li basket_id='" + item.basket_id + "'>" )
+      .append( item.title + " (" + item.username + ")" )
+      .appendTo( ul );
+  };
+});
+
+</script>

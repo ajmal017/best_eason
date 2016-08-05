@@ -1,0 +1,39 @@
+<div class="modal-dialog">
+  <div class="sell-out">                        
+    <h5>卖出</h5>
+    <div class="subtraction clearfix">
+      <button type="button" onclick="Order.subNumber($(this).next());"></button>
+      <input type="text" min="10" max="100" step="10" value="100" id="basket_sell_percent" />
+      <button type="button" onclick="Order.addNumber($(this).prev());"></button>
+    </div>
+    <p></p>
+    
+    <%= form_tag Setting.orders["confirm_url"], target:'_blank', onsubmit: 'return Order.checkOrderSellForm(this);', method: 'post' do |f| %>
+      <div>
+        <input type="hidden" name="trade_type" id="order_trade_type" class="trade_type" value="OrderSell" />
+        <input type="hidden" name="order[order_total_money]" id="order_total_money"  value=""/>
+        <input type="hidden" name="order[basket_id]" id="order_basket_id"  value="<%= basket.id %>"/>
+        <input type="hidden" name="order[basketId]" id="order_instance_id" value=""/>
+        <input type="hidden" name="order[expiry]" id="order_expiry" value=""/>
+        <input type="hidden" name="order[subAccount]" id="order_subAccount" value=""/>
+        <input type="hidden" name="order[masterAccount]" id="order_masterAccount" value=""/>
+        <input type="hidden" name="sign_token" id="sign_token" value="" />
+        <% positions.each_with_index do |position, index| %>
+          <div shares="<%= position.can_selled_shares %>" board_lot="<%= position.base_stock.get_board_lot %>"  class="sell_order_details">
+            <input type="hidden" value="<%= position.base_stock.id %>" name="order[order_details_attributes][<%=index%>][base_stock_id]" class="j_stock_id">
+            <input type="hidden" value="<%= position.base_stock.symbol %>" name="order[order_details_attributes][<%=index%>][symbol]">
+            <input type="hidden" value="<%= position.base_stock.ib_symbol %>" name="order[order_details_attributes][<%=index%>][ib_symbol]">
+            <input type="hidden" value="OrderSell" name="order[order_details_attributes][<%=index%>][trade_type]" class="trade_type">
+            <input type="hidden" value="<%= position.base_stock.com_name %>" name="order[order_details_attributes][<%=index%>][com_name]">
+            <input type="hidden" value="<%= position.base_stock.realtime_price %>" name="order[order_details_attributes][<%=index%>][realtime_price]" class="j_stock_price">
+            <input type="hidden" value="<%= position.base_stock.exchange %>" name="order[order_details_attributes][<%=index%>][exchange]">
+            <input type="hidden" value="" name="order[order_details_attributes][<%=index%>][size]" class="j_stock_est_shares">
+          </div>
+        <% end %>
+      </div>
+      <button class="determine but-determine">确定</button>
+    <% end %>
+
+    <%= image_tag "/images/cancel.png", onclick: "Position.closeSellDiv(this);" %>            
+  </div>
+</div>

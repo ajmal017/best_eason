@@ -1,0 +1,22 @@
+<%= form_for @profile, url: update_profile_setting_index_path, method: :post, remote: true, html: {id: 'j_profile_ability', class: "ability boxBorder"} do |f| %>
+  <%= hidden_field_tag :from, "ability"%>
+  <span id="tagSpan" style="display:none;"></span>
+  <h3 class="ability">能力圈
+    <a id="ability" href="javascript:;">修改</a><span>发现志同道合的人</span>
+  </h3>
+  <div class="content">
+  	<div class="taglinks clearfix">
+  		<p>最多选择3个，更方便找到同伴</p>
+      <% ::Tag::Group.hot.order(:sort).each_with_index do |tag,i| %>
+        <label data-id="<%= tag.id %>">
+          <input type="checkbox" value="<%= tag.id %>" name="profile[taggings_attributes][<%= i %>][tag_id]" id="profile_taggings_attributes_<%= i %>_tag_id" <%= 'checked' if @profile.tagged_by?(tag.id) %>>
+          <span><%= tag.name %></span>
+        </label>
+      <% end -%>
+    </div>
+    <div class="saveBox">
+    	<a class="b_btn dialog_btn_y j_profile_ability" href="javascript:void(0)">保存</a>
+    	<a onclick="$('#infoEdit').trigger('click')" class="b_btn dialog_btn_c">取消</a>
+    </div>
+  </div>
+<% end -%>

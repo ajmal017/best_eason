@@ -1,0 +1,26 @@
+<% if user_signed_in? && @reply.valid? %>
+  Comment.removeAllReplyForm();
+  var reply_html = "<%= j render partial: '/comments/reply_item', locals: {reply: @reply} %>";
+  var comment_obj = $(".comments li").filter("[comment_id=<%= @comment.id %>]");
+  if (comment_obj.length > 0){
+    comment_replies_obj = comment_obj.find(".commentReplies");
+    if (comment_replies_obj.length == 0){
+      comment_obj.append('<section class="commentReplies"></selection>');
+      comment_replies_obj = comment_obj.find(".commentReplies");
+    }
+    comment_replies_obj.prepend(reply_html);
+    Comment.addOneReplyCountToComment(comment_obj.first());
+  }else{
+    comment_obj = $(".commentReplies article").filter("[comment_id=<%= @comment.id %>]");
+    comment_obj.parent().prepend(reply_html);
+    Comment.addOneReplyCountToComment(comment_obj.first().parent().parent());
+    Comment.addOneReplyCountToComment(comment_obj.first());
+  }
+<% elsif !user_signed_in? %>
+  CaishuoAlert("请登录");
+<% else %>
+  CaishuoAlert("<%= @reply.errors.messages.values.join(", ") %>！");
+<% end %>
+Comment.enableReplyCommentBtn();
+
+initBubbleBox();

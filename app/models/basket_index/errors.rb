@@ -1,0 +1,1 @@
+class BasketIndex::InvalidTimeError < StandardError; end

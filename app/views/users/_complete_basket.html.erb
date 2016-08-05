@@ -1,0 +1,67 @@
+<div class="complete-theme">
+  <div class="head">
+    <div class="head-state">
+      <%=image_tag basket.img_url(:small), size: '110' %>
+      <div class="establish">
+        <% if basket.completed? %>
+          <h2><%= basket.title %></h2>
+        <% else %>
+          <div class="establish-button clearfix">
+            <h2><%= basket.title %></h2><button>草稿</button>
+          </div>
+        <% end %>
+        <p>
+            <span>创建于：<%= basket.start_on.try(:strftime, "%Y.%m.%d %H:%M:%S") %></span>
+            <span>最后修改：<%= basket.modified_at.try(:strftime, "%Y.%m.%d %H:%M:%S") %></span>
+        </p>
+        <p>
+          <% if !basket.visible %>
+            状态：仅自己可见（创建人建仓后，才能对所有人可见）
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <div class="head-button">
+      <button><a href="<%= basket_path(basket) %>" target="_blank">查看组合页面</a></button>
+      <button><span><a href="<%= add_basket_path(basket) %>" target="_blank">调整组合</a></span></button>
+    </div>
+  </div>
+  <div class="theme-details">
+    <div class="theme-index">
+      <div class="theme-indexs">
+        <span class="index-font">财说指数</span>
+        <span class="index-number"><%= basket.latest_index %></span>
+      </div>
+      <div class="theme-indexs">
+        <span class="index-font">关注人数</span>
+        <span class="index-number"><%= basket.follows_count %></span>
+      </div>
+      <div class="theme-indexs">
+        <span class="index-font">创建至今收益率</span>
+        <span class="index-number theme-red">
+          <%= basket.return_from_start_on %>%
+        </span>
+      </div>
+      <div class="theme-indexs">
+        <span class="index-font">建仓人次/金额</span>
+        <span class="index-number theme-red theme-size">
+          <%= number_with_delimiter(basket.orders_count) %>/<%= number_to_currency(basket.orders_total_money.to_f, unit: '$') %>
+        </span>
+      </div>
+    </div>
+    <div class="theme-share">
+      <p>分享与邀请</p>
+      <p>
+        <button onclick="javascript:share_to_sina_weibo('<%= basket_url(basket) %>', '<%= basket.title %>');">
+          <span class="micro-blog">微博</span>
+        </button>
+        <button><span class="wechat">微信</span></button>
+      </p>
+    </div>
+  </div>
+  <div class="pos-wechat" style="display:none">
+    <%= image_tag wechat_qr_code_by_url(basket_url(basket)) %>
+    <p>微信扫一扫</p>
+  </div>
+</div>

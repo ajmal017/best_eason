@@ -1,0 +1,9 @@
+<% if @result %>
+  $.alert({text: '财说已经收到您的发布申请，将尽快完成审核。审核的结果将通过站内通知与您沟通。'});
+  
+  $("#j_deploy_<%=@basket.id%>").text('审核中').addClass('disabled');
+  $("#j_deploy_<%=@basket.id%>").next().next().remove();
+  $("#j_deploy_<%=@basket.id%>").next().remove();
+<% else %>
+  $.alert({text: '发布失败'});
+<% end %>

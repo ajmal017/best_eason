@@ -1,0 +1,10 @@
+<div class="content acountBox">
+  <h2>已授权的账号</h2>
+  <% accounts.each do |account| %>
+    <% if account.active? %>
+      <%= render partial: '/accounts/audited/normal', locals: {account: account} %>
+    <% elsif account.recert? %>
+      <%= render partial: '/accounts/audited/recert', locals: {account: account} %>
+    <% end %>
+  <% end %>
+</div>

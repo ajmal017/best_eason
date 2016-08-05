@@ -1,0 +1,7 @@
+<div class="alert alert-info" style="clear:both;float:none;margin:60px 0px 0px 0px;padding:0">
+  <span>显示记录 <%= (base_stocks.current_page - 1) * base_stocks.per_page + 1 %> - <%= [(base_stocks.current_page) * base_stocks.per_page, base_stocks.count].min %>  / 共 <%= base_stocks.count %>
+  </span>
+  <span>
+  <%= flash[:base_stock_notice]%>
+  </span>
+</div>

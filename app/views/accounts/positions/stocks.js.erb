@@ -1,0 +1,9 @@
+var stocks_tbody = $("table[account-id=<%= @trading_account.pretty_id %>] .shares");
+<% @stocks_infos.each do |stock_infos| %>
+  stocks_tbody.append("<%= j render partial: "user/positions/stock", locals: {account: @trading_account, stock_infos: stock_infos} %>");
+<% end %>
+var more_btn = stocks_tbody.next().find(".stock_more");
+more_btn.attr("data-next-page", <%= params[:page].to_i + 1 %>);
+<% if @stocks_infos.count.zero? %>
+  more_btn.text("没有更多了");
+<% end %>

@@ -1,0 +1,40 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/register.css" %>
+<% end %>
+
+<div class="container check_email">
+    <p>
+      <% if current_user.rebind_email.present? %>
+        <strong>验证邮件已经发送到邮箱</strong> <span class="span-red">&nbsp;<%=current_user.rebind_email%></span>
+        <br />请在24小时内点击邮箱中的链接绑定邮箱
+        <br /><br /><a class="b_btn register" href="<%=email_login_page(current_user.rebind_email)%>" target="_blank">立即查收邮件</a>
+        <span class="plus">没有收到邮件？<a href="#" onclick="resend()" class="resend" id="resendBtn">重新发送></a></span>
+      <% else %>
+        没有发送验证邮件
+      <% end %>
+    </p>
+</div>
+
+<script type="text/javascript">
+  var timer;
+  function resend(){
+    if (!timer){
+      timer = 1;
+      $.post("/ajax/users/resend_bind_or_update_email", {'email': "<%=current_user.rebind_email%>"}, function(data){
+        if (data.status) {
+          var seconds=60;
+          $('#resendBtn').text('已发送('+ seconds +')');
+          timer = window.setInterval(function(){
+              if (seconds>1){
+                  $('#resendBtn').text('已发送('+ --seconds +')')
+              }else{
+                  $('#resendBtn').text('重新发送>');
+                  window.clearInterval(timer);
+                  timer = null;
+              }
+          },1000);
+        }
+      });
+    }
+  }
+</script>

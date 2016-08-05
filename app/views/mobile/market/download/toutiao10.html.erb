@@ -1,0 +1,26 @@
+  <% @page_title = "下载客户端"%>
+  
+  <style type="text/css">
+    body{margin:0;padding: 0;}
+    a,img {display: block;}
+    img {width: 100%;}
+  </style>
+
+  <%= javascript_include_tag "base" %>
+  <% if params[:channel] == "toutiao10" || params[:channel].start_with?("sogou") %>
+    <%= image_tag @pic_1 %>
+    <%= link_to(image_tag(@pic_2, alt: '下载'), mobile_link("/mobile/downloads/redirect?channel=#{params[:channel]}&ts=#{Time.now.to_i}"), title: "app下载", "data-ga-category" => "MO_APP", "data-ga-action" => "Download", "data-ga-label" => @ga_label, target: "_blank", id: "app_down_btn", class: "j_event_tracking") %>
+    <%= image_tag @pic_3 %>
+  <% else %>
+    <a title="app下载" data-ga-category="MO_APP" data-ga-action="Download" data-ga-label="Android" target="_blank" id="app_down_btn" class="j_event_tracking" href="<%= mobile_link("/mobile/downloads/redirect?channel=#{params[:channel]}&ts=#{Time.now.to_i}") %>">
+      <%= image_tag @pic_1 %>
+      <%= image_tag @pic_2 %>
+      <%= image_tag @pic_3 %>
+    </a>
+  <% end %>
+
+<script type="text/javascript">
+  $(function(){
+    addTrackEvent('MO_APP','View');
+  })
+</script>

@@ -1,0 +1,7 @@
+<% if @status %>
+	$("#<%= @basket.id%>").text("否");
+	$("#<%= @basket.id%>").next().html('<a data-remote="true" href="/admin/baskets/<%= @basket.id%>/recommend"><i class="glyphicon glyphicon-hand-up"></i>推荐</a>')
+	alert("解除推荐成功");
+<% else %>
+	alert("解除推荐失败");
+<% end %>

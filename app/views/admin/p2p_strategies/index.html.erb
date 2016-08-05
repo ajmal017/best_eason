@@ -1,0 +1,38 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%= link_to "新建策略", new_admin_p2p_strategy_path %>
+  </span>
+</h1>
+<%= page_info(@p2p_strategies) %>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>创建人</th>
+      <th>策略类型</th>
+      <th>关联对象</th>
+      <th>涨跌设置</th>
+      <th>权重</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @p2p_strategies.each do |ps| %>
+      <tr>
+        <td><%= ps.id %></td>
+        <td><%= ps.staffer.fullname %></td>
+        <td><%= ps.base_type_zh %></td>
+        <td><%= ps.mentionable.try(:c_name) %></td>
+        <td><%= ps.change_type_zh %></td>
+        <td><%= ps.weight %></td>
+        <td><%= ps.created_at.to_s %></td>
+        <td class="action">
+          <%= link_to "修改", edit_admin_p2p_strategy_path(ps) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @p2p_strategies %>  

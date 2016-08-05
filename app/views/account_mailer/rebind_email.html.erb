@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=600" />
+<title>重新绑定财说电子邮箱</title>
+</head>
+<body>
+<div style="padding-top:40px;font-family:微软雅黑;">
+  <div style="padding-left:30px;padding-bottom:30px;border-bottom:1px solid #dfe1e0;margin-bottom:47px;">
+    <img src="<%=Setting.html_host%>/images/mail-logo.png" alt="">
+  </div>
+  <div style="padding-left:66px;width:70%;">
+    <div style="color:#000000;font-size:18px;margin-bottom:30px;padding-left:3px;">亲爱的财说用户 <span><%=@user.username%></span></div>
+    <div style="min-width:600px;margin-bottom:40px;width:70%;background:#f4f6f8;padding:40px 30px 15px 40px;">
+      <div style="color:#424458;font-size:14px;margin-bottom:20px;">请点击下面的按钮完成电子邮箱绑定：</div>
+      <a href="<%=rebind_email_account_confirmations_url(rebind_email_token: @user.rebind_email_token)%>" style="color:#FFFFFF;font-size:16px;width:160px;height:44px;background:#64a0d7;text-align:center;line-height:44px;border-radius:3px;cursor:pointer;margin-bottom:34px;display:block;text-decoration:none;">绑定电子邮箱</a>
+      <div style="color:#424458;font-size:14px;">同样您可以点击以下链接完成绑定：</div>
+      <a href="<%=rebind_email_account_confirmations_url(rebind_email_token: @user.rebind_email_token)%>" style="font-size:14px;color:#0038dc;line-height:28px;text-decoration:none;">
+        <%=rebind_email_account_confirmations_url(rebind_email_token: @user.rebind_email_token)%>
+      </a>
+
+    </div>
+    <div style="font-size:14px;color:#424458;padding-left:3px;line-height:28px;">也可以复制下面的链接 到浏览器地址栏中完成绑定：<br/>
+      <span style="color:#1a5296;text-decoration:underline;">
+        <%=rebind_email_account_confirmations_url(rebind_email_token: @user.rebind_email_token)%>
+      </span>
+    </div>     
+    <div style="font-size:12px;color:#424458;margin-top:76px;margin-bottom:100px;">财说团队</div>
+  </div>
+</div>
+</body>
+</html>

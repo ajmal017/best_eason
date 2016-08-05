@@ -1,0 +1,32 @@
+<li comment_id="<%= comment.id %>">
+  <%=link_to_user comment.commenter, inner: image_tag(comment.commenter.avatar_url(:small), width: 40, height: 40, class: 'head_portrait'), target: '_blank', class: 'comment_avator', card: true%>
+  
+  <%=link_to_user comment.commenter, inner: comment.commenter.username, class: 'username', target: '_blank', card: true %>
+
+  <% if comment.top_replyed.present? %>
+    <p>
+      <%= raw comment.safe_content %>
+      <% comment.ary_commentable_ids[1..-1].each do |commenting_id| %>
+        ||<%= @commentings.fetch(commenting_id).commenter.username %>: <%= @commentings.fetch(commenting_id).safe_content %>
+      <% end %>
+    </p>
+    
+    <p><%= raw @commentings.fetch(comment.top_replyed.id).safe_content %></p> 
+  <% else %>
+    <p><%= raw comment.safe_content %></p>  
+  <% end %>
+  
+  <div class="commentActions">
+    <span class="date"><%= comment.created_at.strftime("%m月%d日 %H:%M") %></span>
+    <a href="javascript:" class="<%= user_signed_in? ? "replyable" : "j-login-popup" %>">评论(<i><%= comment.comments_count.to_i %></i>)</a> 
+    <% if user_signed_in? %>
+      <a href="javascript:" class="<%= comment.liked_by_user?(current_user.try(:id)) ? "liked" : "likeable" %>">赞(<i><%= comment.likes_count.to_i %></i>)</a>
+    <% else %>
+      <a class="j-login-popup">赞(<i><%= comment.likes_count.to_i %></i>)</a>
+    <% end %>  
+    
+    <% if comment.commented_by?(current_user.try(:id)) %>
+      <a href="javascript:" class="remove remove_comment">删除</a>
+    <% end %>
+  </div>
+</li>

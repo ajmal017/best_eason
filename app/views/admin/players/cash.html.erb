@@ -1,0 +1,37 @@
+<h1 class="title">
+  <span class="title_left"><%= @page_title %></span>
+</h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>财说ID</th>
+      <th>昵称</th>
+      <th>交易账号ID</th>
+      <th>券商账号</th>
+      <th>初始资金</th>
+      <th>持仓市值</th>
+      <th>总资产</th>
+      <th>昨日归档</th>
+      <th>今日成交</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @players.each do |player| %>
+    <tr>
+      <td><%= link_to player.user_id, admin_users_path(q: {id_eq: player.user_id}) %></td>
+      <td><%= link_to  player.user.username, admin_users_path(q: {id_eq: player.user_id}) %></td>
+      <td><%= link_to player.trading_account_id, admin_users_path(q: {id_eq: player.user_id}) %></td>
+      <td><%= player.trading_account.try :broker_no %></td>
+      <td><%= player.original_cash %></td>
+      <td><%= Position.where(trading_account_id: player.trading_account_id).sum("average_cost * shares").to_s %></td>
+      <td><%= player.trading_account.total_property %></td>
+      <td><%= archive = UserDayProperty.where(trading_account_id: player.trading_account_id).where(date: 1.day.ago.to_date).first.try(:total) %></td>
+      <td>
+        <%= today = Order.where(trading_account_id: player.trading_account_id).traded.today.inject(0.0){ | sum,order|  sum+order.order_details.inject(0.0){|cost, od| od.trade_type == 'OrderSell' ? cost+od.real_cost : cost-od.real_cost } } %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

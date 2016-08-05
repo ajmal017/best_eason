@@ -1,0 +1,34 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.square{
+}
+.square .header{
+	text-align: center;
+	font-weight: bold;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	padding: 10px;
+	background: #efefef;
+}
+.square .tweet{
+	padding: 20px;
+	border-bottom: 1px dashed #999;
+}
+.square .tweet:last-child{
+	border-bottom: none;
+}
+.square .side-block{
+	margin-top: 20px;
+	padding-right: 20px;
+}
+.square h5{
+	font-weight: bold;
+}
+.square ul{
+	padding-left: 20px;
+	margin-top: 10px;
+}
+.square .upperline{
+	border-top: 1px solid #999;
+}

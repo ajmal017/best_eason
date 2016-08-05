@@ -1,0 +1,60 @@
+<%= form_for @current_user, url: update_base_profile_setting_index_path, method: :post, remote: true, html: {id: 'j_profile_basic', "data-change" => "0", class: "personal boxBorder"} do |f| %>
+  <h3 class="basic_info">基本信息
+    <a href="javascript:;">修改</a>
+    <span>告诉大家我是谁</span>
+  </h3>
+  <div class="content">
+
+  	<dl class="clearfix">
+      <dt>昵称</dt>
+      <dd>
+          <%= f.text_field :username, class: 'nickname' %>
+          <span class="prompt">2-30个字符，支持中英文、下划线，不能全为数字</span>
+      </dd>
+      <dt>我是谁</dt>
+      <dd>
+          <%= f.text_field :headline, class: 'nickname' %>
+          <span class="prompt">4-30位任意字符、数字、标点</span>
+      </dd>
+      <dt>所在地</dt>
+      <dd>
+          <div class="selectbox">
+            <%= f.select :province, [["选择省份", ""]] + @provinces.map { |p| [p.name, p.code] } %>
+          </div>
+          <div class="selectbox">
+            <%= f.select :city, @user_cities.map { |c| [c.name, c.code]} %>
+          </div>
+      </dd>
+      <dt>性别</dt>
+      <dd>
+        <span class="sex">
+          <label><%= f.radio_button :gender, true, id: 'radio1'  %>男</label>
+        </span>
+        <span class="sex">
+          <label><%= f.radio_button :gender, false, id: 'radio2' %>女</label>
+        </span>
+      </dd>
+      <%= f.fields_for(:profile, current_user.profile) do |profile| %>
+      <dt>简介</dt>
+      <dd>
+        <%= profile.text_area :intro %>
+        <span class="prompt">140字以内</span>
+      </dd>
+      <% end -%>
+    </dl>
+
+    <div class="saveBox">
+    	<a class="b_btn dialog_btn_y j_profile_basic" href="javascript:void(0)">保存</a>
+    	<a class="b_btn dialog_btn_c">关闭</a>
+    </div>
+
+	</div>
+<% end -%>
+
+<script>
+ $(function(){
+   $("#user_province").change(function(){
+     $.getScript('/ajax/region/fetch_cities?province_id=' + $(this).val());
+   });
+ });
+</script>

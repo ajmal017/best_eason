@@ -1,0 +1,4 @@
+$('.basketlist').append("<%= j render partial: '/mobile/baskets/basket', collection: @baskets %>");
+<% if @baskets.size < @baskets.per_page %>
+  $('#stock_more').remove();
+<% end %>

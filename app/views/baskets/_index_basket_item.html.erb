@@ -1,0 +1,20 @@
+<li basket-id="<%= basket.id %>">
+  <a href="/baskets/<%=basket.id%>" target="_blank" class="j-login-popup">
+    <span class="themeItem <%= special_class %>">
+    <%= image_tag basket.img_url(:large), style: "width:208px;height:166px;" %>
+    <i class="j-login-popup j_follow_basket addFav"></i>
+		  <span class="shadow">
+			  <span class="intro">
+				  创建人：<%= basket.author.try(:username) %> <br class="break" />
+				  <%= html_to_text(basket.description.to_s, 42) %>
+			  </span>
+			  <span class="states">
+          <i class="icon comments"></i> <em><%= basket.comments_count.to_i %></em> &nbsp; &nbsp; &nbsp; <i class="icon concern nbg"></i> <em><%= basket.follows_count.to_i %></em>
+        </span>
+      </span>
+	  </span>
+  
+	  <span class="j-login-popup j-goto-basket name" ><%= basket.title.truncate(28) %></span>
+	  <span class="j-login-popup j-goto-basket recieve"><%= basket_return_at_list_page(basket, order_param) %></span>
+  </a>
+</li>

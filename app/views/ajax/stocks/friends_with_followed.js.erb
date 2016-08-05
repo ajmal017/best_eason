@@ -1,0 +1,3 @@
+<% @users.each do |user| %>
+  $(".j_friends_followed_stock").append("<%=j render partial: 'friend_followed_item', locals: { user: user }%>");
+<% end %>

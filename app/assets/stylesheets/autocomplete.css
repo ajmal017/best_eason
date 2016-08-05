@@ -1,0 +1,9 @@
+.ui-autocomplete {display: table;position: relative;z-index: 100;line-height: 38px;font-size: 14px;background: white;width:514px;box-shadow: 0 0 6px 0 #768a9f;}
+.ui-autocomplete li {display: table-row;cursor: pointer;}
+.ui-autocomplete li.ui-state-focus {background-color: #f3f3f3;}
+.ui-autocomplete li.ui-state-active {background-color: #f3f3f3;}
+.ui-autocomplete li.ui-state-hover {background-color: #f3f3f3;}
+.ui-autocomplete li span {display: table-cell;font-size: 12px;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;border-top: 1px solid #f1f1f1;}
+.ui-autocomplete li span em {color:#64a0d7;}
+.ui-autocomplete li span.code {font-size:14px;font-weight:bold;width: 70px; white-space: nowrap;padding-left: 12px;}
+.ui-autocomplete li span.name {font-size:14px;font-weight:bold;white-space: nowrap;padding:0 6px;}

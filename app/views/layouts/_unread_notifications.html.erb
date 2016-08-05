@@ -1,0 +1,5 @@
+<%= image_tag("/images/up.png") -%>
+<% notifications.each do |notification| %>
+<p><%= notification.content.html_safe %></p>
+<% end %>
+<span><a href="#">查看全部通知</a></span>

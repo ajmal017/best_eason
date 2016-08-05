@@ -1,0 +1,70 @@
+// Place all the styles related to the users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.profile{
+	margin-top: 20px;
+}
+.profile-header{
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-shadow: none;
+	margin-bottom: 15px;
+	background: #efefef;
+}
+.profile-header h4{
+	font-size: 20px;
+	margin-bottom: 10px;
+}
+.profile-header .media-object{
+	margin-right: 10px;
+}
+.profile-header .media-heading{
+	font-weight: bold;
+}
+.profile .timeline{
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-shadow: none;
+}
+
+.profile .side-block{
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-shadow: none;
+	padding: 20px 20px 10px;
+	margin-bottom: 15px;
+}
+.profile .side-block h4{
+	font-size: 16px;
+	font-weight: bold;
+	margin: 0 0 10px;
+}
+.profile .side-block img{
+	margin: 0 8px 10px 0;
+}
+.profile .side-block ul{
+	padding-left: 20px;
+}
+.profile .timeline .tweet{
+	margin: 0 20px;
+	padding: 20px 0;
+	border-bottom: 1px dashed #999;
+}
+.profile .timeline .tweet:last-child{
+	border-bottom: none;
+}
+.timeline .tweet .content{
+	margin-bottom: 10px;
+}
+.timeline .tweet .info{
+	color: #999;
+}
+.timeline .tweet .info a{
+	margin-right: 10px;
+	font-size: 12px;
+}
+.timeline .tweet .ops a{
+	margin-left: 10px;
+	font-size: 12px;
+}

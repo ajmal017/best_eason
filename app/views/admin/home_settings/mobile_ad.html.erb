@@ -1,0 +1,64 @@
+<h1 class="title">
+  <span class="title_left">app广告设置</span>
+  <span class="title_right">
+    <%= link_to "返回首页设置", admin_home_settings_path%>
+  </span>
+</h1>
+
+<%= render partial: "sub_menus" %>
+
+<div class="box">
+  <%= form_tag "", onsubmit: "javascript:return false;" do %>
+    <table class="grid_form">
+      <tbody>
+        <tr>
+          <td class="field">是否打开：</td>
+          <td>
+            <%= radio_button_tag "ad_is_open", 1, MobileRecommend.ad_is_open? %> 是
+            <%= radio_button_tag "ad_is_open", 0, !MobileRecommend.ad_is_open? %> 否
+          </td>
+        </tr>
+        <tr>
+          <td class="field">ios版本：</td>
+          <td>
+            <input type="text" id="ios_version" value="<%= MobileRecommend.ad_version %>"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="field">链接地址：</td>
+          <td>
+            <input type="text" id="ad_url" value="<%= MobileRecommend.ad_url %>"/>
+          </td>
+        </tr>
+        <tr>
+          <td class="field">图片：</td>
+          <td>
+            <input type="text" id="ad_pic" value="<%= MobileRecommend.ad_pic %>"/>
+            <input type="button" id="upload_pic" value="上传图片">
+            <div>
+              <a target="_blank" href="<%= MobileRecommend.ad_pic %>" id="preview_link"><img src="<%= MobileRecommend.ad_pic %>" id="preview_img" style="max-height:100px"></a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="field"></td>
+          <td>
+            <%= submit_tag "保存", id: "set_ad_setting" %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    $("#set_ad_setting").click(function(){
+      $.post("/admin/mobile_banners/set_ad", {is_open: $("input[name=ad_is_open]:checked").val(), version: $("#ios_version").val(), url: $("#ad_url").val(), pic: $("#ad_pic").val()}, function(){
+        alert("报存成功！");
+      })
+    })
+
+    $("#upload_pic").uploader({url_field_id: "ad_pic", a_link_id: "preview_link", image_show_id: "preview_img"});
+  })
+</script>

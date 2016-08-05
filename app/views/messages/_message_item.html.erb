@@ -1,0 +1,21 @@
+<% messages.reverse.each do |message| %>
+  <% if message.sender_id == current_user.id%>
+    <div class="bubble_reply clearfix j_message_bubble" msg-id="<%=message.id%>">
+      <div class="username">
+        <%=link_to_user current_user, inner: image_tag(current_user.avatar_url(:small), width: 40, height: 40, class: 'head_portrait'), class: 'comment_avator', card: true, target: '_blank'%>
+      </div>
+      <div class="bubble_cont">
+        <a href="javascript:void(0);" class="j_message j_del_msg" data-tid="<%=talk.id%>" data-id="<%= message.id %>"></a><%= pretty_simple_format message.content %>
+      </div>
+    </div>
+  <% elsif message.receiver_id == current_user.id%>
+    <div class="bubble_recevie clearfix j_message_bubble" msg-id="<%=message.id%>">
+    <div class="username">
+      <%=link_to_user message.sender, inner: image_tag(message.sender.avatar_url(:small), width: 40, height: 40, class: 'head_portrait') + message.sender.try(:username),class: 'comment_avator', target: '_blank'%>
+    </div>
+    <div class="bubble_cont">
+      <a href="javascript:void(0);" class="j_message j_del_msg" data-tid="<%=talk.id%>" data-id="<%=message.id%>"></a><%= pretty_simple_format message.content %>
+    </div>
+  </div>
+  <% end %>
+<% end %>

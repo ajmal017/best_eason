@@ -1,0 +1,10 @@
+<div class="subjectNav">
+	<span class="a_ctions">
+    <span><%= article.post_date %></span>
+    <a href="javascript:void(0);"><i class="icon eye_blue"></i> <%= article.views_count.to_i %></a>
+    <a class="comments_total_count" href="#article_comments_title"><i class="icon comments_blue"></i> <%= article.comments_count.to_i %></a>
+  </span>
+	<% if article.categories.present? %>
+    <%= link_to category_target_text(article), category_target(article) %>
+  <% end %>
+</div>

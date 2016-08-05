@@ -1,0 +1,82 @@
+<%= content_for :header do %>
+  <%= javascript_include_tag "admin/users.js" %>
+<% end %>
+
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+</h1>
+<div class="box">
+  <%= search_form_for @q, url: "", class: "form-inline", role: "form" do |f| %>
+    <%= f.text_field :id_eq, :placeholder => "用户ID" %>
+    <%= f.text_field :email_cont, :placeholder => "电子邮箱" %>
+    <%= f.text_field :mobile_cont, :placeholder => "手机号" %>
+    <%= f.text_field :username_cont, :placeholder => "用户名" %>
+    <%= f.text_field :invite_code_eq, :placeholder => "邀请码" %>
+    <label>性别：</label>
+    <%= f.select :gender_eq, User::GENDERS.map{|value, name| [name, value]}, {prompt: "性别"}, {class: "form-control"} %>
+    <label>注册时间：</label>
+    <%= text_field_tag :created_at_gteq, params[:created_at_gteq], class: "datetimepicker", :placeholder => "注册时间大于", "data-date-format" => "yyyy-mm-dd" %>
+    ~
+    <%= text_field_tag :created_at_lteq, params[:created_at_lteq], class: "datetimepicker", :placeholder => "注册时间小于", "data-date-format" => "yyyy-mm-dd" %>
+
+    <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+  <% end %>
+</div>
+<div class="box">
+注册时间: &nbsp;&nbsp;
+  <a href="?created_at_gteq=<%=Date.today.to_s(:db)%>" class="<%='current' if params[:created_at_lteq].blank? and Date.today.to_s(:db) == params[:created_at_gteq] %>">今天</a>
+  <a href="?created_at_gteq=<%=Date.yesterday.to_s(:db)%>" class="<%='current' if params[:created_at_lteq].blank? and Date.yesterday.to_s(:db) == params[:created_at_gteq] %>">昨天</a>
+  <a href="?created_at_gteq=<%=(Date.today - 7).to_s(:db)%>" class="<%='current' if params[:created_at_lteq].blank? and (Date.today - 7).to_s(:db) == params[:created_at_gteq] %>">7日</a>
+  <a href="?created_at_gteq=<%=(Date.today - 30).to_s(:db)%>" class="<%='current' if params[:created_at_lteq].blank? and (Date.today - 30).to_s(:db) == params[:created_at_gteq] %>">30日</a>
+</div>
+<%=page_info @users%>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>UserId</th>
+      <th>email</th>
+      <th>手机号</th>
+      <th>用户名</th>
+      <th>性别</th>
+      <th>省份</th>
+      <th>城市</th>
+      <th>注册时间</th>
+      <th>最后登录时间</th>
+      <th>公司用户</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><%= user.email %></td>
+        <td><%= user.mobile %></td>
+        <td class="action"><%= link_to_user user %></td>
+        <td><%= User::GENDERS[user.gender] %></td>
+        <td>
+          <%= CityInit.get_province(user.province) %>
+        </td>
+        <td><%= user.city %></td>
+        <td><%= user.created_at.try(:to_s, :short) %></td>
+        <td><%= user.last_sign_in_at.try(:to_s, :short) %></td>
+        <td class="action">
+          <span class="label label-info"><%= "是" if user.is_company_user %></span>
+          <% if user.is_company_user %>
+            <a class="btn" href="javascript:cancelCompanyUser(<%= user.id %>);">取消</a>
+          <% else %>
+            <a class="btn" href="javascript:setCompanyUser(<%= user.id %>);">设置</a>
+          <% end %>
+        </td>
+        <td class="action">
+          <%= link_to("激活", reactivate_admin_user_path(user), :method=>:post, :title=>"重新激活", data: {:confirm=>"你确认重新发送激活邮件吗？"}, remote: true) if user.encrypted_password.blank? %>
+          <%= link_to("快速登录", quick_login_admin_user_path(user), :title=>"快速登录", target: "_blank") if Rails.env.production? and current_admin_staffer.admin? %>
+          <%= link_to user.blocked? ? "解除屏蔽" : "屏蔽", blocked_admin_user_path(user), method: :post, data: {confirm: user.blocked? ? "您确定要解除屏蔽吗？" : "屏蔽用户会删除手机端的登录信息，请确定要屏蔽此用户吗？", remote: true} %>
+          <a href="<%= admin_messages_path({q: {sender_id_eq: user.id}}) %>", target="_blank">消息</a>
+          <a href="<%= admin_comments_path({user_id: user.id}) %>", target="_blank">评论</a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @users %>

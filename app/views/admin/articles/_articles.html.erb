@@ -1,0 +1,30 @@
+<table class="grid">
+  <thead>
+    <tr>
+      <th style="width:5%;">id</th>
+      <th style="width:25%;">标题</th>
+      <th style="width:10%;">所属类别</th>
+      <th style="width:7%;">可见？</th>
+      <th style="width:7%;">同步？</th>
+      <th style="width:7%;">发布日期</th>
+      <th style="width:18%;">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% articles.each_with_index do |a, index| %>
+      <tr <%= tr_class(index) %> id="article_<%= a.id %>">
+        <td><%= a.id %></td>
+        <td><%= link_to a.title, a, target: "_blank" %></td>
+        <td><%= a.categories.map(&:name).join(", ") %></td>
+        <td><%= a.viewable ? "是" : "否" %></td>
+        <td><%= a.synchronized ? "是" : "否" %></td>
+        <td><%= a.post_date %></td>
+        <td class="action">
+        <%= link_to "编辑", edit_admin_article_path(a) %> | <%= link_to "同步", sync_admin_article_path(a), remote: true %> | <%= toggle_viewable_path(a) %> | 
+        <%= link_to "发送Feed", "javascript:", onclick: "javascript:sendToFeed(#{a.id});" if a.viewable  %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate articles %>

@@ -1,0 +1,34 @@
+<h1 class="title">
+<span class="title_left"><%=@page_title%></span>
+</h1>
+<%= form_tag do %>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td>
+        自动删除多少小时前的未确认订单：
+        <%= text_field_tag :unconfirmed_orders_hours, Configs.unconfirmed_orders_hours %><span>（小时）</span>
+      </td>
+    </tr>
+   
+    <tr>
+      <td>
+        <input type="button" value="设置" onclick="javascript:setUnconfirmedOrdersHours();"/>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end -%>
+<script type="text/javascript">
+  function setUnconfirmedOrdersHours(){
+    var hours = $("#unconfirmed_orders_hours").val();
+    $.post("/admin/configs/set_unconfirmed_orders_hours", {hours: hours}, function(datas, textStatus){
+      if(textStatus == "success"){
+        alert("更改成功!");
+        window.location.reload();
+      }else{
+      	alert("出错啦！");
+      }
+    })
+  }
+</script>

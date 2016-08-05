@@ -1,0 +1,46 @@
+<h1 class="title">
+  <span class="title_left">用户名禁止使用词列表</span>
+</h1>
+
+<div class="box">
+  <%= form_tag admin_forbidden_names_path, onsubmit: "javascript:return checkForm();" do %>
+    <%= text_field_tag :word %>
+    <%= submit_tag "增加" %>
+  <% end %>
+</div>
+
+<%= page_info(@names) %>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>禁止词</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @names.each do |name| %>
+      <tr>
+        <td>
+          <%= name.word %>
+        </td>
+        <td>
+          <%= link_to '删除', [:admin, name], method: :delete, data: { confirm: "确定要删除吗？" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @names %>
+
+<script type="text/javascript">
+  function checkForm(){
+    if ($.trim($("#word").val()) == ""){
+      alert("不能为空！");
+      return false;
+    }else{
+      return true;
+    }
+  }
+</script>

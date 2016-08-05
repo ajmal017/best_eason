@@ -1,0 +1,24 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+ <span class="title_right">
+  <a href="/admin/p2p_ads/edit_all">修改</a>
+  </span>
+</h1>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>标题</th>
+      <th>链接</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @p2p_ads.each_with_index do |p, i| %>
+      <tr>
+        <td><%= i+1 %></td>
+        <td><%= p.title %></td>
+        <td><%= p.url %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

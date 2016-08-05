@@ -1,0 +1,16 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+</h1>
+
+<%= render "search_form", :search => @q %>
+
+<div class="box">
+  <a href="/admin/baskets" class="<%='current' if params[:tag].blank?%>">全部</a>
+  <%= link_to "待审核", admin_baskets_path(tag: 1, q: {basket_audits_state_eq: BasketAudit::STATE_DESC["审核中"]}), class: "#{'current' if  params[:tag]=='1'}" %>
+  <%= link_to "最近一天提交的审核", admin_baskets_path(tag: 2, q: {basket_audits_created_at_gteq: 1.days.ago.to_s(:db), basket_audits_state_eq: BasketAudit::STATE_DESC["审核中"]}), class: "#{'current' if  params[:tag]=='2'}" %>
+  <%= link_to "A股大赛", admin_baskets_path(q: {contest_not_eq: 0}, tag: 3), class: "#{'current' if params[:tag]=='3'}" %>
+  <%= link_to "最近调仓", admin_baskets_path(q: {basket_adjustments_id_not_null: true}, tag: 4), class: "#{'current' if params[:tag]=='4' }" %>
+</div>
+
+<%= page_info(@baskets) %>
+<%= render 'baskets', baskets: @baskets, q: @q %>

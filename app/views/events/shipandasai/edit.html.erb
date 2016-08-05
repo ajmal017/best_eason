@@ -1,0 +1,57 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/zt/stylesheets/head_foot.css", '/zt/150521/stylesheets/index.css' -%>
+<% end %>
+<div class="head"><%= image_tag '/zt/150521/images/head_font.png' %></div>
+<div class="procedure"></div>
+<div class="personal_data">
+  <%= form_for @pt_app, url: {action: :update, id: current_user.id}, html: {id: "step2_form"} do |f| %>
+    <ul class="information clearfix">
+      <li class="required"><em>您的真实姓名：</em><%= f.text_field :name, class: :name %></li>
+      <li class="required margin"><em>您的身份证号：</em><%= f.text_field :id_no, class: :name %></li>
+      <li><em>从事行业：</em><%= f.text_field :industry %></li>
+      <li class="margin"><em>公司名称：</em><%= f.text_field :com_name %></li>
+    </ul>
+    <h5 class="required">请提供您的银行卡信息：</h5>
+    <ul class="information card clearfix">
+      <li><em>开户行：</em><%= f.text_field :bank_name, class: :name %></li>
+      <li class="margin"><em>银行卡号：</em><%= f.text_field :card_no, class: :name %></li>
+    </ul>
+    <p>注：以上信息用于参赛选手收益结算，请如实填写。</p>
+    <button>提交</button>
+    <span class="prompt" style="display:none;"><em>*</em>为必填项</span>
+  <% end %>
+</div>
+<div class="windowBox">
+  <div class="box">
+    <p>提交成功</p>
+  </div>
+</div>
+<% content_for :script do %>
+  <%= javascript_include_tag 'events' %>
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?96c5ab8f8a321a2e8ef573b6f6d2c6d7";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+    $("form").on("submit",function(){
+      var index = 1;
+      $('.name').each(function () {
+        if( !$(this).val()){
+          index = 0 ;
+        }
+      })
+      if( index == 1 ){
+        $(".prompt").hide();
+        $(".windowBox").show();
+        $("body").css("overflow","hidden");
+      }else{
+        $(".prompt").show();
+        return false
+      }
+    })
+  </script>
+<% end %>

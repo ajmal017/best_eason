@@ -1,0 +1,36 @@
+<h4>
+  <a name="seciton3"></a>大家怎么玩 
+  <em><%= @topic.baskets_count %> 组合</em> 
+  <label><a href="<%= baskets_path(search: {tag: @topic.tag_id}) %>" target="_blank">查看更多</a></label>
+</h4>
+<ul class="themeListUl clearfix j_baskets">
+  <% @topic.selected_topic_baskets.each_with_index do |basket, index| %>
+    <li basket-id="<%= basket.id %>">
+        <a href="<%= basket_path(basket) %>" target="_blank">
+            <span class="themeItem <%= 'favAdded' if basket.followed_by_user?(current_user.try(:id)) %>">
+                <%= image_tag basket.try(:img_url, :large) %>
+                <i class="j-login-popup j_follow_basket addFav"></i>
+                <span class="shadow">
+                    <span class="intro">
+                      <%= html_to_text(basket.description.to_s, 42) %>
+                    </span>
+                </span>
+                <div class="article clearfix">
+                    <div class="circle float-left">
+                      <%= image_tag basket.author.try(:avatar_url, :normal) %>
+                    </div>
+                    <div class="art_title float-left">
+                        <label class="at-name"><%= basket.author.try(:username) %></label>
+                    </div>
+                </div>
+            </span>
+            <div class="themeTags">
+            </div>
+            <span class="j-login-popup j-goto-basket name"><%= basket.title.truncate(28) rescue nil %></span>
+            <span class="j-login-popup j-goto-basket recieve">
+              1月回报 <%= up_down_style(basket.one_month_return, postfix: "%", force_precision: 2, with_arrow: true, operator: false) %>
+            </span>
+        </a>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,296 @@
+<!-- 账户绑定逻辑 -->
+
+<script type="text/javascript">
+  var mobileChecked = <%=current_user.mobile.present?%>;
+  function cancelAuthRequest(id){
+    CaishuoDialog.open({theme:'confirm',title:'取消申请',content:'您确定要取消对该券商的申请绑定么？', callback:function(){
+      alert('do real thing');
+    }});
+  }
+  function cancelAuth(id,broker,account){
+    CaishuoDialog.open({theme:'confirm',title:'解除绑定',content:'您确定要解除财说<br />使用【'+broker+'】账号'+account+'进行交易的绑定么？', callback:function(){
+      // 绑定【益群证券】账号使用财说进行在线交易
+      $.post("/accounts/" + id, {_method: 'delete'}, function(){
+        window.location.reload();
+      });
+
+    }});
+
+  }
+
+  function mobileUsed(){
+    var used = false, phone = $('#bindPhone')[0].phone;
+    
+    // 判断手机号是否被绑定
+    $.ajax({
+      url: '/ajax/users/check_mobile_exists',
+      async: false,
+      data: {user: {mobile: phone.value}},
+      success: function (data) {
+        if(!data){
+          used = true;
+        }
+      }
+    });
+
+    return used;
+  }
+
+  function bindAuth(id,account,broker_id,broker_no){
+    if (mobileChecked){
+      CaishuoDialog.open({theme:'custom',skin:'bindAuth',title:'绑定【'+account+'】账号使用财说进行在线交易<i class="close-window" onclick="CaishuoDialog.close()"></i>',content:$(id),btntext:'false',reset:function(){
+        $(id)[0].reset();
+        $(id).find('.errorTip').hide();
+        $(id).find('dd').removeClass().eq(0).addClass('active');
+        // 修改默认的url
+        $(".j_account_new").attr('action', '/brokers/' + broker_id + '/accounts');
+        
+        // 以下券商显示通讯密码
+        var communicateBrokerNames = ['东方证券', '东海证券', '东吴证券', '海通证券', '西部证券'];
+        if(communicateBrokerNames.indexOf(account) != -1){
+          $(id).find("#communicate_password_node").show();  
+        }else{
+          $(id).find("#communicate_password_node").hide();
+        }
+
+        // 日信证券资金账号为客户号
+        if(account == "日信证券"){
+          $(id).find('th:first > span').text("客户号");
+        }else{
+          $(id).find('th:first > span').text("资金账号");
+        }
+        
+        // 如果是重新绑定中信证券，则带上默认的cash_id
+        if(broker_no != undefined){
+          $("#authZhongxin").find("#trading_account_broker_no").val(broker_no);
+        }
+      },callback:function(){
+        // alert('do the real things');
+        location=location;
+      },buttons:{confirm:$(id).find('button.btn_blue')}});
+    }else{
+      window.argu = arguments;
+      CaishuoDialog.open({theme:'custom',skin:'bindAuth',title:'绑定手机号到财说账户<i class="close-window" onclick="CaishuoDialog.close()"></i>',content:$('#bindPhone'),btntext:'false',reset:function(){
+        $('#bindPhone').find('.errorTip').hide();
+        $('#bindPhone table').show();
+        $('#bindPhone div').hide();
+      },callback:function(){
+        var phone = $('#bindPhone')[0].phone, code = $('#bindPhone')[0].code;
+        $('#bindPhone .errorTip').hide();
+        if (!/^1\d{10}$/.test(phone.value)) {
+          $(phone).siblings('.errorTip').text('请输入正确的手机号码').show();
+          return true;
+        }else if (!/^\d{4}$/.test(code.value)){
+          $(code).siblings('.errorTip').text('请正确填写验证码').show();
+          return true;
+        }else if (mobileUsed()){
+          $(phone).siblings('.errorTip').text('手机号码已经被使用').show();
+          return true;
+        }else{
+          // alert('do the real things');
+          // if fail ,them return true;
+          // 绑定手机号码
+          $.ajax({
+            type: "PUT",
+            url: '/ajax/users/bind_mobile_account',
+            data: { 
+              user: {
+                mobile: phone.value, 
+                code: code.value
+              }
+            },
+            success: function (response){
+              // 绑定成功
+              if(response.result){
+                mobileChecked = true;
+                $('#bindPhone table, #bindPhone div').toggle();
+                window.setTimeout(function(){
+                  argu.callee(argu[0], argu[1], argu[2], argu[3]);
+                },1800);
+              }else{
+                $(code).siblings('.errorTip').text(response.msg).show();
+              }
+
+            }
+          });
+          return true;
+        }
+
+      },buttons:{confirm:$('#bindPhone').find('button.b_btn')}});
+    }
+  }
+  function authstep(id){
+    $(id).find('dd.active').next().addClass('active').siblings().removeClass();
+  }
+  $(function(){
+    var timer;
+    $('.OpenAuthAccount .btn_red').click(function(){
+      CaishuoDialog.open({theme:'alert',title:'您已经暂时离开财说网站', content:'开户完成记得回来绑定交易哦'});
+    });
+    $('dd table input').mouseenter(function(){$(this).select();});
+    
+    $(".j_account_new").submit(function(){
+      var fieldEmpty = $(this).find("input.validate:visible").filter(function(){
+        return $.trim($(this).val()).length == 0;
+      }).length > 0;
+
+      if(fieldEmpty){
+        if($(this).find('#trading_account_safety_info').is(':visible')){
+          $(this).find(".errorTip").text("资金账号密码以及通讯密码不能为空").show();
+        }else{
+          $(this).find(".errorTip").text(function(){return $(this).attr('notice')}).show();
+        }
+        return false;
+      }
+      // 防止重复提交
+      $(this).find("input:submit").attr("disabled", "disabled");
+      return true;
+    })
+
+    $(".j_account_new input.validate").focus(function(){
+      $('.j_account_new').find(".errorTip").hide();
+    })
+
+    $('#bindPhone .w_btn').click(function(){
+      if (!timer){
+        var phone = $('#bindPhone')[0].phone, seconds=60, that=this;
+        if (!/^1\d{10}$/.test(phone.value)){
+          $(phone).siblings('.errorTip').text('请输入正确的手机号码').show();
+        }else if(mobileUsed()){
+           $(phone).siblings('.errorTip').text('手机号码已经被使用').show();
+        }else{
+          $(phone).siblings('.errorTip').hide();
+          $(that).text('重新发送('+ seconds +')');
+
+          //向后台发送处理数据
+          $.ajax({
+            type: "PUT",
+            url: '/ajax/users/send_sms_code',
+            data: { mobile: phone.value },
+            success: function (response){
+              if(response['status']){
+                // send succ
+              } else {
+                $($('#bindPhone')[0].code).siblings('.errorTip').text(response['msg']).show();
+              }
+            }
+          });
+
+          timer = window.setInterval(function(){
+            if (seconds>1){
+              $(that).text('重新发送('+ --seconds +')')
+            }else{
+              $(that).text('发送验证码');
+              window.clearInterval(timer);
+              timer = null;
+            }
+          },1000);
+        }
+      }
+    });
+
+    $(".btn_rebind_account:first").trigger("click");
+
+  });
+</script>
+
+<div style="display:none;">
+  <!-- 中信证券 -->
+  <%=form_for TradingAccount.new, url: '', method: :post, remote: true, :html => {id: 'authZhongxin', class: 'j_account_new'} do |f|%>
+    <%=f.hidden_field :cash_id%>
+    <table style="width:100%;">
+      <tr>
+        <th align="right" width="120"><span>资金账号</span>：</th>
+        <td><%=f.text_field :broker_no, class: 'validate'%></td>
+      </tr>
+      <tr>
+        <th align="right">密码：</th>
+        <td><%=f.password_field :password, class: 'validate'%></td>
+      </tr>
+      <tr id="communicate_password_node" style="display:none;">
+        <th align="right">通讯密码：</th>
+        <td>
+          <input type="password" name="trading_account[safety_info]" class="validate" id="trading_account_safety_info">
+        </td>
+      </tr>
+      <tr>
+        <th></th>
+        <td><span class="errorTip" style="display:none;" notice="资金账号和密码不能为空"></span></td>
+      </tr>
+      <tr>
+        <th></th>
+        <td><%=f.submit "授权", class: 'btn_blue' %></td>
+      </tr>
+    </table>
+  <% end %>
+  <!-- 益群证券 -->
+  <%=form_for TradingAccount.new, url: '', method: :post, remote: true, :html => {id: 'unicorn_bind_form', class: 'j_account_new'} do |f|%>
+    <dl>
+      <dd class="active">
+        <h4>请您输入您在【益群证券】的客户编号</h4>
+        <%=image_tag "/images/v3/trader/yiqun-1.jpg", alt: "益群证券"%>
+        <div>
+          <%=f.text_field :broker_no, placeholder: "益群证券用户编号", id: 'j_unicorn_broker_name', class: 'validate'%> <span class="errorTip" style="display:none;" notice="证券编号不能为空"></span>
+          <%=f.submit '授权', class: 'btn_blue float-right'%>
+        </div>
+      </dd>
+      <dd>
+        <h4>收到激活邮件后，点击链接确认授权。</h4>
+        <%=image_tag "/images/v3/tmp/email.jpg", alt: "益群证券"%>
+        <div class="clearfix">
+          <a href="javascript:void(0)" class="btn_blue float-right" onclick="location=location">完成</a>
+        </div>
+      </dd>
+    </dl>
+  <% end %>
+  <!-- 盈透证券 -->
+  <%=form_for TradingAccount.new, url: '', method: :post, remote: true, html: {id: 'ib_bind_form', class: 'j_account_new'} do |f|%>
+    <dl>
+      <dd class="active">
+        <h4>在授权之前，请确认您已经完成以下操作</h4>
+        <%=image_tag "/images/v3/trader/yingtou-1.jpg"%>
+        <table>
+          <caption>请使用如下信息</caption>
+          <tr>
+            <td>顾问/经销商管理账户号码：</td>
+            <td><input value="I8019219" readonly="readonly"></td>
+          </tr>
+          <tr>
+            <td>顾问/经销商管理账户名称：</td>
+            <td><input value="unicorn securities co ltd" readonly="readonly"></td>
+          </tr>
+        </table>
+        <div>
+          <a href="http://unicornsecurities.hk/kaihu.html" target="_blank" class="btn_blue btn_red">尚未连接，现在去连接账户</a>
+          <a href="javascript:void(0)" class="btn_blue float-right" onclick="authstep('#ib_bind_form');">已经连接，继续授权</a>
+        </div>
+      </dd>
+      <dd>
+        <h4>请您输入您在【盈透证券】的客户编号</h4>
+        <%=image_tag "/images/v3/trader/yingtou-2.jpg", alt: "盈透证券"%>
+        <div>
+          <%=f.text_field :broker_no, placeholder: '盈透证券用户编号', class: 'validate'%> <span class="errorTip" style="display:none;" notice="证券编号不能为空"></span>
+          <%=f.submit '授权', class: 'btn_blue float-right'%>
+        </div>
+      </dd>
+      <dd>
+        <h4>收到激活邮件后，点击链接确认授权。</h4>
+        <%=image_tag "/images/v3/tmp/email.jpg", alt: "盈透证券"%>
+        <div class="clearfix">
+          <a href="javascript:void(0)" class="btn_blue float-right" onclick="location=location">完成</a>
+        </div>
+      </dd>
+    </dl>
+  <% end %>
+
+  <form id="bindPhone" onsubmit="return false;">
+    <table style="width:100%;">
+      <tr><th>手机号:</th><td><input name="phone" type="text" /> <br /><span class="errorTip"></span></td></tr>
+      <tr><th>验证码:</th><td><input name="code" type="text" size="6" /><span class="w_btn">发送验证码</span> <br /><span class="errorTip"></span></td></tr>
+      <tr><th></th><td><button class="b_btn middle">绑定</button></td></tr>
+    </table>
+    <div>
+      您已经成功绑定手机, 稍后将继续授权操作。
+    </div>
+  </form>
+  </div>

@@ -1,0 +1,72 @@
+<h1 class="title">
+  <span class="title_left">股票行业详情页面</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @stock_industry], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_stock_industries_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Id</td>
+      <td>
+        <%= @stock_industry.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">BaseStockId</td>
+      <td>
+        <%= @stock_industry.base_stock_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">聚源一级行业编码</td>
+      <td>
+        <%= @stock_industry.first_industry_code %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">聚源一级行业名称</td>
+      <td>
+        <%= @stock_industry.first_industry_name %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">聚源二级行业编码</td>
+      <td>
+        <%= @stock_industry.second_industry_code %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">聚源二级行业名称</td>
+      <td>
+        <%= @stock_industry.second_industry_name %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">创建时间</td>
+      <td>
+        <%= @stock_industry.created_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">更新时间</td>
+      <td>
+        <%= @stock_industry.updated_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">取消时间</td>
+      <td>
+        <%= @stock_industry.cancel_date %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">财说行业编码</td>
+      <td>
+        <%= @stock_industry.sector_code %>
+      </td>
+    </tr>
+  </tbody>
+</table>

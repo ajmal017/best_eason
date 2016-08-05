@@ -1,0 +1,47 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/column.css" %>
+<% end %>
+
+<div class="container">
+  <div class="content clearfix column_subject">
+    <div class="subject_area userComments">
+      <h1><%=@news["info_title"]%></h1>
+      <div class="subjectNav">
+        <span class="a_ctions"><span><%=@news["info_publ_date"]%></span></span>
+        <a href="javascript:void(0);"><%=@news["media"]%></a>
+      </div>
+      <div class="subjectContent">
+        <%=simple_format(@news["content"]) %>
+      </div>
+    </div>
+    <div class="subject_related">
+      <h3>相关组合投资</h3>
+      <div class="links themes">
+        <% @stock.relevant_baskets.each do |basket| %>
+          <a href="<%=basket_path(basket)%>" class="clearfix">
+            <%= image_tag basket.img_url(:large), width: 60, height: 48 %>
+            <%=basket.title%>
+            <span>创建至今回报 <%= up_down_style(basket.total_return) %></span>
+          </a>
+        <% end %>
+      </div>
+      <!--h3>相关个股投资</h3>
+      <div class="links stocks">
+        <a href="#">
+          <span><b>BABA</b><b>Alibaba Group Hold...</b></span>
+          <span class="stars"><mark class="ratestar2"><mark style="width:80.0%;"></mark></mark> $228.96  <em class="plus">+4.13%</em></span>
+        </a>
+      </div-->
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('.subjectContent br').each(function(){
+    $(this).next().is('br') && $(this).remove();
+  });
+
+  $("textarea.autoheight").bind('focus keydown keyup blur', function(){
+    $(this).css('height','auto').css('height',this.scrollHeight + $(this).height() - $(this).innerHeight());
+  });
+</script>

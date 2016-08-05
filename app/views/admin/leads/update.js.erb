@@ -1,0 +1,11 @@
+<% if @result %>
+  alert('设置邀请码成功');
+<% elsif @invitation_code.blank? %>
+  alert('邀请码不存在');
+<% elsif @invitation_code && @invitation_code.user_id%>
+  alert('邀请码已经被使用');
+<% elsif @invitation_code && @invitation_code.lead.present? %>
+  alert('邀请码已经被发放给其他用户');
+<% else %>
+  alert('设置失败');
+<% end %>

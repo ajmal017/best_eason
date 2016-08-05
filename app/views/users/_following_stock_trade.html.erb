@@ -1,0 +1,9 @@
+<% if trading_accounts.present? %>
+  <% if stock.can_trade? %>
+  <%= render partial:"users/stock_trade", locals:{stock: stock, trading_accounts: trading_accounts, trading_account: trading_account, currency_unit: currency_unit} %>
+  <% else %>
+    <p>暂不支持此类股票交易!</p>
+  <% end %>
+<% else %>
+  <p>您尚未将券商账户与财说绑定! &nbsp; <a href="/accounts" class="b_btn middle">立刻绑定</a></p>
+<% end %>

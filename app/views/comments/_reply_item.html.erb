@@ -1,0 +1,18 @@
+<article comment_id="<%= reply.id %>">
+  <a class="username">
+    <%=link_to_user reply.commenter, inner: reply.commenter.try(:username), class: 'username', target: '_blank', card: true %>
+  </a>
+  <p>回复<%= reply.replyable.try(:commenter).try(:username) %>：<%= raw reply.safe_content %></p>
+  <div class="commentActions">
+    <span class="date"><%= reply.created_at.strftime("%m月%d日 %H:%M") %></span>
+    <a href="javascript:" class="<%= user_signed_in? ? 'replyable' : 'j-login-popup' %>">回复(<i><%= reply.comments_count.to_i %></i>)</a>
+    <% if user_signed_in? %>
+      <a href="javascript:" class="<%= reply.liked_by_user?(current_user.try(:id)) ? "liked" : "likeable" %>">赞(<i><%= reply.likes_count.to_i %></i>)</a>
+    <% else %>
+      <a href="javascript:" class="j-login-popup">赞(<i><%= reply.likes_count.to_i %></i>)</a>
+    <% end %>
+    <% if reply.commented_by?(current_user.try(:id)) %>
+      <a href="javascript:" class="remove remove_comment">删除</a>
+    <% end %>
+  </div>
+</article>

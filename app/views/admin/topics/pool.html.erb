@@ -1,0 +1,158 @@
+<%= content_for :header do %>
+  <%= javascript_include_tag "admin/topics.js" %>
+<% end %>
+
+<h1 class="title">
+  <span class="title_left">股票池</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @topic], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_topics_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">标题</td>
+      <td>
+        <%= @topic.full_title %> <%= link_to "点击预览", @topic, target: "_blank", class: "action" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">市场分类</td>
+      <td>
+        <%= BaseStock::MARKET_AREA_NAMES[@topic.market.try(:to_sym)] %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">浮动股票池</td>
+      <td>
+        以下股票表示: 该热点内至少有两个组合包含这些股票，且权重大于等于10%
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="box">
+  <h1 class="title">
+    <span class="title_left">固定股票池</span>
+  </h1>
+
+  <div class="mt5 ml10 height30">
+    <span class="left">
+      <input type="text" placeholder="搜索股票" id="topic_stock_search" size="60"/>
+    </span>
+    <span class="right">
+      拖动一列进行排序，排序完成后请点击&nbsp;<input type="button" value="保存排序结果" onclick="javascript:saveStocksPositions();"></input>
+    </span>
+  </div>
+  <table class="grid" id="topic_stocks_table">
+    <thead>
+      <tr>
+        <th>可见</th>
+        <th>代码</th>
+        <th>名称</th>
+        <th>热度</th>
+        <th>当前价</th>
+        <th>5日涨跌幅</th>
+        <th>30日涨跌幅</th>
+        <th colspan="2">操作</th>
+      </tr>
+    </thead>
+    <tbody class="sortable">
+      <% @fixed_pool.each_with_index do |topic_stock, index| %>
+        <%= render partial: "stock_item", locals: {topic_stock: topic_stock, base_stock: topic_stock.base_stock} %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="box">
+  <h1 class="title">
+    <span class="title_left">专栏文章</span>
+  </h1>
+  <div class="mt5 ml10 height30">
+    <span class="left">
+      <a href="javascript:" onclick="javascript:updateTopicArticles();">更新相关专栏文章</a>
+    </span>
+    <span class="right">
+      拖动一列进行排序，排序完成后请点击&nbsp;<input type="button" value="保存排序结果" onclick="javascript:saveArticlesPositions();"></input>
+    </span>
+  </div>
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>可见</th>
+        <th>名称</th>
+      </tr>
+    </thead>
+    <tbody class="sortable" id="topic_articles_list">
+      <% @topic.topic_articles.includes(:article).each do |topic_article| %>
+        <%= render partial: 'article_item', locals: {topic_article: topic_article, article: topic_article.article} %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="box">
+  <h1 class="title">
+    <span class="title_left">浮动股票池（暂时不显示内容）</span>
+  </h1>
+  <div class="mt5 ml10 height30">
+    <span class="left">
+      只用来辅助找到更多的组合, 前台页面不会显示, 会随着组合数据自动变化；
+      更新频率: 2小时1次
+    </span>
+  </div>
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>序号</th>
+        <th>代码</th>
+        <th>名称</th>
+        <th>热度</th>
+        <th>当前价</th>
+        <th>5日涨跌幅</th>
+        <th>30日涨跌幅</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @float_pool.each_with_index do |topic_stock, index| %>
+        <%= render partial: "float_pool_item", locals: {topic_stock: topic_stock, base_stock: topic_stock.base_stock, index: index+1} %>
+      <% end %>
+      <%= blank_table(6) if @float_pool.blank? %>
+    </tbody>
+  </table>
+</div>
+
+<div class="box">
+  <h1 class="title">
+    <span class="title_left">相关组合 &nbsp;&nbsp;<a href="javascript:relatedBasketsByStocks();">刷新</a></span>
+  </h1>
+  <div class="mt5 ml10">
+    选择前四位组合（最多选择四个, 以下组合筛选条件: 含有2个及2个以上股票池中股票，并且比重>=10%）
+  </div>
+  <table class="grid" id="topic_baskets_table">
+    <thead>
+      <tr>
+        <th>check</th>
+        <th>名称</th>
+        <th>股票池中匹配数</th>
+        <th>作者</th>
+        <th>创建时间</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  var _topic_id = <%= @topic.id %>;
+  var _basket_ids = "<%= @topic.basket_ids.to_s %>";
+</script>
+<style>
+  .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+  .right { margin-right: 0; }
+</style>  

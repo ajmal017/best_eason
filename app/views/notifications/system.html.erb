@@ -1,0 +1,59 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+<%- @page_title = "系统通知" -%>
+<div class="container userEdit clearfix">
+  <%=render partial: 'shared/setting_left_box' %>
+  <div class="rightBox">
+    <div class="review">
+      <h2 class="text-center">
+        <%= render "tab_title" %>
+      </h2>
+      <% if @notifications.present? %>
+        <ul>
+          <% @notifications.each do |notice| %>
+          <li class="<%='unRead' unless notice.read?%>">
+            <a class="comment_avator" href="javascript:void(0);">
+              <%=image_tag "../images/v3/caishuoImg.png", class: 'head_portrait' %>
+            </a>
+            <a class="username" href="javascript:void(0);">财说</a>
+            <p onclick="javascript:window.location.href='<%= notice.try(:url) %>';">
+              <%=raw notice.content%>
+            </p>
+            <div class="commentActions">
+              <span class="date"><%= notice.created_at.to_s(:short) %></span>
+              <a href="javascript:void(0);" notify-id="<%=notice.id%>">删除</a>
+            </div>
+          </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <article class="noContents system" style="display: block;"></article>
+      <% end %>
+      <%= will_paginate @notifications, class: 'pageNav', inner_window: 2, outer_window: 0 %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function(){
+    // 消息标记已读
+    $.post('/ajax/notifications/mark_read', {ids: <%= @notifications.map(&:id).to_s %>, type: 'system'});
+
+    $(".commentActions a").bind('click', function(){
+      var target = $(this);
+
+      $.ajax({
+        url: '/ajax/notifications/' + target.attr('notify-id'),
+        type: 'delete',
+        success: function(datas){
+          if(datas.result){
+            target.parents('li').remove();
+          }else{
+            alert('删除失败');
+          }
+        }
+      })
+    })
+  })
+</script>

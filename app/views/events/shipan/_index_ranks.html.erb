@@ -1,0 +1,84 @@
+<!-- 排行榜 开始 -->
+<div class="itemBox rankingList">
+  <h3>排行榜</h3>
+  <dl class="top3 clearfix">
+    <% ranks[0..2].each_with_index do |rank, index| %>
+      <dd data-user-id="<%= rank.user_id %>">
+          <span class="rank" style="background:<%= shipan_rank_bg_color(index) %>;"><%= index+1%></span>
+          <a class="avator avator_70" href="<%= basket_path(rank.basket_id) %>" target="_blank">
+            <%= image_tag rank.user.avatar_url(:large) %>
+            <span><%= rank.user.username %>
+                <em><%= rank.user.headline %></em>
+            </span>
+          </a>
+          <div>
+              <a href="javascript:" class="btn btn-focus <%= login_popup_class %>" style="<%= 'visibility:hidden;' if rank.user_id == current_user.try(:id) %>">
+                  <% if current_user && current_user.followed?(rank.user_id) %>
+                    已关注
+                  <% else %>
+                    + 关注
+                  <% end %>
+              </a>
+              <span>
+                总收益率：<b><%= up_down_style(rank.ret, {postfix: "%", force_precision: 1}) %></b>
+              </span>
+              <span>仓位：<b><%= rank.position_percent %>%</b></span>
+              <span>今日收益：<b><%= up_down_style(rank.one_day_ret, {postfix: "%", force_precision: 2}) %></b></span>
+              <span>调仓数：<b><%= rank.adjust_count %></b></span>
+          </div>
+      </dd>
+    <% end %>
+  </dl>
+  <table>
+      <thead>
+          <tr>
+              <td></td>
+              <td>排名</td>
+              <td></td>
+              <td>用户</td>
+              <td>总收益率</td>
+              <td>日收益率</td>
+              <td>仓位</td>
+              <td>调仓次数</td>
+              <td>胜率</td>
+              <td>排名变化</td>
+              <td>状态</td>
+              <td>关注选手</td>
+              <td></td>
+          </tr>
+      </thead>
+      <tbody>
+        <% ranks.each_with_index do |rank, index| %>
+          <tr data-user-id="<%= rank.user_id %>">
+              <td></td>
+              <td class="<%= "plus" if index<3 %>"><%= rank.now_rank %></td>
+              <td>
+                <%= link_to image_tag(rank.user.avatar_url(:small)), basket_path(rank.basket_id), class: "avator", target: "_blank" %>
+              </td>
+              <td>
+                <%= link_to rank.user.username, basket_path(rank.basket_id), target: "_blank" %>
+              </td>
+              <td><%= up_down_style(rank.ret_with_status, {postfix: "%", force_precision: 2}) %></td>
+              <td><%= up_down_style(rank.one_day_ret, {postfix: "%", force_precision: 2}) %></td>
+              <td><%= rank.position_percent %>%</td>
+              <td><%= rank.adjust_count %></td>
+              <td><%= rank.win_rate %>%</td>
+              <td>
+                <span class="<%= rank_change_class(rank.rank_change) %>">
+                  <%= rank.rank_change_abs %>
+                </span>
+              </td>
+              <td style="color:<%= rank.status_color %>;"><%= rank.status_desc %></td>
+              <td>
+                <% if rank.user_id != current_user.try(:id) %>
+                  <span class="focus <%= 'active' if current_user && current_user.followed?(rank.user_id) %>  <%= login_popup_class %>"></span>
+                <% end %>
+              </td>
+              <td></td>
+          </tr>
+        <% end %>
+      </tbody>
+  </table>
+  <a href="/events/shipan/ranks" class="viewMore">查看更多</a>
+</div>
+<!-- 排行榜 结束 -->

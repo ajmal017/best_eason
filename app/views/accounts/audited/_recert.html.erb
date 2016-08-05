@@ -1,0 +1,23 @@
+<div class="item authFail">
+  <table>
+    <tbody>
+      <tr>
+        <th class="logo">
+          <%=image_tag "/images/v3/trader/#{broker_logo_name(account.broker.name)}.png", alt: account.broker.cname%>
+          <label>客户编号：#<%=account.broker_no%> <span class="authFail">授权失效</span></label>
+        </th>
+        <td>
+          <div class="stepProgress">
+            <div class="widget"></div>
+            <span class="step1"><i>1</i><label><em>授权申请</em></label></span>
+            <span class="step2"><i>2</i><label><em>审核通过</em></label></span>
+            <span class="step3"><i>3</i><label><em>授权成功</em></label></span>
+          </div>
+        </td>
+        <th class="button">
+          <a href="javascript:void(0)" onclick="cancelAuth('<%=account.pretty_id%>','<%=account.broker.cname%>')" class="b_btn dialog_btn_c">解除授权</a>
+          <a href="javascript:void(0)" class="btn_blue" onclick="bindAuth('#authZhongxin','<%=account.broker.cname%>', '<%=account.cash_id%>')">重新授权</a></th>
+      </tr>
+    </tbody>
+  </table>
+</div>

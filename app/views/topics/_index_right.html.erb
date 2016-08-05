@@ -1,0 +1,36 @@
+<% cache "cs:topics_index:right", expires_in: 30.minutes, skip_digest: true do %>
+<div class="right_content">
+  <h3>明星组合</h3>
+  <% @baskets.each do |basket| %>
+    <dl>
+      <dt>
+        <%= link_to image_tag(basket.img_url(:small)), basket_path(basket), target: "_blank" %>
+      </dt>
+      <dd>
+        <a href="<%= basket_path(basket) %>" target="_blank">
+          <%= basket.title %></a><span>一月回报<%= up_down_style(basket.one_month_return.to_f.round(2), postfix: "%", operator: false) %>
+        </span>
+      </dd>
+    </dl>
+  <% end %>
+  <h3 class="section">大家都在关注</h3>
+  <ul class="experts">
+    <% Recommend.user_infos.each do |user, desc| %>
+      <li>
+        <%=link_to_user user, inner: image_tag(user.avatar_url(:small), width: 30, height: 30, class: 'head_portrait'), target: '_blank', class: 'comment_avator', card: true%>
+        <div class="ranking">
+          <%=link_to_user user, inner: user.username, class: 'username', target: '_blank', card: true %><br>
+          <label><%= desc.present? ? desc : user.headline %></label>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+
+  <h3 class="section">热点专栏</h3>
+  <ul class="hotnews">
+    <% @articles.each do |article| %>
+      <li><%= link_to article.title, article_path(article), target: "_blank" %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>

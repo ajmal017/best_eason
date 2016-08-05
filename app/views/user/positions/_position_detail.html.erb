@@ -1,0 +1,68 @@
+<% if stocks_infos.blank? && baskets_infos.blank? %>
+    <%= render partial: "user/positions/empty" %>
+<% else %>
+<table class="holding-box holding_a position_list" account-id="<%= account.pretty_id %>">
+  <thead>
+    <tr>
+      <th class="w40 col1 col2 col3"></th>
+      <th class="text-left w90 col1 col2 col3">股票</th>
+      <th class="col1 col2 col3"  width="90">现价/成本价</th>
+      <th class="col1 col3" width="120"><span class="sortcolumn">涨跌幅(%)</span></th>
+      <th class="col2">财说Score</th>
+      <th class="col2 col1 text-center">52周最高最低</th>
+      <th class="col2" width="60">P/E市盈率</th>
+      <th class="col2">成交量</th>
+      <th class="col2">市值</th>
+      <th class="col1 col3"><span class="sortcolumn">今日盈亏(%)</span></th>
+      <th class="col1 col3"><span class="sortcolumn">持仓/可用</span></th>
+      <th class="col1">市值</th>
+      <th class="col3">成本</th>
+      <th class="col3">累计盈亏</th>
+      <th class="w90 text-center col1 col2 col3">交易</th>
+    </tr>
+  </thead>
+  
+  <%= render partial: "user/positions/stocks", locals: {account: account, stocks_infos: stocks_infos} %>
+
+  <% if total_stocks > 10 %>
+    <tbody>
+      <tr class="load_more"><td class="text-center" colspan="15"><a href="javascript:;" class="w_btn middle stock_more" data-next-page="2">加载更多</a></td></tr>
+    </tbody>
+  <% end %>
+
+  <% baskets_infos.each do |basket_infos| %>
+    <%= render partial: "user/positions/basket", locals: {account: account, basket_infos: basket_infos} %>
+  <% end %>
+
+  <tfoot>
+    <% unless account.broker.market_cn? %>
+      <tr>
+        <td class="noBorder"></td>
+        <td class="t-name text-left">
+          现金（美元）<i><%= number_to_currency(account.cash_of_usd, unit: "$") %></i>
+        </td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+        <td></td><td></td><td></td>
+        <td></td><td></td><td></td>
+        <td><span><%= number_to_currency(account.cash_of_usd, unit: "$", format:"%u%n") %></span></td>
+      </tr>
+      <tr>
+        <td class="noBorder"></td>
+        <td class="t-name text-left">
+          现金（港币）<i><%= number_to_currency(account.cash_of_hkd, unit: "HK$") %></i>
+        </td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+        <td></td><td></td><td></td>
+        <td></td><td></td><td></td>
+        <td><span><%= number_to_currency(account.cash_of_hkd, unit: "HK$", format:"%u%n") %></span></td>
+      </tr>
+    <% end %>
+  </tfoot>
+</table>
+<% end %>
+
+
+<!-- unllocated -->
+<% if unllocate_positions.present? %>
+  <%= render partial: "user/positions/unallocate", locals: {positions: unllocate_positions} %>
+<% end %>

@@ -1,0 +1,22 @@
+<% if @trading_accounts.present? %>
+  <%= render :partial => "stocks/stock/info_trade", locals: {stock: @stock, trading_accounts: @trading_accounts, trading_account: @trading_account} %>
+<% elsif user_signed_in? %>
+  <dl class="bind_account trade_stock_div">
+    <dt>您尚未将券商账户与财说绑定!</dt>
+    <dd class="clearfix">
+      <div class="<%= 'bind_broker' if @stock.is_cn? %>">
+        <p>
+          已经有券商账户？<span class="b_btn register" onclick="javascript:window.location.href='/accounts'">立即绑定</span>
+        </p>
+      </div>
+
+      <% if !@stock.is_cn? %>
+      <div>
+        <p>
+          没有券商账户？快速开通：<a href="https://www.clientam.com.hk/Universal/servlet/OpenAccount.IBrokerGuestLogin?partnerID=unicorn&locale=zh_CN" target="_blank"><%= image_tag "/images/v2/crop_yiqun.png" %></a>
+        </p>
+      </div>
+      <% end %>
+    </dd>
+  </dl>
+<% end %>

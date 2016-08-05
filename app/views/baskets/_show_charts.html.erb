@@ -1,0 +1,17 @@
+<div class="doubleBox_left" style="position:relative;">
+  <div class="switchBox clearfix" style="position:absolute;top:20px;z-index:10;">
+    <ol class="asSwitchBtn" id="time_period_btns" style="<%= 'display:none;' if show_period == false %>">
+      <li class="peroid" data="<%= timestamp_for_chart(@basket.market, 1.month) %>">1月</li>
+      <li class="peroid" data="<%= timestamp_for_chart(@basket.market, 3.month) %>">3月</li>
+      <li class="peroid" data="<%= timestamp_for_chart(@basket.market, 6.month) %>">6月</li>
+      <li class="peroid" data="<%= to_js_timestamp(Time.now.beginning_of_year) %>">今年</li>
+      <li class="peroid" data="<%= timestamp_for_chart(@basket.market, 1.year) %>">1年</li>
+      <li class="peroid active" data="<%= to_js_timestamp(@basket.adjust_start_date.to_time) %>">创建至今</li>
+    </ol>
+  </div>
+  <div id="basket_chart" style="width:<%= chart_width %>;height:<%= chart_height %>;margin-top:-10px;" class="barloading"></div>
+  <div class="chartTextDesc">
+    <i class="line blue"></i> 实际回报&nbsp; <i class="line dotblue"></i> 模拟回报 &nbsp; &nbsp; | &nbsp; &nbsp; 
+    <i class="line green"></i><%= @basket.market_index_name %>
+  </div>
+</div>

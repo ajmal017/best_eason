@@ -1,0 +1,43 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%= link_to "返回列表",admin_active_docks_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>短ID:</td>
+      <td>
+        <%= @active_dock.try(&:short_id) %>
+
+        <br>
+        访问链接 <%= link_to @active_dock.ajax_url, @active_dock.ajax_url, target: "_blank", class: "action" %>
+      </td>
+    </tr>
+
+
+    <tr>
+      <td class="field"><b>*</b>名称:</td>
+      <td>
+        <%= @active_dock.try(&:name) %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="field"><b>*</b>描述:</td>
+      <td>
+        <%= @active_dock.try(&:description) %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="field"><b>*</b>对接数据:</td>
+      <td>
+        <%= @active_dock.try(&:dock_date) %>
+      </td>
+    </tr>
+
+  </tbody>
+</table>

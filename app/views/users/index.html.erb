@@ -1,0 +1,31 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/create.css" %>
+<% end %>
+<%- @page_title = "我关注的投资组合" -%>
+
+<div class="theme">
+  <%= render :partial => "sidebar" %>
+
+  <div class="theme-right my-investment">
+    <h1>我的投资</h1>
+    <div class="summary">
+      <div class="assets">
+        <span>总资产</span>
+        <span>$0</span>
+      </div>
+      <div class="market-value">
+        <span>证券市值</span>
+        <span>$0</span>
+      </div>
+      <div class="profit-loss">
+        <span>盈亏</span>
+        <span id="profit">+$0</span>
+      </div>
+      <div class="balance">
+        <span>现金结余</span>
+        <span>$0</span>
+      </div>
+    </div>
+    <div></div>
+  </div>
+</div>

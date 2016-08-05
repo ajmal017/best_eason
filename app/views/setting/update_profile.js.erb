@@ -1,0 +1,5 @@
+<% if @ret %>
+	CaishuoDialog.open({theme:'tip', content:'更新成功'});
+<% else %>
+	CaishuoDialog.open({theme:'tip', content:'失败: <%= current_user.errors.messages.values.uniq.join(", ") %>!'});
+<% end %>

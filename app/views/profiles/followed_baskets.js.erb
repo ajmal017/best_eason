@@ -1,0 +1,9 @@
+<% if  params[:bids] %>
+  <% @followed_baskets.each do |basket| %>
+  $(".customs .tabItem:eq(1) tbody").append('<%= j render partial: 'profiles/profile/basket_item_other', locals: {basket: basket, followed: basket.followed_by_user?(current_user.try(:id))} %>');
+  <% end %>
+<% else %>
+$(".customs .tabItem:eq(1)").html("<%= j render partial: "profiles/profile/follow_baskets", locals: {followed_baskets: @followed_baskets, next_page: @follows.next_page} %>");
+<% end %>
+
+customTimeago();

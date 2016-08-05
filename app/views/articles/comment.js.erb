@@ -1,0 +1,12 @@
+<% if user_signed_in? && @comment && @comment.valid? %>
+  Article.clearCommentEditorHtml();
+  $(".comments").prepend("<%= j render partial: 'articles/comment_item', locals: {comment: @comment} %>");
+  Article.incrementCommentTotal();
+<% elsif !user_signed_in? %>
+  CaishuoAlert('请登录后评论！'); // todo login
+<% else %>
+  CaishuoAlert('<%= @comment.errors.messages.values.join(", ") %>！');
+<% end %>
+Article.enableCommentButton();
+
+initBubbleBox();

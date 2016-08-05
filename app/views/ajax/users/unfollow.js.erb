@@ -1,0 +1,5 @@
+<% if @ret %>
+  $("#j_follow_<%=params[:id]%>").text('关注').addClass('j_follow').removeClass('j_unfollow');
+<% else %>
+  alert('remove fail');
+<% end %>

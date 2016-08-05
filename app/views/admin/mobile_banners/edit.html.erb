@@ -1,0 +1,103 @@
+<%= form_tag "/admin/mobile_banners/#{@banner_upload[:id]}", onsubmit: "return checkFormValid();" do %>
+  <input name="_method" type="hidden" value="put" />
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td>banner类型：</td>
+        <td>
+          <%= select_tag :banner_type, options_for_select(MobileRecommend::TYPE, @banner_upload[:type]) %>
+        </td>
+      </tr>
+      <tr>
+        <td>链接到：</td>
+        <td><%= text_field_tag :banner_url, @banner_upload[:url], size: 50 %></td>
+      </tr>
+      
+      <tr>
+        <td><input type="hidden" name="upload_banner_id" id="upload_banner_id" /></td>
+        <td><input type="submit" value="保存"/></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<script type="text/javascript">
+  function checkFormValid(){
+    var url_regexp = new RegExp("(http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?", "gi");
+    var banner_url = $.trim($("#banner_url").val());
+    var banner_type = $.trim($("#banner_type").val());
+    if (banner_type == "H5" && banner_url.match(url_regexp) == null){
+      alert("请检查url是否正确！");
+      return false;
+    }
+    return true;
+  }
+
+  $(function(){
+    // iframe 不刷新提交文件
+    $("#real_avatar").change(function(){
+      var currentForm = $(this).parents("form");
+      if($("iframe[name='curform']").length > 0){
+        var thisIframe = $("iframe[name='curform']");
+      }else{
+        var thisIframe = $("<iframe style='opacity:0;_filter:alpha(opacity=0)'></iframe>").attr("name",currentForm.attr("target"));
+      }
+    
+      $(currentForm).after(thisIframe);
+      $(currentForm).submit();
+      $("#real_avatar").val("");
+      showCropModal();
+    });
+  })
+
+// 显示裁剪框
+var showCropModal = function(){
+  $('#FloatWindow').fadeIn();
+  $('#FloatWindow .FloatContent').slideDown();
+  $('body').addClass('fixed');
+}
+
+function hideCropModal(){
+  $("iframe").remove();
+  $('#FloatWindow').fadeOut();
+  $('#FloatWindow .FloatContent').slideUp();
+  $('body').removeClass('fixed');
+}
+
+// 设置裁剪坐标
+var updateCoordinate = function(c){
+  if (parseInt(c.w) > 0){
+    $('#crop_x').val(c.x);
+    $('#crop_y').val(c.y);
+    $('#crop_w').val(c.w);
+    $('#crop_h').val(c.h);
+  }
+}
+
+// @Jcrop 初始化
+var JcropInit = function(){
+  var jcrop_api, boundx, boundy;
+  var y_div_x = 0.49382716049382713;
+
+  $('#cropbox').Jcrop({
+    onChange: updateCoordinate,
+    onSelect: updateCoordinate,
+    aspectRatio: 2.025
+  },function(){
+    var bounds = this.getBounds();
+    boundx = bounds[0];
+    boundy = bounds[1];
+    jcrop_api = this;
+    if(boundx >= boundy/y_div_x){
+      bound_length = boundy - 30;
+      pointer_x = (boundx - bound_length/y_div_x) / 2;
+      jcrop_api.setSelect([pointer_x, 15, bound_length/y_div_x + pointer_x, bound_length + 15]);
+    }else{
+      bound_length = boundx - 30;
+      pointer_y = (boundy - bound_length*y_div_x) / 2;
+      jcrop_api.setSelect([15, pointer_y, bound_length + 15, bound_length*y_div_x + pointer_y]);
+    }
+  });
+};
+</script>
+

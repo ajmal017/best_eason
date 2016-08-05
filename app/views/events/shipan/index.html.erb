@@ -1,0 +1,64 @@
+<%= render partial: "top" %>
+
+<div class="container">
+  <%= render partial: "user_panel" %>
+  
+  <%= render partial: "best" %>
+
+  <%= render partial: "index_trading", locals: {order_details: @order_details} %>
+  
+  <%= render partial: "buy_sell" %>
+</div>
+
+<div class="container">
+  <%= render partial: "index_ranks", locals: {ranks: @ranks} %>
+</div>
+
+<div class="container clearfix">
+  <%#= render partial: "comments" %>
+
+  <div id="Comments" class="comments commentArea itemBox float-left">
+  <h3>观点评论 <span>(0)</span></h3>
+    <%= render partial: '/comments/base' %>
+  </div>
+  <!-- 大赛奖励 开始 -->
+  <div class="itemBox matchReward float-right">
+      <h3>大赛奖励</h3>
+      <%= image_tag "/images/ad/match_reward.png" %>
+  </div>
+  <!-- 大赛奖励 结束 -->
+</div>
+
+<%= render partial: '/comments/script' %>
+
+<script type="text/javascript">
+  var _contest_id = <%= @contest.id %>, _top_commentable_id = <%= @contest.id%>, _top_commentable_type = "contests";
+
+  function newTradingInfo(record){
+    $(formatRecord(record)).prependTo('#TradingInfo tbody').animate({opacity:1},800);
+    $('#TradingInfo tbody tr:eq(9)').nextAll().remove();
+  }
+
+  $(function(){
+    Contest.handler();
+    
+    commentPack.init({
+      Emotion: {imagePrefix: '<%= Setting.cdn_host %>/images/emotions/'},
+      Completer:{},
+      Comments: {
+        ajaxpath: "contests/<%=@contest.id%>",
+        afterloadEvent: function(totalNumber){
+          initBubbleBox();
+          $(".timeago").timeago();
+          caishuo.adjustFooter();
+        }
+      },
+      isloginEvent: function(){
+        return isLogined();
+      },
+      dologinEvent:function(){
+        openLoginDialog();
+      }
+    });
+  })
+</script>

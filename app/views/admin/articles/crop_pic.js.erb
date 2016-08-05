@@ -1,0 +1,24 @@
+<% if @article_upload.errors.present? %>
+  alert("<%= @article_upload.errors.first %>");
+<% else %>
+  $("#btn_upload_article").parent().append("<img src='<%= @article_upload.image.url(:large) %>' width='300' height='300' id='temp_img' />&nbsp;&nbsp;");
+  $("#btn_upload_article").parent().append("<input type='button' class='btn btn-primary' value='修改封面' onclick='javascript:$(\"#real_avatar\").trigger(\"click\");' id='btn_upload_article'/>");
+  $("#btn_upload_article").parent().append("&nbsp;&nbsp;<span style='color:#CCCCCC;' id='img-style'>支持JPG、JPEG、GIF、PNG、BMP格式</span>");
+  $("#btn_upload_article").remove();
+  var childrens = $("#article_img").children("img")
+  var childrens_style = $("#article_img").children("span")
+  var temp_img = $("#temp_img")
+  var img_style = $("#img-style")
+  if (childrens.length > 1){
+	  for(var i=childrens.length-1; i>=0; i--){
+	  	temp_img.remove();
+	  }
+	}
+	if (childrens_style.length > 1){
+	  for(var i=childrens_style.length-1; i>=0; i--){
+	  	img_style.remove();
+	  }
+	}
+  $("#upload_article_id").val(<%= @article_upload.id %>);
+  hideCropModal();
+<% end %>

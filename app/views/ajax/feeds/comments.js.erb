@@ -1,0 +1,1 @@
+$("#feed_<%=params[:id]%>_div").html("<%=j render partial: 'comment_list', locals: {feed_id: params[:id], comments: @comments}%>");

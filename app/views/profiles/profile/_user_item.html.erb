@@ -1,0 +1,9 @@
+<section class="user_<%= user.id %>" user-id="<%= user.id %>">
+  <%=link_to_user user, inner: image_tag(user.avatar_url(:normal), width: 40, height: 40), card: true, class: 'avator', target: '_blank' %>
+  <%= following_or_followed(current_user, user, "float-right") %>
+  <div>
+    <%=link_to_user user, inner: user.username, target: '_blank'%>
+    <p><%= user.headline.to_s.strip.truncate(50) %></p>
+    <label><%= user.pretty_followings_count %> 关注 / <%= user.pretty_fans_count %> 粉丝</label>
+  </div>
+</section>

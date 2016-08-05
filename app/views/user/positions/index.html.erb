@@ -1,0 +1,23 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/investmentnew.css" %>
+<% end %>
+
+<div class="container">
+  <%= render :partial => "/shared/sub_menus/positions", locals: {account_id: @trading_account.pretty_id} %>
+  
+  <div id="navCanFloat">
+    <ol class="asSwitchBtn holding-top content">
+        <li class="col-sum active">概要</li>
+        <li class="col-plane">基本面</li>
+        <li class="col-income">收益表现</li>
+    </ol>
+  </div>
+  
+  <% @trading_accounts.each_with_index do |account, index| %>
+    <% if @trading_account.id == account.id %>
+      <%= render partial: "position", locals: {account: account, stocks_infos: @stocks_infos, total_stocks: @total_stocks, baskets_infos: @baskets_infos, total_cash: @total_cash, unllocate_positions: @unllocate_positions, cash_unit: @cash_unit, total_property: @total_property, today_profit: @today_profit, total_profit: @total_profit} %>
+    <% else %>
+      <%= render partial: "position_without_detail", locals: {account: account} %>
+    <% end %>
+  <% end %>
+</div>

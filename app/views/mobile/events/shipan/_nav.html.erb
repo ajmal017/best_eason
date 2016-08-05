@@ -1,0 +1,8 @@
+<%= content_for :header do %>
+	<%= stylesheet_link_tag "/stylesheets/v3/match-mobile.css" %>
+<% end %>
+<nav>
+	<a href="<%= mobile_link mobile_events_shipan_index_path %>" class="<%= 'active' if action_name=="index" %>"><span>排行榜</span></a>
+	<a href="<%= mobile_link trading_mobile_events_shipan_index_path %>" class="<%= 'active' if action_name=="trading" %>"><span>动态</span></a>
+	<a href="<%= mobile_link my_mobile_events_shipan_index_path %>" class="<%= 'active' if action_name=="my" %>"><span>我的</span></a>
+</nav>

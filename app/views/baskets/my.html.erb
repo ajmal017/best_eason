@@ -1,0 +1,95 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/themeList.css" %>
+<% end %>
+
+<div class="container">
+  <%= render :partial => "/shared/sub_menus/baskets" %>
+
+  <div class="mythemes">
+    <% @baskets.each do |basket| %>
+      <table class="themeStocks themeItem">
+        <tbody>
+          <tr>
+              <th rowspan="2" class="cover">
+                <a href="<%= basket.draft? ? "javascript:" : basket_path(basket) %>" target="_blank">
+                  <%=image_tag basket.img_url(:small), style: 'width:140px;height:112px;' %>
+                </a>
+              </th>
+              <td colspan="5" class="titleAsLink">
+                  <a href="<%= basket.draft? ? "javascript:" : basket_path(basket) %>" class="tit_a" target="_blank">
+                      <span class="limitLength">
+                        <%= basket.title %>
+                        <% if basket.draft? %>（草稿）<% end %>
+                      </span>&nbsp;&nbsp;
+                      <% if basket.contest_2? %>
+                        <span class="no_style stockagame">A股大赛</span>
+                      <% end %>
+                      <span class="chartTextDesc">
+                        创建日期：<%= basket.start_on.try(:to_s, :date) || basket.created_at.try(:to_s, :date) %> &nbsp; &nbsp; 
+                        最后修改：<%= basket.modified_at.try(:to_s, :date) || basket.updated_at.try(:to_s, :date) %>
+                      </span>
+                  </a>
+                  <div class="but_div">
+                    <% if basket.draft? %>
+                      <%= link_to "继续编辑", add_basket_path(basket), class: "btn_blue" %>
+                      <a href="javascript:void(0);" class="btn_blue btn_red" onclick="deleteBasketRequest(<%= basket.id %>,this);">删除</a>
+                    <% else %>
+                      <%= link_to "调整组合", add_basket_path(basket), class: "btn_blue" %>
+                    <% end %>
+                  </div>
+              </td>
+          </tr>
+          <tr class="bottomData">
+            <th>
+                <strong>组合指数</strong>
+                <% if basket.realtime_index.present? %>
+                  <%= basket.realtime_index.try(:to_i) %> (<%= up_down_style(basket.change_percent, postfix: "%") %>)
+                <% else %>
+                  --(--)
+                <% end %>
+            </th>
+            <th>
+                <strong>创建至今回报率</strong>
+                <%= up_down_style(basket.realtime_total_return.try(:round, 2), postfix: "%") %>
+            </th>
+            <th>
+                <strong>关注人数</strong>
+                <em class="plus"><%= basket.follows_count %></em>
+            </th>
+            <th>
+                <strong>下单人数</strong>
+                <em class="plus"><%= basket.completed_orders_count %></em>
+            </th>
+            <th>
+                <div class="sharebox">
+                    <span class="sharing weixin"><code class="shareCode">
+                      <%=image_tag wechat_qr_code_by_url(basket.screenshot), alt: '分享财说' %>
+                    </code></span>
+                    <span class="weibo" onclick="javascript:share_to_sina_weibo('<%= basket_url(basket)%>', '<%= basket.share_text %>', '<%=basket.screenshot%>');"></span>
+                </div>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+      <br class="break">
+    <% end %>
+
+    <% if @baskets.blank? %>
+      <p class="noContent">
+        您还没有创建过主题
+      </p>
+    <% end %>
+
+    <%= will_paginate @baskets, :class => "pageNav", inner_window: 2, outer_window: 0, previous_label: "上一页", next_label: "下一页" %>
+  </div>
+</div>
+
+<script type="text/javascript">
+	function deleteBasketRequest(basket_id, el){
+	    CaishuoDialog.open({theme:'confirm',title:'确认',content:'您确定要删除吗？', callback:function(){
+	        $.post("/ajax/baskets/" + basket_id + "/destroy_draft", {}, function(){
+	            window.location.reload();
+	        });
+	    }});
+	}
+</script>

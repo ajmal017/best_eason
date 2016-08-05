@@ -1,0 +1,83 @@
+<%=content_for :header do %>
+  <%= javascript_include_tag "highstock", "/javascripts/kindeditor/kindeditor.js", "topics/show.js"%>
+  <%= stylesheet_link_tag "/stylesheets/v3/themeList.css", "/stylesheets/v3/topic.css"%>
+<% end %>
+
+<%= render partial: "show_top" %>
+
+<div id="floatNavi" class="container">
+  <div class="navi center">
+      <a href="#seciton1" class="active">
+          <span>财说专栏<em><%= @articles_count %> <i>文章</i></em></span>
+      </a><a href="#seciton2">
+          <span>最受益个股<em class="plus"><%= @topic_stocks.size %> <i>股票</i></em></span>
+      </a><a href="#seciton3">
+          <span>大家怎么玩<em><%= @topic.baskets_count %> <i>组合</i></em></span>
+      </a><a href="#seciton4">
+          <span>大家怎么看<em class="plus"><font class="comments_total_count"><%= @topic.comments_count %></font> <i>评论</i></em></span>
+      </a><a href="#seciton4">
+          <span>最活跃的人<em class="avator">
+            <% if @commenters.present? %>
+              <% @commenters.first(3).each do |user| %>
+                <%= image_tag user.avatar_url(:small), size: "24" %>
+              <% end %>
+            <% else %>
+              <%= image_tag "empty.gif" %>
+            <% end %>
+            </em>
+          </span>
+      </a>
+  </div>
+
+  <%= render partial: "show_news" %>
+
+  <%= render partial: "show_stocks" %>
+
+  <%= render partial: "show_baskets" %>
+
+  <%= render partial: "show_comments" %>
+</div>
+
+
+<div class="FloatPicBox">
+    <div class="floatcontent">
+        <div>
+            <span class="prev"></span>
+            <img src="" alt="">
+            <span class="next"></span>
+        </div>
+    </div>
+</div>
+
+<script>
+  _topic_id = <%= @topic.id %>, _top_commentable_id = <%= @topic.id %>, _top_commentable_type = 'topics';
+</script>
+
+<%= render partial: '/comments/script' %>
+<%=content_for :script do %>
+<script type="text/javascript">
+commentPack.init({
+  Emotion: {imagePrefix: '<%= Setting.cdn_host %>/images/emotions/'},
+  Completer:{},
+  Comments: {
+    ajaxpath: "topics/<%=@topic.id%>",
+    afterloadEvent: function(totalNumber){
+      initBubbleBox();
+      $(".timeago").timeago();
+      caishuo.adjustFooter();
+
+      // 导航条评论数量
+      var inner = $(".navi a:eq(3) em.plus").html();
+      $(".navi a:eq(3) em.plus").html(inner.replace(/\d+/, totalNumber));
+    }
+  },
+  isloginEvent: function(){
+    return isLogined();
+  },
+  dologinEvent:function(){
+    openLoginDialog();
+  }
+});
+</script>
+<% end %>
+

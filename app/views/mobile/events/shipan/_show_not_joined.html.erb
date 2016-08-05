@@ -1,0 +1,59 @@
+<section id="profile">
+<!--非参赛者添加  visitor -->
+  <div class="userInfo">
+    <a class="avator" data-id="<%= @user.id %>">
+      <%= image_tag @user.avatar_url(:small) %>
+      <span class="user"><%= @user.username %></span>
+    </a>
+    <dl class="rank">
+    </dl>
+  </div>
+
+  <table class="overview">
+    <tr>
+      <td>今日盈亏<span class="">--</span></td>
+      <td>累计盈亏<span class="">--</span></td>
+      <td>胜率<span>--</span></td>
+    </tr>
+    <tr>
+      <td>总资产<span>--</span></td>
+      <td>仓位<span>--</span></td>
+      <td>交易次数<span>--</span></td>
+    </tr>
+  </table>
+
+  <% unless @contest.signed_next?(current_user.id) %>
+    <a href="javascript:" class="btn_register">我要报名下一次！</a>
+  <% end %>
+  
+</section>
+
+<div class="saveBox">
+  <div class="content">
+    <p>下次大赛已登记</p>
+    <a href="javascript:;">确定</a>
+  </div>
+</div>
+
+<%= content_for :script do  %>
+  <%= javascript_include_tag "/javascripts/mo.caishuo.js", '/javascripts/highstock.js' %>
+  <script type="text/javascript">
+    $('.btn_register').click(function(){
+      $.post("<%= mobile_link('/mobile/ajax/contests/'+@contest.id.to_s+'/sign_next') %>", {}, function(){
+        $('.saveBox').show();
+        $('body').css('overflow','hidden');
+      })
+    })
+
+    $('.saveBox .content a').click(function(){
+      $('.saveBox').hide();
+      $('body').css('overflow','auto');
+    })
+    Caishuo.connect("index", function(){
+      $('.userInfo a.avator').click(function(){
+        var data = $(this).data();
+        Caishuo.trigger("openpage", {"goto":"profile", id:data.id});
+      });
+    });
+  </script>
+<% end %>

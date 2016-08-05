@@ -1,0 +1,57 @@
+<h1 class="title">
+  <span class="title_left">User day property列表页</span>
+  <span class="title_right">
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_user_day_properties_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :user_id_eq, :placeholder => 'UserId', class: 'form-control' %>
+    <%= f.text_field :trading_account_id_eq, :placeholder => 'TradingAccountId', class: 'form-control' %>
+    <%= f.text_field :date_eq, :placeholder => 'Date', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @user_day_properties.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>User</th>
+      <th>Date</th>
+      <th>Total</th>
+      <th>Total cash</th>
+      <th>Total stocks cost</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+      <th>Base currency</th>
+      <th>Trading account</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @user_day_properties.each do |user_day_property| %>
+    <tr>
+      <td><%= user_day_property.id %></td>
+      <td><%= user_day_property.user_id %></td>
+      <td><%= user_day_property.date %></td>
+      <td><%= user_day_property.total %></td>
+      <td><%= user_day_property.total_cash %></td>
+      <td><%= user_day_property.total_stocks_cost %></td>
+      <td><%= user_day_property.created_at %></td>
+      <td><%= user_day_property.updated_at %></td>
+      <td><%= user_day_property.base_currency %></td>
+      <td><%= user_day_property.trading_account_id %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @user_day_properties %>

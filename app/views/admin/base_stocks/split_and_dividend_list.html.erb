@@ -1,0 +1,35 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+  </span>   
+</h1>
+<div class="box">
+
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>除权除息日</th>
+        <th>证券内部编码</th>
+        <th>精确复权因子</th>
+        <th>精确复权常数</th>
+        <th>比例复权因子</th>
+        <th>累计分红</th>
+        <th>累计送股</th>
+        <th>更新时间</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @splits.each do |split| %>
+        <tr>
+          <td><%=split.ex_divi_date%></td>
+          <td><%=split.inner_code%></td>
+          <td><%=split.adjusting_factor%></td>
+          <td><%=split.adjusting_const%></td>
+          <td><%=split.ratio_adjusting_factor%></td>
+          <td><%=split.accu_cash_divi%></td>
+          <td><%=split.accu_bonus_share_ratio%></td>
+          <td><%=split.xgrq%></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

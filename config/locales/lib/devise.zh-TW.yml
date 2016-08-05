@@ -1,0 +1,67 @@
+# Chinese (China) translations for Devise(3.2.2)
+# by Kenrick-Zhou (https://github.com/Kenrick-Zhou)
+# https://gist.github.com/Kenrick-Zhou/7909822
+
+zh-TW:
+  devise:
+    confirmations:
+      confirmed: "您的帳號已經確認，您現在已登錄。"
+      send_instructions: "重新發送郵件成功。"
+      send_paranoid_instructions: "如果您的郵箱存在於我們的數據庫中，您將收到一封確認賬號的郵件。"
+      exceed_limit: "郵件發送次數超過限制"
+    failure:
+      already_authenticated: "您已經登錄。"
+      inactive: "您還沒有激活帳戶。"
+      invalid: "用戶名或密碼錯誤。"
+      locked: "您的帳號已被鎖定。"
+      last_attempt: "您還有最後一次嘗試機會，再次失敗您的賬號將被鎖定。"
+      not_found_in_database: "用戶名錯誤。"
+      timeout: "您已登錄超時，請重新登錄。"
+      unauthenticated: "繼續操作前請註冊或者登錄。"
+      unconfirmed: "你的郵箱沒有激活。<a href='/account/confirmation/new'>發送驗證郵件</a>"
+      admin_staffer:
+        unconfirmed: "你的郵箱沒有激活。<a href='/admin/staffers/confirmation/new'>發送驗證郵件</a>"
+    mailer:
+      confirmation_instructions:
+        subject: "確認信息"
+      reset_password_instructions:
+        subject: "重置密碼信息"
+      unlock_instructions:
+        subject: "解鎖信息"
+    omniauth_callbacks:
+      failure: "因為%{reason}，所以您無法從%{kind}獲得授權。"
+      success: "成功地從%{kind}獲得授權。"
+    passwords:
+      no_token: "這是密碼重置頁面，未重置郵件不得訪問此頁面。如果您是通過重置郵件而來的，請確保您訪問的URL是完整的。"
+      send_instructions: "幾分鐘後，您將收到重置密碼的電子郵件。"
+      send_paranoid_instructions: "如果您的郵箱存在於我們的數據庫中，您將收到一封找回密碼的郵件。"
+      updated: "您的密碼已修改成功，您現在已登錄。"
+      updated_not_active: "您的密碼已修改成功。"
+    registrations:
+      destroyed: "再見！您的帳戶已成功註銷。我們希望很快可以再見到您。"
+      signed_up: "歡迎您！您已註冊成功。"
+      signed_up_but_inactive: "您已註冊，但尚未激活賬號。"
+      signed_up_but_locked: "您已註冊，但賬號被鎖定了。"
+      signed_up_but_unconfirmed: "一封帶有確認鏈接的郵件已經發送至您的郵箱，請檢查郵箱（包括垃圾郵箱），並點擊該鏈接激活您的賬號。"
+      update_needs_confirmation: "信息更新成功，但我們需要染整您的新電子郵件地址，請檢查郵箱（包括垃圾郵箱），並點擊該鏈接激活您的賬號。"
+      updated: "帳號資料更新成功。"
+      password_updated: "密碼更新成功。"
+      avatar_updated: "頭像更新成功。"
+      info_updated: "用戶信息更新成功。"
+    sessions:
+      signed_in: "登錄成功."
+      signed_out: "退出成功."
+    unlocks:
+      send_instructions: "幾分鐘後，您將收到一封解鎖帳號的郵件。"
+      send_paranoid_instructions: "如果您的郵箱存在於我們的數據庫中，您將收到一封解鎖賬號的郵件。"
+      unlocked: "您的帳號已成功解鎖，您現在已登錄。"
+  errors:
+    messages:
+      already_confirmed: "郵件已經激活，請重新登錄。"
+      confirmation_period_expired: "請在%{period}內確認註冊, 請重新註冊。"
+      expired: "郵件確認已過期。"
+      not_found: "重新發送郵件失敗！"
+      not_locked: "未鎖定。"
+      not_saved:
+        one: "因為1個錯誤導致此%{resource}保存失敗:"
+        other: "因為%{count}個錯誤導致此%{resource}保存失敗:"

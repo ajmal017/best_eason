@@ -1,0 +1,58 @@
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">姓名:</td>
+      <td>
+        <%= f.text_field :username, :size=>50 %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">手机号:</td>
+      <td>
+        <%= f.text_field :mobile, :size=>20 %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">性别</td>
+      <td>
+        <%=f.text_field :gender%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">公司: </td>
+      <td>
+        <%=f.text_field :company%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>邮箱: </td>
+      <td>
+        <%=f.text_field :email%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">微信: </td>
+      <td>
+        <%=f.text_field :weixin%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">地址: </td>
+      <td>
+        <%=f.text_area :address, cols: 100, row: 20%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">邀请人: </td>
+      <td>
+        <%=f.text_field :invite_username%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"></td>
+      <td>
+        <%= f.submit '提交'%>
+      </td>
+    </tr>
+  </tbody>
+</table>

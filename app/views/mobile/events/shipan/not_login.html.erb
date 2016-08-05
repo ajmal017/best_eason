@@ -1,0 +1,25 @@
+<%= render partial: "nav" %>
+<section id="profile">
+  <!--非参赛者添加  visitor 未登陆添加 unuser-->
+  <div class="userInfo unuser">
+    <%= image_tag "/images/v3/userBanner.jpg", width: '100%' %>
+  </div>
+  <table class="overview">
+    <tr>
+      <td>今日盈亏<span>--</span></td>
+      <td>累计盈亏<span>--</span></td>
+      <td>胜率<span>--</span></td>
+    </tr>
+    <tr>
+      <td>总资产<span>--</span></td>
+      <td>仓位<span>--</span></td>
+      <td>交易次数<span>--</span></td>
+    </tr>
+  </table>
+</section>
+
+<script type="text/javascript">
+  Caishuo.connect('index',function(){
+    Caishuo.trigger('sendback', {'event':'forcelogin','status':'authfailed'});
+  });
+</script>

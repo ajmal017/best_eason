@@ -1,0 +1,17 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+<%- @page_title = "交易帮助" -%>
+<div class="container userEdit clearfix contactUs">
+  <%= render :partial => "left_bar" %>
+  <div class="rightBox">
+    <h2>交易帮助</h2>
+    <div class="about_right">
+      <h5>三、交易常见问题</h5>
+      <h5>目前支持哪些券商账户？</h5>
+      <p>益群证券、盈透证券</p>
+      <h5>为什么一定要先发起入金通知，再向你的账户内转钱？</h5>
+      <p>按照流程要求，您需要在账户管理内先行发起入金通知，获取收款帐号以后，再按照要求转入资金，否则可能会遇到资金无法及时入账的情况。</p>
+    </div>
+  </div>
+</div>

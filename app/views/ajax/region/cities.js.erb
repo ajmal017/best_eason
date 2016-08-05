@@ -1,0 +1,12 @@
+$(".cities").empty();
+
+<% if @cities.blank? %>
+  $(".cities").append("<li data-value="" class="">选择城市</li>");
+<% end %>
+
+<% @cities.each do |city| %>
+  $(".cities").append("<li data-value='<%= city.code %>' class='<%= 'active' if city.code == current_user.city%>'><%= city.name %></li>");
+<% end %>
+
+area.updateCity();
+area.liveClick();

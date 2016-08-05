@@ -1,0 +1,57 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right"><%=link_to '返回列表', admin_leads_path %></span>
+</h1>
+
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">姓名:</td>
+      
+    </tr>
+    <tr>
+      <td class="field">手机号:</td>
+      <td>
+        <%=@lead.mobile%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">性别</td>
+      <td>
+        <%=@lead.gender%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">公司: </td>
+      <td>
+        <%=@lead.company%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>邮箱: </td>
+      <td>
+        <%=@lead.email%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">微信: </td>
+      <td>
+        <%=@lead.weixin%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">地址: </td>
+      <td>
+        <%=@lead.address %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">邀请人: </td>
+      <td>
+        <%=@lead.invite_username%>
+      </td>
+    </tr>
+   
+  </tbody>
+</table>

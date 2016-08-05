@@ -1,0 +1,70 @@
+<h1 class="title">
+  <span class="title_left">登录后首页--股票搜索</span>
+  <span class="title_right"><a href="/admin/home_settings">返回首页设置</a></span>
+</h1>
+
+<%= render partial: "sub_menus" %>
+
+<div class="box">
+  <table class="grid_form">
+    <thead>
+      <tr>
+        <th width="200"></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="sortable">
+      <tr>
+        <td class="field">当前搜索条件预览：</td>
+        <td>
+          <%= @stock_search["title"] %><br />
+          <%= @stock_search["url"] %><br />
+          <%= @stock_search["desc"] %>等 <b><%= @stock_search["count"] %></b> 只个股
+        </td>
+      </tr>
+      <tr>
+        <td class="field">设置文字：</td>
+        <td>
+          <input type="text" placeholder="" id="recommend_search_title" size="100" value="<%= @stock_search["title"] %>"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="field">设置搜索url：</td>
+        <td>
+          <input type="text" placeholder="" id="recommend_search_url" size="100" value="<%= @stock_search["url"] %>" style="width:600px;"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="field">列举几只股票的symbol：</td>
+        <td>
+          <input type="text" placeholder="" id="recommend_search_desc" size="100" value="<%= @stock_search["desc"] %>"/>
+          格式（最多3只股票）：AAPL、GOOG、YAHOO 
+        </td>
+      </tr>
+      <tr>
+        <td class="field">大约股票数量：</td>
+        <td>
+          <input type="text" placeholder="" id="recommend_search_count" size="100" value="<%= @stock_search["count"] %>"/>
+          填写数字
+        </td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td>
+          <input type="button" value="保存" onclick="javascript:saveRecommendStockSearch();"/>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  function saveRecommendStockSearch(){
+    var params = {};
+    params["title"] = $("#recommend_search_title").val();
+    params["url"] = $("#recommend_search_url").val();
+    params["desc"] = $("#recommend_search_desc").val();
+    params["count"] = $("#recommend_search_count").val();
+    $.post("/admin/home_settings/update_stock_search", {search: params}, function(){})
+  }
+</script>

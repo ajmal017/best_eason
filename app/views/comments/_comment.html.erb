@@ -1,0 +1,64 @@
+<div class="discussion-details recover" comment_type="<%= comment.commentable_type %>" comment_id="<%= comment.id %>" author="<%= comment.commenter.username %>" id="review" author="<%= comment.commenter.username %>">
+  <div class="review-h6"><h6>此评论相关的组合</h6></div>
+  <div class="pk-review">
+    <dl>
+      <dt>
+        <%=image_tag comment.commenter.avatar_url(:small), size: '50x50'%>
+      </dt>
+      <dd>
+        <div class="dd-title">
+          <p>
+            <%= comment.commenter.username %>
+            <span><%= comment.created_peroid %></span>
+          </p>
+          <ul>
+            <li class="<%= comment.liked_by_user?(current_user.try(:id)) ? "yellow-color" : "grey-color"%> likeable" style="cursor:pointer;">
+              <%= comment.likes_count.to_i %>
+            </li>
+            <li onclick="javascript:showReplyTopicCommenter(this);" style="cursor:pointer;">回复</li>
+          </ul>
+        </div>
+        <p class="dd-p">
+          <%= raw truncate(comment.safe_content, :length => 130).gsub(/\n/, '<br/>') %>
+        </p>
+      </dd>
+    </dl>
+    <div class="unrelated">
+    
+      <div class="pk-table relevant" >
+
+        <div class="table1">
+          <div class="author">
+            <span>作者：<%= portfolio.author.username %></span>
+          </div>
+    
+          <%= portfolio_label(0, portfolio.ranking) %>
+          <div class="tables">
+            <%= month_return(portfolio.one_month_return) %>
+            <table class="table">
+              <tr>
+                <td>比重</td>
+                <td>个股</td>
+                <td></td>
+              </tr>
+              <% portfolio.basket_stocks.limit(2).each do |bs| %>
+                <%= render 'portfolios/stock', basket_stock: bs %>
+              <% end %>
+              <tr>
+                <td></td>
+                <td>... ...</td>
+                <td></td>
+              </tr>
+            </table>
+          </div>
+    
+          <ul>
+            <li><%= portfolio.likes_count.present? ? portfolio.likes_count : 0 %></li>
+            <li><%= portfolio.comments_count.present? ? portfolio.comments_count : 0 %></li>
+          </ul>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</div>

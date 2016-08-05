@@ -1,0 +1,26 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+ <span class="title_right">
+  <a href="/admin/featured_baskets/edit_all">修改</a>
+  </span>
+</h1>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>组合id</th>
+      <th>展示类型</th>
+      <th>推荐原因</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @featured_baskets.each_with_index do |fb, i| %>
+      <tr>
+        <td><%= i+1 %></td>
+        <td><%= fb.basket_id %></td>
+        <td><%= fb.value_type %></td>
+        <td><%= fb.reason %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

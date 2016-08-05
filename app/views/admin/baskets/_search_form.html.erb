@@ -1,0 +1,15 @@
+<div class="box">
+  <%= search_form_for search, url: admin_baskets_path, class: "form-inline", role: "form" do |f| %>
+    <%= f.text_field :id_eq, :placeholder => "组合ID", class: "form-control" %>
+    <%= f.text_field :author_id_eq, :placeholder => "创建用户ID", class: "form-control" %>
+    <%= f.text_field :title_cont, :placeholder => "组合", class: "form-control" %>
+    <%= f.text_field :description_cont, :placeholder => "注释", class: "form-control" %>
+    组合状态：
+    <%= f.select :state_eq, Basket::STATE_DESC.map{|desc, state| [desc, state]}, {include_blank: "全部"}, {class: "form-control"} %>
+    交易市场：
+    <%= f.select :market_eq, BaseStock::MARKET_AREA_NAMES.map{|k, v| [v, k]}, {include_blank: "全部"}, {class: "form-control"} %>
+    审核状态：
+    <%= f.select :basket_audits_state_eq, [["待审核", BasketAudit::STATE_DESC["审核中"]]], {include_blank: "全部"}, {class: "form-control"} %>
+    <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+  <% end %>
+</div>

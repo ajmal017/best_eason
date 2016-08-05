@@ -1,0 +1,60 @@
+<script type="text/javascript" role="rick">
+  //用于板块页面，tr链接到板块详情，最后链接到股票页面
+  
+  //todo 板块详情
+  Caishuo.connect("event", function(){
+    // $(".tableholder a").attr("href",'javascript:void(0)').click(function(){
+    //   var data = $(this).data();
+    //   Caishuo.trigger("openpage", {"goto":"stock","id":data.id,"name":data.name,"symbol":data.symbol});
+    // });
+  });
+
+
+  $(function(){
+
+    $(".tableholder tbody tr").click(function(){
+      window.location.href = $(this).attr('data-plate-path');
+    })
+
+    // 股票排序
+    var sort_stocks = function($container, order) {
+      var asc = true;
+      var $items = $container.find('tr').detach();
+
+      if (typeof(order) === 'string' && order === 'desc')
+        asc = false;
+
+      var sort_fn = function(x, y) {
+        var v1 = $(x).find('.price').text().trim().replace(/\+|%/g, '');
+        var v2 = $(y).find('.price').text().trim().replace(/\+|%/g, '');
+        v1 = parseFloat(v1);
+        v2 = parseFloat(v2);
+
+        return asc ? (v1 - v2) : (v2 - v1);
+      };
+
+      $items.sort(sort_fn);
+      $container.append($items);
+    };
+
+    // 股票排序事件处理
+    $('.tableholder thead').on('click', '.sort-stocks', function(e) {
+      var $container = $(e.target).parents('table').find('tbody');
+
+      var $sortable = $(e.target);
+      if ($(e.target).is('.sort-stocks')) {
+        $sortable = $(e.target).find('.sortable');
+      }
+
+      if ($sortable.hasClass('desc')) {
+        // 升序排列
+        $sortable.removeClass('desc').addClass('asc');
+        sort_stocks($container);
+      } else if ($sortable.hasClass('asc')) {
+        // 降序排列
+        $sortable.removeClass('asc').addClass('desc');
+        sort_stocks($container, 'desc')
+      }
+    });
+  });
+</script>

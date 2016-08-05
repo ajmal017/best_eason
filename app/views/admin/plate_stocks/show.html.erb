@@ -1,0 +1,66 @@
+<h1 class="title">
+  <span class="title_left">Plate stock详情页面</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @plate_stock], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_plate_stocks_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Id</td>
+      <td>
+        <%= @plate_stock.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Plate</td>
+      <td>
+        <%= @plate_stock.plate_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Base stock</td>
+      <td>
+        <%= @plate_stock.base_stock_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Weight</td>
+      <td>
+        <%= @plate_stock.weight %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Start on</td>
+      <td>
+        <%= @plate_stock.start_on %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">End on</td>
+      <td>
+        <%= @plate_stock.end_on %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Status</td>
+      <td>
+        <%= @plate_stock.status %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Created at</td>
+      <td>
+        <%= @plate_stock.created_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Updated at</td>
+      <td>
+        <%= @plate_stock.updated_at %>
+      </td>
+    </tr>
+  </tbody>
+</table>

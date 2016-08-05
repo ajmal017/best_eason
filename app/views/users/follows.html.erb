@@ -1,0 +1,89 @@
+<%= stylesheet_link_tag "jquery-ui", "/stylesheets/v3/focus.css" %>
+<div class="container" style="margin-top:50px;">
+  <div>
+    <h2>基本资料</h2>
+    <%=@user.username%>
+    粉丝：<%=@user.followers_count%>
+    关注：<%=@user.followings_count%>
+    投资组合：<%=@user.baskets_count%>
+    <br/>
+    <br/>
+    <span class="follow_span"> 
+      <% if user_signed_in? && current_user.followed?(@user.id) %>
+        <a href="#" class="j_unfollow" data-id="<%= @user.id %>" id="j_follow_<%= @user.id %>">取消关注</a> 
+      <% else %>
+        <a href="#" class="j_follow" data-id="<%=@user.id%>" id="j_follow_<%=@user.id%>">关注</a> 
+      <% end %>
+    </span>
+    <a href="javascript:void(0);" id='j_private_message'>私信</a> 
+    <% if user_signed_in? && current_user == @user %>
+      <a href='/setting/info'>修改资料</a>
+    <% end %>
+  </div>
+
+  <div>
+    <h2>feed展示区</h2>
+    <%=render 'sidebar'%>
+    <div><h3>关注者列表</h3></div>
+    <div>
+      <% @following_users.each do |fu| %>
+        <% user = fu.following %>
+        <div>
+          用户名：<%=user.username%>
+          关注时间：<%=fu.created_at.to_date%>
+          粉丝数：<%=user.followers_count%>
+          关注数：<%=user.followings_count%>
+          <% if !user_signed_in? || (user_signed_in? && !current_user.followed?(user.id)) %>
+            <a href="javascript:void(0);" id="j_follow_<%=user.id%>" class="j_follow" data-id="<%=user.id%>">关注</a>
+          <% elsif current_user.friend?(user.id) %>
+            相互关注<a href="javascript:void(0);" id="j_follow_<%=user.id%>" class="j_unfollow" data-id="<%=user.id%>">取消</a>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div id="dialog" title="给<%=@user.username%>发私信" style="display:none;">
+  <%=form_for Message.new, url: messages_path, method: :post, remote: true do |f|%>
+    <%=f.hidden_field :receiver_id, value: @user.id%>
+    <%=f.text_area :content, cols: 25, rows: 4%><br/>
+    <%=f.submit '发送'%>
+  <% end %>
+</div>
+
+<script>
+
+  $(function() {
+    $("#dialog" ).dialog({
+      autoOpen: false,
+      height: 200,
+      width: 400,
+      resizable: false,
+      modal: true
+    });
+  });
+
+  $(document).on('click', '.j_follow', function(){
+    <% if user_signed_in? %>
+      $.post("/ajax/users/" + $(this).attr('data-id') + "/follow");
+    <% else %>
+      alert("请登录");
+    <% end %>
+  })
+
+  $(document).on('click', '.j_unfollow', function(){
+    if(confirm('你确认要取消关注吗？')){
+      $.post("/ajax/users/" + $(this).attr('data-id') + "/unfollow");
+    }
+  })
+
+  $("#j_private_message").on('click', function(){
+    <% if user_signed_in? %>
+      $("#dialog").dialog('open');
+    <% else %>
+      alert('请登录');
+      return false;
+    <% end %>
+  })
+</script>

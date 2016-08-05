@@ -1,0 +1,107 @@
+defaults: &defaults
+  connect:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: admin
+    heartbeat: 6
+
+  stomp:
+    host: http://localhost:15674/stomp
+    connect:
+      login: 'caishuo'
+      passcode: 'caishuo'
+      host: '/'
+    debug: true
+
+  exchange:
+    event_queue:
+      name: events
+      type: topic
+      durable: false
+    order:
+      name: caishuox.fanout
+      type: fanout
+      durable: true
+      arguments:
+        alternate-exchange: "caishuox.unroutable"
+  queue:
+    event_queue:
+      name: events
+      durable: false
+    cts:
+      name: com.unicorn.cts
+      durable: true
+      arguments:
+        x-dead-letter-exchange: "caishuox.deadletter"
+        x-dead-letter-routing-key: "com.unicorn.cts.deadletter"
+    feeds:
+      name: com.caishuo.feeds
+      durable: true
+      arguments:
+        x-dead-letter-exchange: "caishuox.deadletter"
+        x-dead-letter-routing-key: "com.caishuo.feeds.deadletter"
+    jpush_queue:
+      name: com.caishuo.jpush
+      durable: true
+    data_process:
+      name: com.caishuo.data_process
+      durable: true
+
+  binding:
+    event_queue:
+      exchange: :event_queue
+      queues:
+        - event_queue
+    cts:
+      exchange: :order
+      queues:
+        - cts
+    jpush_queue:
+      exchange: :event_queue
+      queues:
+        - jpush_queue
+      routing_key:
+        - com.caishuo.jpush
+    data_process:
+      exchange: :event_queue
+      queues:
+        - data_process
+
+development:
+  <<: *defaults
+
+docker_dev:
+  <<: *defaults
+
+staging:
+  <<: *defaults
+  connect:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: www.caishuo.c0m
+    vhost: 'caishuo'
+  stomp:
+    host: /stomp
+    connect:
+      login: 'caishuo'
+      passcode: 'caishuo'
+      host: 'caishuo'
+
+production:
+  <<: *defaults
+  connect:
+    host: 10.10.1.101
+    port: 5672
+    username: rubyClient
+    password: admiaa3dd20nc0m
+    vhost: caishuo
+    heartbeat: 6
+  stomp:
+    host: /stomp
+    connect:
+      login: 'caishuo'
+      passcode: 'caishuo'
+      host: 'caishuo'
+    debug: false

@@ -1,0 +1,21 @@
+<% order_details.each do |od| %>
+  <tr>
+      <td><%= od.trade_time.to_s(:short) %></td>
+      <%=  order_detail_action(od)  %>
+      <td>
+        <%= link_to od.stock.symbol, stock_path(od.base_stock_id), target: "_blank" %>
+      </td>
+      <td>
+        <%= link_to od.stock.c_name, stock_path(od.base_stock_id), target: "_blank" %>
+      </td>
+      <td><%= od.avg_price %></td>
+      <td><%= od.real_shares.to_i %></td>
+      <td>
+        <% if od.sell? %>
+          <%= up_down_style(od.profit) %>
+        <% else %>
+          --
+        <% end %>
+      </td>
+  </tr>
+<% end %>

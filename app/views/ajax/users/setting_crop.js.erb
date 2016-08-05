@@ -1,0 +1,5 @@
+<% if @ret %>
+  window.location.href = "/setting/avatar";
+<% else %>
+  alert("<%=current_user.temp_image.errors.first%>");
+<% end %>

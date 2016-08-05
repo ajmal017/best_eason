@@ -1,0 +1,9 @@
+<%= form_for current_user, url: invite_code_setting_index_path, html: {id: 'hongbao', class: 'activeFreeCode'} do |f| %>
+  <label>输入优惠码，获取最多30天免佣金优惠</label>
+  <dl>
+    <dd>
+      <%= f.text_field :invite_code, placeholder: '优惠码' %>
+      <%= f.button '激活', class: 'w_btn default' %><br/>
+    </dd>
+  </dl>
+<% end %>

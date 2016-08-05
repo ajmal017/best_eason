@@ -1,0 +1,5 @@
+<% if @follow.errors.present? %>
+  alert("<%=@follow.errors[:following_id].to_s%>");
+<% else %>
+  $("#j_follow_<%=@follow.following_id%>").addClass('j_unfollow').removeClass('j_follow').text('取消关注');
+<% end %>

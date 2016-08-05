@@ -1,0 +1,52 @@
+<div class="demo_left">
+  <h2>Demo:</h2>
+  <div class="demo_box">
+    <table class="grid" id="role-grid">
+      <thead>
+        <tr>
+          <th>
+            <input type="checkbox" class="top_tree">
+          </th>
+          <th>数据</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td width="20px;">
+            <input type="checkbox" class="bottom_tree" value="1">
+          </td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td width="20px;">
+            <input type="checkbox" class="bottom_tree" value="2">
+          </td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td width="20px;">
+            <input type="checkbox" class="bottom_tree" value="3">
+          </td>
+          <td>3</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="demo_right">
+  <h2>代码:</h2>
+    <%== code(:batch_delete, :js) %>
+  <br/>
+  <h2 class="title">使用说明:</h2>
+  <p>
+    1. 文件位置 app/assets/javascripts/admin/base.js<br/><br/>
+    2. 公开方法:<br/><br/>
+    2.1&nbsp;（get_checkout_ids）
+    获取所有已选复选框的value值<br/><br/>
+    2.2&nbsp;（$('.bottom_tree').click）
+    当点击本页最后一个二级复选框时，让全选按钮选中，当有一个二级复选框没选时，全选按钮不选中<br/><br/>
+    2.3&nbsp;（$('.top_tree').click）
+    实现全选全不选<br/><br/>
+    2.4&nbsp;top_tree是全选复选框/bottom_tree是要选择的复选框
+  </p>
+</div>

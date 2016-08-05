@@ -1,0 +1,49 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+  </span>   
+</h1>
+<div class="box">
+  <%= search_form_for @q, url: "", class: "form-inline", role: "form" do |f| %>
+    <%= f.text_field :symbol_eq, :placeholder => "股票代码", class: "form-control" %>
+    <%= f.text_field :base_stock_id_eq, :placeholder => "内部ID", class: "form-control" %>
+    <%= f.text_field :ex_div_date_eq, :placeholder => "ex_div_date", class: "form-control" %>
+    <%= f.text_field :record_date_eq, :placeholder => "record_date", class: "form-control" %>
+    <%= f.text_field :payable_date_eq, :placeholder => "payable_date", class: "form-control" %>
+  <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+<% end %>
+</div>
+<%= page_info(@ca_dividends) %>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>股票名称</th>
+      <th>内部ID</th>
+      <th>amount</th>
+      <th>ex_div_date</th>
+      <th>record_date</th>
+      <th>payable_date</th>
+      <th>创建时间</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @ca_dividends.each do |ca| %>
+    <tr>
+      <td><%= ca.id %></td>
+      <td><%= ca.symbol %></td>
+      <td><%= ca.base_stock_id %></td>
+      <td><%= ca.amount %></td>
+      <td><%= ca.ex_div_date %></td>
+      <td><%= ca.record_date %></td>
+      <td><%= ca.payable_date %></td>
+      <td><%= ca.created_at%></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @ca_dividends %>  
+      
+
+

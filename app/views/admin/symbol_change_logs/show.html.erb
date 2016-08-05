@@ -1,0 +1,48 @@
+<h1 class="title">
+  <span class="title_left">股票变更详情页面</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @symbol_change_log], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_symbol_change_logs_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">股票ID</td>
+      <td>
+        <%= @symbol_change_log.base_stock_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">字段</td>
+      <td>
+        <%= @symbol_change_log.field %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">信息</td>
+      <td>
+        <%= @symbol_change_log.log %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">类别</td>
+      <td>
+        <%= @symbol_change_log.log_type %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">创建时间</td>
+      <td>
+        <%= @symbol_change_log.created_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">更新时间</td>
+      <td>
+        <%= @symbol_change_log.updated_at %>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,55 @@
+<table class="grid">
+  <thead>
+    <tr>
+      <th>组合ID</th>
+      <th>组合名称</th>
+      <th>创建者</th>
+      <%= content_tag :th, sort_link(q, :one_day_return, '1天回报') %>
+      <%= content_tag :th, sort_link(q, :one_month_return, '1月回报') %>
+      <%= content_tag :th, sort_link(q, :one_year_return, '1年回报') %>
+      <%= content_tag :th, sort_link(q, :comments_count, '评论数') %>
+      <th>状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% baskets.each_with_index do |basket, index| %>
+      <tr>
+        <td><%= basket.id %></td>
+        <td width="200px" class="align_left"><%= image_tag("/assets/admin/flag-#{basket.market}.png") if basket.market %>
+        <%= link_to basket.title, basket_path(basket), target: "_blank" %></td>
+        <td><%= link_to_user basket.author, target: "_blank" %></td>
+        <td><%= basket.one_day_return.present? ? basket.one_day_return.round(2) : 0 %>%</td>
+        <td><%= basket.one_month_return.present? ? basket.one_month_return.round(2) : 0 %>%</td>
+        <td><%= basket.one_year_return.present? ? basket.one_year_return.round(2) : 0 %>%</td>
+        <td><%= basket.comments_count.present? ? basket.comments_count : 0 %></td>
+        <td><%= basket.state_desc %></td>
+        <td class="action">
+          <%= link_to "封面图", cover_admin_basket_path(basket), target: "_blank" %>
+          <% if basket.auditing? %>
+            <%= link_to "审核", audit_admin_basket_path(basket), target: "_blank" %>
+          <% end -%>
+          <% if basket.visible %>
+            <%= link_to "设置隐藏", hide_admin_basket_path(basket), remote: true, method: :put, class: "j_hide_basket" %>
+          <% else %>
+            <%= link_to "取消隐藏", hide_admin_basket_path(basket), remote: true, method: :put, class: "j_hide_basket" %>
+          <% end -%>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate baskets %>
+<script type="text/javascript">
+  $(function(){
+    $(".j_hide_basket").on('click', function(){
+      alert("设置成功");
+      if($(this).text()=="设置隐藏"){
+        $(this).text('取消隐藏');
+      }else{
+        $(this).text('设置隐藏');
+      }
+      
+    });
+  });
+</script>

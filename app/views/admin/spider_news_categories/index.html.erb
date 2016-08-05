@@ -1,0 +1,28 @@
+<h1 class="title">
+  <span class="title_left"><%= @page_title %></span>
+  <span class="title_right">
+    <%= link_to "新建", new_admin_md_source_spider_news_category_path %>
+  </span>   
+</h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>优先级</th>
+      <th colspan="2">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @categories.each do |category| %>
+    <tr>
+      <td class="action align_left"><%= link_to category.name, admin_es_spider_news_index_path(category: category.id) %></td>
+      <td class="align_left"><%= category.lvl %></td>
+      <td class="action"><%= link_to '编辑', [:edit, :admin, category] %></td>
+      <!-- <td class="action"><%= link_to '删除', [:admin, category], method: :delete, data: { confirm: '你确定删除吗?' } %></td> -->
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>

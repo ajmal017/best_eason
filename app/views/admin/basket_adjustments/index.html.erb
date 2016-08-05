@@ -1,0 +1,61 @@
+<h1 class="title">
+  <span class="title_left">Basket adjustment列表页</span>
+  <span class="title_right">
+    <a href="/admin/basket_adjustments">adjustments</a> &nbsp;&nbsp;
+    <a href="/admin/basket_weight_logs">weight_logs</a> &nbsp;&nbsp;
+    <a href="/admin/basket_stock_snapshots">stock_snapshots</a>
+  </span>
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_basket_adjustments_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :id_eq, :placeholder => 'ID', class: 'form-control' %>
+    <%= f.text_field :prev_basket_id_eq, :placeholder => 'prev_basket_id', class: 'form-control' %>
+    <%= f.text_field :next_basket_id_eq, :placeholder => 'next_basket_id', class: 'form-control' %>
+    <%= f.text_field :original_basket_id_eq, :placeholder => 'original_basket_id', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @basket_adjustments.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Prev basket</th>
+      <th>Next basket</th>
+      <th>Original basket</th>
+      <th>Reason</th>
+      <th>Date</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+      <th>State</th>
+      <th colspan="3">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @basket_adjustments.each do |basket_adjustment| %>
+    <tr>
+      <td><%= basket_adjustment.id %></td>
+      <td><%= basket_adjustment.prev_basket_id %></td>
+      <td><%= basket_adjustment.next_basket_id %></td>
+      <td><%= basket_adjustment.original_basket_id %></td>
+      <td><%= basket_adjustment.reason %></td>
+      <td><%= basket_adjustment.date %></td>
+      <td><%= basket_adjustment.created_at %></td>
+      <td><%= basket_adjustment.updated_at %></td>
+      <td><%= basket_adjustment.state %></td>
+      <td class="action"><%= link_to '详情', [:admin, basket_adjustment] %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @basket_adjustments %>

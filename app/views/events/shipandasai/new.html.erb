@@ -1,0 +1,255 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/zt/stylesheets/head_foot.css", '/zt/150521/stylesheets/index.css' -%>
+<% end %>
+<div class="head"><%= image_tag '/zt/150521/images/head_font.png' %></div>
+<div class="procedure"></div>
+<div class="examine"><p>请您认真填下以下问题，将更有助于您通过实盘报名审核</p></div>
+<div class="content">
+  <%= form_for @pt_app, url: {action: :create} do |f| %>
+    <dl class="dl_radio">
+      <dt><em>1.</em>您属于以下哪个年龄阶段 ？</dt>
+      <dd class="clearfix">
+        <label for="updown1"><%= f.radio_button :q1, 1, id: "updown1" %>18至26岁</label>
+        <label for="updown2"><%= f.radio_button :q1, 2, id: "updown2" %>27至35岁</label>
+        <label for="updown3"><%= f.radio_button :q1, 3, id: "updown3" %>36至45岁</label>
+        <label for="updown4"><%= f.radio_button :q1, 4, id: "updown4" %>46至65岁</label>
+        <label for="updown5"><%= f.radio_button :q1, 5, id: "updown5" %>65岁以上</label>
+      </dd>
+      <dt><em>2.</em>您有多少年投资风险产品的经验，包括：股票、证券投资基金、外汇、商品、结构性投资产品、期货、权证等？</dt>
+      <dd class="clearfix">
+        <label for="updown6"><%= f.radio_button :q2, 1, id: "updown6" %>没有经验</label>
+        <label for="updown7"><%= f.radio_button :q2, 2, id: "updown7" %>少于1年</label>
+        <label for="updown8"><%= f.radio_button :q2, 3, id: "updown8" %>1至3年</label>
+        <label for="updown9"><%= f.radio_button :q2, 4, id: "updown9" %>3至5年</label>
+        <label for="updown0"><%= f.radio_button :q2, 5, id: "updown0" %>大于5年</label>
+      </dd>
+      <dt><em>3.</em>在一段时间之内，投资价值可升可跌，我们称之为波动。一般而言，风险越高的投资，其潜在波动越大，但潜在回报也越高。相反，风险越低的投资，其潜在波动越小，但潜在回报也相对较低。在一般情况下，您愿意投资于波动程度多大的投资产品？</dt>
+      <dd class="clearfix">
+        <label for="updown_1"><%= f.radio_button :q3, 1, id: "updown_1" %>与-5%至+5%之间的波动</label>
+        <label for="updown_2"><%= f.radio_button :q3, 2, id: "updown_2" %>与-10%至+10%之间的波动</label>
+        <label for="updown_3"><%= f.radio_button :q3, 3, id: "updown_3" %>与-20%至+20%之间的波动</label>
+        <label for="updown_4"><%= f.radio_button :q3, 4, id: "updown_4" %>与-30%至+30%之间的波动</label>
+        <label for="updown_5"><%= f.radio_button :q3, 5, id: "updown_5" %>与-50%以下至+50%以上之间的波动</label>
+      </dd>
+      <dt><em>4.</em>您现在是否持有以下那些投资产品？（多选）</dt>
+      <dd class="clearfix">
+        <label for="agree1"><%= f.check_box :q4, {id: "agree1", multiple: true }, 1, nil %>现金、存款</label>
+        <label for="agree2"><%= f.check_box :q4, {id: "agree2", multiple: true }, 2, nil %>债券、债券基金</label>
+        <label for="agree3"><%= f.check_box :q4, {id: "agree3", multiple: true }, 3, nil %>权证、期货</label>
+        <label for="agree4"><%= f.check_box :q4, {id: "agree4", multiple: true }, 4, nil %>外币、非保本之货币挂钩结构投资产品</label>
+        <label for="agree5"><%= f.check_box :q4, {id: "agree5", multiple: true }, 5, nil %>股票、开放式基金（不包括债券基金或货币市场基金）</label>
+      </dd>
+      <dt><em>5.</em>您是否活跃在其他财经社交平台？请提供相应的平台名称及个人ID或主页！</dt>
+      <dd><%= f.text_area :q5 %></dd>
+      <dt><em>6.</em>您是否有金融行业相关从业经验或资格，如经纪人、操盘手、理财师、CFA等？</dt>
+      <dd><%= f.text_area :q6 %></dd>
+      <dt><em>7.</em>您觉得今年A股大涨的主要原因是什么？您认为今年A股大盘将到多少点位？</dt>
+      <dd><%= f.text_area :q7 %></dd>
+      <dt><em>8.</em>假设您是一名基金经理有大量的资金（例如一亿），2015年您会选择怎么配置您的基金，你的配置侧重哪些行业？</dt>
+      <dd><%= f.text_area :q8 %></dd>
+      <dt><em>9.</em>您觉得当前上证指数的点位高吗？还是有进一步调整可能？您会选择满仓吗？</dt>
+      <dd><%= f.text_area :q9 %></dd>
+    </dl>
+    <div id="bindPhone" onsubmit="return false;">
+      <dl class="clearfix">
+        <dt>您的手机号：</dt>
+        <dd><%= f.text_field :mobile %><br /></dd>
+        <dt>验证码：</dt>
+        <dd class="input_special"><%= f.text_field :captcha, size: 6, class: "input_special" %>
+        <span class="w_btn" id="btnSendCode">获取验证码</span>
+        <br></dd>
+      </dl>
+      <div class="divBut">
+        <button <%= (@old_record ? 'class="click_but gray" disabled="disabled"' : 'class="click_but"').html_safe %>>提交</button>
+        <span class="unfinished" style="display:none;">您有未完成选项</span>
+      </div>
+    </div>
+  <% end %>
+</div>
+<div class="windowBox">
+  <div class="box">
+    <% if @old_record %>
+      <h5>您已报名，请勿重复提交。</h5>
+      <span>小诀窍：创建<a href="<%= new_basket_path %>"> 财说组合 </a>，可以提高审核通过率哦~</span>
+    <% else %>
+      <h5>提交成功，我们将在三个工作日内审核</h5>
+      <%= link_to '返回财说首页', root_path %>
+    <% end %>
+  </div>
+</div>
+<%= content_for :script do %>
+  <%= javascript_include_tag 'events' %>
+  <script type="text/javascript">
+
+    // $(function(){
+    //   $("#btnSendCode").on("click", function(){
+    //     sendMessage();
+    //   });
+    // });
+
+    $('#new_pt_application').validate({
+      rules: {
+        'pt_application[mobile]': {
+          required: true,
+          format: /^((\+86)|(86))?\d{11}$/
+        },
+        'pt_application[captcha]': {
+          required: true,
+          minlength: 4,
+          maxlength: 4
+        },
+        'pt_application[q1]': {
+          required: true,
+        },
+        'pt_application[q2]': {
+          required: true,
+        },
+        'pt_application[q3]': {
+          required: true,
+        },
+        'pt_application[q4][]': {
+          required: true,
+        },
+        'pt_application[q5]': {
+          required: true,
+        },
+        'pt_application[q6]': {
+          required: true,
+        },
+        'pt_application[q7]': {
+          required: true,
+        },
+        'pt_application[q8]': {
+          required: true,
+        },
+        'pt_application[q9]': {
+          required: true,
+        },
+      },
+      messages: {
+        'pt_application[mobile]': {
+          required: "手机号不能为空",
+          format: "手机号格式不正确",
+        },
+        'pt_application[captcha]': {
+          required: "验证码不能为空",
+          minlength: "验证码只能为4位",
+          maxlength: "验证码只能为4位"
+        },
+        'pt_application[q1]': {
+          required: '不能为空',
+        },
+        'pt_application[q2]': {
+          required: '不能为空',
+        },
+        'pt_application[q3]': {
+          required: '不能为空',
+        },
+        'pt_application[q4][]': {
+          required: '不能为空',
+        },
+        'pt_application[q5]': {
+          required: '不能为空',
+        },
+        'pt_application[q6]': {
+          required: '不能为空',
+        },
+        'pt_application[q7]': {
+          required: '不能为空',
+        },
+        'pt_application[q8]': {
+          required: '不能为空',
+        },
+        'pt_application[q9]': {
+          required: '不能为空',
+        },
+      }
+    });
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?96c5ab8f8a321a2e8ef573b6f6d2c6d7";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+    $("button.click_but").on("click",function(){
+      $('.unfinished').hide();
+      if(!$("#new_pt_application").valid()){$('.unfinished').show();return false;}
+      $(".windowBox").show().bind("touchmove",function(e){
+        e.preventDefault();
+      }); 
+      $("body").css("overflow","hidden");
+    })
+    $("i.closebox").on("click",function(){
+      $(".windowBox").hide();
+    })
+    <% if @pt_app.persisted? %>
+      $(".windowBox").show();
+    <% end %>
+  </script>
+  <script type="text/javascript">
+    var InterValObj; //timer变量，控制时间
+    var curCount = 60;//当前剩余秒数
+
+    function contentValid(){
+      var q1 = $("[name='pt_application[q1]']").valid(),
+          q2 = $("[name='pt_application[q2]']").valid(),
+          q3 = $("[name='pt_application[q3]']").valid(),
+          q4 = $("[name='pt_application[q4][]']").valid(),
+          q5 = $("[name='pt_application[q5]']").valid(),
+          q6 = $("[name='pt_application[q6]']").valid(),
+          q7 = $("[name='pt_application[q7]']").valid(),
+          q8 = $("[name='pt_application[q8]']").valid(),
+          q9 = $("[name='pt_application[q9]']").valid()
+      return q1 && q2 && q3 && q4 && q5 && q6 && q7 && q8 && q9
+    }
+
+    $('#btnSendCode').click(function(){
+      sendMessage()
+    })
+
+    function sendMessage() {
+      if($('#btnSendCode').hasClass('disabled')){
+        return true;
+      }
+      $('.unfinished').hide();
+      //如果手机号验证没有通过，不发送验证码
+      if(!contentValid()){$('.unfinished').show();return false;}
+      if(!$("#pt_application_mobile").valid()){ $('.unfinished').show();return false;}
+      //向后台发送处理数据
+      $.ajax({
+          type: "PUT",
+          url: '/ajax/users/send_sms_code',
+          data: { mobile: $("#pt_application_mobile").val() },
+          error: function (XMLHttpRequest, textStatus, errorThrown) { },
+          success: function (msg){
+            if(msg['status']){
+              Countdown();
+            } else {
+              alert(msg['msg']);
+            }
+          }
+      });
+    }
+    //timer处理函数
+    function SetRemainTime() {
+      if (curCount == 1) {
+        window.clearInterval(InterValObj);//停止计时器
+        $("#btnSendCode").removeAttr("disabled");//启用按钮
+        $("#btnSendCode").text("重新发送");
+        curCount = 60; //重置时间
+      }
+      else {
+        curCount--;
+        $("#btnSendCode").text("重新发送(" + curCount + ")");
+      }
+    }
+
+    function Countdown() {
+      //设置button效果，开始计时
+      $("#btnSendCode").attr("disabled", "true");
+      $("#btnSendCode").text("重新发送(" + curCount + ")");
+      InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+    }
+  </script>
+<% end %>

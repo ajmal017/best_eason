@@ -1,0 +1,12 @@
+<div class="box">
+<%= search_form_for search, url: admin_base_stocks_path, class: "form-inline", role: "form" do |f| %>
+  <%= f.text_field :symbol_cont, :placeholder => "股票代码", class: "form-control" %>
+  <%= f.text_field :name_cont, :placeholder => "名称", class: "form-control" %>
+  <%= f.text_field :c_name_cont, :placeholder => "中文名称", class: "form-control" %>
+  <%= f.select :data_source_eq, BaseStock::DATASOURCES.map{|key, value| [key, value]}, {prompt: "来源"}, {class: "form-control"} %>
+  <%= f.select :exchange_eq, BaseStock::EXCH.map{|key, value| [key, value]}, {prompt: "交易所"}, {class: "form-control"} %>
+  <%= f.select :qualified_eq, BaseStock::QULIFIED.map{|key, value| [key, value]}, {prompt: "合格?"}, {class: "form-control"} %>
+  <%= f.text_field :created_at_day, class: "datetimepicker", :placeholder => "创建时间", "data-date-format" => "yyyy-MM-dd", value: @created_at_day%>
+  <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+<% end %>
+</div>

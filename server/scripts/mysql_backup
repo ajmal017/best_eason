@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# 系统日期
+Date=$(date +"%Y%m%d-%H")
+
+# 定义备份路径
+BACK_DIR=/opt/backup2
+
+if [ ! -x $BACK_DIR ]; then
+	mkdir -p $BACK_DIR
+fi
+
+cd $BACK_DIR
+mysqldump -u caishuo -pcaishuo caishuo > $Date.sql
+tar czvf $Date.tar.gz $Date.sql
+rm -rf $Date.sql
+
+# 删除15天以前备份的文件
+find $BAK_DIR -name "*" -mtime +15 |xargs rm -rf
+exit 0

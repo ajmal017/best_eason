@@ -1,0 +1,14 @@
+<script type="text/javascript">
+<%- if show_analytics? -%>
+var _hmt = _hmt || [];
+_hmt.push(['_setCustomVar', 1, 'channel', '<%= channel %>', 2]); 
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?96c5ab8f8a321a2e8ef573b6f6d2c6d7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+<%- else -%>
+var _env = "<%=Rails.env%>";
+<% end -%>
+</script>

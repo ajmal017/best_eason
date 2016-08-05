@@ -1,0 +1,77 @@
+<%= form_for @base_stock, url: "/admin/quotes/#{@base_stock.id}", method: :put  do |f|%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field">股票名称</td>
+        <td><%= @base_stock.c_name%></td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>52周最高:</td>
+        <td>
+          <%= text_field_tag :high52_weeks, @base_stock.high52_weeks %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>52周最低:</td>
+        <td>
+          <%= text_field_tag :low52_weeks, @base_stock.low52_weeks %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>市值:</td>
+        <td>
+          <%= text_field_tag :market_capitalization, @base_stock.market_capitalization %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>市盈率:</td>
+        <td>
+          <%= text_field_tag :pe_ratio, @base_stock.pe_ratio %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>交易时间:</td>
+        <td>
+          <%= text_field_tag :trade_time, (@base_stock.trade_time.to_s(:db) rescue '') %>(2015-08-11 13:57:07)
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>昨收:</td>
+        <td>
+          <%= text_field_tag :previous_close, @base_stock.previous_close %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>今开:</td>
+        <td>
+          <%= text_field_tag :open, @base_stock.open %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>最高:</td>
+        <td>
+          <%= text_field_tag :high, @base_stock.high %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>最低:</td>
+        <td>
+          <%= text_field_tag :low, @base_stock.low %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>成交量:</td>
+        <td>
+          <%= text_field_tag :volume, @base_stock.volume %>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="field"></td>
+        <td>
+          <%= f.submit "提交"%>
+        </td>
+      </tr>
+     </tbody>
+  </table>
+<% end -%>

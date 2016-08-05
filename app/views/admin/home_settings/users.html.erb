@@ -1,0 +1,112 @@
+<h1 class="title">
+  <span class="title_left">登录后首页--设置关注的人</span>
+  <span class="title_right"><a href="/admin/home_settings">返回首页设置</a></span>
+</h1>
+
+<%= render partial: "sub_menus" %>
+
+<div class="box">
+  <h1>
+    <span>
+      <a onclick="javascript:expireRecommendUserCache();" href="javascript:">更新登录后首页推荐用户缓存</a>
+    </span>
+  </h1>
+</div>
+<div class="box">
+  <h1 class="title">
+    <span class="left">
+      添加用户：<input type="text" placeholder="搜索用户" id="user_search" size="60"/>
+    </span>
+
+    <span class="right">
+      拖动一列进行排序，排序完成后请点击&nbsp;<input type="button" value="保存排序结果" onclick="javascript:saveUsersPositions();"></input>
+    </span>
+  </h1>
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>用户名</th>
+        <th>描述</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody class="sortable">
+      <% @user_infos.each do |user, desc| %>
+        <tr data-user-id="<%= user.id %>">
+          <td><%= user.username %></td>
+          <td>
+            <%= text_field_tag :user_desc, desc, size: 80, id: "user_desc_#{user.id}", onchange: "javascript:autoSaveUserDesc(this);" %>
+          </td>
+          <td class="action">
+            <a href="javascript:" onclick="javascript:deleteUser(this);">删除</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<script type="text/javascript">
+  $(function(){
+    $( ".sortable" ).sortable({
+      items: "tr",
+      placeholder: "ui-state-highlight"
+    });
+  })
+
+  function saveUsersPositions(){
+    var user_ids = []
+    $("table tbody tr").each(function(){
+      user_ids.push($(this).attr("data-user-id"));
+    })
+    $.post("/admin/home_settings/users_position", {user_ids: user_ids}, function(){
+      window.location.reload();
+    })
+  }
+
+  function autoSaveUserDesc(obj){
+    var user_id = $(obj).parent().parent().attr("data-user-id");
+    $.post("/admin/home_settings/add_user", {user_id: user_id, desc: $(obj).val()}, function(){})
+  }
+
+  function deleteUser(obj){
+    if (confirm("确定要删除此推荐用户吗？")){
+      var user_id = $(obj).parent().parent().attr("data-user-id");
+      $.post("/admin/home_settings/del_user", {user_id: user_id}, function(){
+        window.location.reload();
+      })
+    }
+  }
+
+  function expireRecommendUserCache(){
+    $.get("/admin/home_settings/expire_cache", {}, function(){
+      alert("更新完成！");
+    })
+  }
+
+  $("#user_search").autocomplete({
+    source: function( request, response ) {
+      $.ajax({
+        url: "/admin/users/search",
+        dataType: "json",
+        data: {
+          term: request.term
+        },
+        success: function( data ) {
+          response( data.users );
+        }
+      });
+    },
+    minLength: 1,
+    select: function( event, ui ) {
+      $.post("/admin/home_settings/add_user", {user_id: ui.item.id}, function(){
+        window.location.reload();
+      })
+    }
+  }).autocomplete( "instance" )._renderItem = function( ul, item ) {
+    return $( "<li id='" + item.id + "'>" )
+      .append( item.username + " ( " + item.email + " )" )
+      .appendTo( ul );
+  };
+</script>

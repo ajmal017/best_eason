@@ -1,0 +1,5 @@
+$("#j_positions_content").html("<%=j render partial: '/accounts/overview/position_list', locals: {baskets: @baskets_infos, stocks: @stocks_infos, changes: @changes}%>")
+
+$("#j_positions_content").next('tfoot').html("<%=j render partial: '/accounts/overview/position_foot_list', locals: {baskets: @baskets_infos, stocks: @stocks_infos, changes: @changes}%>")
+
+$('.sortcolumn').columnsortable();

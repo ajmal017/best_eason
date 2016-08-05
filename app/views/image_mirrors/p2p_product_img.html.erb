@@ -1,0 +1,265 @@
+<html>
+  <head>
+  <meta charset="UTF-8">
+  <title>Chart</title>
+  <style>
+    body {margin: 0;font-family: simhei, "Helvetica", Arial, "Microsoft YaHei";}
+    #index-name {width: 1200px;font-size: 37px;text-align: center;background-color: white;color: #999999;height: 114px;line-height: 114px;}
+  </style>
+  <%= javascript_include_tag "/javascripts/jquery-1.11.1.min.js", "/javascripts/highstock.js" %>
+  </head>
+  <body>
+  <div id="container" style="height: 300px; width: 1200px;background-color: white;"></div>
+  <div id="index-name"><span></span>近一月走势</div>
+  <div style="position: absolute;left: 0;top: 0;z-index: 1000;height:100%;width:100%;background:transparent;"></div>
+  <script>
+    /* 测试数据开始 */
+    // 原始数据？
+    /*var data = [
+      [new Date('2015-01-01') - 0, 100],
+      [new Date('2015-01-02') - 0, 100],
+      [new Date('2015-01-03') - 0, 100],
+      [new Date('2015-02-02') - 0, 101],
+      [new Date('2015-02-03') - 0, 102],
+      [new Date('2015-02-04') - 0, 103],
+      [new Date('2015-02-05') - 0, 104],
+      [new Date('2015-02-10') - 0, 105],
+      [new Date('2015-03-01') - 0, 110],
+      [new Date('2015-03-02') - 0, 115],
+      [new Date('2015-03-03') - 0, 116],
+      [new Date('2015-03-04') - 0, 126],
+      [new Date('2015-03-05') - 0, 129],
+      [new Date('2015-03-06') - 0, 138],
+      [new Date('2015-04-20') - 0, 143],
+      [new Date('2015-04-23') - 0, 130],
+      [new Date('2015-05-01') - 0, 135],
+      [new Date('2015-06-02') - 0, 131],
+      [new Date('2015-06-08') - 0, 142],
+      [new Date('2015-11-01') - 0, 130],
+      [new Date('2015-11-21') - 0, 135],
+      [new Date('2015-12-23') - 0, 121],
+      [new Date('2015-12-27') - 0, 131]
+    ]; */
+    
+    var data = <%= raw @stock_indexs.to_json %>
+
+    /*var dataX = [1420070400000, 1420156800000, 1420243200000, 1422835200000, 1422921600000, 1423008000000, 1423094400000, 1423526400000, 1425168000000, 1425254400000, 1425340800000, 1425427200000, 1425513600000, 1425600000000, 1429488000000, 1429747200000, 1430438400000, 1433203200000, 1433721600000, 1446336000000, 1448064000000, 1450828800000, 1451174400000];
+    var dataY = [100, 100, 100, 101, 102, 103, 104, 105, 110, 115, 116, 126, 129, 138, 143, 130, 135, 131, 142, 130, 135, 121, 131];*/
+    /* 测试数据结束 */
+
+    /* !!! 指定Chart类型和指数名称 !!! */
+    var chart_type = "<%= @change_type %>"; // 买涨: "up", 买跌: "down"
+    var index_name = "<%= @stock.c_name %>"; // 指数名称
+
+     var color = {
+      "up": {
+        "color": "#ef816a",
+        "fillColor": ["#fadad3", "#fef8f6"],
+        "maker": {
+          "lineColor": "#f18f7c"
+        },
+        "tooltip": {
+          "backgroundColor": "#ec6a50"
+        }
+      },
+      "down": {
+        "color": "#7891c8",
+        "fillColor": ["#d7dfef", "#f2f6ff"],
+        "maker": {
+          "lineColor": "#607dbe"
+        },
+        "tooltip": {
+          "backgroundColor": "#607dbe"
+        }
+      }
+    };
+
+    // 填充指数名称
+    $('#index-name span').text(index_name);
+
+    // 将原始数据拆分为dataX和dataY
+    var dataX = [], dataY = [];
+    var len = data.length;
+    for (var i = 0; i < len; i++) {
+      dataX.push(new Date(data[i][0]) - 0);
+      dataY.push(data[i][1]);
+    }
+
+    var xAxis_label_cnt = 0;
+
+    // Create the chart
+    $('#container').highcharts('StockChart', {
+      chart: {
+        spacing: [0, 0, 0, 0],
+        events: {
+          load: function(){
+            // 调整中间label的位置使其居中
+            $('#first-label').parent('span').css({'width': '150px', 'font-size': '34px', 'overflow': 'visible'});
+            $('#mid-label').parent('span').css({'left': '494px', 'width': '150px', 'font-size': '34px'});
+            $('#last-label').parent('span').css({'left': '988px', 'width': '150px', 'font-size': '34px'});
+
+            setTimeout(function(){
+              // 向上移动SVG
+              var v = $('.highcharts-tooltip').position().top;
+              if (v > 0) {
+                var y = $('#first-label').offset().top + $('#first-label').height() - v;
+                $('svg, #first-label, #mid-label, #last-label').css({'position': 'relative', 'top': '-' + v + 'px'});
+                $('.highcharts-tooltip > span').css({'position': 'relative', 'top': '-' + (v - 1) + 'px'});
+
+                var h = 414 - y;
+                if (h > 0) {
+                  // 保证chart高度414px不变，调整底部文字垂直居中
+                  $('#index-name').css({'position': 'absolute', 'top': y + 'px', 'height': h + 'px', 'line-height': h + 'px'});
+                }
+              }
+            }, 1);
+          }
+        }
+      },
+      rangeSelector : {
+        selected : 1
+      },
+      title : {
+        text : ''
+      },
+      legend: {
+        enabled: false
+      },
+      credits: {
+        enabled: false
+      },
+      exporting: {
+        enabled: false
+      },
+      navigator: {
+        enabled: false
+      },
+      rangeSelector: {
+        enabled: false
+      },
+      scrollbar: {
+        enabled: false
+      },
+      tooltip : {
+        animation: false,
+        crosshairs: false,
+        borderWidth: 0,
+        backgroundColor: color[chart_type]["tooltip"]["backgroundColor"],
+        style: {
+        "color": "white",
+        "fontSize": "34px",
+        "padding": "3px"
+        },
+        shadow: false,
+        useHTML: true,
+        formatter: function () {
+          var padding = '<span style="display:inline-block;width:6px;"></span>';
+          return padding + this.y.toFixed(2) + padding;
+        }
+      },
+      xAxis: {
+        categories: dataX,
+        lineWidth: 0,
+        tickWidth: 0,
+        labels: {
+          useHTML: true,
+          style: {
+          "color": "#999",
+          "fontSize": "10px",
+          },
+          formatter: function(){
+            var len = dataY.length,
+              mid = Math.ceil(len/2),
+              v = '';
+
+            if (xAxis_label_cnt === 0) {
+              v = Highcharts.dateFormat('%Y-%m-%d', new Date(dataX[0]));
+              v = '<div id="first-label">' + v + '</div>'
+            } else if (xAxis_label_cnt === 1) {
+              v = Highcharts.dateFormat('%Y-%m-%d', new Date(dataX[mid - 1]));
+              v = '<div id="mid-label">' + v + '</div>'
+            } else if (xAxis_label_cnt === 2) {
+              v = Highcharts.dateFormat('%Y-%m-%d', new Date(dataX[len - 1]));
+              v = '<div id="last-label">' + v + '</div>'
+            }
+            xAxis_label_cnt++;
+            return v;
+          }
+        }
+      },
+      yAxis: {
+        visible: false,
+        gridLineWidth: 0,
+        title: {
+          text: ''
+        },
+        labels: {
+          enabled: false
+        },
+        max: Math.max.apply(Math, dataY)*1.07 // 为了让最大值气泡总显示在最上方
+      },
+      plotOptions: {
+        series: {
+        animation: false,
+        states: {
+          hover: {
+          halo: {
+            size: 0
+          }
+          }
+        }
+        }
+      },
+      series : [{
+        name : '',
+        data : dataY,
+        type : 'areaspline',
+        threshold : null,
+        enableMouseTracking: false,
+        lineWidth: 2,
+        states: {
+          hover: {
+            enabled: true,
+            lineWidthPlus: 0
+          }
+        },
+        color: color[chart_type]["color"],
+        fillColor : {
+          linearGradient : {
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: 1
+          },
+          stops : [
+            [0, color[chart_type]["fillColor"][0]],
+            [1, color[chart_type]["fillColor"][1]]
+          ]
+        },
+        marker: {
+          fillColor: '#ffffff',
+          radius: 4,
+          lineWidth: 2,
+          lineColor: color[chart_type]["maker"]["lineColor"],
+          states: {
+            hover: {
+              enabled: true,
+              lineWidthPlus: 0,
+              radiusPlus: 0
+            }
+          }
+        },
+      }]
+    });
+
+    // 找到最大值点
+    var maxY = Math.max.apply(Math, dataY);
+    var indexY = dataY.indexOf(maxY);
+
+    // 在Chart中显示最大值
+    var cs_chart = $('#container').highcharts();
+    cs_chart.series[0].data[indexY].setState('hover');
+    cs_chart.tooltip.refresh([cs_chart.series[0].points[indexY]]);
+  </script>
+  </body>
+</html>

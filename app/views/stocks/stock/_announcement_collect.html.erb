@@ -1,0 +1,20 @@
+<% notices.each do |notice| %>
+<tr>
+  <td>
+    <%=link_to notice["info_title"], notice['url']||stock_announcement_path(stock, notice["id"]), target: "_blank"%>
+  </td>
+  <th><%= stock.symbol %></th>
+  <th><%= notice["category"] %></th>
+  <th><%= notice["year"] %></th>
+  <th><%= Time.at(notice["info_publ_date"]).to_date %></th>
+</tr>
+<% end %>
+<% if notices.length == 0 %>
+  <tr>
+    <td>暂无公告</td>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  <tr>
+<% end %>

@@ -1,0 +1,31 @@
+<article>
+  <a class="avator">
+    <% if user_signed_in? %>
+      <%= image_tag current_user.avatar_url(:small) %>
+    <% else %>
+      <img src="https://cdn.caishuo.com/images/v3/userEditLogo.png">
+    <% end %>
+  </a>
+  <% if user_signed_in? %>
+  <form action="" method="post">
+    <div class="editArea"><textarea></textarea></div>
+    <div class="actionArea">
+      <label class="quoteAction"><span class="emotion">表情</span><span class="friends">好友</span><span class="stocks">股票代码</span></label>
+      <button class="b_btn middle">发表</button>
+    </div>
+  </form>
+  <% else %>
+    <div class="visitor">发表评论，请 <a href="javascript:void(0)"><span class="">登录</span></a> | <a href="/signup">注册</a></div>
+  <% end %>
+</article>
+<form id="replyComment" action="" method="post">
+  <div class="editArea"><textarea></textarea></div>
+  <div class="actionArea">
+    <label class="quoteAction"><span class="emotion">表情</span><span class="friends">名字</span><span class="stocks">股票代码</span></label>
+    <button class="b_btn middle">回复</button>
+  </div>
+</form>
+
+
+
+

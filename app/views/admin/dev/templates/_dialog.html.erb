@@ -1,0 +1,21 @@
+<div class="demo_left">
+  <h2>Demo:</h2>
+  <div class="demo_box">
+    <a href="javascript:open_dialog('测试本地弹窗', '<b>Hello</b>');">本地弹窗</a><br/><br/><br/><br/>
+    <a href="javascript:remote_dialog('/admin/dev/ajax/dialog', '测试AJAX弹窗');">AJAX弹窗</a>
+  </div>
+</div>
+<div class="demo_right">
+  <h2>代码:</h2>
+  <%== code(:local_dialog, :js) %>
+  <%== code(:remote_dialog, :js) %>
+
+  <br/>
+  <h2 class="title">使用说明:</h2>
+  <p>
+    1. 文件位置 app/assets/javascripts/admin/dialog.js<br/><br/>
+    2. 公开方法:<br/><br/>
+    2.1 open_dialog<br/>
+    2.2 remote_dialog
+  </p>
+</div>

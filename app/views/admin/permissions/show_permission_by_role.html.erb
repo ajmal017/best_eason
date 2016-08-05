@@ -1,0 +1,45 @@
+<style type="text/css">
+	.level1 {font-size:16px;color:#338FCC;}
+	.level2 {margin-left:25px;}
+	.submit {margin-left: 560px;}
+	.outside:after {content:"";display: block;clear: both;}
+	.tree {width: 160px;float: left;}
+</style>
+<h1 class="title">
+  <span class="title_left">修改角色<span style="color:#338FCC;"><%= @role.name %></span>的权限</span>
+  <span class="title_right">
+    <a href="/admin/roles">返回</a>&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+</h1>
+
+<form method="get" action="../role_permissions/update_permission">
+	<input type="hidden" value="<%= @role.id %>" name="role_id"/>
+	<div class="outside">
+		<% @father_permissions.each do |father|%>
+			<ul class="tree">
+				<li class="level1">
+					<input type="checkbox" <%= @current_role_permissions_id.include?(father.id) ? "checked" : "" %> name="permission_id[]" value="<%= father.id %>" class="father">
+					<%= father.name %>
+				</li>
+				<% father.childrens.each do |child| %>
+					<li class="level2">
+						<input type="checkbox" <%= @current_role_permissions_id.include?(child.id) ? "checked" : "" %> name="permission_id[]" value="<%= child.id%>" class="child">
+						<%= child.name %>
+					</li>
+				<% end %>
+			</ul>
+		<% end %>
+	</div>
+	<input type="submit" class="submit" value="提交修改">
+</form>
+
+<script type="text/javascript" >
+	$('.tree input').click(function(){
+	  var $checks = $(this).closest('.tree').find('input');
+	  if ($(this).parent().index()){
+	    $checks.eq(0).prop('checked', $(this).closest('.tree').find('.level2 input:checked').length);
+	  }else{
+	    $checks.prop('checked', $(this).prop('checked'));
+	  }
+	});
+</script>

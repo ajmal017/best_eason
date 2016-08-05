@@ -1,0 +1,39 @@
+<div class="record" id="FloatWindow">
+  <ul>
+    <% if adjustments.present? %>
+      <% adjustments.each_with_index do |adjustment, index| %>
+        <li>
+          <% if index.zero? %>
+            最新调仓 <%= adjustment.created_at %> <i class="open click"> </i>
+          <% else %>
+            <%= adjustment.created_at %> <i class="open"> </i>
+          <% end %>
+          <b><%= adjustment.state_desc %></b>
+          <div class="record_content" style="display:<%= index.zero? ? 'block' : "none" %>;">
+              <table cellspacing="0" cellpadding="0" class="themeStocks">
+                <% adjustment.basket_adjust_logs_desc.each do |log| %>
+                  <tr>
+                    <td style="color:<%= log.action_color %>;">
+                      <%= log.action_desc %> 
+                      <% if log.stock %>
+                        <%= link_to log.stock.com_name, stock_path(log.stock), target: "_blank" %>
+                      <% else %>
+                        <a href="javascript:">现金</a> 
+                      <% end %>
+                      <span><%= log.stock_price.try(:round, 2) if log.stock %></span>
+                    </td>
+                    <th>
+                      <span><%= log.weight_from_percent %>%</span>
+                      <span><%= log.weight_to_percent %>%</span>
+                    </th>
+                  </tr>
+                <% end %>
+              </table>
+          </div>
+        </li>
+      <% end %>
+    <% else %>
+      <li>暂无调仓记录</li>
+    <% end %>
+  </ul>
+</div>

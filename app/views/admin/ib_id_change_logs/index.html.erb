@@ -1,0 +1,52 @@
+<h1 class="title">
+  <span class="title_left">Ib id change log列表页</span>
+  <span class="title_right">
+    <%#= link_to "新建Ib id change log", new_admin_ib_id_change_log_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_ib_id_change_logs_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :id_eq, :placeholder => 'ID', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @ib_id_change_logs.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Symbol</th>
+      <th>Ib</th>
+      <th>Date</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+      <th colspan="3">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @ib_id_change_logs.each do |ib_id_change_log| %>
+    <tr>
+      <td><%= ib_id_change_log.id %></td>
+      <td><%= ib_id_change_log.symbol %></td>
+      <td><%= ib_id_change_log.ib_id %></td>
+      <td><%= ib_id_change_log.date %></td>
+      <td><%= ib_id_change_log.created_at %></td>
+      <td><%= ib_id_change_log.updated_at %></td>
+      <td class="action"><%= link_to '详情', [:admin, ib_id_change_log] %></td>
+      <td class="action"><%= link_to '编辑', [:edit, :admin, ib_id_change_log] %></td>
+      <td class="action"><%= link_to '删除', [:admin, ib_id_change_log], method: :delete, data: { confirm: '你确定删除吗?' } %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @ib_id_change_logs %>

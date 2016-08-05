@@ -1,0 +1,14 @@
+<% if news["data"] %>
+<% news["data"].each do |item| %>
+<a href="<%= news_path(id: item["id"]) %>" target="_blank">
+  <span title="<%= item["title"] %>"><% if item['symbols'].present? %><i>(<%= item['symbols'].first %>)</i><% end %> <%= item["title"].to_s.truncate(28) %><em><%=item["pub_date"].to_date.to_s(:db) rescue ''%></em></span>
+  <p><%= item["body"] %></p>
+</a>
+<% end %>
+
+<% if news["ext"]["total_pages"] > news["ext"]["page"] %>
+<div class="text-center">
+  <a id="j_news_more" data-next-page="<%= news["ext"]["page"].next %>" class="w_btn large">加载更多</a>
+</div>
+<% end %>
+<% end -%>

@@ -1,0 +1,27 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+</h1>
+<!--子导航-->
+<div class="box">
+  <a href="#">30日内按日统计</a>
+  <a href="#">按周统计</a>
+  <a href="#">按月统计</a>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th width="300">日期</th>
+      <th>注册数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @records.each do |date, count| %>
+      <tr>
+        <td><%= date %></td>
+        <td><%= count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

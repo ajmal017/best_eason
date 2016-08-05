@@ -1,0 +1,11 @@
+<div class="content pl20" account-id="<%= account.pretty_id %>">
+  <div class="holding-status">
+    <h3 loaded="true"><%= account.broker.cname %><i><%= account.broker_no %></i></h3>
+    <% if account.market_cn? %><a href="javascript:;" onclick="javascript:refreshPositions('<%= account.pretty_id %>',this);" class="refresh"></a><% end %>
+    <span>累计盈亏<strong class="">--</strong></span>
+    <span>今日盈亏<strong class="">--</strong></span>
+    <span>可用现金<strong>--</strong></span>
+    <span>账户净值<strong>--</strong></span>
+  </div>
+  <%= render partial: "position_detail", locals: {account: account, stocks_infos: stocks_infos, total_stocks: total_stocks, baskets_infos: baskets_infos, unllocate_positions: unllocate_positions, total_cash: total_cash, cash_unit: cash_unit} %>
+</div>

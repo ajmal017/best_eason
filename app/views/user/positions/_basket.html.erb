@@ -1,0 +1,42 @@
+<tbody class="motif">
+  <tr class="baskets">
+    <td class="noBorder">
+      <a href="javascript:;" class="open" data-basket-id="<%= basket_infos[:original_id] %>">展开</a>
+    </td>
+    <td class="text-left">
+      <a href="/baskets/<%= basket_infos[:id] %>" target="_blank" class="b-name" title="<%= basket_infos[:title] %>">
+        <%= basket_infos[:title] %>
+      </a>
+    </td>
+    <td></td>
+    <td></td>
+    <td class="text-center">--</td>
+    <td class="text-center">--</td>
+    <td>--</td>
+    <td>--</td>
+    <td>--</td>
+    <td>
+      <%= up_down_style(basket_infos[:today_change], currency_format: true) %><br/><%= up_down_style(basket_infos[:today_change_percent], postfix: "%") %>
+    </td>
+    <td>--</td>
+    <td>
+      <%= number_to_currency(basket_infos[:total_value], prefix: basket_infos[:currency_unit], format:"%u%n") %>
+    </td>
+    <td>
+      <%= number_to_currency(basket_infos[:total_cost], prefix: basket_infos[:currency_unit], format:"%u%n") %>
+    </td>
+    <td>
+      <%= up_down_style(basket_infos[:total_change], currency_format: true) %>
+    </td>
+    <td class="text-center">
+      <%= link_to "交易", adjust_account_positions_path(account.pretty_id, basket_id: basket_infos[:original_id]), target: "_blank", class: 'blue underline' %><br>
+      <%#= link_to "买入", new_basket_order_path(basket_infos[:id], account_id: account.pretty_id), target: "_blank", class: 'sbtn' %><%#= link_to "卖出", sell_basket_orders_path(basket_infos[:original_id], account_id: account.pretty_id), target: "_blank", class: 'sbtn' %>
+    </td>
+  </tr>
+  <!-- stocks -->
+  <tr class="stocks">
+    <td colspan="11" style="text-align:center;">
+      加载中...
+    </td>
+  </tr>
+</tbody>

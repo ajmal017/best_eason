@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<%= favicon_link_tag '/images/favicon_32.ico', type: "image/x-icon" -%>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>财说后台管理系统</title>
+<%= csrf_meta_tag %>
+<%= stylesheet_link_tag "admin" %>
+</head>
+<body>
+    <div id="head">
+        <div class="top_menu"><a href="/admin/staffers/sign_in">登录</a><a href="<%=new_admin_staffer_registration_path%>">注册</a></div>
+        <div class="logo">财说后台管理系统</div>
+    </div>
+    <div id="middle">
+        <div class="login_content">
+            <table class="login">
+               <%= form_for resource, :as => resource_name, url: admin_staffer_session_path, html: {class: 'form-signin', role: 'form'} do |f| %>
+                    <tbody>
+                        <tr>
+                            <td class="t01"><label for="admin_staffer_email">邮箱：</label></td>
+                            <td class="t02">
+                              <%= f.text_field :email, :tabindex=>"1", :class=>"post_name", required: true  %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="t01"><label for="admin_staffer_password">密码：</label></td>
+                            <td class="t02">
+                              <%= f.password_field :password, :tabindex=>"2", :class=>"post_name", required: true  %>
+                            </td>
+                        </tr>
+                        <tr height="20">
+                            <td></td>
+                            <td class="red"><%= devise_login_error_messages! %></td>
+                        </tr>
+                        <tr>
+                            <td class="t01"></td>
+                            <td class="t03"><input type="submit" value="登录&gt;&gt;" /></td>
+                        </tr>
+                    </tbody>
+                <% end -%>
+            </table>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <%= render '/admin/shared/footer'%>
+</body>
+</html>

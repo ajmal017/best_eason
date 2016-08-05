@@ -1,0 +1,43 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <a href="/admin/recommend">返回列表</a>
+    <%= link_to '编辑', edit_admin_recommend_path(@recommend) %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">id:</td>
+      <td>
+        <%= @recommend.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">标题:</td>
+      <td>
+        <%= @recommend.title %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">URL:</td>
+      <td>
+        <%= link_to @recommend.original_url, @recommend.original_url, target: "_blank" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">来源:</td>
+      <td>
+        <%= @recommend.source %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">内容:</td>
+      <td>
+        <%= raw @recommend.content %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+

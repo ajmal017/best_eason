@@ -1,0 +1,34 @@
+
+<% if email_notice_popup? || current_user.try(:has_unread_notices?) %>
+  <div class="email-alerts">
+    <% if email_notice_popup? %>
+      <div class="basket-prompt">
+        <div class="prompt-box">
+          请登录邮箱<span><%= current_user.email %></span>激活账号。<br/>
+          <%=link_to "没收到E-mail？", account_activate_path(email: current_user.email) %>
+        </div>
+        <div id="triangle-right"><%= image_tag("/images/3.6.1_r2_c2.png") -%></div>
+      </div>
+    <% end %>
+    <% if current_user.has_unread_notices? %>
+      <div class="notice">
+        <div class="notice-title">
+          <h6>通知</h6><span><%= current_user.unread_notifications.count %></span>
+        </div>
+        <div class="news" style="display:none;"></div>
+      </div>
+    <% end %>
+    <%=render '/layouts/user_operation_list'%>
+  </div>
+<% elsif user_signed_in? && (current_user.confirmed? || (!current_user.confirmed? && request.path == '/account/profile')) %>
+  <%=render '/layouts/user_operation_list'%>
+<% elsif !user_signed_in? && request.path =~ /sign_up/ %>
+  <ul class="nav navbar-nav navbar-right">
+    <li><%=link_to "已有账号？登录", new_user_session_path%></li>
+  </ul>
+<% else %>
+  <ul class="nav navbar-nav navbar-right">
+    <li><%= link_to "登录", new_user_session_path %></li>
+    <li><%= link_to "注册", new_user_registration_path %></li>
+  </ul>
+<% end %>

@@ -1,0 +1,44 @@
+<tr>
+  <td class="noBorder"></td>
+  <td class="text-left">
+    <a href="/stocks/<%= stock_infos[:id] %>" class="t-name" target="_blank" title="<%= stock_infos[:com_name] %>">
+      <span><%= stock_infos[:com_name] %></span><i><%= stock_infos[:symbol] %></i>
+    </a>
+  </td>
+  <td>
+    <%= number_to_currency(stock_infos[:realtime_price], unit: stock_infos[:currency_unit], format:"%u%n") %></br>
+    <%= number_to_currency(stock_infos[:average_cost], unit: stock_infos[:currency_unit], format:"%u%n", precision: 3) %>
+  </td>
+  <td data-sort="<%= stock_infos[:change_percent] %>">
+    <%= up_down_style(stock_infos[:change_from_previous_close], force_precision: 2) %></br>
+    <%= stock_change_percent_style_v2(stock_infos[:change_percent], stock_infos[:realtime_price], postfix: "%") %>
+  </td>
+  <td>
+    <span class="ratestar2">
+      <span style="width: <%= stock_ratestar_width(stock_infos[:stock_score]) %>%;"></span>
+    </span>
+  </td>
+  <td class="text-center">
+    <div class="holdingBar">
+      <span class="left"><%= number_to_currency(stock_infos[:low52_weeks], unit: stock_infos[:currency_unit], format:"%u%n") %></span>
+      <span class="right"><%= number_to_currency(stock_infos[:high52_weeks], unit: stock_infos[:currency_unit], format:"%u%n") %></span>
+      <div class="widget">
+        <i style="left:<%= left_px_at_year_price(stock_infos[:high52_weeks], stock_infos[:low52_weeks], stock_infos[:realtime_price]) %>px;"></i>
+      </div>
+    </div>
+  </td>
+  <td><%= stock_infos[:pe_ratio].zero? ? "--" : format_number(stock_infos[:pe_ratio]) %></td>
+  <td><%= humanlize_capitalization(stock_infos[:lastest_volume]) %></td>
+  <td><%= humanlize_capitalization(stock_infos[:market_value]) %></td>
+  <td data-sort="<%= stock_infos[:today_change_percent] %>">
+    <%= up_down_style(stock_infos[:today_change], currency_format: true) %><br/><%= up_down_style(stock_infos[:today_change_percent], postfix: "%") %>
+  </td>
+  <td><%= stock_infos[:total_count].to_s(:delimited) %><br/><%= stock_infos[:can_selled_shares].to_s(:delimited)%></td>
+  <td><%= number_to_currency(stock_infos[:total_value], unit: stock_infos[:currency_unit], format:"%u%n") %></td>
+  <td><%= number_to_currency(stock_infos[:total_cost], unit: stock_infos[:currency_unit], format:"%u%n") %></td>
+
+  <td><%= up_down_style(stock_infos[:total_change], currency_format: true) %></td>
+  <td class="text-center">
+    <a class='blue underline' href="<%= stock_path(stock_infos[:id], account_id: account.pretty_id, trade: "buy") %>" target="_blank">交易</a>
+  </td>
+</tr>

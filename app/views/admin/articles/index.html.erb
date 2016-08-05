@@ -1,0 +1,17 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%= link_to "新建文章", [:new, :admin, :article] %>
+    <%= link_to "同步文章列表", sync_list_admin_articles_path, remote: true%>
+  </span>
+</h1>
+
+<%= render "search_form", :search => @q, :articles => @articles %>
+<%= page_info(@articles) %>
+<%= render 'articles', articles: @articles %>
+
+<script type="text/javascript">
+  function sendToFeed(id){
+    publishToFeed({class_name: "Article", id: id});
+  }
+</script>

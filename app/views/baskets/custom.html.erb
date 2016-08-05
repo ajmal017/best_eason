@@ -1,0 +1,75 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "autocomplete" %>
+  <%= javascript_include_tag "highstock", "baskets_custom" %>
+<% end %>
+
+<div class="container">
+  <div class="content">
+    <h2>正在定制：<%=@basket.title%></h2>
+    <div class="whiteBox">
+      <h3>组合投资回溯表现</h3>
+      <div class="wrapCorner clearfix">
+        <div class="themeChart barloading" id="stock_index_chart" style="margin:0 -10px;height:200px;"></div>
+
+        <div class="themeData">
+          <ol class="asSwitchBtn noTopspace" id="j_time_period" basket-id="<%=@basket.id%>">
+            <li>1周</li>
+            <li class="active">1月</li>
+            <li>3月</li>
+            <li>5年</li>
+          </ol>
+          <p id="j_customed_notice" style="display:none;">
+            <i class="dot plus"></i> 定制后
+            <span></span>
+          </p>
+          <p id="j_original_notice">
+            <i class="dot blue"></i> 定制前
+            <span></span>
+          </p>
+          <p id="j_indexes_notice">
+            <i class="dot green"></i> <em></em>
+            <span></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="text-right">
+        <div class="searchgroup float-left">
+          <input type="text" size="30" placeholder="搜索添加新股票" class="search">
+          <kbd></kbd>
+          <ul class="searchresult" style="display: none;"></ul>
+        </div>
+        <p class="suggestPrice">预估起投金额：<b id="est_buy_min_money">--</b></p>
+      </div>
+
+      <%=form_for @basket, url: customize_basket_path(@basket), method: :post, html: {onsubmit: "return StockAdd.checkForm();"} do |f|%>
+      <div class="wrapCorner">
+        <table cellspacing="0" cellpadding="0" class="themeStocks">
+          <thead>
+            <tr>
+              <th>代码</th>
+              <th>公司名</th>
+              <th><span class="sortcolumn">比重</span></th>
+              <th><span class="sortcolumn">当前价格</span></th>
+              <th><span class="sortcolumn">1年回报</span></th>
+              <th>P/E值</th>
+              <th>市值</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="j_stocks_tbody">
+            <% @basket.stocks.each do |stock|%>
+              <%=render partial: 'custom_element', locals: {stock: stock}%>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <br class="break" />
+      <div style="text-align:right;">
+        <%= f.submit '保存', class: 'btn large'%>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

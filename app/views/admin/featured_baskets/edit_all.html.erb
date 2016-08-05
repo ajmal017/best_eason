@@ -1,0 +1,37 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+ <span class="title_right">
+  <a href="/admin/featured_baskets">返回</a>
+  </span>
+</h1>
+<%= form_tag "/admin/featured_baskets/update_all", method: "PUT" do %>
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>组合id</th>
+        <th>展示类型</th>
+        <th>推荐原因</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @featured_baskets.each_with_index do |fb, i| %>
+        <tr>
+          <td><%= i+1 %><%= hidden_field_tag "featured_basket[][id]", i+1 %></td>
+          <td>
+            <%= text_field_tag "featured_basket[][basket_id]", fb.basket_id %>
+          </td>
+          <td>
+            <%= select_tag "featured_basket[][value_type]", options_for_select(FeaturedBasket::VALUE_TYPE, fb.value_type) %>
+          </td>
+          <td>
+            <%= text_field_tag "featured_basket[][reason]", fb.reason %><br/>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="4"><%= submit_tag "确定" %><br/></td>
+      <tr>
+    </tbody>
+  </table>
+<% end -%>

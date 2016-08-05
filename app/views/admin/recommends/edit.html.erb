@@ -1,0 +1,44 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <a href="/admin/recommends">返回列表</a>
+  </span>
+</h1>
+
+<%= form_for @recommend, as: "recommend", url: "/admin/recommends/#{@recommend.id}", html: {method: "put"} do |f|%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b>标题:</td>
+        <td>
+          <%= f.text_field :title %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>发布时间:</td>
+        <td>
+          <%= f.text_field :published_at, class: 'Wdate', id: 'published_at', value: f.object.published_at.try(:strftime, '%Y-%m-%d %H:%M:%S'), onfocus: "WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss', lang: 'zh-cn'})" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>来源:</td>
+        <td>
+          <%= f.text_field :source %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>内容:</td>
+        <td>
+          <%= f.text_area :content, value: f.object.content, class: 'editor', id: 'richeditor' %>
+         
+        </td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td>
+          <%= f.submit "提交" %>
+        </td>
+      </tr>
+     </tbody>
+  </table>
+<% end -%>

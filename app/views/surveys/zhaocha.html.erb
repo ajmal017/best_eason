@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <%= favicon_link_tag '/images/favicon_32.ico', type: "image/x-icon" -%>
+  <title>财说有奖调查</title>
+  <%= stylesheet_link_tag "/zt/150518/stylesheets/index.css?v=0.1"-%>
+  <%= stylesheet_link_tag "/zt/stylesheets/head_foot.css"-%>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="siteIndex">
+	<%= render '/shared/analytics/gtm'%>
+  <%= render :partial => "layouts/zt_header" %>
+	<div class="banner"><%= image_tag "/zt/150518/images/banner1.png" %></div>
+  <%= form_tag("/surveys", method: "post", remote: true) do %>
+	<div class="content">
+		<div class="problem">
+
+			<h5>1、财说的哪个版块最吸引您？(单选)</h5>
+			<div class="radios clearfix">
+				<input type="radio" id="updown1" class="custom" name="survey[q1_1]" value="0" /><label for="updown1">头条</label>
+				<input type="radio" id="updown2" class="custom" name="survey[q1_1]" value="1" /><label for="updown2">投组合</label>
+				<input type="radio" id="updown3" class="custom" name="survey[q1_1]" value="2" /><label for="updown3" class="margin">选个股</label>
+			</div>
+			<p class="other"><label for="updown6"><input type="radio" name="survey[q1_1]" id="updown6" style="display:none;visibility:hidden;opacity:0;" value="3" />其他：<input type="text" name="survey[q1_2]" maxlength="40" value="" onfocus="document.getElementById('updown6').checked=true"></label></p>
+			<h5>2、您是否已开通美股、港股账户？</h5>
+			<div class="radios clearfix">
+				<input type="radio" id="updown4" class="custom" name="survey[q2]" value="1" /><label for="updown4">是</label>
+				<input type="radio" id="updown5" class="custom" name="survey[q2]" value="0" /><label for="updown5">否</label>
+			</div>
+			<h5 >3、您最想关注哪些证券相关内容？(多选)</h5>
+			<div class="checkboxs clearfix">
+				<input type="checkbox" id="agree1" class="custom1" name="survey[q3_1]" value="0" /><label for="agree1">国内外资讯</label>
+				<input type="checkbox" id="agree2" class="custom1" name="survey[q3_2]" value="1" /><label for="agree2" class="margin">技术指标分析</label><br />
+				<input type="checkbox" id="agree3" class="custom1" name="survey[q3_3]" value="2" /><label for="agree3">热点实时评论</label>
+				<input type="checkbox" id="agree4" class="custom1" name="survey[q3_4]" value="3" /><label for="agree4" class="margin">操作心得</label>
+			</div>
+			<p class="other">其他：<input type="text" name="survey[q3_5]" maxlength="40" value=""></p>
+			<h5 >4、您最喜欢哪个财经app？最看重移动应用的哪些功能？</h5>
+			<textarea class="text" maxlength="200" name="survey[q4]"></textarea>
+			<h5 >5、请您为财说和财说app提出宝贵的改进建议。</h5>
+			<textarea class="text" maxlength="200" name="survey[q5]"></textarea>
+		</div>
+		<div class="personal_information">
+			<h3>请您填写基本信息</h3>
+			<div class="information clearfix">
+				<p class="other">姓名：<input type="text" name="survey[user_name]" value=""></p>
+				<p class="gender">
+					<input type="radio" id="updown8" class="custom2" name="survey[user_gender]" checked value="0" /><label for="updown8"></label><input type="radio" id="updown7" class="custom3" name="survey[user_gender]" value="1" /><label for="updown7"></label>
+				</p>
+				<p class="other">电话：<input type="text" name="survey[user_phone]" value=""></p>
+			</div>
+			<span class="contact">(获奖联系时使用)</span>
+		</div>
+	</div>
+	<div class="foot">
+		<button>猛戳提交建议</button>
+    <p class="alert" style="display:none;">您有未填选项</p>
+		<div class="prize">
+			<div class="prize_con">
+				<h5>奖品设置</h5>
+				<p>活动结束后，将从反馈用户中选出50位最具价值建议，赠送财说定制靠枕一个.请您随时保持电话畅通哦！</p>
+			</div>
+		</div>
+	</div>
+  <% end %>
+	<div class="bomb_box">
+		<div class="box_con">
+			<i class="close"></i>
+			<p class="normal" style="display:none;">您的建议我们已收到,感谢您对财说的支持! <em>稍后请留意我们发布的获奖信息哦！</em></p>
+			<p class="attended" style="display:none;">您已经提过建议啦，感谢您的支持！</p>
+		</div>
+	</div>
+
+	<script>
+		// $(".foot button").on("click",function(){
+		// 	$(".bomb_box").show();
+		// });
+		$(".bomb_box i.close").on("click",function(){
+			$(".bomb_box").hide();
+		});
+	</script>
+  <%= render :partial => "layouts/zt_footer" %>
+</body>
+</html>

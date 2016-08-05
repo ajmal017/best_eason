@@ -1,0 +1,59 @@
+<h1 class="title">
+  <span class="title_left">热点内容</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @topic], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_topics_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">标题</td>
+      <td>
+        <%= @topic.full_title %> <%= link_to "点击预览", @topic, target: "_blank", class: "action" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">市场分类</td>
+      <td>
+        <%= BaseStock::MARKET_AREA_NAMES[@topic.market.try(:to_sym)] %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">浮动股票池</td>
+      <td>
+        以下股票表示: 该热点内至少有两个组合包含这些股票，且权重大于等于10%
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th width="100">排名</th>
+      <th width="100">股票代码</th>
+      <th width="200">股票名称</th>
+      <th width="100">类别</th>
+      <th>热度</th>
+      <th>平均比重</th>
+      <th>相关组合ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @data.each_with_index do |data, index| %>
+      <%- stock = data.stock -%>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= link_to(stock.symbol, stock_path(stock), target: "_blank",title: "查看详情", class: "action") %></td>
+        <td class="align_left"><%= link_to(stock.com_name, stock_path(stock), target: "_blank",title: "查看详情") %></td>
+        <td><%=stock.market_area_name%></td>
+        <td><%= data.total_count %></td>
+        <td><%= (data.avg_weight * 100).round(2)%>%</td>
+        <td class="align_left action" width="300"><%= raw(data.basket_ids.split(",").sort_by(&:to_i).map{|basket_id| link_to(basket_id, "/baskets/#{basket_id}", target: "_blank")} * " ")%></td>
+      </tr>
+    <% end %>
+    <%= blank_table(7) if @data.blank? -%>
+  </tbody>
+</table>

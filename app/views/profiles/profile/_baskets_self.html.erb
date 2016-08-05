@@ -1,0 +1,33 @@
+<div class="baskets">
+  <h3>我创建的组合(<%= @baskets.total_entries %>)</h3>
+  <% if @baskets.total_entries.zero? %>
+  <div class="noContents">
+    <a class="createBasket" href="/baskets/new" target="_blank">创建您自己的主题投资<span>尝试快速创建属于您期望的主题吧！</span></a>
+  </div>
+  <% else %>
+  <table>
+    <thead>
+      <tr>
+        <td>名称</td>
+        <td>一月回报</td>
+        <td>创建至今回报</td>
+        <td>净值(倍)</td>
+        <td>创建天数</td>
+        <td>调整</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @baskets.each do |basket| %>
+        <%= render partial: "profiles/profile/basket_item_self", locals: {basket: basket} %>
+      <% end %>
+    </tbody>
+    <% if @baskets.next_page %>
+    <tfoot>
+      <tr>
+        <th colspan="6"><a href="javascript:" class="viewmore" data-last-id="<%= @baskets.last.id %>" data-show-num="5">查看全部</a></th>
+      </tr>
+    </tfoot>
+    <% end %>
+  </table>
+  <% end %>
+</div>

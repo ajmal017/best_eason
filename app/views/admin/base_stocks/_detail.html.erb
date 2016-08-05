@@ -1,0 +1,16 @@
+<div class="modal-body">
+  <div style="margin-left:0px;" class="list-font">
+	  <span class="form-title list-show">市值</span>: <span class="form-content"><%= qualified_info[:market_capitalization] %></span><br/>
+       
+   	<span class="form-title list-show">平均每日成交量</span>: <span class="form-content"><%= qualified_info[:average_daily_volume] %></span><br/>
+     
+    <span class="form-title list-show">昨收盘价</span>: <span class="form-content"><%= qualified_info[:previous_close] %></span><br/>
+       
+    <br/>
+    <span class="form-title list-show">验证</span>: <span class="form-content"><%= qualified_process(base_stock, qualified_info[:market_capitalization], qualified_info[:average_daily_volume], qualified_info[:previous_close]) %> </span><br/>
+    <span class="form-title list-show">校验结果</span>: <span class="form-content"><%= base_stock.check_qualification? ? "合格" : "不合格" %> </span><br/>
+        
+  </div>
+</div>
+      
+   

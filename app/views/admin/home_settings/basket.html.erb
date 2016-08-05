@@ -1,0 +1,43 @@
+<h1 class="title">
+  <span class="title_left">登录后首页--组合推荐</span>
+  <span class="title_right"><a href="/admin/home_settings">返回首页设置</a></span>
+</h1>
+
+<%= render partial: "sub_menus" %>
+
+<div class="box">
+  <table class="grid_form">
+    <thead>
+      <tr>
+        <th width="200"></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="sortable">
+      <tr>
+        <td class="field">当前组合：</td>
+        <td>
+          <% if @basket %>
+            <%= link_to @basket.title, basket_path(@basket), target: "_blank" %>
+          <% else %>
+            尚未设置
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field">设置组合：</td>
+        <td>
+          <input type="text" placeholder="请输入组合id" id="recommend_basket_id" size="10"/>
+          <input type="button" value="保存" onclick="javascript:saveRecommendBasketId();"/>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  function saveRecommendBasketId(){
+    var basket_id = $("#recommend_basket_id").val();
+    $.post("/admin/home_settings/update_basket", {basket_id: basket_id}, function(){})
+  }
+</script>

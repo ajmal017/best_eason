@@ -1,0 +1,10 @@
+<% if @banner_upload.errors.present? %>
+  alert("<%= @banner_upload.errors.first %>");
+<% else %>
+  //todo
+  $("#btn_upload_banner").parent().append("<img width='200' src='<%= @banner_upload.image.url(:large) %>' />");
+  $("#btn_upload_banner").remove();
+  $("#upload_banner_id").val(<%= @banner_upload.id %>);
+  hideCropModal();
+<% end %>
+

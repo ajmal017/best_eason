@@ -1,0 +1,55 @@
+<div class="leftBox">
+  <h3>关于财说</h3>
+  <ul>
+    <!-- <li>
+      <a href="/about/about_us" class="<%= about_menu_class("about_us") %>">关于我们</a>
+    </li> -->
+    <li>
+      <a href="/about/contact_us" class="<%= about_menu_class("contact_us") %>">联系我们</a>
+    </li>
+    <li>
+      <a href="/about/join_us" class="<%= about_menu_class("join_us") %>">加入我们</a>
+    </li>
+  </ul>
+  <h3>使用帮助</h3>
+  <ul>
+    <li><a href="/about/guide" class="<%= about_menu_class("guide") %>">财说指南</a></li>
+    <li class="jia <%= add_class_if_include('expand', *%w{account binding access hk_bank transfer}) %>">
+      <a href="javascript:;" class="expand_control <%= about_menu_class(*%w{account binding access hk_bank transfer}) %>">开户指引</a>
+      <ul>
+        <li><a href="/about/account" class="<%= about_menu_class("account") %>">如何开户</a></li>
+        <li><a href="/about/binding" class="<%= about_menu_class("binding") %>">如何绑定账号</a></li>
+        <li><a href="/about/access" class="<%= about_menu_class("access") %>">如何存款/取款</a></li>
+        <li><a href="/about/hk_bank" class="<%= about_menu_class("hk_bank") %>">如何办理香港银行卡</a></li>
+        <li><a href="/about/transfer" class="<%= about_menu_class("transfer") %>">如何转户</a></li>
+      </ul>
+    </li>
+    <li class="jia <%= add_class_if_include('expand', *%w{help basket faq}) %>">
+      <a href="javascript:;" class="expand_control <%= about_menu_class(*%w{help basket faq}) %>">交易帮助</a>
+      <ul>
+        <li><a href="/about/help" class="<%= about_menu_class("help") %>">个股交易</a></li>
+        <li><a href="/about/basket" class="<%= about_menu_class("basket") %>">组合交易</a></li>
+        <li><a href="/about/faq" class="<%= about_menu_class("faq") %>">交易常见问题</a></li>
+      </ul>
+    </li>
+    <li class="jia <%= add_class_if_include('expand', *%w{knowledge knowledge_hk knowledge_us}) %>">
+      <a href="javascript:;" class="expand_control <%= about_menu_class(*%w{knowledge knowledge_hk knowledge_us}) %>">股市常识</a>
+      <ul>
+        <li><a href="/about/knowledge" class="<%= about_menu_class("knowledge") %>">A股市场</a></li>
+        <li><a href="/about/knowledge_hk" class="<%= about_menu_class("knowledge_hk") %>">港股市场</a></li>
+        <li><a href="/about/knowledge_us" class="<%= about_menu_class("knowledge_us") %>">美股市场</a></li>
+      </ul>
+    </li>
+    <li><a href="/about/term" class="<%= about_menu_class("term") %>">常见术语</a></li>
+  </ul>
+  <ul>
+    <li>
+      <a href="/about/feedback" class="<%= about_menu_class("feedback") %>">问题反馈</a>
+    </li>
+  </ul>
+</div>
+<script type="text/javascript">
+  $(".leftBox ul a.expand_control").click(function(){
+    $(this).parent().toggleClass('expand').siblings().removeClass('expand');
+  })
+</script>

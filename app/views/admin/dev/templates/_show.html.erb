@@ -1,0 +1,32 @@
+<div class="demo_left">
+  <h2>Demo:</h2>
+  <div class="demo_box">
+    <table class="grid_form">
+      <tbody>
+        <tr>
+          <td class="field">姓名:</td>
+          <td>王长明</td>
+        </tr>
+        <tr>
+          <td class="field"><b>*</b>邮箱: </td>
+          <td>
+            wangchangming@caishuo.com
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<div class="demo_right">
+  <h2>代码:</h2>
+  <%== code(:show, :erb) %>
+
+  <br/>
+  <h2 class="title">使用说明:</h2>
+  <p>
+    1. grid_form, 加载样式<br/><br/>
+    2. field, 左侧属性<br/><br/>
+    3. <%="<b>*</b>"%>, 是否必填项
+  </p>
+</div>

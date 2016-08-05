@@ -1,0 +1,76 @@
+<h1 class="title">
+  <span class="title_left">Exec detail列表页</span>
+  <span class="title_right">
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_exec_details_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :user_id_eq, :placeholder => 'UserID', class: 'form-control' %>
+    <%= f.text_field :trading_account_id_eq, :placeholder => 'TradingAccountID', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @exec_details.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Basket</th>
+      <th>Order</th>
+      <th>Instance</th>
+      <th>Currency</th>
+      <th>Symbol</th>
+      <th>Avg price</th>
+      <th>Ib order</th>
+      <th>Price</th>
+      <th>Shares</th>
+      <th>Side</th>
+      <th>Time</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+      <th>Type</th>
+      <th>User</th>
+      <th>Stock</th>
+      <th>Trading account</th>
+      <th>Rt order</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @exec_details.each do |exec_detail| %>
+    <tr>
+      <td><%= exec_detail.id %></td>
+      <td><%= exec_detail.basket_id %></td>
+      <td><%= exec_detail.order_id %></td>
+      <td><%= exec_detail.instance_id %></td>
+      <td><%= exec_detail.currency %></td>
+      <td><%= exec_detail.symbol %></td>
+      <td><%= exec_detail.avg_price %></td>
+      <td><%= exec_detail.ib_order_id %></td>
+      <td><%= exec_detail.price %></td>
+      <td><%= exec_detail.shares %></td>
+      <td><%= exec_detail.side %></td>
+      <td><%= exec_detail.time %></td>
+      <td><%= exec_detail.created_at %></td>
+      <td><%= exec_detail.updated_at %></td>
+      <td><%= exec_detail.type %></td>
+      <td><%= exec_detail.user_id %></td>
+      <td><%= exec_detail.stock_id %></td>
+      <td><%= exec_detail.trading_account_id %></td>
+      <td><%= exec_detail.rt_order_id %></td>
+      <td><%= link_to '详情', admin_exec_detail_path(exec_detail), target: '_blank'%></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @exec_details %>

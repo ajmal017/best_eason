@@ -1,0 +1,65 @@
+<div class="SiteSearch" id="SiteSearch">
+  <input type="text" placeholder="搜索 股票、组合、人" /><kbd></kbd>
+  <ul style="display: none;"></ul>
+</div>
+<% if user_signed_in? %>
+  <div class="UserMenu float-right">
+    <div class="UserName">
+      <%=image_tag current_user.avatar_url(:small), size: '30', class: 'avator' %>
+      <% if counter && counter.show_warning? %> <i class="newMsg"></i> <% end %>
+    </div>
+    <span class="UserQuickLink">
+      <%= link_to "自选", "/users/stocks", title: "自选", class: top_menu_tab_class('following', @top_menu_tab) -%><%= link_to "持仓", "/accounts/overview", title: "持仓", class: top_menu_tab_class('positions', @top_menu_tab) -%>
+    </span>
+    <div class="UserDropDown">
+      <i></i>
+      <ul>
+        <li><a class="ico1" href="/p">我的主页</a></li>
+        <li>
+          <a class="ico8" href="/notifications/mention">
+          我的
+          <% if counter && counter.unread_mention_count > 0 %>
+            (<strong><%= counter.unread_mention_count %></strong>)
+          <% end %>
+          </a>
+        </li>
+        <li>
+          <a class="ico2" href="/notifications/comment">
+          评论与赞
+          <% if counter && counter.comment_with_like > 0 %>
+          (<strong><%= counter.comment_with_like %></strong>)
+          <% end %>
+          </a>
+        </li>
+        <li>
+          <a class="ico3" href="/messages">
+          私信
+          <% if counter && counter.unread_message_count > 0 %>
+          (<strong><%= counter.unread_message_count %></strong>)
+          <% end %>
+          </a>
+        </li>
+        <li>
+          <a class="ico4" href="/notifications/system">
+          通知
+          <% if counter && (counter.system + counter.stock_reminder + counter.position) > 0 %>
+          (<strong><%= counter.system + counter.stock_reminder + counter.position %></strong>)
+          <% end %>
+          </a>
+        </li>
+        <li>
+          <a class="ico7" href="/setting/hongbao">红包</a>
+        </li>
+        <li class="headerLine"></li>
+        <li><a class="ico5" href="/setting/profile">账户设置</a></li>
+        <li><%=link_to "退出", logout_path, class: "ico6", title: '退出' %></li>
+      </ul>
+    </div>
+  </div>
+<% elsif request.path != '/topics' %>
+  <div class="LoginMenu float-right">
+    <%= link_to "登录", login_path, title: "登录" -%>
+    <span class="lineGap"></span>
+    <%= link_to "注册", signup_path, title: "注册" -%>
+  </div>
+<% end %>

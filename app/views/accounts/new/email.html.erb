@@ -1,0 +1,66 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/investment.css", "/stylesheets/v3/creat1.css" %>
+<% end %>
+
+<div class="container">
+  <%= render :partial => "/shared/sub_menus/positions" %>
+
+  <div class="content">
+      <nav class="createStep">
+        <strong>绑定交易账号</strong>
+        <span class="current"><i>1</i> 绑定交易账号</span><span><i>2</i> 绑定状态</span>
+      </nav>
+      <div class="bindaccountbox">
+        <div class="entercode">
+          <strong>绑定<%= @broker.cname %>账号至财说：</strong>
+          <p>
+            <% if params[:name] == "unicorn" %>
+              <%=image_tag "/images/v3/bind-samp0.jpg", width: 550, alt: '益群证券'%> 
+            <% else %>
+              <%=image_tag "/images/v3/bind-samp1.jpg", width: 550, alt: '盈透证券'%> 
+            <% end %>
+          </p>
+          <br />
+          <br />
+          <p>
+            <label class="alert">请参考上图，输入您在<%= @broker.cname %>的客户编号</label>
+            <%= form_for @trading_account || TradingAccount.new, url: broker_accounts_path(@broker.name), method: :post do |f| %>
+              <%=f.text_field :broker_no, class: 'large', placeholder: "请输入您在#{@broker.cname}的客户编号：Uxxxxxx", style: 'width:330px;'%> &nbsp;
+              <button class="b_btn btn_attend ">绑定</button>
+              <br />
+
+              <% if @trading_account.try(:errors).present? %>
+                <span class="errorTip">&nbsp;<%= @trading_account.errors[:broker_no].try(:first)%></span>
+              <% else %>
+                <span class="errorTip" style="display:none;">&nbsp;请输入正确的客户编号</span>
+              <% end %>
+            <% end %>
+          </p>
+          <br />
+          <br />
+        </div>
+      </div>
+    </div>
+
+</div>
+
+<script>
+  $(function(){
+      
+    $("form").submit(function(){
+      var brokerNo = $("input[name='trading_account[broker_no]']").val();
+      if($.trim(brokerNo).length == 0){
+        $('.errorTip').show();
+        return false;
+      }else{
+        return true;
+      }
+    }) 
+    
+    $("input[name='trading_account[broker_no]']").on('focus', function(){
+      $('.errorTip').hide();  
+    })
+
+  })
+
+</script>

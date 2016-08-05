@@ -1,0 +1,139 @@
+<%= form_tag "/admin/banners", onsubmit: "return checkFormValid();" do %>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td>上传banner：</td>
+        <td>
+          <input type="button" class="btn btn-primary" value="上传图片" onclick="javascript:$('#real_avatar').trigger('click');" id="btn_upload_banner"/>
+        </td>
+      </tr>
+
+      <tr>
+        <td>链接标题：</td>
+        <td><%= text_field_tag :title, "", size: 50 %></td>
+      </tr>
+      <tr>
+        <td>链接地址：</td>
+        <td><%= text_field_tag :banner_url, "", size: 50 %></td>
+      </tr>
+      
+      <tr>
+        <td><input type="hidden" name="upload_banner_id" id="upload_banner_id" /></td>
+        <td><input type="submit" value="保存"/></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<div>
+  <%=form_tag save_img_admin_banners_path, method: :put, multipart: true, target: 'curform', class: 'real-file' do%>
+    <%= file_field_tag :image, id: 'real_avatar', name: 'image', accept: 'image/png,image/gif,image/jpeg,image/bmp' %>
+  <% end %>
+</div>
+
+
+<div id="FloatWindow">
+  <div class="FloatContent width640" style="width:750px;">
+    <i class="close-window" onclick="javascript:window.location.reload();"></i>
+    <div class="header">
+      <h2>剪裁图片</h2>
+    </div>
+    <%=form_tag crop_pic_admin_banners_path, method: :put, remote: true do %>
+      <input type="hidden" name="upload_recommend_id" id="upload_recommend_id" />
+      <% %w(x y w h).each do |attribute| %>
+        <%= hidden_field_tag "crop_#{attribute}", nil, id: "crop_#{attribute}", name: "banner[crop_#{attribute}]" %>
+      <% end %>
+
+      <div class="textbody center">
+      </div>
+      <div class="footer">
+        <%= submit_tag '确定', class: 'btn btn-primary'%>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function checkFormValid(){
+    console.log(111);
+    var url_regexp = new RegExp("(http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?", "gi");
+    var title = $.trim($("#title").val());
+    var banner_url = $.trim($("#banner_url").val());
+    var image = $("#upload_banner_id").val();
+    if (banner_url.match(url_regexp) == null){
+      alert("请检查url是否正确！");
+      return false;
+    }else if (image == "" || title == ""){
+      alert("请填写标题或选择banner图片");
+      return false;
+    }
+    return true;
+  }
+
+  $(function(){
+    // iframe 不刷新提交文件
+    $("#real_avatar").change(function(){
+      var currentForm = $(this).parents("form");
+      if($("iframe[name='curform']").length > 0){
+        var thisIframe = $("iframe[name='curform']");
+      }else{
+        var thisIframe = $("<iframe style='opacity:0;_filter:alpha(opacity=0)'></iframe>").attr("name",currentForm.attr("target"));
+      }
+    
+      $(currentForm).after(thisIframe);
+      $(currentForm).submit();
+      $("#real_avatar").val("");
+      showCropModal();
+    });
+  })
+
+// 显示裁剪框
+var showCropModal = function(){
+  $('#FloatWindow').fadeIn();
+  $('#FloatWindow .FloatContent').slideDown();
+  $('body').addClass('fixed');
+}
+
+function hideCropModal(){
+  $("iframe").remove();
+  $('#FloatWindow').fadeOut();
+  $('#FloatWindow .FloatContent').slideUp();
+  $('body').removeClass('fixed');
+}
+
+// 设置裁剪坐标
+var updateCoordinate = function(c){
+  if (parseInt(c.w) > 0){
+    $('#crop_x').val(c.x);
+    $('#crop_y').val(c.y);
+    $('#crop_w').val(c.w);
+    $('#crop_h').val(c.h);
+  }
+}
+
+// @Jcrop 初始化
+var JcropInit = function(){
+  var jcrop_api, boundx, boundy;
+  var y_div_x = 0.49382716049382713;
+
+  $('#cropbox').Jcrop({
+    onChange: updateCoordinate,
+    onSelect: updateCoordinate,
+    aspectRatio: 2.025
+  },function(){
+    var bounds = this.getBounds();
+    boundx = bounds[0];
+    boundy = bounds[1];
+    jcrop_api = this;
+    if(boundx >= boundy/y_div_x){
+      bound_length = boundy - 30;
+      pointer_x = (boundx - bound_length/y_div_x) / 2;
+      jcrop_api.setSelect([pointer_x, 15, bound_length/y_div_x + pointer_x, bound_length + 15]);
+    }else{
+      bound_length = boundx - 30;
+      pointer_y = (boundy - bound_length*y_div_x) / 2;
+      jcrop_api.setSelect([15, pointer_y, bound_length + 15, bound_length*y_div_x + pointer_y]);
+    }
+  });
+};
+</script>

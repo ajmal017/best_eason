@@ -1,0 +1,35 @@
+<!--[if lt IE 9]>
+<div id="ieUpgrade">
+	<%= stylesheet_link_tag "/stylesheets/v3/ieupgrade.css" -%>
+	<div>
+		<div>
+			<b class="closeit">X</b>
+			<p>您应该升级您的浏览器，以达到最佳运行效果！</p>
+			<table>
+				<caption><strong>财说&trade;</strong> 为您提供了大量丰富及便捷的功能，需要使用以下浏览器，以达到最佳的运行效果。请您选择相应浏览器图标进行安装或升级。</caption>
+				<tr>
+					<th>
+					<a href="http://www.baidu.com/s?wd=chrome" target="_blank">
+						<%= image_tag "/images/v3/browser_chrome.gif" %>
+					</a>
+					</th>
+					<td><a href="http://www.baidu.com/s?wd=chrome" target="_blank">安装<br />Google Chrome</a></td>
+					<th><a href="http://www.baidu.com/s?wd=Firefox%E7%81%AB%E7%8B%90%E6%B5%8F%E8%A7%88%E5%99%A8" target="_blank"><%= image_tag "/images/v3/browser_firefox.gif" %></a></th>
+					<td><a href="http://www.baidu.com/s?wd=Firefox%E7%81%AB%E7%8B%90%E6%B5%8F%E8%A7%88%E5%99%A8" target="_blank">安装<br />Firefox</a></td>
+				</tr>
+				<tr>
+					<th><a href="http://www.baidu.com/s?wd=safari" target="_blank"><%= image_tag "/images/v3/browser_safari.gif" %></a></th>
+					<td><a href="http://www.baidu.com/s?wd=safari" target="_blank">安装<br />Safari</a></td>
+					<th><a href="http://www.baidu.com/s?wd=ie9" target="_blank"><%= image_tag "/images/v3/browser_ie.gif" %></a></th>
+					<td><a href="http://www.baidu.com/s?wd=ie9" target="_blank">升级到<br />Internet Explorer 9+</a></td>
+				</tr>
+			</table>
+			<script type="text/javascript">
+				$('.closeit').click(function(){
+					$('#ieUpgrade').hide();
+				});
+			</script>
+		</div>
+	</div>
+</div>
+<![endif]-->

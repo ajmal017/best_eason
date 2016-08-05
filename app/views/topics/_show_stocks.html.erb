@@ -1,0 +1,18 @@
+<h4>
+    <a name="seciton2"></a>最受益个股 
+    <em><%= @topic_stocks.size %>股票</em> 
+    <span>- 被大家调入仓最多的</span>
+    <label>
+      试试看? 
+      <% if user_signed_in? %>
+        <a href="<%= new_basket_path(stock_ids: @basket_stock_ids) %>" class="b_btn" target="_blank">一键创建我的组合</a>
+      <% else %>
+        <a href="javascript:void(0);" class="j-login-popup b_btn">一键创建我的组合</a>
+      <% end %>
+    </label>
+</h4>
+<div class="clearfix stockresult">
+    <% @topic_stocks.each do |topic_stock| %>
+      <%= render partial: "stock_item", locals: {topic_stock: topic_stock, stock: topic_stock.base_stock} %>
+    <% end %>
+</div>

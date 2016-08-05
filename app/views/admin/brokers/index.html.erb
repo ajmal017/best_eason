@@ -1,0 +1,47 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+  <%=link_to '新建交易所', new_admin_broker_path%>
+  </span>
+</h1>
+<div class="box">
+状态: &nbsp;&nbsp;
+  <a href="?status_eq=" class="<%='current' if params[:status_eq].blank? %>">全部</a>
+  <a href="?status_eq=new" class="<%='current' if params[:status_eq] == 'new'%>">新建</a>
+  <a href="?status_eq=published" class="<%='current' if params[:status_eq] == 'published'%>">公开</a>
+</div>
+<%= page_info(@brokers) %>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>名称</th>
+      <th>中文名称</th>
+      <th>master_account</th>
+      <th>当前状态</th>
+      <th>交易状态</th>
+      <th>当前交易日期</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @brokers.each do |broker| %>
+    <tr>
+    <td><%= broker.id %></td>
+    <td><%= broker.name %></td>
+    <td><%= broker.cname %></td>
+    <td><%= broker.master_account %></td>
+    <td><%= broker.status %></td>
+    <td><%= broker.trading_status %></td>
+    <td class="action"><%= broker.trading_date %><%= link_to '刷新', [:sync_trading_date, :admin, broker] %></td>
+    <td><%= broker.created_at %></td>
+    <td class="action">
+      <%=link_to '查看', admin_broker_path(broker), target: '_blank'%>
+      <%=link_to '编辑', edit_admin_broker_path(broker), target: '_blank'%>
+    </td>
+  </tr>
+<% end %>
+  </tbody>
+</table>
+<%= will_paginate @brokers %>

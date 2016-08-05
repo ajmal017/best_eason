@@ -1,0 +1,44 @@
+<h1 class="title">
+  <span class="title_left">大赛股票调仓次数</span>
+  <span class="title_right">
+    
+  </span>
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <a href="<%= admin_adjusted_stocks_path(params.merge(top: nil)) %>" class="<%= "current" if params[:top].blank? %>">全部大赛组合</a>
+  <a href="<%= admin_adjusted_stocks_path(params.merge(top: 10)) %>" class="<%= "current" if params[:top] == "10" %>">Top 10 组合</a>
+  <a href="<%= admin_adjusted_stocks_path(params.merge(top: 30)) %>" class="<%= "current" if params[:top] == "30" %>">Top 30 组合</a>
+  <a href="<%= admin_adjusted_stocks_path(params.merge(top: 50)) %>" class="<%= "current" if params[:top] == "50" %>">Top 50 组合</a>
+  <a href="<%= admin_adjusted_stocks_path(params.merge(top: 100)) %>" class="<%= "current" if params[:top] == "100" %>">Top 100 组合</a>
+
+  <br /><br />
+  <%= form_tag admin_adjusted_stocks_path, method: "get", class: 'form-inline', role: 'form' do -%>
+    大赛：<%= select_tag :contest, options_for_select([["虚拟大赛", "2"], ["实盘大赛", "3"]], params[:contest]) %>
+    类型：<%= select_tag :type, options_for_select([["加仓", "add"], ["减仓", "reduce"]], params[:type]) %>
+    开始时间：<input type="text" class="Wdate" name="start_time" id="start_time" size="30" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<%= @start_time.to_s(:db) %>" />
+    结束时间：<input type="text" class="Wdate" name="end_time" id="end_time" size="30" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="<%= @end_time.to_s(:db) %>" />
+    <input type="submit" value="检索" />
+  <% end %>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>股票</th>
+      <th>调仓次数</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @logs.each do |log| %>
+    <tr>
+      <td><%= link_to log.stock.com_name, stock_path(log.stock_id), target: "_blank" %></td>
+      <td><%= log.total %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>

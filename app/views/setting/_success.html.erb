@@ -1,0 +1,11 @@
+<div class="envelope success">
+  <div class="pic"><span><%= @length %></span></div>
+  <p>开户完成</p>
+  <b>您离成功只差<span>1步</span>&nbsp;&nbsp;&nbsp;赶快开始交易</b>
+  <div class="text-center mt30">
+    <%= link_to '美股交易', stocks_path(search: { market_region: :us }, sort: { sort_by: :change_rate, direction: :desc }), class: 'b_btn trade mr25' %>
+    <%= link_to '港股交易', stocks_path(search: { market_region: :hk }, sort: { sort_by: :change_rate, direction: :desc }), class: 'b_btn trade' %>
+  </div>
+  <%= render partial: 'update_invition' if @length == 15 %>
+  <%= render partial: 'rule' %>
+</div>

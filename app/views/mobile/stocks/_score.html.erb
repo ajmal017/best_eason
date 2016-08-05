@@ -1,0 +1,22 @@
+<article class="score"> <!-- 指数没有这个模块 -->
+  <table>
+    <tr>
+      <th rowspan="2">
+		<div>财说评分
+			<i class="plus"><%= @stock.stock_screener.try(:score).try(:round, 1) %></i>
+	        <mark class="ratestar">
+				<mark style="width:<%= stock_ratestar_width(@stock.stock_screener.score) %>%;"></mark>
+			</mark>
+	    </div>
+      </th>
+      <td>市盈率<span><%= stock_pe_comparison(@stock_screener) %> <%= stock_screener_score(@stock_screener.try(:pe_r)) %></span></td>
+      <td>长期盈利<span><%= stock_lpg_comparison(@stock_screener) %> <%= stock_screener_score(@stock_screener.try(:lpg_r)) %></span></td>
+      <td>现金流<span><%= stock_cf_comparison(@stock_screener) %> <%= stock_screener_score(@stock_screener.try(:cf_r)) %></span></td>
+    </tr>
+    <tr>
+      <td>毛利率<span><%= stock_gm_comparison(@stock_screener) %> <%= stock_screener_score(@stock_screener.try(:gm_r)) %></span></td>
+      <td>资产回报<span><%= stock_wst_comparison(@stock_screener) %> <%= stock_screener_score(@stock_screener.try(:wst_r)) %></span></td>
+      <td>市净值<span><%= stock_div_cn_comparison(@stock_screener) %> <%= stock_screener_score(@stock_screener.try(:div_r)) %></span></td>
+    </tr>
+  </table>
+</article>

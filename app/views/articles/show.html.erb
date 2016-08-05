@@ -1,0 +1,84 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/column.css" %>
+<% end %>
+
+<div class="container">
+	<div class="content clearfix column_subject">
+		<div class="subject_area">
+			
+      <h1><%= @article.title %></h1>
+      
+      <%= render 'subject_nav', article: @article %>
+      
+      <%= render 'subject_content', article: @article %>
+			
+			<%= render :partial => 'sharebox' %>
+			
+			<%= render 'comments'  %>
+		</div>
+    
+		<div class="subject_related">
+      <%= render :partial => 'link_baskets' %>
+
+      <%= render :partial => 'link_stocks' %>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+  var _article_id = <%= params[:id] %>, _top_commentable_id = <%= params[:id] %>, _top_commentable_type = 'articles';
+  var comment_editor;
+
+  window.oncontextmenu = function(){return false;};
+</script>
+
+<%=content_for :script do %>
+  <%= javascript_include_tag "article", "/javascripts/kindeditor/kindeditor.js" %>
+<% end %>
+
+<style>
+  .ke-toolbar {
+    display:none;
+    height:0px !important;
+    border-bottom:0px !important;
+    padding:0px !important;
+  }
+  .ke-edit {
+    height: 78px !important;
+  }
+  .ke-edit-iframe {
+    height: 78px !important;
+  }
+</style>
+
+<%= render partial: '/comments/script' %>
+<%=content_for :script do %>
+<script type="text/javascript">
+  commentPack.init({
+    Emotion: {imagePrefix: '<%= Setting.cdn_host %>/images/emotions/'},
+    Completer:{},
+    Comments: {
+      ajaxpath: "articles/<%= params[:id] %>",
+      afterloadEvent: function(totalNumber){
+        initBubbleBox();
+        $(".timeago").timeago();
+        caishuo.adjustFooter();
+        // 导航条评论数量
+        var inner = $('.subjectNav .comments_blue').parent().html();
+        $('.subjectNav .comments_blue').parent().html(inner.replace(/\d+/, totalNumber));
+      }
+    },
+    isloginEvent: function(){
+      return isLogined();
+    },
+    dologinEvent:function(){
+      openLoginDialog();
+    }
+  });
+
+  $('.subjectContent br').each(function(){
+    $(this).next().is('br') && $(this).remove();
+  });
+</script>
+<% end %>
+

@@ -1,0 +1,26 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+<%- @page_title = "联系我们" -%>
+<div class="container userEdit clearfix contactUs">
+  <%= render :partial => "left_bar" %>
+
+  <div class="rightBox">
+    <h2>联系我们</h2>
+    <div class="about_right">
+      <%= image_tag "/images/v3/new_map.png" %>
+      <ul>
+        <li>总部：博恩投资有限公司</li>
+        <li>电话：（852）3669-7230</li>
+      </ul>
+      <br />
+      <ul>
+        <li>北京分公司： 北京昊乐科技有限公司</li>
+        <li>地址：北京市东城区东直门南大街11号中汇大厦C座901</li>
+        <li>电话：400-771-8858</li>
+        <li>邮箱：touch@caishuo.com</li>
+        <li>合作QQ ：377857996</li>
+      </ul>
+    </div>
+  </div>
+</div>

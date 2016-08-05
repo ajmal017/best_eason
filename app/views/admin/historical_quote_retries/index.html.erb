@@ -1,0 +1,53 @@
+<h1 class="title">
+  <span class="title_left">历史数据重试列表页</span>
+  <span class="title_right">
+    <%#= link_to "新建Historical quote retry", new_admin_historical_quote_retry_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_historical_quote_retries_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :base_stock_id_eq, :placeholder => 'StockId', class: 'form-control' %>
+    <%= f.text_field :date_eq, :placeholder => 'Date', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @historical_quote_retries.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>StockId</th>
+      <th>日期</th>
+      <th>Trading date</th>
+      <th>Number</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+      <th colspan="3">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @historical_quote_retries.each do |historical_quote_retry| %>
+    <tr>
+      <td><%= historical_quote_retry.id %></td>
+      <td><%= historical_quote_retry.base_stock_id %></td>
+      <td><%= historical_quote_retry.date %></td>
+      <td><%= historical_quote_retry.trading_date %></td>
+      <td><%= historical_quote_retry.number %></td>
+      <td><%= historical_quote_retry.created_at %></td>
+      <td><%= historical_quote_retry.updated_at %></td>
+      <td class="action"><%= link_to '详情', [:admin, historical_quote_retry] %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @historical_quote_retries %>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+  <title><%= @page_title %></title>
+  <style type="text/css">
+    body {font: 14px/1.5 "Helvetica", Arial, "Microsoft YaHei";color: #6f6f6f; background: white;}
+    img {max-width: 90%;display: block;margin: 0 auto;}
+    blockquote {border: 0;background-color: rgb(245,245,245);margin: 6px 0;padding: 1em;border-left: 3px solid #00E1E1;font-size: 110%;}
+  </style>
+</head>
+<body>
+  <%= render '/shared/analytics/gtm'%>
+  <%= sanitize @basket.description %>
+</body>
+</html>

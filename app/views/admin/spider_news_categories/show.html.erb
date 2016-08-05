@@ -1,0 +1,60 @@
+<h1 class="title">
+  <span class="title_left"><%= @page_title %></span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @player], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_spider_news_sources_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><%= I18n.t('activerecord.attributes.player.id') %></td>
+      <td>
+        <%= @player.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><%= I18n.t('activerecord.attributes.player.user_id') %></td>
+      <td>
+        <%= @player.user_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><%= I18n.t('activerecord.attributes.player.contest_id') %></td>
+      <td>
+        <%= @player.contest_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><%= I18n.t('activerecord.attributes.player.original_money') %></td>
+      <td>
+        <%= humanlize_number @player.original_cash %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><%= I18n.t('activerecord.attributes.player.status') %></td>
+      <td>
+        <%= @player.status %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">券商账号</td>
+      <td>
+        <%= @player.trading_account.try(:broker_no) %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">交易账号</td>
+      <td>
+        <%= @player.trading_account.try(:cash_id) %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">创建时间</td>
+      <td>
+        <%= @player.created_at %>
+      </td>
+    </tr>
+  </tbody>
+</table>

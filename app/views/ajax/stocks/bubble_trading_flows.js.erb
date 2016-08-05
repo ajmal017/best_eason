@@ -1,0 +1,10 @@
+<% if @trading_flows.present? %>
+  $("#j_bubble_trading_flow_table tbody").html("<%=j render partial: 'stocks/stock/capital_flow_collect', locals: {trading_flows: @trading_flows}%>")
+
+  var last_update_time = "<%=@trading_flows.first.update_time rescue ''%>";
+  
+  if(last_update_time.length != 0){
+    var notice_html = "实时成交信息 - 更新时间 " + last_update_time;
+    $("#j_trading_flow_table caption").html(notice_html);
+  }
+<% end %>

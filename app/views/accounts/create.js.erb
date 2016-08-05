@@ -1,0 +1,11 @@
+<% if @trading_account.persisted? && @trading_account.errors.empty? %>
+  <% if @trading_account.broker.market_cn? %>
+    window.location.reload();
+  <% else %>
+    $('.j_account_new').find('dd.active').next().addClass('active').siblings().removeClass();
+  <% end %>
+<% else %>
+  $(".j_account_new").find(".errorTip").text("<%=@trading_account.errors[:broker_no].try(:first)%>").show();  
+<% end %>
+
+$(".j_account_new").find("input:submit").removeAttr("disabled");

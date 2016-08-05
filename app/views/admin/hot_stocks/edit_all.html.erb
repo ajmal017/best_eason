@@ -1,0 +1,45 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+ <span class="title_right">
+  <a href="/admin/hot_stocks">返回</a>
+  </span>
+</h1>
+<%= form_tag "/admin/hot_stocks/update_all", method: "PUT" do %>
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>标题</th>
+        <th>股票ids(多个id以,分割)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @hot_stocks.each_with_index do |hs, i| %>
+        <tr>
+          <td><%= i+1 %><%= hidden_field_tag "hot_stock[][id]", i+1 %></td>
+          <td>
+            <%= text_field_tag "hot_stock[][title]", hs.title %>
+          </td>
+          <td>
+            <%= text_field_tag "hot_stock[][stock_ids]", hs.stock_ids %><br/>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="4"><%= submit_tag "确定" %><br/></td>
+      <tr>
+    </tbody>
+  </table>
+<% end -%>
+
+<div style="text-align: center;">
+  <h3>待加入，维度股票选择</h3>
+  <br/>
+  <ul>
+    <li>当天加入自选最多</li>
+    <li>近三日加自选最多</li>
+    <li>当日开盘前热搜</li>
+    <li>当日收盘后热搜</li>
+    <li>大赛买入最多</li>
+  </ul>
+</div>

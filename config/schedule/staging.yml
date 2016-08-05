@@ -1,0 +1,335 @@
+stock_index_us:
+  cron: "30 7 * * *"
+  class: CalculateBasketIndex
+  queue: calculate_basket_index
+  description: "每天7点30分执行计算美股Basket INDEX等后续任务"
+  args: 
+    - us
+
+stock_index_hk:
+  cron: "0 20 * * *"
+  class: CalculateBasketIndex
+  queue: calculate_basket_index
+  description: "每天20点执行计算港股Basket INDEX等后续任务"
+  args: 
+    - hk
+
+stock_index_cn:
+  cron: "20 18 * * *"
+  class: CalculateBasketIndex
+  queue: calculate_basket_index
+  description: "每天18点20分执行计算A股Basket INDEX等后续任务"
+  args: 
+    - cn
+
+reconcile_request:
+  every: 10m
+  class: ReconcileRequest
+  queue: reconcile_request
+  description: "调平"
+
+destroy_unconfirmed_orders:
+  cron: "0 6 * * *"
+  class: DestroyUnconfirmedOrders
+  queue: destroy_unconfirmed_orders
+  description: "每天6点执行删除多少小时前创建的未确认订单"
+
+us_position_archive:
+  cron: "0,20 8 * * *"
+  class: DailyPositionArchive
+  queue: daily_archive
+  args: 
+    - us
+  description: "每天8点归档美股交易数据"
+
+sehk_position_archive:
+  cron: "0,30 1 * * *"
+  class: DailyPositionArchive
+  queue: daily_archive
+  args: 
+    - sehk
+  description: "每天1点归档港股交易数据"
+
+cn_position_archive:
+  cron: "0,30 1 * * *"
+  class: DailyPositionArchive
+  queue: daily_archive
+  args:
+    - cn
+  description: "每天1点归档A股交易数据"
+
+archive_account_value:
+  cron: "20 5 * * *"
+  class: ArchiveAccountValue
+  queue: daily_archive
+  description: "每天5点20归档现金余额"
+
+archive_user_profit:
+  cron: "40 8 * * *"
+  class: ArchiveUserProfit
+  queue: daily_archive
+  description: "每天8点40计算用户收益"
+
+data_check_foreign_property:
+  cron: "55 8 * * 1-6"
+  class: DataCheck::Property
+  queue: data_check
+  description: "每天8点55分检查美股港股账户净值"
+  args:
+    - foreign
+
+data_check_position_archive:
+  cron: "0 9 * * 1-6"
+  class: DataCheck::PositionArchive
+  queue: data_check
+  description: "检查持仓归档"
+
+archive_user_day_property:
+  cron: "0 20 * * *"
+  class: ArchiveUserDayProperty
+  queue: daily_archive
+  description: "每天20点计算A股账户净值"
+
+base_stock_checker:
+  cron: "0 7 * * *"
+  class: BaseStockChecker
+  queue: base_stock_checker
+  description: "每天1点10分檢測股票"	
+
+daily_reconcile:
+  cron: "0 5,17 * * *"
+  class: DailyReconcile
+  queue: daily_reconcile
+  description: "每天凌晨5点与下午17点調平所有用戶"
+
+request_fundamental:
+  every: "11s"
+  class: RequestFundamental
+  queue: request_fundamental
+  description: "每11秒触发请求ib基础数据"
+
+topic_basket:
+  cron: "30 8,10,12,15,18,20,23 * * *"
+  class: TopicBasketWorker
+  queue: topic
+  description: "某些时间点计算topic热点下股票的热度"
+
+topic_basket_adjust:
+  cron: "0 5 * * 6"
+  class: TopicBasketAdjustWorker
+  queue: topic_basket_adjust
+  description: "每周六5点系统自动对topic对应的basket进行调仓"
+
+basket_fluctuation:
+  cron: "0 6 * * *"
+  class: BasketFluctuation
+  queue: basket_fluctuation
+  description: "每天6点跑一遍波动"
+
+investment_cache:
+  cron: "0 9 * * *"
+  class: InvestmentCache
+  queue: investment 
+  description: "每天9点跑一遍投资概览缓存"
+
+order_cancell_retry:
+  every: 10m
+  class: OrderCancellRetry
+  queue: order_cancell_retry
+  description: "每10分钟检查有没有需要重试取消的订单"
+
+log_eraser:
+  cron: "30 5 * * *"
+  class: LogEraser
+  queue: log_eraser
+  description: "每天清除一个月之前的日志"
+
+basket_auditing:
+  cron: "1 * * * *"
+  class: BasketAuditing
+  queue: basket_auditing
+  description: "定时检查审核中组合并发邮件：每小时的1分调用，worker中判断具体什么时间执行"
+
+heartbeat:
+  every: 1m
+  class: Heartbeat
+  queue: heartbeat
+  description: "每隔1分钟发送一个heartbeat到cts"
+
+#sync_realtime_from_logs:
+#  every: "10s"
+#  class: SyncRealtimeFromLogs
+#  queue: sync_realtime_from_logs
+#  description: "每10s从RealtimeSymbol取symbols并同步实时数据"
+
+readjust_basket_us_summer:
+  cron: "31 21 * * *"
+  class: ReadjustBasketsWorker
+  queue: readjust_basket
+  description: "每天21点31分readjust美股非交易时段的basket调仓，夏令时"
+  args: 
+    - us
+
+readjust_basket_us_winter:
+  cron: "31 22 * * *"
+  class: ReadjustBasketsWorker
+  queue: readjust_basket
+  description: "每天22点31分readjust美股非交易时段的basket调仓，冬令时"
+  args: 
+    - us
+
+readjust_basket_cn:
+  cron: "31 9 * * *"
+  class: ReadjustBasketsWorker
+  queue: readjust_basket
+  description: "每天9点31分readjust A股非交易时段的basket调仓"
+  args: 
+    - cn
+
+readjust_basket_hk:
+  cron: "31 9 * * *"
+  class: ReadjustBasketsWorker
+  queue: readjust_basket
+  description: "每天9点31分readjust港股非交易时段的basket调仓"
+  args: 
+    - hk
+
+cal_basket_index_after_trading_us_summer:
+  cron: "02 4 * * *"
+  class: BasketIndexAfterTrading
+  queue: basket_index_after_trading
+  description: "交易结束用实时信息算index，美国，夏令时"
+  args: 
+    - us
+
+cal_basket_index_after_trading_us_winter:
+  cron: "02 5 * * *"
+  class: BasketIndexAfterTrading
+  queue: basket_index_after_trading
+  description: "交易结束用实时信息算index，冬令时"
+  args: 
+    - us
+
+cal_basket_index_after_trading_cn:
+  cron: "02 15 * * *"
+  class: BasketIndexAfterTrading
+  queue: basket_index_after_trading
+  description: "交易结束用实时信息算index"
+  args: 
+    - cn
+
+cal_basket_index_after_trading_hk:
+  cron: "02 16 * * *"
+  class: BasketIndexAfterTrading
+  queue: basket_index_after_trading
+  description: "交易结束用实时信息算index"
+  args: 
+    - hk
+
+basket_rank_worker_noon:
+  cron: "40 11 * * 1-5"
+  class: BasketRankWorker
+  queue: basket_rank
+  description: "A股交易大赛更新排名11:40"
+
+basket_rank_worker:
+  cron: "10 15,21 * * 1-5"
+  class: BasketRankWorker
+  queue: basket_rank
+  description: "A股交易大赛更新排名15:10,21:10"
+
+login_all_noon:
+  cron: '31 11 * * 1-5'
+  class: LoginAllWorker
+  queue: login_all
+  description: "每天停盘后LoginAll"
+
+login_all_afternoon:
+  cron: '01 15 * * 1-5'
+  class: LoginAllWorker
+  queue: login_all
+  description: "每天停盘后LoginAll"
+
+screenshot_us:
+  cron: "30 8 * * *"
+  class: ScreenshotWorker
+  queue: screenshot_worker
+  description: "每天8点30分执行计算美股组合、等截图"
+  args: 
+    - us
+
+screenshot_hk:
+  cron: "40 20 * * *"
+  class: ScreenshotWorker
+  queue: screenshot_worker
+  description: "每天20点40分执行计算美股组合、等截图"
+  args: 
+    - hk
+
+screenshot_cn:
+  cron: "30 19 * * *"
+  class: ScreenshotWorker
+  queue: screenshot_worker
+  description: "每天19点30分执行计算美股组合、等截图"
+  args: 
+    - cn
+    
+static_html_cleaner:
+  cron: "0 8,23 * * *"
+  class: StaticHtmlCleanerWorker
+  queue: static_html_cleaner_worker
+  description: "每天8/23点删除静态文件重新生成"
+
+adjust_followed_prices_worker:
+  cron: "15 9 * * 1-5"
+  class: AdjustFollowedPricesWorker
+  queue: adjust_followed_prices_worker
+  description: "每天早上9点15对关注的股票价格复权处理"
+
+archive_account_risk:
+  every: 2h
+  class: Archive::AccountRisk
+  queue: daily_archive
+  description: "归档账户持仓风险分析"
+
+account_rank_worker_clear_cache:
+  cron: "01 9 * * *"
+  class: AccountRankWorker
+  queue: account_rank_worker
+  description: "9点清缓存"
+  args: 
+    - 0
+    - true
+
+account_rank_worker_1:
+  cron: "26 9-15 * * *"
+  class: AccountRankWorker
+  queue: account_rank_worker
+  description: "9-15:26分，跑模拟账号的几种收益"
+
+account_rank_worker_2:
+  cron: "0 10,12,15 * * *"
+  class: AccountRankWorker
+  queue: account_rank_worker
+  description: "10,12,15:0分，跑模拟账号的几种收益"
+
+feed_filter_cleaner:
+  cron: "20 9 * * 1-5"
+  class: FeedFilterWorker
+  queue: feed_filter
+  description: "9.20对部分filter清楚readers等数据"
+
+account_analysis_worker_cn:
+  cron: "0 2 * * *"
+  class: AccountAnalyseWorker
+  queue: account_analysis
+  description: "早上2点对A股模拟账户分析"
+
+account_analysis_worker_us:
+  cron: "30 8 * * *"
+  class: AccountAnalyseWorker
+  queue: account_analysis
+  args: 
+    - 
+    - us
+  description: "早上8点30对us/hk账户分析"

@@ -1,0 +1,19 @@
+<div class="tabSwitch center">
+<% if @is_index %>
+  <a href="javascript:;">领涨榜</a>
+  <a href="javascript:;">领跌榜</a>
+<% else %>
+  <a href="javascript:void(0);">财说评分</a>
+  <a href="javascript:void(0);">竞争对手</a>
+  <% if @topic_stocks.present? || @relevant_baskets.present? || @stock.articles.present? %>
+    <a href="javascript:void(0);" class="current">关注度</a>
+  <% end %>
+  <% if !@stock.is_us? %>
+    <a href="javascript:void(0);" class="j_news_tag">新闻及公告</a>
+  <% end %>
+  <a href="javascript:void(0);" class="j_com_desc" name="com_desc">基本信息</a>
+  <% if @stock.is_cn? %>
+    <a href="javascript:void(0);" class="j_trading_flow_tag">主力资金</a>
+  <% end %>
+<% end %>
+</div>

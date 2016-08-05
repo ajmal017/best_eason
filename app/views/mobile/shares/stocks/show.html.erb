@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= @page_title %></title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.caishuo.css" %>
+</head>
+
+<body>
+  <header id="CaishuoMenu">
+    <%= link_to '<span>免费下载</span>'.html_safe,mobile_link("/app?from=shares_basket") %>
+  </header>
+  <div class="stock">
+    <%
+      low = @stock.low52_weeks
+      high = @stock.high52_weeks
+      current = @stock.realtime_price
+      percent = (current-low).fdiv(high-low)*100
+      price_zheng, price_ling = current.to_s.split('.')
+    %>
+    <h1><%= @stock.c_name %><span class="symbol"><%= @stock.symbol %></span></h1>
+    <div class="price"><span class="currency"><%= @stock.currency_unit %></span><%= price_zheng %>.<span class="dotafter"><%= price_ling %></span></div>
+    <div class="todaychange <%= @stock.change_from_previous_close < 0 ? 'mins' : 'plus' %>">
+      <span class="currency"><%= @stock.currency_unit %></span><%= up_down_value(@stock.change_from_previous_close, without_em: true) %>(<%= up_down_value(@stock.percent_change_from_previous_close, postfix: '%', without_em: true) %>) <span class="text">今日</span>
+    </div>
+    <div id="StockChart"></div>
+        <table id="StockChartMenu"><tr>
+            <td><span id="minutesDay">分时</span></td>
+            <td><span id="minutesWeek">5天</span></td>
+            <td><span id="kMapDay">日k</span></td>
+            <td><span id="kMapWeek">周k</span></td>
+            <td><span id="kMapMonth">月k</span></td>
+        </tr></table>
+  </div>
+  <article>
+    <dl class="stockinfo">
+      <dt><div class="holdingBar"><span><%= format_number(low) %></span><em>52周最低/高</em><span><%= format_number(high) %></span><div><i style="left:<%= percent.floor rescue 0 %>%"></i></div></div></dt>
+      <dd><div>今开<strong><%= format_number(@stock.open) %></strong></div></dd>
+      <dd><div>成交量<strong><%= humanlize_number(@stock.pretty_lastest_volume) %><%= @stock.pretty_volume_unit %></strong></div></dd>
+      <dd><div>今高<strong><%= format_number(@stock.high) %></strong></div></dd>
+      <dd><div>30日均量<strong><%= humanlize_number(@stock.pretty_thirty_days_volume) %><%= @stock.pretty_volume_unit %></strong></div></dd>
+      <dd><div>今低<strong><%= format_number(@stock.low) %></strong></div></dd>
+      <dd><div>市值<strong><%= humanlize_capitalization(@stock.adj_market_capitalization) %></strong></div></dd>
+      <dd><div>换手率<strong><%= @stock.turnover_rate||'--' %>%</strong></div></dd>
+      <dd><div>P/E市盈率<strong><%= @stock.adj_pe_ratio %></strong></div></dd>
+    </dl>
+  </article>
+</body>
+<%= javascript_include_tag "/javascripts/jquery-1.11.1.min", "/javascripts/jquery.caishuo" %>
+<%= javascript_include_tag "/javascripts/mo.caishuo.js", '/javascripts/highstock.js' %>
+<script type="text/javascript">
+  var stockId = <%= @stock.id %>, market = '<%= @stock.market_area %>';
+  var m_url = '<%= mobile_link "/mobile/data/stocks/#{@stock.id}/quote_prices.js"%>';
+  var k_url = '<%= mobile_link "/mobile/data/stocks/#{@stock.id}/klines.js"%>';
+  $('#StockChartMenu span').click(function(){
+    if ($(this).hasClass('active')){return;}
+    $('#StockChartMenu span').removeClass();
+    $(this).addClass('active');
+    switch (this.id){
+      case 'minutesDay':
+      case 'minutesWeek':
+        moCaishuo.stock.minutesType = this.id.substr(7).toLowerCase();
+        if (!!moCaishuo.stock.minutesData){
+          moCaishuo.stock.dayWeekMinutes('#StockChart');
+        }else{
+          $.getJSON(m_url+'?callback=?',function(data){
+            moCaishuo.stock.minutesData = data;
+            moCaishuo.stock.dayWeekMinutes('#StockChart');
+          });
+        }
+        break;
+      case 'kMapDay':
+      case 'kMapWeek':
+      case 'kMapMonth':
+        var type = this.id.substr(4).toLowerCase(),limits = {day:90,week:550,month:1900};
+        moCaishuo.stock.kmapType = type;
+        if (!!moCaishuo.stock.kdata[type]){
+          moCaishuo.stock.kMap('#StockChart');
+        }else{
+          $.getJSON(k_url+'?callback=?',{type:type,limit:limits[type]}, function(data){
+            moCaishuo.stock.kdata[type] = data;
+            moCaishuo.stock.kMap('#StockChart');
+          });
+        }
+        break;
+      default:
+    }
+  }).eq(0).trigger('click');
+</script>
+</html>

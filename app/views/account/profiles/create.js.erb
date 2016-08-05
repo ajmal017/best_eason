@@ -1,0 +1,5 @@
+<% if current_user.valid? %>
+  registerSucesss();
+<% else %>
+  window.location.reload(); //js端已做前端验证，正常不会进入此步骤
+<% end %>

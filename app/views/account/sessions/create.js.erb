@@ -1,0 +1,11 @@
+<% if @user %>
+  $('.login-popup-dialog').hide();
+  window.location.reload();
+<% elsif %w(landing events).include?(params[:from])  %>
+  $("#j_new_user_error").show();
+<% elsif %w(topics).include?(params[:from]) %>
+  $(".home_login span.error").show();
+  $("#user_password").val("");
+<% else %>
+  $('#j_popup_err').css('display', 'block');  
+<% end %>

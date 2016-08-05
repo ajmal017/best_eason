@@ -1,0 +1,66 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+</h1>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_position_archives_path, class: "form-inline", role: "form" do |f| %>
+    <%= f.text_field :user_id_eq, placeholder: "UserId"%>
+    <%= f.text_field :trading_account_id_eq, placeholder: "TradingAccountId"%>
+    <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+  <% end %>
+</div>
+
+<div class="box">
+  <%=link_to "归档今日A股持仓", archive_admin_position_archives_path(market: 'cn', date: Date.today.to_s(:db)), method: :post, data: {confirm: '此操作危险,你确认吗?'}, remote: true%>
+  <%=link_to "归档昨日A股持仓", archive_admin_position_archives_path(market: 'cn', date: Date.yesterday.to_s(:db)), method: :post, data: {confirm: '此操作危险,你确认吗?'}, remote: true%>
+  <%=link_to "归档昨日美股持仓", archive_admin_position_archives_path(market: 'us', date: Date.yesterday.to_s(:db)), method: :post, data: {confirm: '此操作危险,你确认吗?'}, remote: true%>
+  <%=link_to "归档昨日港股持仓", archive_admin_position_archives_path(market: 'hk', date: Date.yesterday.to_s(:db)), method: :post, data: {confirm: '此操作危险,你确认吗?'}, remote: true%>
+</div>
+
+<%= page_info(@position_archives) %>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>用户ID</th>
+      <th>InstanceId</th>
+      <th>StockId</th>
+      <th>归档日期</th>
+      <th>持仓量</th>
+      <th>BasketId</th>
+      <th>BasketMount</th>
+      <th>平均成本</th>
+      <th>市场</th>
+      <th>Currency</th>
+      <th>闭市价格</th>
+      <th>TradingAccountId</th>
+      <th>CashId</th>
+      <th>创建时间</th>
+      <th>更新时间</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @position_archives.each do |pa| %>
+    <tr>
+      <td><%= pa.id %></td>
+      <td><%= pa.user_id %></td>
+      <td><%= pa.instance_id %></td>
+      <td><%= pa.base_stock_id %></td>
+      <td><%= pa.archive_date %></td>
+      <td><%= pa.shares %></td>
+      <td><%= pa.basket_id %></td>
+      <td><%= pa.basket_mount %></td>
+      <td><%= pa.average_cost %></td>
+      <td><%= pa.market %></td>
+      <td><%= pa.currency %></td>
+      <td><%= pa.close_price %></td>
+      <td><%= pa.trading_account_id %></td>
+      <td><%= pa.cash_id %></td>
+      <td><%= pa.created_at %></td>
+      <td><%= pa.updated_at %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= will_paginate @position_archives %>  

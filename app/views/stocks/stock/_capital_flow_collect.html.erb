@@ -1,0 +1,40 @@
+<% trading_flows.each do |tf| %>
+  <tr class="j_em_color">
+  <td><%= link_to tf.symbol, stock_path(tf.base_stock_id), target: '_blank' %></td>
+  <td><%= link_to tf.name, stock_path(tf.base_stock_id), target: '_blank' %></td>
+  <td><em><%= tf.change %>%</em></td>
+  
+  <% combine_buy_value = tf.huge_net_in.to_f + tf.large_net_in.to_f %>
+  <% combine_buy_percent = tf.huge_net_in_percent.to_f + tf.large_net_in_percent.to_f %>
+
+  <td><em><%=humanlize_number_with_flag(combine_buy_value)%></em></td>
+  <td><em data="<%=combine_buy_value%>"><%=combine_buy_percent.round(2)%>%</em></td>
+
+  <td><em><%= humanlize_number_with_flag(tf.huge_net_in.to_f) %></em></td>
+  <td><em data="<%=tf.huge_net_in.to_f%>"><%= tf.huge_net_in_percent.to_f %>%</em></td>
+  
+  <td><em><%= humanlize_number_with_flag(tf.large_net_in.to_f) %></em></td>
+  <td><em data="<%=tf.large_net_in.to_f%>"><%= tf.large_net_in_percent.to_f %>%</em></td>
+  
+  <td><em><%= humanlize_number_with_flag(tf.middle_net_in.to_f) %></em></td>
+  <td><em data="<%=tf.middle_net_in.to_f%>"><%= tf.middle_net_in_percent.to_f %>%</em></td>
+  
+  <td><em><%= humanlize_number_with_flag(tf.small_net_in.to_f) %></em></td>
+  <td><em data="<%=tf.small_net_in.to_f%>"><%= tf.small_net_in_percent.to_f %>%</em></td>
+</tr>
+<% end %>
+
+
+<script>
+  $(function(){
+    $('.j_em_color em').each(function(){
+      var _val = $.trim($(this).attr('data')) || $.trim($(this).text());
+      
+      if(_val.match("^-") && !_val.match("^--")){
+        $(this).addClass('mins');
+      }else if(!_val.match("^--")){
+        $(this).addClass('plus'); 
+      }
+    })    
+  })
+</script>

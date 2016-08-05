@@ -1,0 +1,26 @@
+<div class="small_title">
+  <h3 class="flag <%= @basket.market %>"><%= @basket.title %></h3>
+  <ul>
+    <% if @basket.join_contest? %>
+      <li><a class="no_style stockagame">A股大赛</a></li>
+    <% end %>
+    <% @tags.each do |tag| %>
+      <li><a class="no_style"><%= tag.name %></a></li>
+    <% end %>
+  </ul>
+  <span>
+    <em><%= @origin_basket.follows_count %></em>人关注
+    <% if @is_followed %>
+      <span id="follow_basket" class="w_btn btn_theme_c btn_dropDown">已关注<a href="javascript:" >取消关注</a></span>
+    <% else %>
+      <span id="follow_basket" class="w_btn btn_theme_a <%= login_popup_class %>">关注</span>
+    <% end %>
+    <a href="javascript:void(0)" class="w_btn default" id="weChat_share">分享</a>
+  </span>
+  <div class="share">
+    <div class="triangle"></div>
+    <img src="<%= wechat_qr_code_by_url(mobile_basket_url(@basket)) %>" alt="分享财说" class="weChat">
+    <p>微信分享</p>
+    <button class="w_btn default" onclick="javascript:share_to_sina_weibo(location.href, '<%=@basket.share_text%>', '<%=@basket.screenshot%>');">新浪微博</button>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<h1 class="title">
+  <span class="title_left">股票概念板块详情页面</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @stock_component], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_stock_components_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">ID</td>
+      <td>
+        <%= @stock_component.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">股票内部ID</td>
+      <td>
+        <%= @stock_component.base_stock_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">聚源内部编码</td>
+      <td>
+        <%= @stock_component.inner_code %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">聚源板块代码</td>
+      <td>
+        <%= @stock_component.cs_code %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">板块名称</td>
+      <td>
+        <%= @stock_component.name %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">创建时间</td>
+      <td>
+        <%= @stock_component.created_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">更新时间</td>
+      <td>
+        <%= @stock_component.updated_at %>
+      </td>
+    </tr>
+  </tbody>
+</table>

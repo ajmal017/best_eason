@@ -1,0 +1,16 @@
+<div class="stockresult" id="j_stockresult" style="display: none;">
+  <h2>
+    <em class="j_stocks_count"><%= number_with_delimiter(stocks.count) %></em>只股票
+    <span class="sortPanel j_filter_order">
+      <span class="sortcolumn" data-name="market_value">市值</span>
+      <span class="sortcolumn sortdown" data-name="change_rate">涨跌幅</span>
+      <span class="sortcolumn" data-name="score">财说SCORE</span>
+    </span>
+  </h2>
+  <div class="clearfix j_stocks_search" current_page="1">
+    <% stocks.each do |stock| %>
+      <%= render partial: 'stock_item', locals: { stock: stock } %>
+    <% end %>
+  </div>
+  <div class="addmore j_stocks_addmore" >加载更多</div>
+</div>

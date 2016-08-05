@@ -1,0 +1,36 @@
+<% @page_title = "用户反馈" %>
+<%= content_for :header do %>
+	<style type="text/css">
+		body {padding: 0;margin: 0;font: 14px/1.5 Helvetica,"Helvetica Neue",微软雅黑,"segoe UI Light","Kozuka Gothic Pro";background: #f2f2f2;}
+		.feedBack {margin: 0;padding: 0;}
+		.feedBack textarea 	{-webkit-appearance: caret;display: block;width: 100%;-webkit-box-sizing: border-box;outline: 0;margin: 12px 0;background: white;border-radius:0;padding: 12px;border:1px solid #cbcbcb;border-style:solid none;font-size: 16px;resize: none;}
+		.feedBack input 	{-webkit-appearance: caret;display: block;width: 100%;-webkit-box-sizing: border-box;outline: 0;margin: 12px 0;background: white;border-radius:0;padding: 12px;border:1px solid #cbcbcb;border-style:solid none;font-size: 16px;box-shadow: none;}
+		.feedBack div {padding: 0 12px;}
+		.feedBack button 	{display: block;width: 100%;-webkit-box-sizing: border-box;margin: 12px 0;background:#007aff;border-radius: 4px;color: white;font-size:16px;text-align: center;border:none;line-height: 44px;font-weight:bold;}
+	</style>
+	<%= javascript_include_tag "jquery", "jquery_ujs" %>
+	<%= csrf_meta_tags %>
+<% end %>
+
+<%= form_for Feedback.new, url: ajax_feedbacks_path(format: :json), :html => {class: "feedBack", onsubmit: "return false;"} do |f| %>
+<%= f.text_area :content, placeholder: "填写内容", rows: 5 %>
+<%= f.text_field :contact_way, value: "", placeholder: "联系方式" %>
+<div><button onclick="javascript:sendFeedback();">提交</button></div>
+<% end %>
+
+<%= content_for :script do %>
+<script type="text/javascript">
+function sendFeedback(){
+  var content = $("#feedback_content").val();
+  var contact_way = $("#feedback_contact_way").val();
+  if (content == "" || contact_way == ""){
+    alert("请填写反馈内容或联系方式！");
+  }else{
+    $.post("<%= mobile_link('/mobile/feedbacks.json') %>", {feedback: {content: content, contact_way: contact_way}}, function(){
+      $("#feedback_content").val("");
+      alert("反馈成功，谢谢！");
+    })
+  }
+}
+</script>
+<% end %>

@@ -1,0 +1,31 @@
+<table class="grid">
+  <thead>
+    <tr>
+      <th>broker账号</th>
+      <th>已调平?</th>
+      <th>调平等级</th>
+      <th>symbol</th>
+      <th>portfolio</th>
+      <th>position</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% rrls.each_with_index do |rrl, index| %>
+      <% rrl.unreconciled.each do |item| %>
+        <tr <%= tr_class(index) %>>
+          <td><%= rrl.trading_account.broker_no %></td>
+          <td><%= rrl.trading_account.count == 0 ? "是" : "否" %></td>
+          <td><%= rrl.trading_account.count %></td>
+          <td><%= item[0] %></td>
+          <td><%= item[1] %></td>
+          <td><%= item[2] %></td>
+          <td class="action"><%= render 'commands', account: rrl.trading_account, symbol: item[0] %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate rrls, class: "page" %>
+
+

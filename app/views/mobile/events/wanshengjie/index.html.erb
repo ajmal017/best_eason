@@ -1,0 +1,35 @@
+  <% @page_title = "属于股民的万圣趴！天天抓妖股，最高中5000元！"%>
+
+  <%= stylesheet_link_tag '/zt/151026_share/mo.index.css'%>
+  
+  <div style="display:none"><%= image_tag '/zt/151026_share/share_300x300.png' %></div>
+  <%= image_tag '/zt/151026_share/share.jpg' %>
+  <%= link_to(image_tag('/zt/151026_share/share_download.jpg', alt: '下载'), mobile_link("/mobile/downloads/redirect"), target: "_blank" ) %>
+  <%= image_tag '/zt/151026_share/rule.png', class: "activity_rule" %>
+  <div class="activityRule">
+    <div class="rules"> 
+      <i></i>
+      <div class="header"></div>
+      <div class="content">
+        <div class="title">活动奖品及规则</div>
+        <div class="description">
+          <ul>
+            <li>本活动仅限A股，连续5个交易日，每天最多送出5个小恶魔充电宝（价值128元），5200mAh，颜色随机</li>
+            <li>猜中涨停股的用户获得充电宝，若出现所猜股票相同、多只股票涨停时，最早猜中的5名用户获奖</li>
+            <li>连续五天都猜中涨停（累计涨幅最高）的用户获得5000元现金大奖！共一名！ </li>
+            <li>不可猜一字板股票</li>
+            <li>奖金个税需自理</li>
+            <li>最终解释权归财说所有</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(".activity_rule").click(function(){
+      $(".activityRule").show();
+    })
+    $(".rules i").click(function(){
+      $(".activityRule").hide();
+    })
+  </script>

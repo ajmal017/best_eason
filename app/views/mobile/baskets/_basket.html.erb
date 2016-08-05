@@ -1,0 +1,6 @@
+<%= link_to mobile_link("/mobile/baskets/#{basket.id}") do %>
+  <%= basket_return_at_mobile_list_page(basket, @order_param)%>
+  <span class="themeInfo"><b><i><%= basket.market_name %></i><%= basket.tags[0..2].map(&:name).join(' ') %></b><em><%= timeago basket.modified_at %></em></span>
+  <h2><%= basket.title %></h2>
+  <span>操盘：<%= basket.author.username %></span>
+<% end %>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <%= seo_title(@page_title, @hide_page_title_postfix) %>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1, user-scalable=no">
+  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no" />
+  <%= favicon_link_tag '/images/favicon_32.ico', type: "image/x-icon" -%>
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.global.css" %>
+  <%= javascript_include_tag "mobile.js", "/javascripts/mo.caishuo.js", "/javascripts/mo.caishuo.bridge.min.js" %>
+  <%= include_gon -%>
+  <%= controller_javascript_include_tag %>
+  <%= yield :header %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="<%= @body_class %>">
+  <%= render partial: "/layouts/top_download" unless mobile_request? %>
+  <%#= render '/shared/analytics/gtm'%>
+  <%= yield %>
+  <%= yield :script %>
+  <%= render '/shared/analytics' -%>
+	<%= yield :ext_css %>
+</body>
+  <%= render '/layouts/edition_footer' unless mobile_request? %>
+  <script type="text/javascript">
+    $(function(){
+      FastClick.attach(document.body);
+    })
+  </script>
+</html>

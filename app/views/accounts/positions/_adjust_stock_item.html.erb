@@ -1,0 +1,16 @@
+<tr area="<%= position.base_stock.market_area %>">
+  <input type="hidden" value="<%= position.base_stock.id %>" class="j_adjust_stock_id" />
+  <th class="j_stock_symbol"><%= link_to position.base_stock.symbol, stock_path(position.base_stock_id), target: "_blank", class: "flag #{position.base_stock.market_area}" %></th>
+  <th><%= link_to position.base_stock.com_name, stock_path(position.base_stock_id), target: "_blank" %></th>
+  <td class="j_stock_weight"></td>
+  <td class="j_stock_count"><%= position.can_selled_shares.to_i %></td>
+  <td><%= position.base_stock.currency_unit %><%= format_number(position.average_cost) %></td>
+  <td data="<%= position.base_stock.realtime_price %>">
+    <%= position.base_stock.currency_unit %>
+    <%= format_number(position.base_stock.realtime_price) %>
+    (<%= up_down_style(position.base_stock.change_percent, postfix: "%") %>)
+  </td>
+  <td class="asButton" stock_id="<%= position.base_stock_id %>">
+    <a href="javascript:" class="sbtn buy stock_buy">买入</a><a href="javascript:" class="sbtn sell stock_sell">卖出</a>
+  </td>
+</tr>

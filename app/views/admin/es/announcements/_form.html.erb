@@ -1,0 +1,44 @@
+<%= javascript_include_tag "/javascripts/kindeditor/kindeditor.js" %>
+
+<%= form_for [:admin, @announcement] do |f| %>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>ID:</td>
+      <td>
+        <%= @announcement.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>标题:</td>
+      <td>
+        <%= f.text_field :title %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>分类:</td>
+      <td>
+        <%= f.text_field :category %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>公布时间:</td>
+      <td>
+        <%= f.text_field :pub_date %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>文档地址:</td>
+      <td>
+        <%= f.text_field :url %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"></td>
+      <td>
+        <%= f.submit "提交" %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end -%>

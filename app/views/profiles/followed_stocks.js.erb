@@ -1,0 +1,3 @@
+<% @followed_stocks.each do |follow, stock| %>
+  $(".customs .forstocks tbody").append('<%= j render partial: "profiles/profile/stock_item_#{@render_type}", locals: {stock: stock, follow: follow} %>');
+<% end %>

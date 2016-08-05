@@ -1,0 +1,63 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/investment.css" %>
+<% end %>
+
+<div class="container">
+  <div class="content">
+    <h2><a href="/users/brokers">交易账号管理</a></h2>
+    <div class="bindaccountbox">
+      <h1 class="center">绑定<%= @broker.cname %>账户：</h1>
+
+      <% if @user_broker %>
+        <div style="margin-left: 40px;font-size:12px;">
+          你在券商处的客户编号已确认。<br/>
+          为了确证客户的归属，我们已经向你的证券账户注册邮箱发送了一封验证邮件。<br/>
+          请查收，并点击链接验证。<br/>
+
+          没收到？点此<a href="javascript:void(0);" data="<%= @user_broker.id %>" id="j_resend_email">重新发送验证邮件</a>
+        </div>
+      <% else %>
+        <div class="entercode" style="display:none;">
+          你提交的客户编号: <span></span>财说已经收到。我们将需要1-2个工作日确认，请耐心等待。
+        </div>
+        <div class="entercode">
+          <%= form_for UserBroker.new, url: user_brokers_path, method: :post, remote: true do |f| %>
+            <%=f.hidden_field :broker_id, value: @broker.id%>
+            <input type="text" style="width:330px;" placeholder="请输入您在<%=@broker.cname%>的客户编号：Uxxxxxx" class="large" name="user_broker[broker_no]"/> &nbsp;
+            <%=f.submit '绑定', class: 'b_btn btn_attend'%>
+          <% end %>
+          <br />
+          <span class="errorTip" style="display:none;">
+            客户编号不能为空
+          </span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function(){
+      
+    $("#new_user_broker").submit(function(){
+      var brokerNo = $("input[name='user_broker[broker_no]']").val();
+      if($.trim(brokerNo).length == 0){
+        $('.errorTip').show();
+        return false;
+      }else{
+        return true;
+      }
+    }) 
+    
+    $("input[name='user_broker[broker_no]']").on('focus', function(){
+      $('.errorTip').hide();  
+    })
+
+    $("#j_resend_email").on('click', function(){
+      $.post('/user_brokers/' + $(this).attr('data') + '/resend_email', {}, function(datas){
+        alert(datas.notice);  
+      })  
+    })
+  })
+
+</script>

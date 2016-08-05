@@ -1,0 +1,57 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+</h1>
+<%= render "search_form", :search => @q %>
+<%= page_info(@orders) %>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>内部id</th>
+      <th>订单号</th>
+      <th>创建日期</th>
+      <th>创建时间</th>
+      <th>购买者</th>
+      <th>买卖</th>
+      <th>类别</th>
+      <th>证券代码</th>
+      <th>数量</th>
+      <th>预估总金额</th>
+      <th>成交总金额</th>
+      <th>状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.id %></td>
+        <td>
+          <%= order.sn%>
+        </td>
+        <td><%= order.created_at.strftime("%Y%m%d")%></td>
+        <td><%= order.created_at.strftime("%H:%M:%S")%></td>
+        <td><%= link_to order.user.username, admin_users_path(q: {id_eq: order.user_id}), target: '_blank', class: "action" %></td>
+        <td><%= buy_or_sell(order.type)  %></td>
+        <td><%= order.product_type_desc %></td>
+        <% if order.instance_id == 'others' %>
+          <td>
+            <%= image_tag("/assets/admin/flag-#{order.market}.png") if order.market %>
+            <%= link_to order.stock_detail.try(:symbol), "/stocks/#{order.stock_detail.base_stock_id}", target: "_blank", class: "action" %>
+          </td>
+          <td><%= order.stock_detail.est_shares %></td>
+        <% else %>
+          <td class="align_left">
+            <%= image_tag("/assets/admin/flag-#{order.market}.png") if order.market %>
+            <%= link_to order.try(:basket).try(:title), "/baskets/#{order.instance_id}", target: "_blank", class: "action" %>
+          </td>
+          <td><%= order.basket_mount %></td>
+        <% end -%>
+        <td><%= order.est_cost %></td>
+        <td><%= order.real_cost || 0 %></td>
+        <td><%= order.status_name %></td>
+        <td class="action"><%= render "commands", :order => order %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @orders %>  

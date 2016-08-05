@@ -1,0 +1,101 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+</h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th style="width:25%;">类型</th>
+      <th style="width:25%;">二级类型</th>
+      <th style="width:20%;">更新时间</th>
+      <th style="width:30%;">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="2">板块资金流向</td>
+      <td class="action align_left"><a href="/admin/md/plate_trading_flows?_type=MD::Data::PlateTradingFlow::Concept" target="_blank">概念板块</td>
+      <td><%= MD::Data::PlateTradingFlow::Concept.last.try(:updated_at)%></td>
+      <td class="action">
+        <a href="/mobile/filters/zjbklx_2" target="_blank">预览</a>
+        <%#= link_to "发送Feed", "/admin/feeds/filters/publish/zjbklx_2", method: :post, data: {confirm: "确定要给用户发送该Filter吗"} %>
+      </td>
+    </tr>
+    <tr>
+      <td class="action align_left"><a href="/admin/md/plate_trading_flows?_type=MD::Data::PlateTradingFlow::Industry" target="_blank">行业板块</td>
+      <td><%= MD::Data::PlateTradingFlow::Industry.last.try(:updated_at)%></td>
+      <td class="action">
+        <a href="/mobile/filters/zjbklx_1" target="_blank">预览</a>
+      </td>
+    </tr>
+    <tr>
+      <td rowspan="2">个股资金流向</td>
+      <td class="action align_left">
+        <a href="/admin/md/stock_trading_flows?sort_main_value=desc" target="_blank">净流入</a>
+      </td>
+      <td><%= MD::Data::StockTradingFlow.order(main_value: :desc).first.try(:updated_at) %></td>
+      <td class="action">
+        <a href="/mobile/filters/ggzjlx_1" target="_blank">预览</a>
+      </td>
+    </tr>
+    <tr>
+      <td class="action align_left">
+        <a href="/admin/md/stock_trading_flows?sort_main_value=asc" target="_blank">净流出</a>
+      </td>
+      <td><%= MD::Data::StockTradingFlow.order(main_value: :asc).first.try(:updated_at) %></td>
+      <td class="action">
+        <a href="/mobile/filters/ggzjlx_2" target="_blank">预览</a>
+      </td>
+    </tr>
+    <tr>
+      <td rowspan="2">高管持仓</td>
+      <td class="action align_left">
+        <a href="/admin/md/leader_stock_alters?sort_value=desc" target="_blank">增持</a>
+      </td>
+      <td><%= MD::Data::LeaderStockAlter.order(value: :desc).first.try(:updated_at) %></td>
+      <td class="action">
+        <a href="/mobile/filters/ggcg_1" target="_blank">预览</a>
+      </td>
+    </tr>
+    <tr>
+      <td class="action align_left">
+        <a href="/admin/md/leader_stock_alters?sort_value=asc" target="_blank">减持</a>
+      </td>
+      <td><%= MD::Data::LeaderStockAlter.order(value: :asc).first.try(:updated_at) %></td>
+      <td class="action">
+        <a href="/mobile/filters/ggcg_2" target="_blank">预览</a>
+      </td>
+    </tr>
+    <% MD::Data::Longhu::REASON_TYPES.each_with_index do |item, index| %>
+    <tr>
+      <% if index.zero? %>
+      <td rowspan="<%=MD::Data::Longhu::REASON_TYPES.count%>">龙虎榜</td>
+      <% end %>
+      <td class="action align_left"><a href="/admin/md/longhus?reason_type=<%=item.first%>" target="_blank"><%=item.last%></td>
+      <td><%=MD::Data::Longhu.last.try(:updated_at)%></td>
+      <td class="action">
+        <a href="/mobile/filters/lhb_<%=index + 1%>" target="_blank">预览</a>
+      </td>
+    </tr>
+    <% end %>
+    <tr>
+      <td rowspan="2">财说Score</td>
+      <td class="action align_left">
+        高评分
+      </td>
+      <td></td>
+      <td class="action">
+        <a href="/mobile/filters/score_1" target="_blank">预览</a>
+      </td>
+    </tr>
+    <tr>
+      <td class="action align_left">
+        低评分
+      </td>
+      <td></td>
+      <td class="action">
+        <a href="/mobile/filters/score_2" target="_blank">预览</a>
+      </td>
+    </tr>
+  </tbody>
+</table>

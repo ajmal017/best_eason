@@ -1,0 +1,36 @@
+<%= render partial: '/mobile/filters/style' %>
+
+<div class="tableholder hotboard">
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>板块名称</th>
+          <td class="sort-stocks"><span class="sortable desc">涨跌幅</span></td>
+          <td>领涨个股</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @filters.each do |filter| %>
+          <% if filter.led %>
+            <tr data-plate-path="<%= mobile_link("/plates/#{filter.base_stock_id}") %>">
+              <th><%= filter.name %></th>
+              <td>
+                <em class="price <%= up_or_down_class(filter.change_percent) %>">
+                  <%= number_with_operator(filter.change_percent) %>%
+                </em>
+              </td>
+              <td>
+                <a data-id="<%=filter.led.id%>" data-name="<%=filter.led.cname%>" data-symbol="<%=filter.led.symbol%>">
+                  <span><%=filter.led.cname%></span> <i><%=filter.led.symbol%></i>
+                </a>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= render partial: '/mobile/filters/plate_base' %>

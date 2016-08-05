@@ -1,0 +1,24 @@
+<table class="grid">
+  <thead>
+    <tr>
+      <th>被举报者</th>
+      <th>操作</th>
+      <th>举报时间</th>
+      <th>举报者</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @feedbacks.each do |feedback| %>
+      <tr>
+        <td>
+          <%= link_to feedback.reportable.try(:username), profile_path(feedback.reportable_id), target: "_blank" %>
+        </td>
+        <td>
+          <%= link_to "在用户列表找他", admin_users_path(q: {id_eq: feedback.reportable_id}), target: "_blank", class: :action %>
+        </td>
+        <td><%= feedback.updated_at.to_s %></td>
+        <td><%= link_to feedback.user.try(:username), profile_path(feedback.user_id), target: "_blank" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

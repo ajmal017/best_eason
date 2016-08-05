@@ -1,0 +1,32 @@
+<% @page_title = "下载客户端"%>
+<%= content_for :header do%>
+  <style type="text/css">
+    body{margin:0;padding: 0;position: relative;}
+    a,img {display: block;}
+    img {width: 100%;}
+    em {position: absolute;color: #fff;bottom: 10px;font-style: normal;font-size: 12px;padding: 0 10px;word-break:break-all;}
+  </style>
+<% end %>
+
+<%= javascript_include_tag "base" %>
+
+<% if @click_all %>
+
+  <a class="j_event_tracking" title="app下载", data-ga-category="MO_APP" data-ga-action="Download" data-ga-label="<%= @ga_label %>" target="_blank" id="app_down_btn" href="<%= mobile_link("/mobile/downloads/redirect?channel=#{params[:channel]}&ts=#{Time.now.to_i}") %>"><% case params[:channel] %><% when "momo3" %><%= image_tag '/zt/market/151021/download_1.jpg' %><% when "momo4" %><%= image_tag '/zt/market/151021/download.jpg' %><% else %><%= image_tag '/zt/market/150918/0918_download1.jpg' %><%= image_tag '/zt/market/150918/0918_download2.jpg' %><%= image_tag '/zt/market/150918/0918_download3.jpg' %><% end %>
+  </a>
+
+<% else %>
+  <%= image_tag '/zt/market/150918/0918_download1.jpg' %>
+  <%= link_to(image_tag('/zt/market/150918/0918_download2.jpg', alt: '下载'), mobile_link("/mobile/downloads/redirect?channel=#{params[:channel]}&ts=#{Time.now.to_i}"), title: "app下载", "data-ga-category" => "MO_APP", "data-ga-action" => "Download", "data-ga-label" => @ga_label, target: "_blank", id: "app_down_btn", class: "j_event_tracking") %>
+  <%= image_tag '/zt/market/150918/0918_download3.jpg' %>
+  <% if @show_desc %>
+    <em>从事证券投资或期货交易，请通过合法证券期货经营机构进行。合法机构名单可到中国证监会网站(www.csrc.gov.cn)查询。</em>
+  <% end %>
+<% end %>
+
+
+<script type="text/javascript">
+  $(function(){
+    addTrackEvent('MO_APP','View');
+  })
+</script>

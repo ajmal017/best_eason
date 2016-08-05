@@ -1,0 +1,5 @@
+<% @base_stocks.each_with_index do |stock, index| %>
+  var stock_element = $('.j_recommend_stocks li').eq("<%=index%>");
+  stock_element.find('span').text("<%=stock.realtime_price_with_unit%>");
+  stock_element.find('em').text("<%=stock.change_percent.round(2)%>%");
+<% end %>

@@ -1,0 +1,39 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/column.css" %>
+<% end %>
+
+<div class="container">
+  <div class="content clearfix column_subject">
+    <div class="subject_area userComments">
+      <h1><%=@news["title"]%></h1>
+      <div class="subjectNav">
+        <span class="a_ctions"><span><%=@news["pub_date"]%></span></span>
+      </div>
+      <div class="subjectContent">
+        <%=raw(@news['content']) %>
+      </div>
+    </div>
+
+    <div class="subject_related">
+      <h3>相关个股投资</h3>
+      <div class="links stocks">
+        <% @base_stocks.each do |stock| %>
+        <a href="/stocks/<%=stock.id%>" target="_blank">
+          <span><b><%=stock.symbol%></b><b><%=stock.truncated_com_name%></b></span>
+          <span class="stars"><mark class="ratestar2"><mark style="width:<%= stock_ratestar_width(stock.stock_screener.score) %>%;"></mark></mark> <%=stock.realtime_price_with_unit%> <%= up_down_style(stock.change_percent, postfix: "%") %></span>
+        </a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $("textarea.autoheight").bind('focus keydown keyup blur', function(){
+    $(this).css('height','auto').css('height',this.scrollHeight + $(this).height() - $(this).innerHeight());
+  });
+</script>
+<style type="text/css">
+  .subjectContent table {border-collapse: collapse;}
+  .subjectContent td, .subjectContent th {border: 1px solid black;}
+</style>

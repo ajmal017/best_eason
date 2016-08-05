@@ -1,0 +1,37 @@
+<%= form_for [:admin, @jy_component] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b></b><%= f.label :begin_date %></td>
+        <td><%= f.datetime_select :begin_date, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :l_one_name %></td>
+        <td><%= f.text_field :l_one_name, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :l_one_code %></td>
+        <td><%= f.number_field :l_one_code, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :l_two_name %></td>
+        <td><%= f.text_field :l_two_name, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :l_two_code %></td>
+        <td><%= f.text_field :l_two_code, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :flag %></td>
+        <td><%= f.number_field :flag, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+

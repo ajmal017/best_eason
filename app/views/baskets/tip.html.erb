@@ -1,0 +1,26 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/creat1.css" %>
+<% end %>
+
+<div class="container">
+  <br class="break" />
+  <div class="content">
+    <nav class="createStep">
+      <strong>创建组合投资</strong>
+      <span class="current"><i>1</i> 添加股票</span><span><i>2</i> 个股入选理由</span><span class="step3"><i></i> 取个名字</span>
+    </nav>
+    
+
+    <div class="whiteBox" style="height: 300px;">
+
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function(){
+    CaishuoDialog.open({theme:'alert',title:'提示',content:'系统正在处理您的盘前调仓，<br/>请稍后再次调仓！', callback: function(){
+        window.location.href = '<%= basket_path(params[:id]) %>';
+      }
+    });
+  })
+</script>

@@ -1,0 +1,24 @@
+<%= form_for [:admin, @target_message] do |f|%>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">内容:</td>
+      <td>
+        <%= f.text_area :content, :size=>"60x20" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">用户:</td>
+      <td>
+        <%= f.text_area :target, value: f.object.displayed_target, placeholder: "请输入私信的目标用户id，多人用逗号隔开，所有人用“all”", :size=>"50x5" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"></td>
+      <td>
+        <%= f.submit "向目标用户发私信"%>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end -%>

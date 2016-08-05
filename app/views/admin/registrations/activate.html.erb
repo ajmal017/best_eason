@@ -1,0 +1,33 @@
+<h1 class="title">
+  <span class="title_left">激活后台邮箱</span>
+</h1>
+<table class="grid_form">
+  <tr>
+    <td colspan="2">
+      <%= link_to "请登录邮箱#{params[:email]}激活帐号", email_login_page(params[:email]), target: "_blank"%>
+      <br/>
+      <%=link_to '重新发送邮件', '#', id: 'j_resend_confirmation_email' %>
+      <%= form_tag admin_staffer_confirmation_path, method: :post, id: 'j_confirmation_form' do %>
+        <%=hidden_field_tag "admin_staffer[email]", params[:email]%>
+      <% end %>
+    </td>
+  </tr>
+</table>
+
+<script>
+  $("#j_resend_confirmation_email").on('click', function(){
+    $("#j_confirmation_form").submit();
+    return false;
+  });
+  
+  // jQuery1.9 取消toggle方法
+  $("#j_change_email").click(function(){
+    if($("#j_change_email_div").is(":visible")){
+      $("#j_change_email_div").hide();
+    }else{
+      $("#j_change_email_div").show();
+    }
+    return false;
+  })
+
+</script>

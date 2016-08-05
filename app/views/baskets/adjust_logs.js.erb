@@ -1,0 +1,9 @@
+$("#basket_adjust_div").html("<%= j render partial: "adjust_logs", locals: {adjustments: @adjustments} %>");
+CaishuoDialog.open({
+  theme:"custom",
+  title:'调仓记录<i class="close-window" onclick="CaishuoDialog.close()"></i>',
+  content: $('#FloatWindow')
+});
+$(".record ul li i.open").click(function () {
+  $(this).toggleClass('click').siblings(".record_content").toggle($(this).hasClass('click'));
+});

@@ -1,0 +1,102 @@
+<% @page_title = "财说有奖调查" %>
+<%= content_for :header do %>
+	<base target="_blank"></base>
+	<%= javascript_include_tag "jquery", "jquery_ujs" %>
+	<%= csrf_meta_tags %>
+	<style type="text/css">
+		body {background: #f7deb3;line-height: 2;padding: 0;margin: 0;font-size: 20px;}
+		.banner {background: url(<%= image_url('/mobile/zt/150518/images/bannerbg.png') %>) 50% 100% no-repeat;background-size: cover;padding-bottom:1.8em;}
+		.banner img {width: 100%;}
+		input[type="text"] {background: none;border:none;border-radius:0;width:60%;font-size:1em;outline: 0;border-bottom: 1px solid black;}
+		textarea {border: none;border-radius:0;box-shadow:none;background: none;outline: 0;border: 1px solid black;resize:none;width: 90%;display: block;min-height: 8em;padding: .2em;font-size: 1em;}
+
+		.custom_radio input[type="radio"] {display: none;opacity: 0;visibility: hidden;}
+		.custom_radio input+span {font-size:.9em;width: 1em;height: 1em;display: inline-block;box-shadow: 0 0 4px 2px #900 inset;border-radius: 50%;position: relative;}
+		.custom_radio input:checked+span:before {font-size:.25em;background: #900;border-radius: 50%;width:1em;height: 1em;content: "";position: absolute;left: 50%;top: 50%;margin: -.5em;}
+
+		.custom_check input[type="checkbox"] {display: none;opacity: 0;visibility: hidden;}
+		.custom_check input+span {font-size:.9em;width: 1em;height: 1em;display: inline-block;box-shadow: 0 0 4px 2px #900 inset;position: relative;}
+		.custom_check input:checked+span:before {background: url(<%= image_url('/mobile/zt/150518/images/check.png') %>);height: 1.5em;width: 1.5em;content: "";position: absolute;left: 1px;bottom: 1px;background-size: 1.5em;}
+
+		em {color: #900;font-size: 1.8em;vertical-align: middle;}
+		.content dt {font-size: 1.1em;margin-left: .5em;padding: 0;line-height: 1.5;font-weight: bold;}
+		.content dd {padding: .5em .5em .5em 2em;margin: 0;}
+		.content dd .custom_radio {display: block;}
+		.content dd .custom_check {display: block;}
+		.basicInfo h3 {color: #900;text-align: center;margin: 0;padding: 0}
+		.basicInfo h3 small {font-size:.6em;display: block;line-height: 0;padding-bottom: 1em;}
+		.basicInfo p {padding: 0 2em;margin-top: 0;}
+		.basicInfo p label {display: inline-block;min-width: 45%;text-align: center;}
+		.submit {text-align: center;padding-top: 2em;padding-bottom: 3em; position: relative;}
+		.submit button {color: white;font-size: 1.25em;background: #903;border:none;border-radius:10px;padding: 1em 2em;line-height: 0;position: relative;}
+		.submit button:before {position: absolute;content: "";height: 60%;background: rgba(255,255,255,.3);left: 0;top:0;right: 0;border-radius: 10px;}
+		.submit span {display: none;color: #900;position: absolute;text-align: center;left: 0;right: 0;top:5em;}
+		footer {background: #a92954;padding: .5em .4em 2em .4em;color: white;line-height: 1.2;font-size: .75em;}
+		footer p {font-size: 1.2em;}
+		#alertBox {position: fixed;top:0;left:0;right:0;bottom:0;background: rgba(0,0,0,.4);display: none;}
+		#alertBox div {width: 80%;margin: 0 auto;padding:2em 0;background: #CA3538;border-radius: 16px;color: white;position: relative;text-align: center;color: white;line-height: 2;box-shadow: 0 0 2px 4px #f7deb3 inset;margin-top: 30%;}
+		#alertBox div:before {content: "";position: absolute;font-size: .5em;width: 1em;height: 1em;background: url(<%= image_url('/mobile/zt/150518/images/close.png') %>) no-repeat;top: 1em;right: 1em;background-size: 1em;}
+	</style>
+<% end %>
+<div id="mcontainer">
+	<div class="banner"><%= image_tag "/mobile/zt/150518/images/banner1.png" %></div>
+<%= form_tag(mobile_link("/mobile/surveys"), method: "post", remote: true) do %>
+	<div class="content">
+		<dl>
+			<dt>1、财说的哪个版块最吸引您？(单选)</dt>
+			<dd>
+				<label class="custom_radio"><input type="radio" name="survey[q1_1]" value="0" /><span></span> 头条</label>
+				<label class="custom_radio"><input type="radio" name="survey[q1_1]" value="1" /><span></span> 投组合</label>
+				<label class="custom_radio"><input type="radio" name="survey[q1_1]" value="2" /><span></span> 选个股</label>
+				<label class="custom_radio"><input type="radio" name="survey[q1_1]" id="updown6" value="3" /><span></span> 其他 <input type="text" name="survey[q1_2]" maxlength="40" onfocus="document.getElementById('updown6').checked=true" /></label>
+			</dd>
+			<dt>2、您是否已开通美股、港股账户？</dt>
+			<dd>
+				<label class="custom_radio"><input type="radio" name="survey[q2]" value="1" /><span></span> 是</label>
+				<label class="custom_radio"><input type="radio" name="survey[q2]" value="0" /><span></span> 否</label>
+			</dd>
+			<dt>3、您最想关注哪些证券相关内容？(多选)</dt>
+			<dd>
+				<label class="custom_check"><input type="checkbox" name="survey[q3_1]" value="0" /><span></span> 国内外资讯</label>
+				<label class="custom_check"><input type="checkbox" name="survey[q3_2]" value="1" /><span></span> 技术指标分析</label>
+				<label class="custom_check"><input type="checkbox" name="survey[q3_3]" value="2" /><span></span> 热点实时评论</label>
+				<label class="custom_check"><input type="checkbox" name="survey[q3_4]" value="3" /><span></span> 操作心得</label>
+				其他: <input type="text" maxlength="40" name="survey[q3_5]" />
+			</dd>
+			<dt>4、您最喜欢哪个财经app？最看重移动应用的哪些功能？</dt>
+			<dd>
+				<textarea maxlength="200" name="survey[q4]"></textarea>
+			</dd>
+			<dt>5、请您为财说和财说app提出宝贵的改进建议。</dt>
+			<dd>
+				<textarea maxlength="200" name="survey[q5]"></textarea>
+			</dd>
+		</dl>
+		<div class="basicInfo">
+			<h3>请填写您的基本信息<small>（仅在获奖时联系使用）</small></h3>
+			<p>
+				<label class="custom_radio"><input type="radio" name="survey[user_gender]" value="1" /><span></span> 先生</label>
+				<label class="custom_radio"><input type="radio" name="survey[user_gender]" value="0" /><span></span> 女士</label>
+				<br/> 姓名 <input type="text" name="survey[user_name]" />
+				<br/> 电话 <input type="text" name="survey[user_phone]" />
+			</p>
+		</div>
+		<div class="submit"><button>提交建议</button>
+			<span class="alert">您有未填选项</span>
+		</div>
+	</div>
+<% end %>
+	<footer>
+		<p>奖品设置</p>
+		活动结束后，我们将选出50个最精彩的建议赠送财说靠枕一个。请您随时保持电话畅通哦！
+	</footer>
+	<div id="alertBox">
+		<div class="attended" style="display:none;">您已经提过建议啦，感谢您的支持！</div>
+  <div class="normal" style="display:none;">您的建议我们已收到,感谢您对财说的支持!</div>
+	</div>
+</div>
+<script>
+	$('#alertBox').click(function(){
+		$(this).hide();
+	});
+</script>

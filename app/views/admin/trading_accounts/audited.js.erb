@@ -1,0 +1,7 @@
+<% if @account.errors.present? %>
+alert("审核失败,<%=@account.errors[:broker_no].try(:first)%>");
+<% else %>
+alert('审核成功');
+<% end %>
+
+window.location.reload();

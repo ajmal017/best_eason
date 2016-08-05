@@ -1,0 +1,5 @@
+<% if @user && @user.errors.empty? %>
+  CaishuoAlert('重新发送激活邮件成功');
+<% else %>
+  CaishuoAlert('重新发送失败');
+<% end %>

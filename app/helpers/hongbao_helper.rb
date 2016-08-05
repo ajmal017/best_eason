@@ -1,0 +1,2 @@
+module HongbaoHelper
+end

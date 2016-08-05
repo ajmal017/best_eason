@@ -1,0 +1,33 @@
+<dt class="clearfix">
+  <% if is_top %>
+    <span>推荐</span>
+  <% end %>
+  <a href="<%= topic_path(topic) %>" target="_blank" class="flagr <%= topic.market %>">
+    <%= topic.title %>&nbsp;&nbsp;<em><%= topic.sub_title %></em>
+  </a>
+  <em class="date"><%= topic.modified_at.to_s(:long) %></em>
+</dt>
+<dd>
+  <%= link_to image_tag(topic.img_url(:large)), topic_path(topic), target: "_blank" %>
+  <p class="paragraph">
+    <%= topic.summary.to_s.truncate(90) %>
+  </p>
+  <div>
+    <% stocks.in_groups_of(2, false).each_with_index do |group, index| %>
+      <table cellspacing="0" class="<%= "dd_table" unless index.zero? %>">
+        <% group.each do |stock| %>
+          <tr>
+            <td><a href="/topics/<%= topic.id %>#seciton2" target="_blank"><%= stock.short_com_name %>(<%= stock.symbol %>)</a></td>
+            <td><a href="/topics/<%= topic.id %>#seciton2" target="_blank">5日涨幅&nbsp;<%= up_down_style(stock.five_day_return, postfix: "%") %></a></td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+  </div>
+  <p class="relevant">
+    <a href="/topics/<%= topic.id %>#seciton2" target="_blank"><em><%= topic.leading_stocks_count %></em>龙头股</a>|
+    <a href="/topics/<%= topic.id %>#seciton4" target="_blank"><em><%= topic.comments_count %></em>讨论</a>|
+    <a href="/topics/<%= topic.id %>#seciton3" target="_blank"><em><%= topic.baskets_count %></em>相关组合</a>
+  </p>
+  <%= link_to "查看详情", topic_path(topic), class: "btn_blue btn_red", target: "_blank" %>
+</dd>

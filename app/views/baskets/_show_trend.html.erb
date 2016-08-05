@@ -1,0 +1,45 @@
+<div class="doubleBox">
+  <%= render partial: "show_charts", locals: {chart_width: "639px", chart_height: "355px", show_period: true} %>
+
+  <div class="doubleBox_right">
+    <dl>
+      <dt><%=link_to_user @basket.author, inner: image_tag(@basket.author.avatar_url(:small)) if @basket.author %></dt>
+      <dd>
+        <span class="black">作者：<%= link_to_user @basket.author %></span>
+        <br />发表：<%= @basket.start_date %>
+        <br />更新：<%= @basket.modified_date %><a href="javascript:" class="rightbar <%= user_signed_in? ? "j_adjust_records" : "j-login-popup" %>">（调仓记录）</a>
+      </dd>
+    </dl>
+    <div class="wrapCorner">
+      <table class="themeStocks">
+        <tr>
+          <td>创建至今回报<strong><%= up_or_down_style_with_arrow(@basket.realtime_total_return, "%", "fsize") %></strong></td>
+          <td>组合指数
+            <% if @realtime_index.present? %>
+              <strong><%= @realtime_index.try(:to_i) %> <em class="<%= @realtime_change_percent.to_f>=0 ? "plus" : "mins" %>">(<%= up_or_down_style_with_arrow(@realtime_change_percent, "%") %>)</em></strong>
+            <% else %>
+              <strong>--(--)</strong>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <td>社区观点 <strong><%= @basket.bullish_percent.to_f.round %>% <em>看涨</em></strong></td>
+          <td>热度 <span class="hotrate"><em style="width:<%= @origin_basket.hot_rank.value %>%;"></em></span></td>
+        </tr>
+      </table>
+    </div>
+    <p>起购金额：<b><%= number_to_currency(@basket.minimum_amount, unit: @basket.currency_unit, format:"%u%n") %></b></p>
+    <% if @basket.can_trade? %>
+      <% if user_signed_in? %>
+        <button class="orders b_btn dialog_btn_y" onclick="javascript:window.location.href='<%= new_basket_order_path(@basket) %>';">一键下单</button>
+      <% else %>
+        <button class="j-login-popup orders b_btn dialog_btn_y">一键下单</button>
+      <% end %>
+    <% else %>
+      <button class="orders b_btn dialog_btn_y disable">A股交易即将上线</button>
+    <% end %>
+    <% if @basket.can_edit? && @basket.owned_by?(current_user.try(:id)) %>
+      <button class="b_btn dialog_btn_y" onclick="javascript:BasketShow.editBasket();">调整</button>
+    <% end %>
+  </div>
+</div>

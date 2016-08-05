@@ -1,0 +1,93 @@
+<%- @page_title = "资料设置" -%>
+
+<%=content_for :header do %>
+  <%= stylesheet_link_tag 'jquery.Jcrop' %>
+<% end %>
+<div class="container">
+  <div class="content clearfix">
+    <%=render partial: 'shared/common_left_nav'%>
+
+    <div class="float-left install_right">
+      <div class="personal_settings">
+        <h2>个人设置</h2>
+        <%=form_for current_user, url: setting_index_path, method: :post, remote: true, html: {class: 'whiteBox'} do |f| %>
+          <dl class="userSetting">
+            <dt>所在地</dt>
+            <dd>
+            <div class="selectbox large">
+              <input type="hidden" value="" name="user[province]">
+              <label style="width:40px;">省直辖市</label><kbd></kbd>
+              <ul class="selectoption provinces">
+                <% @provinces.each do |province|%>
+                  <li data-value="<%= province.code %>" class="<%='active' if current_user.province == province.code.to_i%>"><%= province.name %></li>
+                <% end %>
+              </ul>
+            </div> &nbsp;
+            <div class="selectbox large">
+              <input type="hidden" value="" name="user[city]">
+              <label style="width:40px;">区县</label><kbd></kbd>
+              <ul class="selectoption cities">
+                <% @user_cities.each do |city| %>
+                  <li data-value="<%= city.code %>" class="<%='active' if current_user.city == city.code%>"><%= city.name %></li>
+                <% end %>
+              </ul>
+            </div>
+            </dd>
+            <dt>性别</dt>
+            <dd>
+              <input type="radio" id="radio1" name="user[gender]" value="true" class="custom" <%= 'checked' if current_user.gender? %> />
+              <label for="radio1">男</label>
+              <input type="radio" id="radio2" name="user[gender]" value="false" class="custom" <%= 'checked' if !current_user.gender? %> />
+              <label for="radio2">女</label>
+            </dd>
+            <dt>上传头像</dt>
+            <dd>
+              <div id="avator">
+                <%=image_tag current_user.avatar_url(:large), width: 180, height: 180%>
+              </div>
+            </dd>
+            <dd>
+              <button class="btn upLoad" onclick="$('#real_setting_avatar').trigger('click');return false;">上传</button><br />
+              <span class="tip">仅支持JPG、JPEG、GIF、PNG格式，文件小于5M。</span>
+            </dd>
+            <dd><input type="submit" class="btn large" value="更新信息" /></dd>
+          </dl>
+        <% end %>
+      </div>
+    </div>
+  </div>      
+</div>
+
+<%=form_for current_user, url: save_avatar_ajax_user_path(current_user), method: :put, html: {target: 'curform'} do |f| %>
+  <%=f.file_field :avatar, id: 'real_setting_avatar', accept:".jpg,.jpeg,.png,.gif"%>
+<% end %>
+
+<div class="upload" id="j_crop_logo">
+  <div class="upload-content">
+    <h4>裁剪头像</h4>
+
+    <%=form_for current_user, url: setting_crop_ajax_user_path(current_user), method: :put, remote: true do |f|%>
+      <% %w(x y w h).each do |attribute| %>
+      <%= f.hidden_field "crop_#{attribute}" %>
+    <% end %>
+    
+    <div class="upload-head">
+    </div>
+    <div class="upload-button">
+      <button class="btn cancel" id="j_crop_cancel">取消</button>
+      <button class="btn">上传</button>
+    </div>
+  <% end %>
+  </div>
+</div>
+
+<style>
+  #real_setting_avatar {
+    cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    width: 0px;
+    height: 0px;
+    filter: alpha(opacity=0);
+  }
+</style>

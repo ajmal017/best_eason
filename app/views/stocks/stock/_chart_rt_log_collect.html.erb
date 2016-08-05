@@ -1,0 +1,5 @@
+<% rt_logs.each do |record| %>
+  <li><span><%= record[0] %></span><span class="<%= up_or_down_class(record[1].to_f-stock.previous_close) %>"><%= record[1] %></span><span><%= pretty_stock_volume(record[2], stock) %><%= stock.pretty_volume_unit %></span></li>
+<% end %>
+  
+<li><div>最近10条记录</div></li>

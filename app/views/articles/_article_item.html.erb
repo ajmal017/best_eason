@@ -1,0 +1,20 @@
+<div class="clearfix">
+
+	<span class="a_cate">
+  <% if article.categories.present? %>
+    <%= link_to category_target_text(article), category_target(article) %> 
+  <% end %>
+    <span class="pub_date"><%= article.post_date %></span>
+  </span>
+  
+	<a class="a_cover" href="/articles/<%= article.id %>" target="_blank">
+    <%=image_tag article.img_url, width: 220 %>
+  </a>
+  
+  <%= link_to article.title, article_target(@category, article), class: "a_title", target: "_blank" %>
+	<span class="a_intro"><%= article.abstract.present? ? article.abstract : article.description %></span>
+	<span class="a_ctions">
+    <a href="/articles/<%=article.id%>" target: "_blank"><i class="icon eye_blue"></i> <%= article.views_count.to_i %></a>
+    <a href="/articles/<%=article.id%>#article_comments_title" target: "_blank"><i class="icon comments_blue"></i> <%= article.comments_count.to_i %></a>
+  </span>
+</div>

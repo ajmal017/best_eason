@@ -1,0 +1,125 @@
+<%= content_for :header do %>
+  <%= javascript_include_tag "/javascripts/mo.caishuo.js", "/javascripts/mo.caishuo.bridge.min.js" %>
+  <%= stylesheet_link_tag "/zt/151026/css/index.css?110221" %>
+<% end %>
+
+<div class="top-banner"><%= image_tag "/zt/151026/css/images/top-banner-bg.png?#{Time.now.strftime('%Y%m%d%H')}" %></div>
+
+<div class="container">
+
+  <% unless @guessed || @is_finished %>
+  <div class="enter">
+    <div class="StockSearch" id="StockSearch">
+      <input type="text" placeholder="<%= Date.today == @guess_date ? "输入今天你看好的妖股" : "输入下一交易日你看好的妖股" %>" value="" /><button class="disabled">提交</button>
+      <ul style="display: block;"></ul>
+    </div>
+  </div>
+  <% end %>
+
+  <% if @joined %>
+  <div class="mystocks">
+    <div class="header">我的妖股</div>
+    <div class="note">(收盘后开奖，祝你好运)</div>
+    <div class="content">
+      <% MD::Event::GuessStock::DATES.each do |date| %>
+        <% guess = @user_guesses[date] %>
+        <div class="item <%= 'today' if date == Date.today %>">
+          <% if guess %>
+            <div class="name"><%= guess["name"] %></div>
+            <div class="percent <%= up_down_class(guess["final_percent"]) %>">
+              <% if guess["final_percent"] %>
+                <%= up_down_value(guess["final_percent"]) %>%
+              <% else %>
+                -- -- %
+              <% end %>
+            </div>
+          <% else %>
+            <div class="name">-- --</div>
+            <div class="percent">-- -- %</div>
+          <% end %>
+          <div class="date"><%= date.to_s(:short_date) %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <% end %>
+
+  <div class="top5">
+    <div class="header"></div>
+    <div class="content">
+      <div class="title1">抓妖大仙</div>
+      <div class="title2">(每人获得小恶魔充电宝一部)</div>
+      <ul>
+        <% MD::Event::GuessStock::DATES.each_with_index do |date, index| %>
+          <li class="tab <%= 'active' if index.zero? %>"><%= date.to_s(:short_date) %></li>
+        <% end %>
+      </ul>
+      <div class="tabs-body">
+        <% MD::Event::GuessStock::DATES.each_with_index do |date, index| %>
+          <% day_results = @results[date] %>
+          <div class="<%= 'active' if index.zero? %>">
+            <% if day_results %>
+            <table>
+              <thead>
+                <tr>
+                  <td>用户名</td>
+                  <td>所猜股票</td>
+                  <td>当天涨幅</td>
+                </tr>
+              </thead>
+              <tbody>
+                <% day_results.each do |guess| %>
+                  <tr>
+                    <td><%= guess.user.username %></td>
+                    <td><%= guess.name %></td>
+                    <td><%= up_down_value(guess.final_percent) %>%</td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <% else %>
+              <div class="message">收盘后开奖，敬请期待···</div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="rules">
+    <div class="header"></div>
+    <div class="content">
+      <div class="title">活动奖品及规则</div>
+      <div class="description">
+        <ul>
+          <li>本活动仅限A股，连续5个交易日，每天最多送出5个小恶魔充电宝（价值128元），5200mAh，颜色随机</li>
+          <li>猜中涨停股的用户获得充电宝，若出现所猜股票相同、多只股票涨停时，最早猜中的5名用户获奖</li>
+          <li>连续五天都猜中涨停（累计涨幅最高）的用户获得5000元现金大奖！共一名！</li>
+          <li>不可猜一字板股票</li>
+          <li>奖金个税需自理</li>
+          <li>最终解释权归财说所有</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="share"></div>
+
+<div id="tip">
+  <div>
+    <em>提交成功</em>
+    <label>收盘后开奖，祝你好运！</label>
+    <span>确定</span>
+  </div>
+</div>
+
+<%= content_for :script do %>
+  <script type="text/javascript">
+    var isLogin = <%= current_user.present? %>;
+    var guessPostPath = "<%= mobile_link(mobile_events_guess_stocks_path) %>";
+    var shareLink = "<%= mobile_link(mobile_events_wanshengjie_index_path) %>";
+    var sharePicUrl = "<%= Setting.cdn_host + '/zt/151026/css/images/share.png' %>";
+  </script>
+  <%= javascript_include_tag "events/guess_stocks" %>
+<% end %>

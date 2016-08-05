@@ -1,0 +1,20 @@
+__filename = "feeds推荐池.xls"
+
+sheet1 = xls.create_worksheet
+#声明样式
+title_format = Spreadsheet::Format.new(:color => :black, :weight => :bold, :size => 18)
+merge_align = Spreadsheet::Format.new(:align => :center, :vertical_align => :center)
+
+#填充数据
+sheet1[0, 0] = "feeds推荐池"
+
+sheet1.row(1).concat ["ID", "模块", "分类", "Feed内容", "图片", "权重", "相关股票", "点击次数", "点击人数", "推荐人数", "点击率", "时间策略", "记录时间", "过期时间"]
+@feed_hubs.each_with_index do |hub, i|
+  expire_at = hub.expired_at.blank? ? "无过期" : hub.expired_at.try(:to_s, :short)
+
+  sheet1.update_row(i+2, hub.id.to_s, hub.recommend_category, hub.recommend_type_name, hub.title, hub.pics.try(:length), hub.weight, hub.stock_ids.try(:length), hub.clicks_count, hub.clickers_count, hub.readers_count, hub.click_div_percent, hub.recommend_time_name, hub.created_at.try(:to_s, :short), expire_at)
+end
+
+#应用样式
+sheet1.default_format = merge_align
+sheet1.row(0).set_format(0, title_format)

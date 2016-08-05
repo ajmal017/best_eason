@@ -1,0 +1,90 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+
+<div class="container userEdit clearfix">
+	<%=render partial: 'shared/setting_left_box'%>
+	<div class="rightBox editBox noneSelect">
+		<h2>个人资料</h2>
+    
+    <%= render :partial => 'basic_info' %>
+    
+    <%= render :partial => 'profession' %>
+
+    <%= render :partial => 'ability' %>
+      
+	</div>
+</div>
+
+
+<script type="text/javascript" role="sen">
+	$(function(){
+		$('.editBox h3').click(function(){
+			var _this=this,action = function(){
+				$(_this).toggleClass('contentShow');
+				$(_this).children('a').html($(_this).next('div').is(':visible')?'收起':'修改');
+				caishuo.adjustFooter();
+			}
+			if($(this).closest('form').attr('data-change')=='1'){
+				ShowMsg('提示','当前信息尚未保存，修改其它项目将导致当前正在编辑的信息丢失，是否继续？',function(){
+					$(_this).closest('form').attr('data-change',0)[0].reset();
+					action();
+					return true;
+				});
+			}else{
+				action();
+			}
+		});
+    
+    var to = "<%= @to %>";
+    if(to != ""){
+      $("h3." + to).trigger("click");
+    }
+    
+
+		$('.editBox input, .editBox textarea, .editBox select').change(function(){
+			$(this.form).attr('data-change','1');
+		});
+
+		$('form .dialog_btn_c').click(function(){
+			$(this).closest('form').find('h3').trigger('click');
+		});
+
+    $('.taglinks label').click(function(){
+        if ($('.taglinks input:checked').length >= 3) {
+            $('.taglinks input:not(:checked)').prop({ disabled: true });
+        } else {
+            $('.taglinks input:not(:checked)').prop({ disabled: false });
+        }
+
+        var id =$(this).attr('data-id');
+        if ($(this).children('input').prop('checked')){
+        	var item = $('<i/>').attr('data-id', id).text($(this).text());
+        	$('#tagSpan').append(item);
+        }else{
+        	$('#tagSpan').find('i[data-id='+id+']').remove();
+        }
+    });
+    if ($('.taglinks input:checked').length >= 3) {
+        $('.taglinks input:not(:checked)').prop({ disabled: true });
+    }
+          
+          
+    $(".j_profile_basic").click(function(){
+      $("#j_profile_basic").attr('data-change','0');
+      $("#j_profile_basic").submit();
+    });
+    
+    $(".j_profile_pro").click(function(){
+      $("#j_profile_pro").attr('data-change','0');
+      $("#j_profile_pro").submit();
+    });
+    
+    $(".j_profile_ability").click(function(){
+      $("#j_profile_ability").attr('data-change','0');
+      $("#j_profile_ability").submit();
+    });
+          
+          
+	});
+</script>

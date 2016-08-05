@@ -1,0 +1,20 @@
+<div class="index_bottom clearfix">
+  <div class="left_list">
+    <div class="marketSwitch">
+      <%= link_to '全部', topics_path, class: params[:market] == nil ? 'active' : '' %>
+      <%= link_to '沪深', topics_path(market: :cn), class: params[:market] == 'cn' ? 'active' : '' %>
+      <%= link_to '港股', topics_path(market: :hk), class: params[:market] == 'hk' ? 'active' : '' %>
+      <%= link_to '美股', topics_path(market: :us), class: params[:market] == 'us' ? 'active' : '' %>
+    </div>
+    <dl id="topics_list">
+      <% @topics.each_with_index do |topic, index| %>
+        <%= render partial: "topic_item", locals: {topic: topic, stocks: @grouped_stocks[topic.id] || [], is_top: index.zero?} %>
+      <% end %>
+    </dl>
+    <div class="text-center">
+      <a class="w_btn large" data-next-page="2" data-market="<%= params[:market] %>" id="topic_more">加载更多</a>
+    </div>
+  </div>
+
+  <%= render partial: "index_right" %>
+</div>

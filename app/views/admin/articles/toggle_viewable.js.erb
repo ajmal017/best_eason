@@ -1,0 +1,8 @@
+var _toggle_node = $("#article_<%= @article.id%>").children("td:eq(6)").children("a:eq(2)");
+var _state_node = $("#article_<%= @article.id%>").children("td:eq(3)");
+var text = _toggle_node.text();
+var state = _state_node.text();
+text = text == "公开" ? "隐藏" : "公开";
+state = state == "否" ? "是" : "否";
+_toggle_node.text(text);
+_state_node.text(state);

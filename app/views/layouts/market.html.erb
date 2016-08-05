@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <%= seo_title(@page_title) %>
+    <%= favicon_link_tag '/images/favicon_32.ico', type: "image/x-icon" -%>
+    <%= javascript_include_tag "jquery" %>
+    <%= yield :header %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <%= render '/shared/analytics/gtm'%>
+    <%=yield%>
+    <%= yield :script %>
+    <%= render '/shared/analytics/baidu' -%>
+  </body>
+</html>

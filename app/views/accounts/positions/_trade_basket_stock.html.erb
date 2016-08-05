@@ -1,0 +1,80 @@
+<tr id="orderForm">
+  <td colspan="7">
+
+    <%= form_for stock, url: orders_path, :html => {target:'_blank', onsubmit: 'return AdjustOrder.checkOrderNewForm();', method: 'post'} do |f| %>
+    <table>
+      <thead>
+        <tr>
+          <td>操作</td>
+          <td>最佳买入/卖出价</td>
+          <td>数量</td>
+          <td>订单类型</td>
+          <td>价格</td>
+          <td>订单有效期 <i class="iconQuestion" data-click-tip="#TradeDateTip">?</i></td>
+          <td>金额</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="buy_sell_options">
+            <label>
+              <input name="trade_radio" type="radio" value="buy" <%= "checked" if params[:type] == "buy" %> onclick="javascript:AdjustOrder.buyStock(this);"/> 买入
+            </label>
+            <label>
+              <input name="trade_radio" type="radio" value="sell" <%= "checked" if params[:type] != "buy" %> onclick="javascript:AdjustOrder.sellStock(this);" stock_total="<%= can_sell_share %>"/> 卖出
+            </label>
+          </td>
+          <td><em class="blue"><%= stock.bid || "--" %>/<%= stock.ask || "--" %></em></td>
+          <td>
+            <span class="adjustCount">
+              <kbd class="mins" onclick="javascript:AdjustOrder.subStockNumber($(this).next());"></kbd><input type="text"  value="<%= input_value %>" step="<%= stock.get_board_lot %>" name="order[order_details_attributes][0][est_shares]" min="<%= count_min %>" max="<%= count_max %>" class="j_stock_est_shares"><kbd class="plus" onclick="javascript:AdjustOrder.addStockNumber($(this).prev());"></kbd>
+            </span>
+          </td>
+          <td>
+            <div class="selectbox">
+              <input type="hidden" value="market" name="order[order_type]" />
+              <label style="width:0">市价</label><kbd></kbd>
+              <ul class="selectoption" style="display: none;">
+                  <li data-value="market" id="order_type_radio_2">市价</li>
+                  <li data-value="limit" id="order_type_radio_1">限价</li>
+              </ul>
+            </div>
+          </td>
+          <td>
+            <input type="text" autocomlete="off" id="order_limit_price" name="order[order_details_attributes][0][limit_price]" placeholder="<%= stock.currency_unit %>" class="price" disabled readonly/>
+          </td>
+          <td>
+            <div class="selectbox">
+              <input type="hidden" value="false" name="order[gtd]" id="order_expiry">
+              <label style="width:2em">当日有效</label><kbd></kbd>
+              <ul class="selectoption" style="display: none;">
+                  <li data-value="false">当日有效</li>
+                  <li data-value="true">长期有效</li>
+              </ul>
+            </div>
+          </td>
+          <td><em class="blue">
+            <%= stock.currency_unit %><span class="j_stock_total_money">0</span>
+          </em></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="7">
+            <label class="cancel">取消</label>
+            <input type="submit" value="下单" class="b_btn middle" id="btn_submit">
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="buying-power">
+      <input type="hidden" name="order[basket_id]" id="order_basket_id" value=""/>
+      <input type="hidden" name="trade_type" id="order_trade_type" class="trade_type" value="<%= trade_type %>" />
+      <input type="hidden" value="<%= stock.id %>" name="order[order_details_attributes][0][base_stock_id]" class="j_stock_id">
+      <input type="hidden" value="<%= stock.realtime_price %>" class="j_stock_price">
+    </div>
+    <% end %>
+
+  </td>
+</tr>

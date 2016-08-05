@@ -1,0 +1,62 @@
+<%= content_for :header do %>
+  <%= javascript_include_tag "admin/topics.js" %>
+<% end %>
+
+<div class="box">
+  <h1 class="title">
+    <span class="title_left">基本信息</span>
+  </h1>
+
+  <%= form_for [:admin, @topic], html: {onsubmit: "return checkTopicForm();", id: "topic_form"} do |f| -%>
+    <%= hidden_field_tag :topic_id, @topic.id %>
+    <table class="grid_form">
+      <tbody>
+        <tr>
+          <td class="field"><b>*</b><%= f.label :market, "市场分类" %></td>
+          <td>
+            <% if @topic.new_record? %>
+              <%= f.select :market, BaseStock::MARKET_AREA_NAMES.invert %>
+            <% else %>
+              <%= BaseStock::MARKET_AREA_NAMES[@topic.market.to_sym] %> &nbsp;&nbsp;&nbsp;&nbsp; <span class="gray">(市场分类无法修改)</span>
+            <% end -%>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="field"><b>*</b><%= f.label :title, "标题" %></td>
+          <td>
+            <%= f.text_field :title, size: 30, placeholder: "5个汉字或10个字母以内" %> 板块类型的例如：军工、泛券商；事件类型的例如：卢布黑天鹅
+          </td>
+        </tr>
+        <tr>
+          <td class="field"><b>*</b><%= f.label :title, "副标题" %></td>
+          <td>
+            <%= f.text_field :sub_title, size: 30 %>
+          </td>
+        </tr>
+        <tr>
+          <td class="field"><b>*</b><%= f.label :summary, "概要" %></td>
+          <td>
+            <%= f.text_area :summary, cols: 120, rows: 3 %>
+          </td>
+        </tr>
+        <tr>
+          <td class="field"><b>*</b><%= f.label :notes, "描述" %></td>
+          <td>
+            <%= f.text_area :notes, cols: 120, rows: 26, id: "richeditor" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="field"></td>
+          <td><%= f.submit '保存' %></td>
+        </tr>
+      </tbody>
+    </table>
+  <% end -%>
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    setInterval("autoSaveBasicInfos();", 20000);
+  })
+</script>

@@ -1,0 +1,13 @@
+<% if @status %>
+  var tip_content = "<div style=\"padding: 15px;\"><%= (@basket.visible ? '保存成功！' : '保存成功！<br/>我们将尽快审核您创建的组合，请耐心等待').html_safe %></div>";
+  CaishuoDialog.open({content:tip_content,theme:'tip',delay:3000});
+  setTimeout("window.location.href='<%= basket_path(@basket) %>'", 3000);
+<% else %>
+  checkNewBasketThreeStep();
+  <% if @basket.errors[:title].present? %>
+  $(".title_error").addClass("error");
+  <% end %>
+  $(".richEditor").siblings(".notes_error").remove();
+  $(".richEditor").after("<div class='notes_error plus'><span><%= @basket.errors.messages[:description].try(:join) %></span></div>");
+  $("#btn_submit").removeAttr("disabled");
+<% end %>

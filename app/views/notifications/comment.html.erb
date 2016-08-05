@@ -1,0 +1,62 @@
+<%- @page_title = "评论与赞" -%>
+
+<%=content_for :header do %>
+  <%= javascript_include_tag "/javascripts/commentPack.min.js", "jquery.timeago.js", "jquery.timeago.settings.js"%>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css", "/stylesheets/v3/commentPack.css" %>
+<% end %>
+
+<div class="container userEdit clearfix">
+  <%=render partial: 'shared/setting_left_box' %>
+  <div class="rightBox">
+    <div class="comments" id="Comments">
+      <h2>评论与赞</h2>
+      <article class="noContents vote"></article>
+      <form id="replyComment" action="" method="post">
+        <div class="editArea"><textarea></textarea></div>
+        <div class="actionArea">
+          <label class="quoteAction"><span class="emotion">表情</span><span class="friends">好友</span><span class="stocks">股票代码</span></label>
+          <button class="b_btn middle">回复</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div style="display:none;">
+  <div id="chatingBox" class="comments"></div>
+</div>
+<div id="emotionBox"></div>
+<dl id="autoComplete"></dl>
+<div id="eraseComment" class="noneSelect">
+  <label>确定要删除这条评论么？</label>
+  <button class="b_btn dialog_btn_y">确定</button>
+  <button class="b_btn dialog_btn_c">取消</button>
+</div>  
+
+<script type="text/javascript" role="rick">
+function markNotifyAlreadyRead(){
+  var notifyIds = $("#Comments > article").map(function(){return $(this).attr('data-msgid');}).get();
+  $.post("/ajax/notifications/mark_read", {ids: notifyIds});
+}
+
+// 评论与赞
+commentPack.init({
+  Emotion: {imagePrefix: '<%= Setting.cdn_host %>/images/emotions/'},
+  Completer:{},
+  Atme: {
+    afterloadEvent: function(unreadNumber){
+      initBubbleBox();
+      $('.timeago').timeago();
+      caishuo.adjustFooter();
+      unreadNumber==undefined || $('.link2 b').toggle(unreadNumber>0).text(unreadNumber);
+      // markNotifyAlreadyRead();
+    },
+    getcontentsEvent: function(index, callback){
+      $.get("/notifications/comment", {page: index}, function(data){
+        callback(data);
+        markNotifyAlreadyRead();
+      }, 'json')
+    }
+  }
+});
+</script>

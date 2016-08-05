@@ -1,0 +1,9 @@
+<div class="column_menu">
+	<h3>财说专栏</h3>
+	<a href="/articles" class="<%= @category.blank? ? 'active' : ''%>">全部</a>
+	<a href="/categories/1/articles" class="<%= @category.try(:id) == 1 ? 'active' : ''%>">公司个股</a>
+	<a href="/categories/2/articles" class="<%= @category.try(:id) == 2 ? 'active' : ''%>">热门组合</a>
+	<a href="/categories/3/articles" class="<%= @category.try(:id) == 3 ? 'active' : ''%>">财说学堂</a>
+	<a href="/categories/4/articles" class="<%= @category.try(:id) == 4 ? 'active' : ''%>">财报解读</a>
+	<a href="/categories/5/articles" class="<%= @category.try(:id) == 5 ? 'active' : ''%>">其它</a>
+</div>

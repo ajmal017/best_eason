@@ -1,0 +1,15 @@
+<%=content_for :header do %>
+  <%= javascript_include_tag "/javascripts/commentPack.min.js", "jquery.timeago", "jquery.timeago.settings"%>
+  <%= stylesheet_link_tag "/stylesheets/v3/commentPack.css" %>
+<% end %>
+
+<div style="display:none;">
+  <div id="chatingBox" class="comments"></div>
+</div>
+<div id="emotionBox"></div>
+<dl id="autoComplete"></dl>
+<div id="eraseComment">
+  <label>确定要删除这条评论么？</label>
+  <button class="b_btn dialog_btn_y">确定</button>
+  <button class="b_btn dialog_btn_c">取消</button>
+</div>

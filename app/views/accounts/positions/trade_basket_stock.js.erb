@@ -1,0 +1,2 @@
+$(".themeStocks tbody #orderForm").remove();
+$(".themeStocks tbody").append("<%= j render :partial => 'trade_basket_stock', locals: {stock: @stock, trade_type: @trade_type, can_sell_share: @can_sell_share, count_min: @count_min, count_max: @count_max, input_value: @input_value} %>");

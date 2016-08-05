@@ -1,0 +1,14 @@
+<% if notice.mentionable %>
+<li class="<%='unRead' unless notice.read? %>">
+  <a href="/p/<%=notice.triggered_user.id%>" class="comment_avator">
+    <%= image_tag notice.triggered_user.avatar_url(:small), width: 40, height: 40%>
+  </a> 
+  <a href="/p/<%=notice.triggered_user.id%>" class="username"><%=notice.triggered_user.username%><span><%=notice.triggered_user.headline%></span></a>
+  <p>赞了你的评论 <%= link_to raw("#{notice.mentionable.body.html_safe}"), notice.targetable_link_url, target: '_blank' %></p>
+
+  <div class="commentActions">
+    <span class="date"><%= notice.created_at.to_s(:short) %></span>
+    <%= link_to "查看", notice.targetable_link_url, target: '_blank' %>
+  </div>
+</li>
+<% end %>

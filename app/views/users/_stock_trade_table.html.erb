@@ -1,0 +1,68 @@
+<table class="orderTable">
+  <thead>
+    <tr>
+      <td>操作</td>
+      <td>股票名称</td>
+      <td>订单类型</td>
+      <td>价格</td>
+      <td>数量</td>
+      <td>订单有效期 <i class="iconQuestion" data-click-tip="#TradeDateTip">?</i></td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <input type="hidden" id="trading_account_id" value="<%= trading_account.pretty_id %>"/>
+
+      <td id="buy_sell_options">
+        <label>
+          <input name="trade_radio" type="radio" value="buy" checked onclick="javascript:Order.buyStock(this);"/> 买入
+        </label>
+        <label>
+          <input name="trade_radio" type="radio" value="sell" onclick="javascript:Order.sellStock(this);" stock_total="<%= trading_account.can_selled_shares_of(stock.id) %>"/> 卖出
+        </label>
+      </td>
+      <td>
+        <%= stock.com_name %>（<%= stock.symbol %>）
+      </td>
+      <td>
+        <div class="selectbox">
+          <input type="hidden" value="market" name="order[order_type]" id="order_type"/>
+          <label style="width:0">市价</label><kbd></kbd>
+          <ul class="selectoption" style="display: none;">
+              <li data-value="market" id="order_type_radio_2" class="order_type">市价</li>
+              <li data-value="limit" id="order_type_radio_1" class="order_type">限价</li>
+          </ul>
+        </div>
+      </td>
+      <td class="price">
+        <div class="adjustCount">
+          <kbd class="mins" onclick="javascript:Order.subStockPrice($(this).next());"></kbd><input type="text" value="市价委托" id="order_limit_price" name="order[order_details_attributes][0][limit_price]" placeholder="<%= @currency_unit %>" price="<%= stock.bid || stock.realtime_price %>" style="width:85px;background:#efefef;" disabled><kbd class="plus" onclick="javascript:Order.addStockPrice($(this).prev());"></kbd>
+        </div>
+        <div class="trader5">
+          <span>卖1：<%= stock.ask || "--" %></span>
+          <span class="after">买1：<%= stock.bid || "--" %></span>
+        </div>
+      </td>
+      <td class="quantity">
+        <span class="adjustCount">
+          <kbd class="mins" onclick="javascript:Order.subStockNumber($(this).next());"></kbd><input type="text" value="<%= stock.get_board_lot %>" step="<%= stock.get_board_lot %>" name="order[order_details_attributes][0][est_shares]" min="<%= stock.get_board_lot %>" max="1000000" class="j_stock_est_shares"><kbd class="plus" onclick="javascript:Order.addStockNumber($(this).prev());"></kbd>
+          <span class="num">最多可买<i>--</i>股</span>
+        </span>
+      </td>
+      <td>
+        <div class="selectbox">
+          <input type="hidden" value="false" name="order[gtd]" id="order_expiry">
+          <label style="width:2em">当日有效</label><kbd></kbd>
+          <ul class="selectoption" style="display: none;">
+              <li data-value="false">当日有效</li>
+              <li data-value="true">长期有效</li>
+          </ul>
+        </div>
+      </td>
+      <td>
+        <input class="b_btn middle" id="btn_submit" type="submit" value="下单" />
+      </td>
+    </tr>
+  </tbody>
+</table>

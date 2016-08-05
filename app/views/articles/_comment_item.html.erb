@@ -1,0 +1,31 @@
+<li comment_id="<%= comment.id %>">
+  <%=link_to_user comment.commenter, inner: image_tag(comment.commenter.avatar_url(:small), width: 62, height: 62), target: '_blank', class: 'avator', card: true%>
+  
+  <%=link_to_user comment.commenter, inner: comment.commenter.username, class: 'username', target: '_blank'%>
+  
+  <p><%= simple_format comment.content %></p>
+  <div class="commentAction reply">
+    <span class="date"><%= comment.created_at.strftime("%m月%d日 %H:%M") %></span>
+    <% if user_signed_in? %>
+      <a href="javascript:void(0);" class="<%= comment.liked_by_user?(current_user.try(:id)) ? "liked" : "likeable" %>">赞(<i><%= comment.likes_count.to_i %></i>)</a> | 
+    <% else %>
+      <a href="javascript:void(0);" class="j-login-popup">赞(<i><%= comment.likes_count.to_i %></i>)</a> | 
+    <% end %>
+    <a href="javascript:void(0);" class="<%= user_signed_in? ? "replyable" : "j-login-popup" %>">评论(<i><%= comment.comments_count.to_i %></i>)</a> 
+    <% if comment.commented_by?(current_user.try(:id)) %>
+      | <a href="javascript:void(0);" class="remove remove_comment">删除</a>
+    <% end %>
+  </div>
+  <% if comment.replies.present? %>
+    <section class="commentReplies">
+      <% comment.replies.sort_desc.limit(2).each do |reply| %>
+        <%= render :partial => "articles/reply_item", locals: {reply: reply} %>
+      <% end %>
+      <% if comment.replies.count > 2 %>
+        <article class="expandlist">
+          <a href="javascript:void(0);" onclick="javascript:Article.showMoreReplies(this);">还有<%= comment.replies.count-2 %>条评论，点击展开</a>
+        </article>
+      <% end %>
+    </section>
+  <% end %>
+</li>

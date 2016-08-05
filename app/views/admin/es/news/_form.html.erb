@@ -1,0 +1,57 @@
+<%= javascript_include_tag "/javascripts/kindeditor/kindeditor.js" %>
+
+<%= form_for [:admin, @news] do |f| %>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>ID:</td>
+      <td>
+        <%= @news.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>标题:</td>
+      <td>
+        <%= f.text_field :title %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>内容:</td>
+      <td>
+        <%= f.text_area :body, class: 'editor' %>
+        <script type="text/javascript">
+           KindEditor.ready(function(K) {
+              editor = K.create('textarea.editor', {
+              resizeType : 0,
+              // urlType: 'absolute',
+              emoticonsPath: '/javascripts/kindeditor/plugins/emoticons/images/',
+              uploadJson: '/kindeditor/upload', 
+              allowPreviewEmoticons : false,
+              allowImageUpload : true,
+              allowImageRemote : false,
+              // 加粗，下划线，斜体】【引用，有序列表，无序列表】【图片】
+              items : ['bold', 'underline', 'italic', '|', 
+                        'insertorderedlist', 'insertunorderedlist', 'bockquote', '|', 
+                       'image'],//, 'imagealigntop', 'imagealignleft', 'imagealignright'
+              themeType : 'simple',
+              basePath: '/javascripts/kindeditor/',
+              cssPath :[ '/javascripts/kindeditor/plugins/bockquote/bockquote.css'],
+              width: '95%',
+              height: '370px',
+              pasteType: 1
+            })
+          });
+        </script>
+      </td>
+    </tr>
+   
+   
+    <tr>
+      <td class="field"></td>
+      <td>
+        <%= f.submit "提交" %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end -%>

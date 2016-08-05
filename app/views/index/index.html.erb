@@ -1,0 +1,117 @@
+<%= render :partial => "layouts/landing_header" %>
+<div class="invite noSelect">
+  <div class="changeBg bg-5" style="display:block;"></div>
+  <div class="container">
+    <a href="javascript:;" style="cursor:default;">
+      <%= image_tag 'ad/gupiao.png', class: 'slogan', style: 'top:70px;' %>
+    </a>
+    <dl class="enterArea">
+      <dt>
+        登录财说
+        <%= link_to "立即注册", signup_path, class: 'aRegister' %>
+      </dt>
+      <dd>
+        <%= form_for @user || User.new, url: login_url, method: :post, remote: true do |f| %>
+          <%=hidden_field_tag :from, 'landing'%>
+          <%=f.text_field :email, value: cookies[:email], placeholder: "请输入注册邮箱或手机号"%>
+          <%=f.password_field :password, placeholder: "请输入密码"%>
+          <span class="errorTipIndex" id="j_new_user_error" style="display:none;"> &nbsp;账号或密码输入有误，请重新输入</span>
+          <div>
+            <button type="submit" class="b_btn dialog_btn_y">登录</button>
+            <%= link_to "忘记密码", new_account_password_path, class: "forget" %>
+          </div>
+        <% end %>
+      </dd>
+      <%= render "/shared/other_login" -%>
+    </dl>
+  </div>
+  <div class="suggestStocks">
+    <strong>A股 / 美股 / 港股 / ETF / 债券 / 基金</strong>
+    <div class="container">
+      <ul class="slideWindow j_recommend_stocks">
+        <li><div class="logo01"></div><span></span><em></em></li>
+        <li><div class="logo02"></div><span></span><em></em></li>
+        <li><div class="logo03"></div><span></span><em></em></li>
+        <li><div class="logo11"></div><span></span><em></em></li>
+        <li><div class="logo05"></div><span></span><em></em></li>
+        <li><div class="logo06"></div><span></span><em></em></li>
+        <li><div class="logo07"></div><span></span><em></em></li>
+        <li><div class="logo08"></div><span></span><em></em></li>
+        <li><div class="logo09"></div><span></span><em></em></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="noneSelect">
+  <div class="stage01 text-center">
+    <h1><span class="text-gap">个性化股票挑选</span>智能评价</h1>
+    <div class="container">
+      <%=image_tag "/images/v2/index01.jpg", alt: '个性化股票挑选' %>
+    </div>
+  </div>
+  <div class="stage02 text-center">
+    <h1>尝试全新的投资方式与体验</h1>
+    <nav>
+      <span class="active">我关注的</span>
+      <span>我定制的</span>
+      <span>我创建的</span>
+    </nav>
+    <div class="container">
+      <div class="active"><%=image_tag "/images/v2/index02.jpg", alt: '我关注的投资组合' %></div>
+      <div><%=image_tag "/images/v2/index03.jpg", alt: '我定制的投资组合' %></div>
+      <div><%=image_tag "/images/v2/index04.jpg", alt: '我创建的投资组合' %></div>
+    </div>
+  </div>
+  <div class="stage03 text-center">
+    <h1>知名券商无缝对接，直达交易</h1>
+    <div class="container">
+      <%=image_tag "/images/v2/index05.jpg", alt: '盈透证券' %>
+    </div>
+  </div>
+  <div class="stage04 text-center">
+    <h1>财说专栏</h1>
+    <div class="container">
+      <%=image_tag "/images/v2/index06.jpg", alt: '财说专栏' %>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function(){
+    $("#j_create_landing_form input").focus(function(){
+      $(".errorTipIndex").hide();
+    })
+
+    $("#new_user input").focus(function(){
+      $("#j_new_user_error").hide();
+    })
+
+    $("#j_create_landing_form").submit(function(){
+      var email = $("#landing_email").val();
+      if($.trim(email).match(/^([^@\s]+)@((?:[a-z0-9-]+\.)+[a-z]{1,})$/i)){
+        return true;
+      }else{
+        $(this).find('.errorTipIndex').show();
+        return false;
+      }
+    })
+
+    $.get('/ajax/stocks/recommend');
+  })
+
+  $('.slideWindow').indexSlide();
+
+  $('.stage02 span').click(function(){
+    var idx = $(this).index();
+    $(this).addClass('active').siblings().removeClass();
+    $(this).closest('.stage02').find('.container').children().eq(idx).addClass('active').siblings().removeClass();
+  });
+
+  // window.setInterval(function(){
+  //   var current = $('.invite .changeBg:visible').index();
+  //   var len = $('.invite .changeBg').length;
+  //   next = (current+1)%len;
+  //   $('.invite .changeBg').eq(current).fadeOut(3000);
+  //   $('.invite .changeBg').eq(next).fadeIn(3000);
+  // },5000);
+</script>

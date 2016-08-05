@@ -1,0 +1,126 @@
+<%=content_for :header do %>
+  <%= javascript_include_tag "highstock", "/javascripts/highcharts.js" %>
+  <%= stylesheet_link_tag "/stylesheets/v3/investment.css" %>
+<% end %>
+
+<div class="container">
+  <%= render :partial => "/shared/sub_menus/positions" %>
+
+  <div class="content">
+    <h2>投资概览</h2>
+    <div class="holdStatus center">
+      <span class="hiColor">账户净值
+        <strong>
+          <%=number_to_currency(@total_property, unit: @current_cash_unit)%>
+        </strong>
+      </span>
+      <span>今日盈亏 ( 港股 )
+        <strong>
+          <%=number_to_currency(@sehk_profit, unit: 'HK$')%>
+          <small>(<%=number_to_percentage(@sehk_profit_percent, precision: 2)%>)</small>
+        </strong>
+      </span>
+      <span class="noBorder">今日盈亏 ( 美股 )
+        <strong>
+          <%=number_to_currency(@us_profit, unit: '$')%>
+          <small>(<%=number_to_percentage(@us_profit_percent, precision: 2)%>)</small>
+        </strong>
+      </span>
+    </div>
+    <div class="holdingStatics">
+      <div class="clearfix">
+        <div class="leftBox">
+          <div class="wrapCorner">
+            <table class="themeStocks userRemainTable">
+              <tr>
+                <th>现金余额</th>
+                <td><%= number_to_currency(@total_cash, unit: @current_cash_unit)%></td>
+              </tr>
+              <tr>
+                <th class="th_margin">美元</th>
+                <td><%= number_to_currency(@us_cash, unit: '$')%></td>
+              </tr>
+              <tr>
+                <th class="indentLine th_margin">港币</th>
+                <td><%= number_to_currency(@hk_cash, unit: 'HK$')%></td>
+              </tr>
+              <tr>
+                <th>购买力 ( 可融资 )</th>
+                <td><%= number_to_currency(current_user.buying_power, unit: @current_cash_unit) %></td>
+              </tr>
+              <tr>
+                <th>证券市值</th>
+                <td><%= number_to_currency(@market_value, unit: @current_cash_unit)%></td>
+              </tr>
+              <tr>
+                <th>账户净值 ( 现金余额 + 证券市值 )</th>
+                <td><%= number_to_currency(@total_property, unit: @current_cash_unit)%></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="rightBox">
+          <div>
+            <table class="userRemainPieChart">
+              <tr>
+                <th width="240">
+                  <div id="investment_circle_chart" style="width:182px;height:182px;"></div>
+                </th>
+                <td>
+                  <i class="dot" style="background: #383a4c;"></i> <%=number_to_percentage(@percent_infos[:cash].last, precision: 2)%>  现金
+                  <strong><%=number_to_currency(@percent_infos[:cash].first, unit: @current_cash_unit)%></strong><br />
+                  <i class="dot" style="background: #64a0d7;"></i> <%=number_to_percentage(@percent_infos[:basket].last, precision: 2)%>  组合投资
+                  <strong><%=number_to_currency(@percent_infos[:basket].first, unit: @current_cash_unit)%></strong><br />
+                  <i class="dot" style="background: #a3c8ea;"></i> <%=number_to_percentage(@percent_infos[:stock].last, precision: 2)%>  个股投资
+                  <strong><%=number_to_currency(@percent_infos[:stock].first, unit: @current_cash_unit)%></strong>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix">
+        <div class="holdingCharts"></div>
+        <div class="leftBox">
+          <h3 class="h3_font">账户净值表现</h3>
+          <ol class="asSwitchBtn ol_margin" id="net_worth_periods">
+            <li data="<%= 1.weeks.ago.to_s(:full) %>">1周</li>
+            <li class="active" data="<%= 1.month.ago.to_s(:full) %>">1月</li>
+            <li data="<%= 3.month.ago.to_s(:full) %>">3月</li>
+            <li data="<%= 6.month.ago.to_s(:full) %>">6月</li>
+            <li data="<%= 1.year.ago.to_s(:full) %>">1年</li>
+            <li data="<%= Date.today.at_beginning_of_year.to_s(:full) %>">今年</li>
+            <li data="">开始至今</li>
+          </ol>
+          <div class="chartBorderBox">
+            <div id="net_worth_chart" style="width:435px;height:199px;margin-left:-10px;"></div>
+          </div>
+        </div>
+        <div class="rightBox">
+          <h3 class="h3_font">收益表现</h3>
+          <ol class="asSwitchBtn ol_margin" id="j_profit_periods">
+            <li data="<%= 1.weeks.ago.to_s(:full) %>">1周</li>
+            <li class="active" data="<%= 1.month.ago.to_s(:full) %>">1月</li>
+            <li data="<%= 3.month.ago.to_s(:full) %>">3月</li>
+            <li data="<%= 6.month.ago.to_s(:full) %>">6月</li>
+            <li data="<%= 1.year.ago.to_s(:full) %>">1年</li>
+            <li data="<%= Date.today.at_beginning_of_year.to_s(:full) %>">今年</li>
+            <li data="2014-10-10">开始至今</li>
+          </ol>
+          <div class="chartBorderBox">
+            <div id="j_profits_chart" style="width:435px;height:199px;margin-left:-10px;"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  Investment.initCircleChart();
+  Investment.initNetWorthChart();
+  Investment.initEarningsChart();
+  Investment.netWorthPeriodsHandle();
+  Investment.earningsPeriodsHandle();
+</script>

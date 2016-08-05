@@ -1,0 +1,16 @@
+<% news.each do |item| %>
+  <tr>
+    <td>
+      <%=link_to item["title"].try(:truncate, 160), news_path(id: item['id']) %>
+    </td>
+    <th><%= item["source"] %></th>
+    <th>
+      <%= item["pub_date"].try(:to_time).try(:strftime, "%m-%d %H:%M") %>
+    </th>
+  </tr>
+<% end %>
+
+<% if news.blank? %>
+  <tr style="height:36px;"><td>暂无新闻</td><th></th><th></th></tr>
+<% end %>
+

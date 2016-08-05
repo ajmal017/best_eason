@@ -1,0 +1,62 @@
+<div class="demo_left">
+  <h2>Demo:</h2>
+  <div class="demo_box">
+    <table class="grid_form">
+      <tbody>
+        <tr>
+          <td class="field"><b>*</b>电子邮箱</td>
+          <td>
+            <input type="text" value="wangchangming@caishuo.com" name="admin_staffer[email]" id="admin_staffer_email">
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="field"><b>*</b>密码:</td>
+          <td>
+            <input type="password" size="20" name="admin_staffer[password]" id="admin_staffer_password">
+          </td>
+        </tr>
+        
+        <tr>
+          <td class="field"><b>*</b>确认密码:</td>
+          <td>
+            <input type="password" size="20" name="admin_staffer[password_confirmation]" id="admin_staffer_password_confirmation">
+          </td>
+        </tr>
+        <tr>
+          <td class="field"><b>*</b>是否为超级管理员:</td>
+          <td>
+            <input type="hidden" value="0" name="admin_staffer[admin]"><input type="checkbox" value="1" name="admin_staffer[admin]" id="admin_staffer_admin" checked="checked">
+          </td>
+        </tr>
+        <tr>
+          <td class="field"><b>*</b>角色名称:</td>
+          <td>
+            <select name="admin_staffer[role_id]" id="admin_staffer_role_id"><option value="">请选择</option><option value="1">高级编辑</option><option value="2">网站编辑</option><option value="4">Ruby开发</option></select>
+          </td>
+        </tr>
+        <tr>
+          <td class="field"></td>
+          <td>
+            <input type="submit" value="保存" name="commit">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<div class="demo_right">
+  <h2>代码:</h2>
+  <%== code(:form, :erb) %>
+
+  <br/>
+  <h2 class="title">使用说明:</h2>
+  <p>
+    1. grid_form, 加载数据表单的样式<br/><br/>
+    2. field, 表单内部左侧属性<br/><br/>
+    3. <%="<b>*</b>"%>, 是否必填项
+    4. long, input宽标签
+    5. short, input短标签
+  </p>
+</div>

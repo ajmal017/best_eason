@@ -1,0 +1,35 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+</h1>
+<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b>旧密码:</td>
+        <td>
+          <%= f.password_field :current_password %><%= f.full_error :current_password  %>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="field"><b>*</b>新密码:</td>
+        <td>
+         <%= f.password_field :password %><%= f.full_error :password  %>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="field"><b>*</b>确认密码:</td>
+        <td>
+           <%= f.password_field :password_confirmation %><%= f.full_error :password_confirmation  %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td>
+          <%= f.submit %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<% end -%>

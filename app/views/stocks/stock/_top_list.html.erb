@@ -1,0 +1,34 @@
+<div class="compare_stock">
+  <table>
+    <thead>
+      <tr>
+        <th>股票名称</th>
+        <th><span id="col_b" class="sortcolumn">当前价</span></th>
+        <th><span id="col_c" class="sortcolumn">涨跌幅%</span></th>
+        <th><span id="col_a" class="sortcolumn">市盈率</span></th>
+        <th><span id="col_d" class="sortcolumn">成交量</span></th>
+        <th><span id="col_e" class="sortcolumn">评分</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% stocks.each do |stock| %>
+        <tr>
+          <td><%= link_to stock.truncated_com_name, stock_path(stock), target: "_blank" %></td>
+          <td><%= number_to_currency(stock.realtime_price, unit: '', format:"%u%n") %></td>
+          <td data-sort="<%= stock.change_percent %>">
+            <%= stock_change_percent_style(stock, postfix: "%") %>
+          </td>
+          <td data-sort="<%= stock.pe_ratio %>">
+            <%= stock.adj_pe_ratio %>
+          </td>
+          <td data-sort="<%= stock.lastest_volume %>">
+            <%= humanlize_number(stock.pretty_lastest_volume) %><%= stock.pretty_volume_unit %>
+          </td>
+          <td data-sort="<%= stock.try(:stock_screener).try(:score) %>">
+            <em><%= format_number(stock.try(:stock_screener).try(:score), 1) %></em>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

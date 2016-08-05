@@ -1,0 +1,73 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag 'jquery.Jcrop', "/stylesheets/v3/userEdit.css" %>
+<% end %>
+
+<div class="container userEdit clearfix">
+  <%=render partial: 'shared/setting_left_box'%>
+  
+	<div class="rightBox">
+		<h2>头像设置</h2>
+    <%=form_for current_user, url: setting_crop_ajax_user_path(current_user), method: :put, remote: true do |f|%>
+  		<div class="uploadBox uploadEdit">
+  			<div class="clearfix topBox">
+            <% %w(x y w h).each do |attribute| %>
+              <%= f.hidden_field "crop_#{attribute}" %>
+            <% end %>
+    				<div class="leftSide">
+              <% if current_user.temp_image.errors[:image].present? %>
+                <div style="height:300px;margin-top:150px;text-align: center;vertical-align: middle;">
+                  <a class="w_btn default" onclick="$('#real_setting_avatar').trigger('click');return false;" href="javascript:;">上传图片</a>
+                  <span><font color="red"><%= current_user.temp_image.errors[:image].first %></font></span>
+                </div>
+              <% else %>
+                <div>
+                  <%= image_tag current_user.temp_image.image.url(:normal), id: 'cropbox'%>
+                </div>
+          
+    					  <div class="btnBox">
+                  <%= link_to "重新上传", avatar_setting_index_path, class: 'w_btn btn_attend_cancel float-left' %>
+                  <%= f.submit "保存", class: "b_btn dialog_btn_y float-right" %>
+    					  </div>
+              <% end -%>
+    				</div>
+        
+  				<div class="rightSide">
+  					<h3>预览</h3>
+  					<ul>
+  						<li class="size-1" id="preview_100" style="width:100px;height:100px;overflow:hidden;margin-left:auto;margin-right:auto;border-radius:50%;">
+                  <%= image_tag current_user.temp_image.image.url(:normal) %>
+                  <br>100px X 100px
+              </li>
+  						<li class="size-2" id='preview_40' style="width:40px;height:40px;overflow:hidden;margin-left:auto;margin-right:auto;border-radius:50%;">
+                <%= image_tag current_user.temp_image.image.url(:normal) %>
+                <br>40px X 40px
+              </li>
+  						<li class="size-3" id='preview_30' style="width:30px;height:30px;overflow:hidden;margin-left:auto;margin-right:auto;border-radius:50%;">
+                <%= image_tag current_user.temp_image.image.url(:normal) %>
+                <br>30px X 30px
+              </li>
+  						<li class="size-4" id='preview_24' style="width:24px;height:24px;overflow:hidden;margin-left:auto;margin-right:auto;border-radius:50%;">
+                <%= image_tag current_user.temp_image.image.url(:normal) %>
+                <br>24px X 24px
+              </li>
+  					</ul>
+  				</div>
+  			</div>
+  		</div>
+    <% end -%>
+	</div>
+</div>
+
+<div style="display: none;">
+  <%=form_for current_user, url: save_avatar_setting_path(current_user), method: :put do |f| %>
+    <%=f.file_field :avatar, id: 'real_setting_avatar', accept:".jpg,.jpeg,.png,.gif"%>
+  <% end %>
+</div>
+
+<script>
+<% if current_user.temp_image.errors[:image].present? %>
+  
+<% else %>
+  userJcropInit();
+<% end %>
+</script>

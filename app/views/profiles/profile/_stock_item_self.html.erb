@@ -1,0 +1,17 @@
+<tr data-id="<%= stock.id %>">
+  <td>
+    <a href="<%= stock_path(stock) %>" class="flag <%= stock.market_area %>">
+      <span><%= stock.truncated_com_name %></span><%= stock.symbol %>
+    </a>
+  </td>
+  <td><%= format_number(stock.realtime_price) %><br/><%= format_number(follow.price) %></td>
+  <td data-sort="<%= stock.change_from_previous_close %>">
+    <%= up_down_style(stock.change_from_previous_close) %><br/>
+    <%= up_down_style(stock.change_percent, postfix: "%") %>
+  </td>
+  <td data-sort="<%= stock.value_to_usd(stock.market_capitalization) %>">
+    <%= humanlize_capitalization(stock.adj_market_capitalization) %>
+  </td>
+  <td><%= stock.adj_pe_ratio %></td>
+  <td><span class="trade" onclick="javascript:window.open('<%= stock_path(stock, trade: 'buy') %>')"></span></td>
+</tr>

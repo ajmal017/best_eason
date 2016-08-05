@@ -1,0 +1,72 @@
+<h1 class="title">
+  <span class="title_left">User day property详情页面</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @user_day_property], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_user_day_properties_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Id</td>
+      <td>
+        <%= @user_day_property.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">User</td>
+      <td>
+        <%= @user_day_property.user_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Date</td>
+      <td>
+        <%= @user_day_property.date %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Total</td>
+      <td>
+        <%= @user_day_property.total %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Total cash</td>
+      <td>
+        <%= @user_day_property.total_cash %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Total stocks cost</td>
+      <td>
+        <%= @user_day_property.total_stocks_cost %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Created at</td>
+      <td>
+        <%= @user_day_property.created_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Updated at</td>
+      <td>
+        <%= @user_day_property.updated_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Base currency</td>
+      <td>
+        <%= @user_day_property.base_currency %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Trading account</td>
+      <td>
+        <%= @user_day_property.trading_account_id %>
+      </td>
+    </tr>
+  </tbody>
+</table>

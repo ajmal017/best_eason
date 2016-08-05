@@ -1,0 +1,47 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/register.css" %>
+<% end %>
+
+<div class="container registration land">
+  <nav class="createStep clearfix">
+    <strong>登录财说</strong><!-- <i>海外投资门户，汇集上百优质精选组合投资</i> -->
+  </nav>
+  <%=form_for @user || User.new, url: login_url, method: :post do |f| %>
+    <dl>
+      <%= hidden_field_tag :return_to, params[:return_to] %>
+      <dd>
+        <%= f.text_field :email, value: cookies[:email], class: 'medium', placeholder: "登录帐号" %>
+        <% if action_name == 'create' %>
+          <span class="errorTip" style="display: inline-block;">
+            账号或密码不正确
+          </span>
+        <% end %>
+      </dd>
+      <dd>
+        <%= f.password_field :password, class: 'medium', autocomplete: :off, placeholder: "密码" %>
+      </dd>
+      <%#<dd>%>
+        <%#<input type="checkbox" name="remember_me" id="agree" class="custom1" />%>
+        <%#<label for="agree">记住用户名</label>%>
+      <%#</dd>%>
+      <dd>
+        <%=f.submit '登录', class: 'b_btn trade' %>
+      </dd>
+      <dd>
+        <span class="land-registration">
+          <%= link_to '忘记密码', new_account_password_path %>
+          <%= link_to '注册', signup_path %>
+        </span>
+      </dd>
+      <%= render "/shared/other_login" -%>
+    </dl>
+  <% end %>
+</div>
+
+<script>
+  $(function(){
+    $("#user_email").focus(function(){
+      $(".errorTip").hide();
+    })
+  })
+</script>

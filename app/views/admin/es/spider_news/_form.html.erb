@@ -1,0 +1,86 @@
+<%= javascript_include_tag "/javascripts/kindeditor/kindeditor.js" %>
+
+<%= form_for [:admin, :es, @spider_news], url: admin_es_spider_news_path(id: @spider_news.id) do |f| %>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>ID:</td>
+      <td>
+        <%= @spider_news.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>标题:</td>
+      <td>
+        <%= f.text_field :title %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>分类:</td>
+      <td>
+        <%= f.collection_select :category_id, MD::Source::SpiderNewsCategory.all, :category_id, :name, prompt: true %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>缩略图:</td>
+      <td>
+        <% (@spider_news.pic_urls||[]).each.with_index do |pic_url, idx| %>
+          <span id="pic_urls_<%= idx %>">
+            <%= image_tag asset_url(pic_url), style: "max-width:150px;" %>
+            <%= hidden_field_tag 'md_data_spider_news[pic_urls][]', pic_url %>
+            <%= link_to '删除', 'javascripts:void(0);', {class: 'del-img', data: {idx: idx }} %>
+          </span>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>来源:</td>
+      <td>
+        <%= f.text_field :source %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>内容:</td>
+      <td>
+        <%= f.text_area :content, value: (f.object.content), class: 'editor', id: "richeditor" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>相关股票:</td>
+      <td>
+        <input type="text" placeholder="搜索股票" id="stock_search" size="60"/>
+        <%= f.hidden_field :stock_ids, value: @spider_news.stock_ids.try(:join, ","), id: "stocks_search_ids" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">已添股票展示:</td>
+      <td id="new_stock">
+        <% if !@stocks.empty? %>
+          <% @stocks.each do |stock| %>
+            <ul id="stock_<%= stock.id %>">
+              <li id="stock" style="float:left;"><%= stock.symbol %>
+                (<%= stock.c_name == nil ? stock.name : stock.c_name %>)<a href="javascript:"  style="color:red;" onclick="destroyStock(<%= stock.id %>)">X</a>
+              </li>
+            </ul>
+          <% end %>
+        <% else %>
+          <span id="prompt" style="color:red;">暂时没有关联的股票！</span>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"></td>
+      <td>
+        <%= f.submit "提交" %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end -%>
+<script type="text/javascript">
+  $(function(){
+    $('.del-img').click(function(){
+      $('#pic_urls_'+$(this).data('idx')).remove();
+    })
+  })
+</script>

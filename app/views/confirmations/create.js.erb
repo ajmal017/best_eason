@@ -1,0 +1,5 @@
+<% if @resource.errors.any? %>
+  alert("<%=@resource.errors[:email].first%>");
+<% else %>
+  alert('发送邮件成功');
+<% end %>

@@ -1,0 +1,84 @@
+<h1 class="title">
+  <span class="title_left">Account value archive详情页面</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @account_value_archive], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_account_value_archives_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Id</td>
+      <td>
+        <%= @account_value_archive.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">User</td>
+      <td>
+        <%= @account_value_archive.user_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Broker user</td>
+      <td>
+        <%= @account_value_archive.broker_user_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Key</td>
+      <td>
+        <%= @account_value_archive.key %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Currency</td>
+      <td>
+        <%= @account_value_archive.currency %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Value</td>
+      <td>
+        <%= @account_value_archive.value %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">User binding</td>
+      <td>
+        <%= @account_value_archive.user_binding_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Archive date</td>
+      <td>
+        <%= @account_value_archive.archive_date %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Created at</td>
+      <td>
+        <%= @account_value_archive.created_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Updated at</td>
+      <td>
+        <%= @account_value_archive.updated_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Base currency</td>
+      <td>
+        <%= @account_value_archive.base_currency %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Trading account</td>
+      <td>
+        <%= @account_value_archive.trading_account_id %>
+      </td>
+    </tr>
+  </tbody>
+</table>

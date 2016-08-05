@@ -1,0 +1,15 @@
+<tr>
+  <input type="hidden" value="<%= order_detail_hash[:stock_shares] %>" name="order[order_details_attributes][<%=index%>][est_shares]" class="j_stock_est_shares">
+  <input type="hidden" value="<%= order_detail_hash[:stock_id] %>" name="order[order_details_attributes][<%=index%>][base_stock_id]" class="j_stock_id">
+  <input type="hidden" value="<%= order_detail_hash[:stock_price] %>" class="j_stock_price">
+  <!-- <input type="hidden" value="OrderBuy" name="order[order_details_attributes][<%=index%>][trade_type]" class="j_stock_trade_type"> -->
+  <input type="hidden" value="<%= order_detail_hash[:weight]/100 %>" class="j_stock_weight" />
+  <input type="hidden" value="<%= order_detail_hash[:board_lot] %>" class="j_stock_board_lot" />
+
+  <td><%= link_to order_detail_hash[:symbol], stock_path(order_detail_hash[:stock_id]), class: 'limitLength max_width flag ' + area.to_s, target: "_blank" %></td>
+  <td><%= link_to order_detail_hash[:com_name], stock_path(order_detail_hash[:stock_id]), target: "_blank" %></td>
+  <td class="j_stock_shares"><%= order_detail_hash[:stock_shares] %></td>
+  <td><%= order_detail_hash[:weight] %>%</td>
+  <td><%= number_to_currency(order_detail_hash[:stock_price], unit: unit, format:"%u%n", negative_format: "%u-%n")%></td>
+  <td><%= number_to_currency(order_detail_hash[:stock_price]*order_detail_hash[:stock_shares], unit: unit, format:"%u%n", negative_format: "%u-%n")%></td>
+</tr>

@@ -1,0 +1,67 @@
+<div class="viewBox">
+  <h3>
+    <span>订单编号:<%= order.sn %></span>
+    <span>状态：<%= order_status_with_style(order.status_name) %></span>
+    <span>下单时间：<%= order.created_at %></span>
+    <i class="close-window" onclick="CaishuoDialog.close()"></i>
+  </h3>
+  <div class="viewContent">
+    <ul>
+      <li><span>交易账户</span><%= order.trading_account.broker_name %></li>
+      <li>
+        <% if order.basket? %>
+          <span>组合</span><%= order.basket.title %>
+        <% else %>
+          <span>股票</span><%= order.stock_detail.stock.com_name %>  
+          <%= order.stock_detail.stock.symbol %>
+        <% end %>
+      </li>
+      <li><span>动作</span><%= buy_or_sell(order.type) %></li>
+      <% if !order.basket? %>
+        <li>
+          <span>订单类型</span><%= order.market? ? "市价单" : "限价单" %>
+        </li>
+        <% if !order.market? %>
+        <li>
+          <span>委托价格</span><%= currency_money(order.stock_detail.limit_price, order.currency_unit) %>
+        </li>
+        <% end %>
+      <% end %>
+      <li>
+        <span>成交金额</span><%= currency_money(order.real_cost.to_f, order.currency_unit) %>
+      </li>
+    </ul>
+    <table cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <td class="text-left">名称</td>
+          <td>成交数量</td>
+          <td class="text-right">成交均价</td>
+          <td class="text-right">总金额</td>
+          <td>交易时间</td>
+          <td>状态</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% order_details.each do |order_detail| %>
+          <tr>
+            <td class="text-left"><%= order_detail.stock.symbol %></td>
+            <td class="text-normal">
+              <%= order_detail.real_shares.to_i %>/<%= order_detail.est_shares.to_i %>
+            </td>
+            <td class="text-right blod">
+              <%= currency_money(order_detail.avg_price, order.currency_unit) %>
+            </td>
+            <td class="text-right blod">
+              <%= currency_money(order_detail.real_cost.to_f, order.currency_unit) %>
+            </td>
+            <td class="text-normal"><%= order_detail.trade_time %></td>
+            <td class="mins">
+              <%= order_status_with_style(order_detail.status_name) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

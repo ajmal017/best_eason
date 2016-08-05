@@ -1,0 +1,21 @@
+$(".j_baskets_count").text("<%= number_with_delimiter(@baskets.count) %>");
+
+<% if @baskets.count > 0 %>
+  $(".j_baskets").empty();
+    <% @baskets.each_with_index do |basket, index| %>
+      $(".j_baskets").append("<%=j render partial: 'basket_item', locals: {basket: basket, order_param: params[:baskets_search][:order], special_class: basket.followed_by_user?(current_user.try(:id)) ? 'favAdded' : ''}%>");
+    <% end %>
+
+  $(".j_page").html("<%=j render partial: 'page', locals: {baskets: @baskets}%>");
+  
+    changePaginateToAjaxLinks();
+  $(".j_baskets").attr("current_page", "<%= @baskets.current_page %>");
+  
+  $("#noContent").hide();
+  $("#hasContent").show();
+<% else %>
+  $("#hasContent").hide();
+  $("#noContent").show();
+<% end %>
+window.scrollTo(0,0);
+caishuo.adjustFooter();

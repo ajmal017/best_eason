@@ -1,0 +1,8 @@
+removeBarloadingDiv();
+<% if @topics.present? %>
+  <% @topics.each do |topic| %>
+    $("#topics_list").append("<%= j render partial: "topic_item", locals: {topic: topic, stocks: @grouped_stocks[topic.id] || [], is_top: false} %>")
+  <% end %>
+<% else %>
+  setNoMoreContent();
+<% end %>

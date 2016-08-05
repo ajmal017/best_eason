@@ -1,0 +1,412 @@
+defaults: &defaults
+  app_name: "caishuo"
+  email_sender: '财说'
+  email_reply: 'job@caishuo.com'
+  host: 'http://localhost:3000'
+  http_host: 'http://localhost:3000'
+  #host: "http://3adea011.ngrok.io"
+  html_host: 'http://localhost:3000'
+  cdn_host: 'http://image.caishuo.com:8901' # CDN
+  img_upload_host: 'http://image.caishuo.com:8090'
+  mobile_domain: 'm.localhost'
+  session_key: "_dev_store"
+  app:
+    apk:
+      default: http://a.app.qq.com/o/simple.jsp?pkgname=com.caishuo.stock
+      zaker: http://static.caishuo.com/downloads/caishuo_zaker.apk
+      sohu: http://static.caishuo.com/downloads/caishuo_sohu.apk
+      liantong: http://static.caishuo.com/downloads/caishuo_liantong.apk
+      jiaxiao: http://static.caishuo.com/downloads/caishuo_jiaxiao.apk
+      wannianli: http://static.caishuo.com/downloads/caishuo_wannianli.apk
+      yidian: http://static.caishuo.com/downloads/caishuo_yidian.apk
+      sinanewswap: http://static.caishuo.com/downloads/caishuo_sinanewswap.apk
+      sinanewsapp: http://static.caishuo.com/downloads/caishuo_sinanewsapp.apk
+      ifeng: http://static.caishuo.com/downloads/caishuo_ifeng.apk
+      caishuo: http://static.caishuo.com/downloads/caishuo.apk
+    # android_download: http://static.caishuo.com/downloads/caishuo.apk
+    android_download: http://a.app.qq.com/o/simple.jsp?pkgname=com.caishuo.stock
+  order_validity_period: 600
+  master_account: DU207874  #美股
+  trading_account:
+    sim:
+      cn: BroSST_CN01
+      us: BroSST_US01
+    p2p: BroP2P
+  pms_logger: true
+  reconcile_delay: 10
+  order_retry_delay: 10	
+  pms_cts_heartbeat: 5
+  request_fundamental_delay: 11
+  domain: '.caishuo.com'
+  analytics:
+    gtm_id: GTM-WKTF64
+    ga_id: UA-66849081-4
+  elasticsearch:
+    hosts:
+    - host: localhost
+      port: 9200
+  brokers:
+    unicorn:
+      name: "益群证券"
+      status: "open"
+      url: "http://192.168.1.10:8083"
+      binding_page: "/users/brokers/unicorn"
+      create_account_url: "http://192.168.1.10:8083/kaihu.html"
+    ib: 
+      name: "盈透证券"
+      status: "closed"
+      url: "javascript:void(0);"
+      binding_page: "javascript:void(0);"
+  weixin:
+    token: 3f28de10a95af0fb795f
+    app_id: test
+    app_secret: test
+  bunny:
+    host: office.caishuo.com
+    port: 5672
+    user: admin
+    pass: www.admin.c0m
+    heartbeat: 6
+  jiathis:
+    qrcode: 'http://s.jiathis.com/qrcode.php?url='
+  azure:
+    account_name: 'caishuobjstorage'
+    access_key: 'ODDXvg0ryAf8TD0h4L4ysraiwWCHU/wiJPiQM0SFwBYDMiweO3x2PtBlHjlqEvwNHu8pcjKFAYm3p+M5+FLDsw=='
+    blob_host: 'https://caishuobjstorage.blob.core.chinacloudapi.cn'
+  proxy:
+    url: http://54.169.153.137:8080
+    host: 54.169.153.137
+    port: 8080
+  sneakers:
+    heartbeat: 6
+    amqp: 'amqp://admin:admin@localhost:5672'
+    amqps: 'amqps://admin:www.caishuo.c0m@office.caishuo.com:5671'
+    use_ssl: true
+    tls_cert: 'client_certificate.pem'
+    tls_key: 'client_key.pem'
+    tls_ca_certificates:
+      - 'ca_certificate.pem'
+    vhost: '/'
+    log: 'sneakers.log'
+    shift_age: 10
+    log_rotate_age: 10
+    log_rotate_size: 209715200
+    pid_path: 'sneakers.pid'
+    runner_config_file: 'sneakers.conf.rb'
+    workers: 1
+  orders:
+    confirm_url: https://office.caishuo.com:8086/orders/confirm
+  unicorn: 
+    service_key: 'dca632f2e577d6a15f83a737704fae87'
+    secret: '30414a6fb490427c5f04586ee084857ab3cd645fd695149c27a566dfd9d8304cde35829278e9cea9b68c27b2e87198877951e0561b9523f71872df25b8d9f445'
+  resque_auth: 
+    username: 'caishuo'
+    password: 'caishuo'
+  xignite:
+    token: 1019BDEE9F624E949FE79C33C282D363
+  notifiers:
+    email:
+      - qiancheng@caishuo.com
+      - dongshuxiang@caishuo.com
+  citics:
+    emails:
+      - dongshuxiang@caishuo.com
+  investment_notifiers:
+    email:
+      - dongshuxiang@caishuo.com
+      - wangzhichao@caishuo.com
+  basket_auditers:
+    emails:
+      - wangzhichao@caishuo.com
+  trading_notifiers:
+    emails:
+      - warning@caishuo.com
+  auto_followed_user_id: 1009
+  heartbeat_notifiers:
+    emails:
+      - liujun@caishuo.com
+      - wangchangming@caishuo.com
+      - qiancheng@caishuo.com
+  jpush:
+    app_key:
+      - 6cf9b75e5287025df2d05da0
+    master_secret:
+      - 2eb2cb49720d8a902f691945
+    push_password: '111111'
+  internal_api:
+    secret: '095de184f1eb3d43108a43a0964b5a0ad7dc8159f76cc1371ac4b079557dc31d0314baed1c02fd51f55f0a4b247844a69b4517f5689959389b4de614c6e25afd' 
+  wechat:
+    key: 'wx7723a7515c3fdedd'
+    secret: 'c80e706500cd9f09413a57ef992d260d'
+  weibo:
+    key: '2089377240'
+    secret: '768d995dd657bdb69ac2bb7e044323dc'
+  qq:
+    key: '101247340'
+    secret: 'fa8f03a6e589a1d725491ef9ef595bc1'
+  cs_open:
+    tokens:
+      - f8a8fcb833981be483f484c5873badc6
+  md_data_db: caishuo_development_datas
+
+development:
+  <<: *defaults
+  domain: :all
+  bunny:
+    host: office.caishuo.com
+    port: 5672
+    user: admin
+    pass: www.caishuo.c0m
+    heartbeat: 6
+    vhost: 'caishuo'
+  sneakers:
+    heartbeat: 6
+    amqp: 'amqp://admin:admin@localhost:5672'
+    amqps: 'amqps://admin:www.caishuo.c0m@office.caishuo.com:5671'
+    use_ssl: false
+    tls_cert: 'client_certificate.pem'
+    tls_key: 'client_key.pem'
+    tls_ca_certificates:
+      - 'ca_certificate.pem'
+    vhost: '/'
+    log: 'sneakers.log'
+    shift_age: 10
+    log_rotate_age: 10
+    log_rotate_size: 209715200
+    pid_path: 'sneakers.pid'
+    runner_config_file: 'sneakers.conf.rb'
+    workers: 1
+    supervisor: true
+    daemonize: false
+    timeout_job_after: 10000
+  orders:
+    confirm_url: http://localhost:3004/orders/confirm
+  api_key:
+
+staging: 
+  <<: *defaults
+  host: 'https://office.caishuo.com'
+  http_host: 'http://office.caishuo.com'
+  html_host: 'https://office.caishuo.com'
+  cdn_host: 'https://office.caishuo.com'
+  img_upload_host: 'http://192.168.1.36:8090'
+  mobile_domain: 'm.office.caishuo.com'
+  session_key: "_staging_store"
+  domain: .office.caishuo.com
+  master_account: I8019219
+  trading_notifiers:
+    emails:
+      - wangchangming@caishuo.com
+      - qiancheng@caishuo.com
+      - liujun@caishuo.com
+  bunny:
+    host: localhost
+    port: 5672
+    user: admin
+    pass: www.caishuo.c0m
+    heartbeat: 6
+    vhost: 'caishuo'
+  sneakers:
+    heartbeat: 6
+    amqp: 'amqp://admin:www.caishuo.c0m@localhost:5672'
+    amqps: 'amqps://admin:www.caishuo.c0m@office.caishuo.com:5671'
+    use_ssl: false
+    tls_cert: 'client_certificate.pem'
+    tls_key: 'client_key.pem'
+    tls_ca_certificates:
+      - 'ca_certificate.pem'
+    vhost: 'caishuo'
+    log: 'sneakers.log'
+    shift_age: 10
+    log_rotate_age: 10
+    log_rotate_size: 209715200
+    pid_path: 'sneakers.pid'
+    runner_config_file: 'sneakers.conf.rb'		
+    workers: 1
+    daemonize: true
+    timeout_job_after: 60
+  orders:
+    confirm_url: https://office.caishuo.com:8086/orders/confirm
+  api_key: '123456'
+  weibo:
+    key: '2089377240'
+    secret: '768d995dd657bdb69ac2bb7e044323dc'
+  md_data_db: caishuo_staging_datas
+
+test:
+  <<: *defaults
+  api_key:
+
+testing: 
+  <<: *defaults
+  host: 'https://testing.caishuo.com'
+  http_host: 'https://testing.caishuo.com'
+  html_host: 'https://testing.caishuo.com'
+  cdn_host: 'https://testing.caishuo.com'
+  img_upload_host: 'http://192.168.1.36:8090'
+  mobile_domain: 'm.testing.caishuo.com'
+  session_key: "_testing_store"
+  domain: .testing.caishuo.com
+  master_account: I8019219
+  trading_notifiers:
+    emails:
+      - wangchangming@caishuo.com
+      - qiancheng@caishuo.com
+      - liujun@caishuo.com
+  bunny:
+    host: office.caishuo.com
+    port: 5672
+    user: testing
+    pass: testing
+    heartbeat: 6
+    vhost: 'testing'
+  sneakers:
+    heartbeat: 6
+    amqp: 'amqp://testing:testing@office.caishuo.com:5672'
+    amqps: 'amqps://testing:testing@office.caishuo.com:5671'
+    use_ssl: false
+    tls_cert: 'client_certificate.pem'
+    tls_key: 'client_key.pem'
+    tls_ca_certificates:
+      - 'ca_certificate.pem'
+    vhost: 'testing'
+    log: 'sneakers.log'
+    shift_age: 10
+    log_rotate_age: 10
+    log_rotate_size: 209715200
+    pid_path: 'sneakers.pid'
+    runner_config_file: 'sneakers.conf.rb'    
+    workers: 1
+    daemonize: true
+    timeout_job_after: 60
+  orders:
+    confirm_url: https://office.caishuo.com:8086/orders/confirm
+  api_key: '123456'
+  md_data_db: caishuo_testing_datas
+
+production:
+  <<: *defaults
+  host: 'https://www.caishuo.com'
+  http_host: 'http://www.caishuo.com'
+  html_host: 'https://assets.caishuo.com'
+  cdn_host: 'https://cdn.caishuo.com'
+  img_upload_host: 'http://10.10.0.4:8090'
+  mobile_domain: 'm.caishuo.com'
+  session_key: "_cs_store"
+  domain: .caishuo.com
+  master_account: I8019219
+  orders:
+    confirm_url: http://unicornsecurities.hk/orders/confirm
+  proxy:
+    url: http://23.101.6.8:8080
+    host: 23.101.6.8
+    port: 8080
+  bunny:
+    host: 10.10.1.11
+    port: 5672
+    user: rubyClient
+    pass: admiaa3dd20nc0m
+    heartbeat: 6
+    vhost: 'caishuo'
+  sneakers:
+    heartbeat: 6
+    amqp: 'amqp://rubyClient:admiaa3dd20nc0m@10.10.1.11:5672'
+    amqps: 'amqps://rubyClient:admiaa3dd20nc0m@10.10.1.11:5672'
+    use_ssl: false
+    tls_cert: 'client_certificate.pem'
+    tls_key: 'client_key.pem'
+    tls_ca_certificates:
+      - 'ca_certificate.pem'
+    vhost: 'caishuo'
+    log: 'sneakers.log'
+    shift_age: 10
+    log_rotate_age: 10
+    log_rotate_size: 209715200
+    pid_path: 'sneakers.pid'
+    runner_config_file: 'sneakers.conf.rb'		
+    workers: 1
+    daemonize: true
+    timeout_job_after: 120
+  resque_auth: 
+    username: 'com.caishuo'
+    password: '5tgb$RFVcaTishuo.c0m'
+  elasticsearch:
+    hosts:
+    - host: 10.10.1.7
+      port: 9200
+  brokers:
+    unicorn:
+      name: "益群证券"
+      status: "open"
+      url: "http://unicornsecurities.hk"
+      binding_page: "/users/brokers/unicorn"
+      create_account_url: "http://unicornsecurities.hk/kaihu.html"
+    ib: 
+      name: "盈透证券"
+      status: "closed"
+      url: "javascript:void(0);"
+      binding_page: "javascript:void(0);"
+  basket_auditers:
+    emails:
+      - wangzhichao@caishuo.com
+      - mengyuan@caishuo.com
+  auto_followed_user_id: 1075
+  api_key: "509915a8c76f0d6f775ceb09a829da21"
+  baidu_token: "TRsoMiVd"
+  jpush:
+    app_key:
+      - 72342379bc3fbd576e4f65de
+    master_secret:
+      - 45eafee3a5fb585cec5f2f53
+    push_password: caishuo>c0m
+  internal_api:
+    secret: '49b9b49809fd930690902b8afeaac6eaba97ce7486dc642ee2c393268c375afcb0f75b41d77164c3f3fa601c54ea28c1aa876bd9acedaaf62b674648291f8764'
+  wechat:
+    key: 'wxbe1fcd7a6ec15c26'
+    secret: 'a44d6fe7ed870da1d31d5f2dcf88aba3'
+  weibo:
+    key: '1640413318'
+    secret: '5342ea8ce1c3d6188b5c83e1e60efccd'
+  qq:
+    key: '101233116'
+    secret: '5c2cfe10d2bb21765bfc743b52a5f07f'
+  cs_open:
+    tokens:
+      - f1431232ea0f2344a649cdd660c97c54
+  analytics:
+    gtm_id: GTM-WKTF64
+    ga_id: UA-66849081-1
+  md_data_db: caishuo_production_datas
+
+docker_dev:
+  <<: *defaults
+  domain: :all
+  bunny:
+    host: office.caishuo.com
+    port: 5672
+    user: admin
+    pass: www.caishuo.c0m
+    heartbeat: 6
+    vhost: 'caishuo'
+  sneakers:
+    heartbeat: 6
+    amqp: 'amqp://admin:admin@localhost:5672'
+    amqps: 'amqps://admin:www.caishuo.c0m@office.caishuo.com:5671'
+    use_ssl: false
+    tls_cert: 'client_certificate.pem'
+    tls_key: 'client_key.pem'
+    tls_ca_certificates:
+      - 'ca_certificate.pem'
+    vhost: '/'
+    log: 'sneakers.log'
+    shift_age: 10
+    log_rotate_age: 10
+    log_rotate_size: 209715200
+    pid_path: 'sneakers.pid'
+    runner_config_file: 'sneakers.conf.rb'
+    workers: 1
+    supervisor: true
+    daemonize: false
+    timeout_job_after: 10000
+  orders:
+    confirm_url: http://localhost:3004/orders/confirm

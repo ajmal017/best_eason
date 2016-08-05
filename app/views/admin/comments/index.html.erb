@@ -1,0 +1,113 @@
+<h1 class="title">
+ <span class="title_left"><%= @page_title %></span>
+  <span class="title_right">
+  </span>
+</h1>
+
+<div class="box">
+  <%= form_tag admin_comments_path, method: :get do -%>
+    <select style="width: 12%" class="select_user" name="user_id" id="search_user">
+    </select>
+    <input type="button" value="重置" id="user_clear">&nbsp;&nbsp;
+    <%= text_field_tag :q, nil, placeholder: '全文检索' %>&nbsp;&nbsp;
+    <%= submit_tag '搜索' %>
+  <% end -%>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <td colspan="9" style="text-align:right;">
+        <a id="destry" style="color:red !important;" href="#" onclick="get_checkbox()">批量删除</a>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <input type="checkbox" class="top_tree">
+      </th>
+      <th>ID</th>
+      <th>用户</th>
+      <th>评论内容</th>
+      <th>赞次数</th>
+      <th>评论数</th>
+      <th>创建时间</th>
+      <th>状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @records != [] %>
+    <% @comments.each.with_index do |comment, index| %>
+      <% record = @records.find{|e| e.id == comment.id.to_i } %>
+      <tr id="check_<%= comment.id %>">
+        <% if record %>
+          <td width="20px;">
+            <input type="checkbox" class="bottom_tree" value="<%= comment.id %>">
+          </td>
+          <td><%= record.id %></td>
+          <td><%= record.commenter.try(:username) %></td>
+          <td class="align_left">
+            <div title="<%= record.text %>" onclick="window.open('<%= record.top_commentable_url %>')" target="_blank" style="cursor:pointer;">
+              <%= highlighted(comment, :content).html_safe %>
+            </div>
+          </td>
+          <td><%= record.likes_count.to_i %></td>
+          <td><%= record.comments_count.to_i %></td>
+          <td><%= record.created_at %></td>
+          <td><%= record.deleted ? "已删除" : "正常" %></td>
+          <td class="action">
+            <%= link_to record.deleted ? "恢复" : "删除", change_deleted_admin_comment_path(id: comment.id), method: :post, data: {confirm: record.deleted ? "你确定恢复吗?" : "你确定删除吗?"} %>
+          </td>
+        <% else %>
+          <td><%= comment.id %></td>
+          <td colspan="7"><%= '数据丢失' %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    <% else %>
+      <tr>
+        <td colspan="11" style="color:red;">此用户暂时没有评论!</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @comments %>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+   $("#user_clear").hide();
+    var search_user = "<%= @search_user %>"
+    if (search_user.length > 2) {
+      $("#user_clear").show();
+      var user_id = "<%= @search_user[0] %>"
+      var user_name = "<%= @search_user[1] %>"
+      $("select[name='user_id']:eq(0)").append("<option value="+user_id+"></option>"); 
+      $("select[name='user_id']:eq(0)").select2("val", user_id)
+      $("#search_user").next().children().children().children().first().get(0).innerHTML = user_name
+
+      $("#user_clear").click(function(){
+        $("select[name='user_id']:eq(0)").select2("val", "")
+        $("#search_user").next().children().children().children().first().get(0).innerHTML = "请输入用户名"
+      });
+    }
+  });
+
+  function get_checkbox(){
+    ids = []
+    ids = get_checkout_ids();
+    if(ids.length > 0){
+      var c = confirm("你确定删除吗？")
+      if (c == true) {
+        $.post("/admin/comments/ajax_del_comment?ids="+ids,{},function(){
+          location.reload();
+        });
+      }else{
+        location.reload();
+      }
+    }else{
+      alert("请选择要删除的评论!")
+    }
+  }
+
+</script>

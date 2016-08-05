@@ -1,0 +1,54 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+  <%=link_to '返回列表', admin_target_messages_path%>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">内容:</td>
+      <td>
+        <%= @target_message.content %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">目标用户:</td>
+      <td>
+        <%= @target_message.target %>
+      </td>
+    </td>
+    <tr>
+      <td class="field">发送情况:</td>
+      <td>
+        <div class="container">
+          <ul class="j_counter">
+            <li><div class="succ_counter">成功数<span><%= @succ_counter %></span>／总数<em><%= @all_counter %></em></div></li>
+            <li><div class="fail_counter">失败数<span><%= @fail_counter %></span></div></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+   </tbody>
+</table>
+
+<script type="text/javascript">
+function fetchResult(){
+  setTimeout(function(){
+    $.get("/admin/target_messages/<%= @target_message.id %>.json", {}, function(data){
+      // var data = {success:123,total:123,fail:123}
+        $('.succ_counter span').text(data.succ_counter);
+        $('.succ_counter em').text(data.all_counter);
+        $('.fail_counter span').text(data.fail_counter);
+        if(data.succ_counter+data.fail_counter != data.all_counter){
+          fetchResult();
+        }
+    },'json');
+  },3000);
+}
+fetchResult();
+  // setInterval(function(){
+  //   $.get("/admin/target_messages/<%= @target_message.id %>/counter");
+  // }, 3000);
+</script>

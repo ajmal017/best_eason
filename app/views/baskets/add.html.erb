@@ -1,0 +1,130 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/creat1.css" %>
+  <%= javascript_include_tag "highstock", "baskets_add", "/javascripts/StockGroup.min.js" %>
+<% end %>
+<%- @page_title = "创建投资组合-添加股票" -%>
+
+<div class="container">
+  <br class="break" />
+  <div class="content">
+    <nav class="createStep">
+      <strong>创建组合投资</strong>
+      <span class="current"><i>1</i> 添加股票</span><span><i>2</i> 个股入选理由</span><span class="step3"><i></i> 取个名字</span>
+    </nav>
+
+    <div class="createSearch text-center">
+      <form onsubmit="return false;" class="searchgroup exlarge">
+        <input type="text" id="searchInput" autocomplete="off" maxlength="100" placeholder="输入个股代码或公司名称" class="search"><kbd></kbd>
+        <ul id="searchResult" class="searchresult" style="display:none;"></ul>
+      </form>
+    </div>
+
+    <div class="whiteBox">
+      <h3>组合投资回溯表现</h3>
+      <div class="wrapCorner clearfix">
+        <div class="themeChart">
+          <div id="stock_index_chart" style="width:673px;height:199px;margin-left:-10px;" class="barloading"></div>
+        </div>
+
+        <div class="themeData">
+          <ol class="asSwitchBtn noTopspace">
+            <li>1周</li>
+            <li>1月</li>
+            <li>3月</li>
+            <li class="active">1年</li>
+          </ol>
+          <p>
+            <i class="dot blue"></i> 您的组合投资
+            <span class="motif">1月回报 <em class="">--</em></span>
+          </p>
+          <p>
+            <i class="dot green"></i> <i id="market_line_name">沪深300</i>
+            <span class="sp500">1月回报 <em class="">--</em></span>
+          </p>
+        </div>
+      </div>
+      <p class="suggestPrice">预估起投金额：<b>--</b></p>
+
+      <%#=form_for @basket, url: update_stocks_basket_path(@basket), method: :put, html: {onsubmit: "return BasketAdd.checkNewBasketFirstStepForm();"} do |f|%>
+        <div class="noneSelect" id="createStockGroup">
+          <table>
+          <thead>
+            <tr>
+              <td width="140">行业 &amp; 股票</td>
+              <td>代码</td>
+              <td>价格</td>
+              <td>1年回报</td>
+              <td>P/E</td>
+              <td>市值</td>
+              <td width="330">
+                <ol class="asSwitchBtn" id="autoBalance">
+                  <li class="active" role="custom">自定义分配</li>
+                  <li role="market">按市值分配</li>
+                  <li role="average">平均分配</li>
+                </ol>
+              </td>
+              <td width="32"></td>
+            </tr>
+          </thead>
+          <tbody class="noContent">
+            <tr class="noContent">
+              <td align="center" colspan="8">创建组合，应包含至少一只仓位大于1%的股票。</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td align="center">现金</td>
+              <td colspan="5"></td>
+              <td><div class="scrollBar"><i>100%</i></div></td>
+              <td></td>
+            </tr>
+          </tfoot>
+          </table>
+        </div>
+        <br class="break">
+        <div class="text-right">
+          <input type="submit" value="下一步" class="b_btn dialog_btn_y" onclick="javascript:BasketAdd.updateBasket();" id="btn_submit">
+        </div>
+      <%# end %>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  var stock_infos = <%= @basket_stock_infos.to_json.html_safe %>,
+      _basket_id = <%= @basket.id %>,
+      _user_contest_basket_id = <%= @contest_basket.try(:id) || "null" %>,
+      _come_from = "<%= params[:come_from] %>",
+      max_weight = <%= @basket.contest_2? ? 0.5 : 1 %>;
+  BasketAdd.join_contest = <%= @basket.contest_2?||false %>;
+
+  $(function(){
+    StockGroup.setDefault(30, max_weight, function(tpl, stock){
+      return tpl.replace(/%sid%/g, stock.sid)
+        .replace(/%name%/g, stock.sname)
+        .replace(/%symbol%/g, stock.symbol)
+        .replace(/%price%/g, FormatValue.price(stock.price))
+        .replace(/%priceclass%/g, FormatValue.upDownClass(stock.percent))
+        .replace(/%percent%/g, FormatValue.percent(stock.percent, false))
+        .replace(/%gainclass%/g, FormatValue.upDownClass(stock.year_gain_percent))
+        .replace(/%year_gain_percent%/g, FormatValue.percent(stock.year_gain_percent, false))
+        .replace(/%pe_value%/g, FormatValue.pe(stock.pe_value))
+        .replace(/%market_value%/g, FormatValue.human_number(stock.market_value));
+    }, function(){
+      StockChart.draw();
+    }).init('#createStockGroup','p.suggestPrice b', '#autoBalance', <%= @basket.completed? %>);
+
+    StockGroup.batch_append(stock_infos);
+
+    //A股大赛的相关提示
+    <% if @basket.draft? %>
+    BasketAdd.ContestActionHandler(_come_from, BasketAdd.join_contest, <%= @exist_stock_ids.to_json.html_safe %>);
+    <% end %>
+  })
+</script>
+
+
+<style>
+  #searchResult .active {background-color: #f3f3f3;}
+</style>

@@ -1,0 +1,91 @@
+<h1 class="title">
+  <span class="title_left"><%= @page_title %></span>
+</h1>
+<div class="box">
+  <label>注册终端：</label>
+  <%= link_to "全部", admin_channel_statistics_path(), class: (@pc_app_channel.blank? ? "current" : nil) -%>
+  <%= link_to "APP", admin_channel_statistics_path(pc_app_channel: "app"), class: (@pc_app_channel == "app" ? "current" : nil) -%>
+  <%= link_to "PC", admin_channel_statistics_path(pc_app_channel: "pc"), class: (@pc_app_channel == "pc" ? "current" : nil) -%>
+</div>
+<div class="box">
+  <label>显示视图：</label>
+  <%= link_to "普通显示", admin_channel_statistics_path(params.merge(by_month: nil)), class: (params[:by_month].blank? ? "current" : nil) %>
+  <%= link_to "按注册月份", admin_channel_statistics_path(params.merge(by_month: true)), class: (params[:by_month].present? ? "current" : nil) %>
+</div>
+<div class="box">
+  <%= form_tag '/admin/channel_statistics', method: "get", class: 'form-inline', role: 'form' do -%>
+    <label>统计时间：</label>
+    <% %w(今天 昨天 7日内 30日内).zip([0, 1, 7, 30].map{|x| x.days.ago.to_date.to_s(:db)}).each do |desc, date| %>
+      <%= link_to desc, admin_channel_statistics_path(params.merge(created_at_gteq: date)) , class: (@created_at_gteq == date ? "current" : nil) %>
+    <% end %>
+    <%= text_field_tag :created_at_gteq, params[:created_at_gteq], class: "datetimepicker", :placeholder => "时间大于", "data-date-format" => "yyyy-mm-dd" %>
+    ~
+    <%= text_field_tag :created_at_lteq, params[:created_at_lteq], class: "datetimepicker", :placeholder => "时间小于", "data-date-format" => "yyyy-mm-dd" %>
+
+    <%= hidden_field_tag :pc_app_channel, @pc_app_channel %>
+    <%= hidden_field_tag :by_month, params[:by_month] %>
+
+    <%= submit_tag '查询', :class => 'btn btn-primary', :style => 'width:5%;' %>
+	
+	<% dup_params = params.dup.except(:aciton, :controller) %>
+	<%= link_to '下载excel', admin_channel_statistics_path(dup_params.merge(format: :xls)) %>
+  <% end -%>
+
+  
+</div>
+
+
+<% if params[:by_month].blank? %>
+
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>渠道号</th>
+        <th>注册数</th>
+		<th>绑定总数</th>
+		<th>激活状态总数</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <% @user_groups.each do |user_group| %>
+        <tr>
+          <td><%= user_group.channel_code %></td>
+          <td><%= user_group.total_count %></td>
+		  <td><%= @trading_total_groups.select{|x| x.channel_code == user_group.channel_code}.first.count rescue 0 %></td>
+		  <td><%= @trading_normal_groups.select{|x| x.channel_code == user_group.channel_code}.first.count rescue 0 %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>时间</th>
+        <th>渠道号</th>
+        <th>注册数</th>
+		<th>绑定总数</th>
+		<th>激活状态总数</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <% @month_groups.each do |month, groups| %>
+          <td rowspan="<%= groups.size %>">
+            <%= month %>
+          </td>
+          <% groups.each do |group| %>
+            <td><%= group.channel_code %></td>
+            <td><%= group.total_count %></td>
+  		    <td><%= @trading_total_groups.select{|x| x.first == month and x[1].first.channel_code == group.channel_code}.first[1].first.count rescue 0 %></td>
+  		    <td><%= @trading_normal_groups.select{|x| x.first == month and x[1].first.channel_code == group.channel_code}.first[1].first.count rescue 0 %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+<% end %>

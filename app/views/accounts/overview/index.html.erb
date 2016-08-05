@@ -1,0 +1,167 @@
+<%=content_for :header do %>
+  <%= javascript_include_tag "highstock", "/javascripts/highcharts.js" %>
+  <%= stylesheet_link_tag "/stylesheets/v3/investmentnew.css"  %>
+<% end %>
+<div class="container">
+  <%= render :partial => "/shared/sub_menus/positions", locals: {account_id: @trading_account.pretty_id} %>
+  <div class="holdStatus center content">
+    <div class="topBox">
+      <div class="selectbox">
+        <input type="hidden" value="<%= @trading_account.pretty_id %>">
+        <label class="invest"><%= @trading_account.broker.cname %><em><%= @trading_account.broker_no.to_s %></em></label><kbd></kbd>
+        <ul class="dropdown">
+          <% @accounts.each do |account| %>
+          <li data-value="<%= account.pretty_id %>"><%=account.broker.cname%><em><%=account.broker_no.to_s%></em></li>
+          <% end %>
+        </ul>
+      </div>
+      <% if @trading_account.market_cn? %>
+        <a href="javascript:;" onclick="javascript:refreshCash('<%= @trading_account.pretty_id %>',this);" class="refresh"></a>
+      <% end %>
+    </div>
+    <span class="hiColor">账户净值<strong><%=number_to_cash(@total_property, unit: @current_cash_unit)%></strong></span>
+    <span class="hiColor">可用现金<strong><%=number_to_cash(@trading_account.usable_cash, unit: @current_cash_unit)%></strong></span>
+    <span>今日盈亏<strong class="<%= up_or_down_class(@today_profit) %>"><%=number_to_cash(@today_profit, unit: @current_cash_unit)%> <small>(<%=number_to_percentage(@today_profit_percent, precision: 2)%>)</small></strong></span>
+    <span>累计盈亏<strong class="<%= up_or_down_class(@total_profit) %>"><%=number_to_cash(@total_profit, unit: @current_cash_unit)%> </strong></span>
+  </div>
+  <div class="holdingStatics clearfix">
+    <div class="leftBox">
+      <div class="doubleBox_left chart_box">
+        <div class="chart_head">
+          <ol class="asSwitchBtn" id="j_profit_chart_tab">
+            <li data="<%= 1.weeks.ago.to_s(:full) %>">1周</li>
+            <% if @trading_account.created_at < 1.month.ago%>
+            <li data="<%= 1.month.ago.to_s(:full) %>">1月</li>
+            <% end -%>
+            <% if @trading_account.created_at < 3.month.ago%>
+            <li data="<%= 3.month.ago.to_s(:full) %>">3月</li>
+            <% end -%>
+            <% if @trading_account.created_at < 6.month.ago%>
+            <li data="<%= 6.month.ago.to_s(:full) %>">6月</li>
+            <% end -%>
+            <% if @trading_account.created_at < 1.year.ago%>
+            <li data="<%= 1.year.ago.to_s(:full) %>">1年</li>
+            <% end -%>
+            <li data="<%= Date.today.at_beginning_of_year.to_s(:full) %>">今年</li>
+            <li class="active" data="">开始至今</li>
+          </ol>
+          <ol class="asSwitchBtn float-right ml10 j_profit_chart_type">
+            <li class="active" data="net_worth">账户净值</li>
+            <li data="earnings">收益表现</li>
+          </ol>
+        </div>
+
+        <div class="chart_body">
+          <div id="j_profit_chart_content" style="height:220px;"></div>
+        </div>
+      </div>
+
+      <div class="account content">
+        <h3>持仓概览<a href="/accounts/positions">查看明细</a></h3>
+        <table class="themeStocks">
+          <thead>
+            <tr>
+              <th class="text-left" width="120">股票</th>
+              <th class="text-right">现价/成本价</th>
+              <th><span class="sortcolumn">涨跌幅(%)</span></th>
+              <th><span class="sortcolumn">今日盈亏(%)</span></th>
+              <th><span class="sortcolumn">市值</span></th>
+            </tr>
+          </thead>
+          <tbody id="j_positions_content">
+          </tbody>
+          <tfoot>
+          </tfoot>
+        </table>
+        <div class="b-line"></div>
+        <h3>交易记录<a href="/accounts/orders">查看明细</a></h3>
+        <table class="themeStocks">
+          <thead>
+            <tr>
+              <th class="text-left" width="120">股票</th>
+              <th class="text-left">交易日期</th>
+              <th class="text-center">数量</th>
+              <th>成交均价</th>
+              <th><span class="sortcolumn">实际盈亏</span></th>
+            </tr>
+          </thead>
+          <tbody id="j_orders_content">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="left-news content j_related_news">
+        <h3>相关新闻</h3>
+        <!--div class="text-center">
+          <a id="topic_more" data-next-page="2" class="w_btn large">加载更多</a>
+        </div-->
+      </div>
+    </div>
+    <div class="rightBox">
+      <div class="content">
+        <div class="amount">股票总净值：<span class="noline"><%= number_to_cash(@market_value, unit: @current_cash_unit) %></span><span class="float-right">当前仓位: <span class="noline"><%=number_to_percentage(@position_percent, precision: 1) %></span></span></div>
+        <div class="rate"><span style="width:<%=@position_percent.to_f.round(2)%>%;"></span></div>
+        <div class="clearfix chartcell">
+          <div class="userRemainPieChart float-left" id="j_sector_pie_chart"></div>
+          <ul class="stock-in">
+          </ul>
+        </div>
+        <h4>一个月内波动幅度</h4>
+        <div class="trend">
+          <div class="circleBox">
+            <div style="transform:rotateZ(<%=@profit_fluctuation%>deg);" class="pointer"></div>
+          </div>
+          <div class="text-box">我的胜率: <%= number_to_percentage(@profit_percent, precision: 1) %></br>用户平均胜率: <%= number_to_percentage(@average_percent, precision: 1) %>
+          </div>
+          <!--div class="text-box">您持仓的股票 <i>50%</i></br>
+            小于上证指数的波动幅度</div-->
+        </div>
+      </div>
+      <div class="content stock-list">
+        <% if @popular_stocks.size > 0 %>
+        <h3>最多用户持仓的股票</h3>
+        <ul>
+          <% @popular_stocks.each do |stock| %>
+            <li><a href="/stocks/<%=stock.id%>" target="_blank"><%= stock.symbol %> <%= stock.c_name%><span><%=stock.currency_unit%><%=stock.realtime_price%> <%= up_down_style(stock.change_percent, force_precision: 2, postfix: '%')%></span></a></li>
+          <% end %>
+        </ul>
+        <div class="b-line"></div>
+        <% end %>
+        <h3>大家看好的组合</h3>
+        <dl class="cs_theme clearfix">
+          <%= render partial: 'popular_baskets_list', locals: {popular_baskets: @popular_baskets}%>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function(){
+    BasketMiniChart.init();
+
+    $(".selectoption li").on("click", function(){
+      window.location.href = "/accounts/" + $(this).attr("data-value") + "/overview";
+    });
+    
+    <% if @invest_sector_rates.blank? %>
+      $("#j_sector_pie_chart").parent().hide();
+    <% else %>
+      Overview.sectorPieChart(<%= @invest_sector_rates.map{|x| x.values_at(:name, :rate) }.to_json.html_safe %>, <%= @invest_sector_rates.map{|x| x[:color] }.to_json.html_safe %>);
+    <% end %>
+
+    $("#j_trading_account_list").change(function(){
+      window.location.href = $(this).val();
+    })
+
+    Account.refreshCash('<%= @trading_account.pretty_id %>');
+    
+    $('.dropdown li').click(function(){
+      $(this).parents('.selectbox').find('input').val($(this).attr('data-value'));
+      $(this).parents('.selectbox').find('label').html($(this).html());
+      $(this).parent().hide();
+      window.location.href = "/accounts/" + $(this).attr('data-value') + '/overview';
+      return false;
+    })
+  })
+</script>

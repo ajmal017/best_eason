@@ -1,0 +1,19 @@
+<%= form_tag(reconcile_admin_user_binding_path(@user_binding), method: :put, class: "form-inline", role: "form") do %>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>单价:</td>
+      <td>
+        <%= hidden_field_tag 'symbol', @symbol %>
+        <%= text_field_tag 'price' %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"></td>
+      <td>
+         <%= submit_tag "提交" %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end -%>

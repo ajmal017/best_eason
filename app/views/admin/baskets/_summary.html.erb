@@ -1,0 +1,4 @@
+<div class="alert alert-info" style="clear:both;float:none;margin:10px 0px 0px 0px;padding:0">
+  <span>显示记录 <%= (baskets.current_page - 1) * baskets.per_page + 1 %> - <%= [(baskets.current_page) * baskets.per_page, baskets.count].min %>  / 共 <%= baskets.count %>
+  </span>
+</div>

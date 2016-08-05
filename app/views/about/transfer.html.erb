@@ -1,0 +1,19 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+<%- @page_title = "如何转户" -%>
+<div class="container userEdit clearfix contactUs">
+  <%= render :partial => "left_bar" %>
+  <div class="rightBox">
+    <h2>开户指引</h2>
+    <div class="about_right account_guide">
+      <%= render 'account_banner' %>
+      <p>如果您已经是美股、港股用户，您可以将您的账户转移到益群证券，只有这样，您才能参加我们所有的优惠活动。因为与传统券商不同，您的组合、个股交易，都将在财说页面上完成，这将带给您前所未有的舒适体验。下面以从美国券商E-Trade转户为例：凡是从其他券商转户的情况，请您选择转账头寸及/或现金</p>
+      <%= image_tag "/images/v3/help/viewfile_r.png" %>
+      <%= image_tag "/images/v3/help/viewfile_s.png" %>
+      <%= image_tag "/images/v3/help/viewfile_t.png" %>
+      <%= image_tag "/images/v3/help/viewfile_u.png" %>
+      <p>原券商可能会收取您转户费用，具体数额请您与原券商进行确认。</p>
+    </div>
+  </div>
+</div>

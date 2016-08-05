@@ -1,0 +1,24 @@
+<h1 class="title">
+  <span class="title_left">标签详情</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @tag_basis], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_tag_groups_url %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Id</td>
+      <td>
+        <%= @tag_basis.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">名称</td>
+      <td>
+        <%= @tag_basis.name %>
+      </td>
+    </tr>
+  </tbody>
+</table>

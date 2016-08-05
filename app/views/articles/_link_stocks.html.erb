@@ -1,0 +1,17 @@
+<h3>相关个股投资</h3>
+<div class="links stocks">
+  <% @related_stocks.each do |stock| %>
+  	<a href="/stocks/<%= stock.id %>">
+  		<span>
+        <b><%= stock.symbol %></b>
+        <b><%= stock.truncated_com_name %> </b>
+      </span>
+  		<span class="stars">
+        <mark class="ratestar2">
+          <mark style="width:<%= stock_ratestar_width(stock.stock_screener.score) %>%;"></mark>
+        </mark> <%= stock.realtime_price_with_unit %>  
+        <%= up_down_style(stock.change_percent, postfix: "%") %>
+      </span>
+  	</a>
+  <% end %>
+</div>

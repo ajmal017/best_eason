@@ -1,0 +1,65 @@
+<table class="orderTable">
+  <thead>
+    <tr>
+      <td>操作</td>
+      <td>股票名称</td>
+      <td>订单类型</td>
+      <td>价格</td>
+      <td>数量</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="buy_sell_options">
+        <label>
+          <input name="trade_radio" type="radio" value="buy" checked onclick="javascript:Order.buyStock(this);"/> 买入
+        </label>
+        <label>
+          <input name="trade_radio" type="radio" value="sell" onclick="javascript:Order.sellStock(this);" stock_total="<%= trading_account.can_selled_shares_of(stock.id) %>"/> 卖出
+        </label>
+      </td>
+      <td>
+        <%= stock.com_name %>（<%= stock.symbol %>）
+      </td>
+      <td>
+        <div class="selectbox">
+          <input type="hidden" value="0" name="order[order_type]" id="order_type">
+          <label style="width:4em;"><%= order_types.values.first %></label><kbd></kbd>
+          <ul class="selectoption" style="display: none;">
+            <% order_types.each do |value, desc| %>
+              <li data-value="<%= value %>" class="order_type <%= stock_trade_type_option_class(trading_account, value) %>"><%= desc %></li>
+            <% end %>
+          </ul>
+        </div>
+      </td>
+      <td class="price">
+        <div class="adjustCount">
+          <kbd class="mins" onclick="javascript:Order.subStockPrice($(this).next());"></kbd><input type="text" value="<%= stock.bid || stock.realtime_price %>" id="order_limit_price" name="order[order_details_attributes][0][limit_price]" placeholder="￥" price="<%= stock.bid || stock.realtime_price %>" style="width:85px;" step="0.01" min="<%= stock.down_price %>" max="<%= stock.up_price %>"><kbd class="plus" onclick="javascript:Order.addStockPrice($(this).prev());"></kbd>
+        </div>
+        <div class="trader5">
+          <span>卖1：<%= stock.ask || "--" %></span>
+          <span class="after">买1：<%= stock.bid || "--" %></span>
+        </div>
+        <table cellspacing="0">
+          <tbody>
+            <% stock.offers.zip(stock.bids).each_with_index do |data, index| %>
+              <% offer, bid = data %>
+              <tr>
+                <td onclick="javascript:Order.setPrice(<%= offer[0] %>);">卖<%= index+1 %><i><%= offer[0] %></i></td>
+                <td><%= bid_offer_volume(offer[1]) %></td>
+                <td onclick="javascript:Order.setPrice(<%= bid[0] %>);">买<%= index+1 %><i><%= bid[0] %></i></td>
+                <td><%= bid_offer_volume(bid[1]) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </td>
+      <td class="quantity">
+        <span class="adjustCount">
+          <kbd class="mins" onclick="javascript:Order.subStockNumber($(this).next());"></kbd><input type="text" value="<%= stock.get_board_lot %>" step="<%= stock.get_board_lot %>" name="order[order_details_attributes][0][est_shares]" min="<%= stock.get_board_lot %>" max="1000000" class="j_stock_est_shares"><kbd class="plus" onclick="javascript:Order.addStockNumber($(this).prev());"></kbd>
+          <span class="num">最多可买<i>--</i>股</span>
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>

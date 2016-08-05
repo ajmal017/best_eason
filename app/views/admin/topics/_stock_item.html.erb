@@ -1,0 +1,13 @@
+<tr data-id="<%= topic_stock.id %>" data-stock-id="<%= base_stock.id %>" data-notes="<%= topic_stock.notes %>">
+  <td><input type='checkbox' onclick="javascript:setStockVisible(this);" <%= "checked" if topic_stock.visible %>/></td>
+  <td><%= link_to base_stock.symbol, stock_path(base_stock), target: "_blank" %></td>
+  <td><%= link_to base_stock.com_name, stock_path(base_stock), target: "_blank" %></td>
+  <td><%= topic_stock.hot_score %> (<%=topic_stock.hot_score_change%>)</td>
+  <td><%= base_stock.realtime_price %></td>
+  <td><%= base_stock.five_day_return %>%</td>
+  <td><%= base_stock.one_month_return %>%</td>
+  <td class="action">
+  	<a href="javascript:" onclick="javascript:addNotesToTopicStock(this);">设置理由</a>
+  </td>
+  <td class="action"><a href="javascript:" onclick="javascript:destroyTopicStock(this);">删除</a></td>
+</tr>

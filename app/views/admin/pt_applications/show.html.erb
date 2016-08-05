@@ -1,0 +1,111 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+ <span class="title_right"><%=link_to "返回", [:admin, :pt_applications]%></span>
+</h1>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td>
+        <%= form_for [:admin, @pt_app] ,method: :get do |f| %>
+          <dl class="dl_radio">
+            <dt><em>1.</em>您属于以下哪个年龄阶段 ？</dt>
+            <dd class="clearfix">
+              <label for="updown1"><%= f.radio_button :q1, 1, id: "updown1" %>18至26岁</label><br />
+              <label for="updown2"><%= f.radio_button :q1, 2, id: "updown2" %>27至35岁</label><br />
+              <label for="updown3"><%= f.radio_button :q1, 3, id: "updown3" %>36至45岁</label><br />
+              <label for="updown4"><%= f.radio_button :q1, 4, id: "updown4" %>46至65岁</label><br />
+              <label for="updown5"><%= f.radio_button :q1, 5, id: "updown5" %>65岁以上</label><br />
+            </dd>
+            <br />
+            <dt><em>2.</em>您有多少年投资风险产品的经验，包括：股票、证券投资基金、外汇、商品、结构性投资产品、期货、权证等？</dt>
+            <dd class="clearfix">
+              <label for="updown6"><%= f.radio_button :q2, 1, id: "updown6" %>没有经验</label><br />
+              <label for="updown7"><%= f.radio_button :q2, 2, id: "updown7" %>少于1年</label><br />
+              <label for="updown8"><%= f.radio_button :q2, 3, id: "updown8" %>1至3年</label><br />
+              <label for="updown9"><%= f.radio_button :q2, 4, id: "updown9" %>3至5年</label><br />
+              <label for="updown0"><%= f.radio_button :q2, 5, id: "updown0" %>大于5年</label><br />
+            </dd>
+            <br />
+            <dt><em>3.</em>在一段时间之内，投资价值可升可跌，我们称之为波动。一般而言，风险越高的投资，其潜在波动越大，但潜在回报也越高。相反，风险越低的投资，其潜在波动越小，但潜在回报也相对较低。在一般情况下，您愿意投资于波动程度多大的投资产品？</dt>
+            <dd class="clearfix">
+              <label for="updown_1"><%= f.radio_button :q3, 1, id: "updown_1" %>与-5%至+5%之间的波动</label><br />
+              <label for="updown_2"><%= f.radio_button :q3, 2, id: "updown_2" %>与-10%至+10%之间的波动</label><br />
+              <label for="updown_3"><%= f.radio_button :q3, 3, id: "updown_3" %>与-20%至+20%之间的波动</label><br />
+              <label for="updown_4"><%= f.radio_button :q3, 4, id: "updown_4" %>与-30%至+30%之间的波动</label><br />
+              <label for="updown_5"><%= f.radio_button :q3, 5, id: "updown_5" %>与-50%以下至+50%以上之间的波动</label><br />
+            </dd>
+            <br />
+            <dt><em>4.</em>您现在是否持有以下那些投资产品？（多选）</dt>
+            <dd class="clearfix">
+              <label for="agree1"><%= f.check_box :q4, {id: "agree1", multiple: true }, 1, nil %>现金、存款</label><br />
+              <label for="agree2"><%= f.check_box :q4, {id: "agree2", multiple: true }, 2, nil %>债券、债券基金</label><br />
+              <label for="agree3"><%= f.check_box :q4, {id: "agree3", multiple: true }, 3, nil %>权证、期货</label><br />
+              <label for="agree4"><%= f.check_box :q4, {id: "agree4", multiple: true }, 4, nil %>外币、非保本之货币挂钩结构投资产品</label><br />
+              <label for="agree5"><%= f.check_box :q4, {id: "agree5", multiple: true }, 5, nil %>股票、开放式基金（不包括债券基金或货币市场基金）</label><br />
+            </dd>
+            <br />
+            <dt><em>5.</em>您是否活跃在其他财经社交平台？请提供相应的平台名称及个人ID或主页！</dt>
+            <dd><%= @pt_app.q5 %></dd>
+            <br />
+            <dt><em>6.</em>您是否有金融行业相关从业经验或资格，如经纪人、操盘手、理财师、CFA等？</dt>
+            <dd><%= @pt_app.q6 %></dd>
+            <br />
+            <dt><em>7.</em>您觉得今年A股大涨的主要原因是什么？您认为今年A股大盘将到多少点位？</dt>
+            <dd><%= @pt_app.q7 %></dd>
+            <br />
+            <dt><em>8.</em>假设您是一名基金经理有大量的资金（例如一亿），2015年您会选择怎么配置您的基金，你的配置侧重哪些行业？</dt>
+            <dd><%= @pt_app.q8 %></dd>
+            <br />
+            <dt><em>9.</em>您觉得当前上证指数的点位高吗？还是有进一步调整可能？您会选择满仓吗？</dt>
+            <dd><%= @pt_app.q9 %></dd>
+            <br />
+          </dl>
+          <div id="bindPhone" onsubmit="return false;">
+            <dl class="clearfix">
+              <dt>手机号：</dt>
+              <dd><%= @pt_app.mobile %></dd>
+              <br />
+            </dl>
+            <dl class="clearfix">
+              <dt>真实姓名：</dt>
+              <dd><%= @pt_app.name %></dd>
+              <br />
+            </dl>
+            <dl class="clearfix">
+              <dt>身份证号：</dt>
+              <dd><%= @pt_app.id_no %></dd>
+              <br />
+            </dl>
+            <dl class="clearfix">
+              <dt>从事行业：</dt>
+              <dd><%= @pt_app.industry %></dd>
+              <br />
+            </dl>
+            <dl class="clearfix">
+              <dt>公司名称：</dt>
+              <dd><%= @pt_app.com_name %></dd>
+              <br />
+            </dl>
+            <dl class="clearfix">
+              <dt>开户行：</dt>
+              <dd><%= @pt_app.bank_name %></dd>
+              <br />
+            </dl>
+            <dl class="clearfix">
+              <dt>银行卡号：</dt>
+              <dd><%= @pt_app.card_no %></dd>
+              <br />
+            </dl>
+          </div>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= link_to '通过', [:approve, :admin, @pt_app] %> |
+        <%= link_to '不通过', [:reject, :admin, @pt_app] %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+

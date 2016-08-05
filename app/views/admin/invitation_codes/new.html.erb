@@ -1,0 +1,42 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%=link_to '返回列表', admin_invitation_codes_path%>
+  </span>   
+</h1>
+
+<%= form_for [:admin, @invitation_code]  do |f|%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b>大V财说ID:</td>
+        <td>
+          <%= f.text_field :super_user_id, :size=>30 %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td>
+          <%= f.submit "创建" %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<% end -%>
+
+<script>
+  $(function(){
+    $('form').submit(function(){
+      var superUserId = $.trim($('#invitation_code_super_user_id').val());
+      if(superUserId.length == 0){
+        alert("大VID不能为空");
+        return false;
+      }else if(!superUserId.match(/^\d+$/)){
+        alert("ID必须为数字");
+        return false;
+      }else{
+        return true; 
+      }
+    })
+  })
+</script>

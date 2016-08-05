@@ -1,0 +1,53 @@
+<style>
+  .date_part{
+    margin: 20px 0px 20px 0px;
+  }
+  .date_part a{
+    margin-left: 10px;
+  }
+</style>
+<h1 class="title">
+  <span class="title_left">万圣节抓妖股数据</span>
+</h1>
+<div class="date_part">
+  <a href="/admin/guess_stocks" style="color:#CC8F33;">全部</a>
+  <a href="/admin/guess_stocks?wt=winned_true" style="color:red;">已获奖</a>
+  <a href="/admin/guess_stocks?wf=winned_false" style="color:#808080;">未获奖</a>
+  <% @dates.each_with_index do |date,i| %>
+    <a href="/admin/guess_stocks?date=<%= date.to_s(:db) %>">第<%= i+1 %>天</a>
+  <% end %>
+</div>
+<%= page_info(@megs) %>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>用户名</th>
+      <th>股票名</th>
+      <th>涨跌幅</th>
+      <th>Symbol</th>
+      <th>创建日期</th>
+      <th>是否获奖</th>
+      <th>参加日期</th>
+      <th>操作</th>
+    </tr>
+    <% if @megs.present? %>
+      <% @megs.each do |meg| %>
+        <tr>
+          <td><%= meg.user.username %></td>
+          <td><%= meg.name %></td>
+          <td><%= meg.final_percent %></td>
+          <td><%= meg.symbol %></td>
+          <td><%= meg.created_at.to_s %></td>
+          <td><%= meg.winned ? "已获奖" : "未获奖" %></td>
+          <td><%= meg.date.to_s(:db)  %></td>
+          <td class="action"><%= link_to meg.winned ? "取消获奖" : "获奖", change_winned_admin_guess_stock_path(id: meg.id), method: :post, data: {confirm: meg.winned ? "你确定取消获奖吗?" : "你确定获奖吗?"}%></td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="8" style="color:red;">没有妖股数据!</td>
+      </tr>
+    <% end %>
+  </thead>
+</table>
+<%= will_paginate @megs %>

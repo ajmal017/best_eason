@@ -1,0 +1,52 @@
+<h1 class="title">
+  <span class="title_left"><%= @page_title %></span>
+  <span class="title_right">
+    <%=link_to '返回列表', admin_contests_path %>
+  </span>
+</h1>
+
+<%= form_for [:cash, :admin, @contest] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b></b><%= f.label :cash, '当前奖金' %></td>
+        <td><%= $redis.get('contest_cash').to_f %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :cash, '奖金池' %></td>
+        <td><%= text_field_tag :cash %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end -%>
+<% if @data %>
+  导入用户: <%= @data[:imported] %>/<%= @data[:count] %>
+  <% if @data[:errors].present? %>
+    错误信息: 
+    <table class="grid">
+      <thead>
+        <tr>
+          <th>券商账户</th>
+          <th>错误信息</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @data[:errors].each do |k,v| %>
+          <tr>
+            <td><%= k %></td>
+            <td>
+              <% v.each do |message| %>
+                <%= message %><br />
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
+

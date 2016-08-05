@@ -1,0 +1,210 @@
+<% content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.stock.css" %>
+<% end %>
+	<%
+	  low = @stock.low52_weeks
+	  high = @stock.high52_weeks
+	  current = @stock.realtime_price
+	  percent = (current-low).fdiv(high-low)*100
+	%>
+
+	<div class="stocks">
+	  <%= render partial: "us_hk_stock" if !@stock.is_index? and !@stock.is_cn? %>
+	  <%= render partial: "cn_stock" if !@stock.is_index? and @stock.is_cn? %>
+	  <%= render partial: "cn_index" if @stock.is_index? and @stock.is_cn? %>
+	  <%= render partial: "us_index" if @stock.is_index? and !@stock.is_cn? %>
+	  <article class="chart">
+	    <div id="StockChart"></div>
+	    <div id="fivefive">
+		  <% if !@stock.is_index? and @stock.is_cn? %>
+	      <!-- 美股等没有买卖数据的,不要下方表格 -->
+	      <table>
+	        <thead>
+		      <% @stock.offers.each_with_index do |offer, index| %>
+		          <tr>
+		            <th>卖<%= @stock.offers.count - index %></th>
+		            <td class="<%= relative_up_or_down_class(@stock.previous_close, offer[0]) %>"><%= offer[0] %></td>
+		            <td><%= pretty_stock_volume(offer[1], @stock) %><%= @stock.pretty_volume_unit %></td>
+		          </tr>
+		      <% end %>
+	        </thead>
+	        <tbody>
+	          <tr>
+	            <td colspan="3"><div></div></td>
+	          </tr>
+	        </tbody>
+	        <tfoot>
+		      <% @stock.bids.each_with_index do |bid, index| %>
+		          <tr>
+		            <th>买<%= index+1 %></th>
+		            <td class="<%= relative_up_or_down_class(@stock.previous_close, bid[0]) %>"><%= bid[0] %></td>
+		            <td><%= pretty_stock_volume(bid[1], @stock) %><%= @stock.pretty_volume_unit %></td>
+		          </tr>
+		      <% end %>
+	        </tfoot>
+	      </table>
+		  <% end %>
+      
+	    </div>
+	    <table id="StockChartMenu">
+	      <tr>
+	        <td><span id="minutesDay">分时</span></td>
+	        <td><span id="minutesWeek">5天</span></td>
+	        <td><span id="kMapDay">日k</span></td>
+	        <td><span id="kMapWeek">周k</span></td>
+	        <td><span id="kMapMonth">月k</span></td>
+	      </tr>
+	    </table>
+	  </article>
+	  <%= render partial: "score" if !@stock.is_index? %>
+	  <%= render partial: "guide_up_down" if @stock.is_index?%>
+  
+	  <% if @relate_stocks.count > 0%>
+		  <article class="relate">
+		    <h2>相关股票</h2>
+		    <table class="lists">
+				<% @relate_stocks.each do |stock|%>
+			        <tr>
+			          <th><%= link_to stock.truncated_com_name, mobile_link(mobile_stock_path(stock)), target: "_blank" %><span>同行业</span></a></th>
+			          <td><em class="<%= up_or_down_class(stock.percent_change_from_previous_close) %>"><%= stock.realtime_price %>  <i><%= up_down_style(stock.percent_change_from_previous_close, postfix: '%', with_arrow: false, operator: true) %></i></em></td>
+			          <td><em><%= stock.stock_screener.try(:score).try(:round, 1) %></em></td>
+			        </tr>
+				<% end %>
+		    </table>
+		  </article>
+	  <% end %>
+	  <% if @stock.is_cn? %>
+		  <article class="foundation">
+		    <h2>主力资金</h2>
+		    <div id="PieChart"></div>
+		    <label>最近5日资金流向</label>
+		    <div id="fiveday"></div>
+		  </article>
+	  <% end %>
+	  <article class="intro">
+	    <h2>简介</h2>
+	    <p>
+			<%= simple_format @stock.com_intro.gsub(/[　]+/,'') %>
+		</p>
+	  </article>
+  
+	</div>
+
+	<%= content_for :script do  %>
+	  <%= javascript_include_tag '/javascripts/highstock.js' %>
+	  <script type="text/javascript">
+	    // 更新开闭市时间和状态
+	    // var timedata
+	    //$('.tradeTime').timeformat(timedata, '%stat% %market% %datetime%', 'yyyy-mm-dd hh:ii:ss', ['<%=@stock.market_area%>']);
+	    $(".tabSwitch").tabso({cntSelect:".MultiTabDisplayArea",tabEvent:"click"});
+	    // $('*[data-click-tip], *[data-hover-tip]').ClickHoverTip($('#BubbleBox'));
+
+	    var stockId = <%= @stock.id %>, market = '<%= @stock.market_area %>';
+	    var m_url = '<%= mobile_link "/mobile/data/stocks/#{@stock.id}/quote_prices.js"%>';
+	    $.getJSON(m_url+'?callback=?',function(data){
+	      moCaishuo.stock.minutesData = data;
+	      moCaishuo.stock.dayWeekMinutes('#StockChart');
+	    });
+	  </script>
+	
+	  <script type="text/javascript">
+	    $('nav').each(function(){
+	      var index = 0, $parent = $(this).parent();
+	      $(this).find('span').click(function(){
+	        index = $(this).index();
+	        $(this).addClass('active').siblings().removeClass();
+	        $parent.find('table').eq(index).show().siblings('table').hide();
+	      });
+	    });
+	    function draw5found(data){
+	      var values = [], len = data.length;
+	      for (var i=0; i<len; i++){
+	        values.push(data[i].value);
+	      }
+	      var max = Math.max(Math.abs(Math.min.apply(null, values)), Math.abs(Math.max.apply(null, values)));
+	      for (var i=0; i<len; i++){
+	        var item = data[i], value=Math.abs(item.value), height = parseFloat(Math.abs(item.value / max*50).toFixed(2));
+	        if (value > 1E8){
+	          value /= 1E8;
+	          value = value.toFixed(2) + '亿';
+	        }else if(value > 1E4){
+	          value /= 1E4;
+	          value = value.toFixed(2)+ '万';
+	        }
+	        $('<div/>').attr({'data-date':item.date.substring(5)})
+	          .addClass(item.value>=0?'plus':'mins')
+	          .append('<label>'+value+'</label>')
+	          .append('<span style="height:'+height+'%"/>')
+	          .appendTo('#fiveday');
+	      }
+	    }
+	
+	    draw5found([
+		      {"date":"<%= @fund_flow.keys[0] %>", "value":<%= @fund_flow[@fund_flow.keys[0]] || 0 %>},
+			  {"date":"<%= @fund_flow.keys[1] %>", "value":<%= @fund_flow[@fund_flow.keys[1]] || 0 %>},
+			  {"date":"<%= @fund_flow.keys[2] %>", "value":<%= @fund_flow[@fund_flow.keys[2]] || 0 %>},
+			  {"date":"<%= @fund_flow.keys[3] %>", "value":<%= @fund_flow[@fund_flow.keys[3]] || 0 %>},
+			  {"date":"<%= @fund_flow.keys[4] %>", "value":<%= @fund_flow[@fund_flow.keys[4]] || 0 %>}
+		    ]);
+
+
+	    $('#PieChart').BaseketPieChart([
+	      {color:'#ff4546',title:'主力流入',num:<%= @pie_chart[0] %>},
+	      {color:'#ffb5b5',title:'散户流入',num:<%= @pie_chart[1] %>},
+	      {color:'#ade7c1',title:'散户流出',num:<%= @pie_chart[2] %>},
+	      {color:'#2fb959',title:'主力流出',num:<%= @pie_chart[3] %>}
+	    ], {
+	      position:'left',
+	      lineheight: 26,
+	      textsize: 12,
+	      emptypart:0.64,
+	      dotround:5
+	    });
+	    $('<div id="gotoSiteTop"/>').appendTo('body').windowGoTop();
+
+	  </script>
+	
+	  <script type="text/javascript">
+	    var stockId = <%= @stock.id %>, market = '<%= @stock.market_area %>';
+	    var m_url = '<%= mobile_link "/mobile/data/stocks/#{@stock.id}/quote_prices.js" %>';
+	    var k_url = '<%= mobile_link "/mobile/data/stocks/#{@stock.id}/klines.js"%>';
+	    $('#StockChartMenu span').click(function(){
+	      if ($(this).hasClass('active')){return;}
+	      $('#StockChartMenu span').removeClass();
+	      $(this).addClass('active');
+	      $('#StockChart').width($(window).width());
+	      switch (this.id){
+	        case 'minutesDay':
+	          $('#StockChart').width($(window).width() - $('#fivefive').outerWidth());
+	        case 'minutesWeek':
+	          moCaishuo.stock.minutesType = this.id.substr(7).toLowerCase();
+	          if (!!moCaishuo.stock.minutesData){
+	            moCaishuo.stock.dayWeekMinutes('#StockChart');
+	          }else{
+	             $.getJSON(m_url+'?callback=?',function(data){
+	               moCaishuo.stock.minutesData = data;
+	             // moCaishuo.stock.minutesData = fakedata;
+	              moCaishuo.stock.dayWeekMinutes('#StockChart');
+	             });
+	          }
+	          break;
+	        case 'kMapDay':
+	        case 'kMapWeek':
+	        case 'kMapMonth':
+	          var type = this.id.substr(4).toLowerCase(),limits = {day:90,week:550,month:1900};
+	          moCaishuo.stock.kmapType = type;
+	          if (!!moCaishuo.stock.kdata[type]){
+	            moCaishuo.stock.kMap('#StockChart');
+	          }else{
+	            $.getJSON(k_url+'?callback=?',{type:type,limit:limits[type]}, function(data){
+	              moCaishuo.stock.kdata[type] = data;
+	              moCaishuo.stock.kMap('#StockChart');
+	            });
+	          }
+	          break;
+	        default:
+	      }
+	    }).eq(0).trigger('click');
+	  </script>
+	<% end %>
+	

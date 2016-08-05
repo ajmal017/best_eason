@@ -1,0 +1,13 @@
+// $(".comments li").remove();
+
+<% @comments.each do |comment| %>
+  $(".comments").append("<%= j render partial: '/shared/comments/comment_item', locals: {comment: comment} %>");
+<% end %>
+
+<% if @comments.total_pages > 1 && @comments.size>0 %>
+  $("#review .btn-more").attr("onclick", "javascript:Comment.getCommentsByPage(<%= params[:page].to_i + 1 %>);").show();
+<% else %>
+  $("#review .btn-more").attr("onclick", "").text("没有更多了");
+<% end %>
+
+initBubbleBox();

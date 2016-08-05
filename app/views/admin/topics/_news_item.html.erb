@@ -1,0 +1,6 @@
+<tr data-id="<%= news.id %>">
+  <td><%= text_field_tag :news_title, news.title, size: 80, id: "news_title_#{news.id}", onchange: "javascript:autoSaveNewsTitle(this);" %></td>
+  <td><%= text_field_tag :news_source, news.source, size: 10, id: "news_source_#{news.id}", onchange: "javascript:autoSaveNewsSource(this);" %></td>
+  <td><%= news.pub_time %></td>
+  <td class="action"><a href="javascript:" onclick="javascript:destroyTopicNews(this)">删除</a></td>
+</tr>

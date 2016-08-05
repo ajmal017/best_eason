@@ -1,0 +1,10 @@
+<h3>相关组合投资</h3>
+<div class="links themes">
+	<% @related_baskets.each do |basket| %>
+    <a href="/baskets/<%= basket.id %>" class="clearfix">
+  		<%=image_tag basket.img_url(:small), style: 'width:60px;height:48px;' %>
+  		<%= basket.title.truncate(12) %>
+  		<span>创建至今回报 <%= up_down_style(basket.return_from_start_on, postfix: '%') %></span>
+  	</a>
+  <% end %>
+</div>

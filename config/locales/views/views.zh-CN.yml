@@ -1,0 +1,6 @@
+zh-CN:
+  stocks:
+    indexes:
+      nasdq: "纳斯达克指数"
+      bp: "标普500指数"
+      hs: "恒生指数"

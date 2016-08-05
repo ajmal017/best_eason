@@ -1,0 +1,12 @@
+<script type="text/javascript">
+	<% if @article_upload.errors[:image].present? %>
+	  alert("<%= @article_upload.errors[:image].first %>");
+	  window.parent.$("#FloatWindow").fadeOut();
+	<% else %>
+	  window.parent.showCropModal();
+	  window.parent.$("#upload_article_id").val(<%= @article_upload.id %>);
+	  window.parent.$("#temp_img_id").val("<%= @article_upload.id %>")
+	  window.parent.$("#FloatWindow").find(".textbody").html("<img src='<%=@article_upload.image.url(:normal)%>' id='cropbox'></img>");
+	  window.parent.JcropInit();
+	<% end %>
+</script>

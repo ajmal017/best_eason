@@ -1,0 +1,89 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/register.css" %>
+<% end %>
+
+
+<%- @page_title = "注册" -%>
+
+<%= render "shared/other_login" %>
+<div class="container registration">
+  <ul class="tab_ul">
+    <li><a href="javascript:;" class="active">手机号注册</a></li>
+    <li><a href="javascript:;">邮箱注册</a></li>
+  </ul>
+  <div class="R_dls">
+  <%= form_for @user || User.new, url: account_registrations_path, html: {id: 'j_registration_phone', class: "dl_phone"} do |f| %>
+    <dl>
+      <dd>
+        <%= f.text_field :mobile, class: "medium phone1", autocomplete: "off", placeholder: "手机号" %>
+      </dd>
+      <dd>
+        <%= f.text_field :username, class: "medium name1", autocomplete: "off", placeholder: "昵称" %>
+      </dd>
+      <dd>
+        <%= f.password_field :password, class: "medium password1", autocomplete: "off", placeholder: "密码" %>
+      </dd>
+      <dd class="captcha">
+        <%= f.text_field :captcha, class: "medium number1", placeholder: "验证码" %><span class="w_btn" id="bindPhone">发送验证码</span>
+        <% if flash[:alert].present? %>
+          <span for="user_captcha" class="err errorTip" style="display: inline;"><%=flash[:alert]%></span>
+        <% end %>
+      </dd>
+  		<dd class="agreement">
+        <input type="checkbox" name="isAgree" id="agree1" class="custom1" checked="checked"/>
+        <label for="agree1">我已阅读并接受</label>
+        <a href="/account/protocols" target="_blank">《财说用户协议》</a>
+      </dd>
+      <dd class="registration_btn">
+        <%=f.submit '注册', class: 'b_btn register' %>
+      </dd>
+    </dl>
+  <% end %>
+  <%= form_for @user || User.new, url: account_registrations_path, html: {id: 'j_registration_first', class: "dl_mail", style: "display: none;"} do |f| %>
+
+  	<dl>
+  		<dd>
+        <%= f.text_field :email, class: 'medium', placeholder: "邮箱" %>
+      </dd>
+  		<dd id="Captcha" class="captcha">
+        <%= f.text_field :captcha, class: 'medium', placeholder: "验证码" %>
+        <a href="javascript:void(0);" onclick="javascript:refresh_captcha();">
+          <%= captcha_tag({id: 'img_captcha', alt: '点击刷新图片', onclick: 'javascript:refresh_captcha();', style: 'cursor:pointer;'}) %>
+        </a>
+      </dd>
+  		<dd class="agreement">
+        <input type="checkbox" name="isAgree" id="agree2" class="custom1" checked="checked"/>
+        <label for="agree2">我已阅读并接受</label>
+        <a href="/account/protocols" target="_blank">《财说用户协议》</a>
+      </dd>
+  		<dd class="registration_btn">
+        <%=f.submit '注册', class: 'b_btn register' %>
+      </dd>
+  	</dl>
+  <% end %>  
+  </div>
+	<div class="explain">
+    <h3>投资之路，财说作伴</h3>
+    <ul>
+      <li>捕捉投资机会，碰撞投资想法</li>
+      <li>回放你的投资决策，视觉系</li>
+      <li>直通全球市场</li>
+    </ul>
+    <table>
+      <tr>
+        <td>我们也在微信上</td>
+        <td>微博上也有我</td>
+      </tr>
+      <tr>
+        <td>
+          <%=image_tag "/images/v3/weixin1.png", alt: '财说微信公众账号' %>
+        </td>
+        <td>
+          <a href="javascript:window.open('http://weibo.com/touzhuti');">
+            <%=image_tag "/images/v3/weibo.png"%>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

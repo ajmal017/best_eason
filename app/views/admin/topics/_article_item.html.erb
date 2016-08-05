@@ -1,0 +1,4 @@
+<tr data-id="<%= topic_article.id %>">
+  <td><input type='checkbox' onclick="javascript:setArticleVisible(this);" <%= "checked" if topic_article.visible %>/></td>
+  <td><%= link_to article.title, article_path(article), target: "_blank" %></td>
+</tr>

@@ -1,0 +1,7 @@
+var basket_tr = $("a.open[data-basket-id=<%= params[:basket_id]%>]").parent().parent();
+basket_tr.siblings().remove();
+<% @stocks_infos.each_with_index do |stock_infos, index| %>
+  basket_tr.parent().append("<%= j render partial: 'user/positions/basket_stocks', locals: {account: @trading_account, stock_infos: stock_infos, instance_id: params[:basket_id], data_posi: index+1} %>")
+<% end %>
+$(basket_tr).nextUntil('.baskets').toggle();
+setColSet();

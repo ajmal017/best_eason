@@ -1,0 +1,8 @@
+<tr class="<%= up_down_class(rank[:percent]) %>" data-id="<%= rank[:user_id] %>">
+    <td><%= rankings %></td>
+    <td>
+      <%= image_tag rank[:user_avatar], class: "avatar" %><%= rank[:username] %>
+    </td>
+    <td><%= humanlize_number(rank[:property]) %></td>
+    <td><%= up_down_value(rank[:percent], postfix: "%") %></td>
+</tr>

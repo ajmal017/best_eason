@@ -1,0 +1,13 @@
+$(".comments li").remove();
+
+<% @comments.each do |comment| %>
+  $(".comments").append("<%= j render partial: '/shared/comments/comment_item', locals: {comment: comment} %>");
+<% end %>
+
+<% if @comments.total_pages > 1 %>
+  $(".comments").siblings(".pageNav").remove();
+  $(".comments").after("<%= j render partial: '/shared/comments/show_comments_paginate', locals: {comments: @comments} %>");
+  Comment.convertCommentPaginateToAjaxLink();
+<% end %>
+
+initBubbleBox();

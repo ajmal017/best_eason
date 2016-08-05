@@ -1,0 +1,34 @@
+<div class="state <%= up_or_down_class(@stock.percent_change_from_previous_close) %>">
+  <label><%= link_to "", mobile_link("/") %><%= @stock.c_name %><span><%= @stock.symbol %></span><span><%= @stock.market_status %> <%= @stock.trade_time_str.split(" ").last rescue nil %></span></label>
+  <table>
+   <tr>
+     <td colspan="2" class="price"><%= @stock.realtime_price %></td>
+     <th>今开<i><%= format_number(@stock.open) %></i></th>
+     <th>昨收<i><%= format_number(@stock.previous_close) %></i></th>
+   </tr>
+   <tr>
+    <th class="price"><%= format_number(@stock.change_from_previous_close) %></th>
+    <th class="price"><%= up_down_value(@stock.percent_change_from_previous_close, postfix: '%', with_arrow: false, operator: true) %></th>
+    <th>成交量<i data-suffix=""><%= humanlize_number(@stock.pretty_lastest_volume) %><%= @stock.pretty_volume_unit %></i></th>
+    <th>市值<i data-suffix=""><%= humanlize_capitalization(@stock.adj_market_capitalization) %></i></th>
+   </tr>
+  </table>
+  <table>
+   <tr>
+     <th>最高</th>
+     <td><%= format_number(@stock.high) %></td>
+     <th>最低</th>
+     <td><%= format_number(@stock.low) %></td>
+     <th>市盈率</th>
+     <td><%= @stock.adj_pe_ratio %></td>
+   </tr>
+   <tr>
+     <th>52周高</th>
+     <td><%= format_number(@stock.high52_weeks) %></td>
+     <th>52周低</th>
+     <td><%= format_number(@stock.low52_weeks) %></td>
+     <th>股息</th>
+     <td><%= format_number(@stock.dividend) %></td>
+   </tr>
+ </table>
+</div>

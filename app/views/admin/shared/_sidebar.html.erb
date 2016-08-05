@@ -1,0 +1,58 @@
+<style type="text/css">
+	li{margin:7px;}
+	ul{margin:0px 0px 0px 30px}
+	.level-1 span{ font-weight: 300;font-size:14px;color:#666666;position: relative;top:-2.5px;left: 2px;}
+	.level-2{margin-left:8px;border-bottom:1px #DDDDDD solid;padding-bottom:5px;width: 160px;}
+	.level-2 a{margin-left: 10px;font-weight: 200;font-size:12px;}
+	.hide_sidebar{display: none;}
+	.show_sidebar{display: block;}
+	.change{position: absolute;top: 90px;left: 163px;font-size: 13px;}
+</style>
+<a id="change" href="#" class="change" onclick="show(this)">展开</a>
+<div id="sidebar">
+<% if @current_user_permissions != nil %>
+	<h1 class="title">后台管理系统</h1>
+	<% @current_user_permissions.map do |key, items|%>
+		<ul>
+			<li class="level-1">
+				<%= image_tag("admin/folder.png") %>
+				<span href="#"><%= key %></span>
+			</li>
+			<% items.each do |item| %>
+				<% if current_admin_staffer.admin %>
+					<li  class="level-2">
+						<a href="<%= item.url%>">
+							<%= item.name %>
+						</a>
+					</li>
+				<% else %>
+					<li  class="level-2">
+						<a href="<%= item.url%>">
+							<%= item.name %>
+						</a>
+					</li>
+				<% end %>
+			<% end %>
+		</ul>
+	<% end %>
+<% end %>
+</div>
+
+<script type="text/javascript">
+	function show(obj){
+		var obj_sidebar = $("#sidebar")
+		if (obj_sidebar[0].className == "show_sidebar" || obj_sidebar[0].className == ""){
+			obj_sidebar[0].className = "hide_sidebar"
+			obj.innerHTML = "展开"
+			$("#main").css({"margin-left":0})
+			$("#change").css({"left":17})
+		}else{
+			obj_sidebar[0].className = "show_sidebar"
+			$("#change").css({"left":163})
+			obj.innerHTML = "收起"
+		}
+	}
+	$(function(){
+		$("#sidebar")[0].className == "" ? $("#change")[0].innerHTML = "收起" : ""
+	});
+</script>

@@ -1,0 +1,49 @@
+<!--页面标题-->
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+</h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th width="200">类型</th>
+      <th>Demo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= form_tag '', method: "get" do %>
+    <tr>
+      <td>用户ID</td>
+      <td class="align_left"><%= text_field_tag "user_id", params[:user_id]%></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="align_left"><%= submit_tag "拉取旧Feed"%></td>
+    </tr>
+    <% end -%>
+  </tbody>
+</table>
+
+
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th class="align_left">&nbsp;&nbsp;&nbsp;&nbsp;Demo: (<%=@feeds.count%>)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @feeds.each do |feed|%>
+    <tr>
+      <td class="align_left">
+        <%= feed.feed_type %>&nbsp;&nbsp;&nbsp;&nbsp;
+        <%= feed.title %>&nbsp;&nbsp;&nbsp;&nbsp;   <%=feed.created_at%><br/>
+        Demo: <br/>
+        <span style="color: #CCC;"><%= MD::Feed.demo_json.select{|a| a[:feed_type] == feed.feed_type.to_s}[0] %></span> <br/>
+        实际Feed: <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<%= feed.pretty_json.as_json %><br/>
+      </td>
+    </tr>
+    <% end -%>
+  </tbody>
+</table>

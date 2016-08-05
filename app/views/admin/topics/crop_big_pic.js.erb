@@ -1,0 +1,6 @@
+<% if @topic.temp_big_image.errors.present? %>
+  alert("<%=@topic.temp_big_image.errors.first%>");
+<% else %>
+  hideCropModal();
+  $("#j_topic_big_img_preview").find('img:first').attr('src', '<%= @topic.temp_big_image.image.url(:small) + "?" + Time.now.to_i.to_s %>');
+<% end %>

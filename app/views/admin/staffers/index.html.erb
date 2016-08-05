@@ -1,0 +1,63 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%= link_to "添加管理员",new_admin_staffer_path %>
+  </span>
+</h1>
+<div class="box">
+  <a href="/admin/employees" class="<%= @role.blank? && params[:tp] != 'hidden' ? 'current' : ''%>">全部</a>
+  <% @roles.each do |role| %>
+    <a href="/admin/employees?role_id=<%=role.id%>" class="<%=@role == role ? 'current' : ''%>"><%= role.name %></a>
+  <% end -%>
+  <a href="/admin/employees?tp=hidden" class="<%= 'current' if @role.blank? and params[:tp] == "hidden" %>">屏蔽人员</a>
+  <a href="/admin/employees?sm=super_manager" class="<%= 'current' if @role.blank? and params[:sm] == "super_manager" %>">超级管理员</a>
+</div>
+<div class="page_info">
+  总数： <b><%= @staffers.total_entries %></b>
+</div>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>姓名</th>
+      <th>电子邮件</th>
+      <th>超级管理员</th>
+      <th>当前权限</th>
+      <th>权限修改</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @staffers.each do |staffer| %>
+      <tr>
+      <% if staffer.deleted? %>
+        <td><del><%= staffer.fullname %></del></td>
+        <td><del><%= staffer.email %><%="    已验证" if staffer.confirmed_at %></del></td>
+      <% else %>
+        <td><%= staffer.fullname %></td>
+        <td><%= staffer.email %><%="    已验证" if staffer.confirmed_at %></td>
+      <% end -%>
+        <td class="action">
+          <%= staffer.admin ? '是' : '否' %>
+          <%= link_to '更改', admin_staffer_path(staffer, admin_staffer: {admin: !staffer.admin}), method: :put, data: {confirm: '你确认需要修改吗？'}%>
+        </td>
+        <td><%= staffer.role.try(:name) || "待审核" %></td>
+        <td>
+          <%= form_for staffer do |f| %>
+            <%= f.select :role_id, @roles.map{|r| [r.name, r.id]}, { include_blank: "待审核" } %>
+            <%= f.submit "保存" %>
+          <% end %>
+        </td>
+        <td class="action" style="width:200px;">
+          <%= link_to '查看用户', staffer %>
+          <%= link_to '编辑用户', edit_admin_staffer_path(staffer) %>
+          <% if staffer.deleted? %>
+            <%= link_to '解除屏蔽', staffer, :method=>:delete, data: {confirm: "确定解除屏蔽该用户吗？该用户的权限将会被置空"} %>
+          <% else %>
+            <%= link_to '屏蔽用户', staffer, :method=>:delete, data: {confirm: "确定屏蔽该用户吗？"}, class: 'red' %>
+          <% end -%>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @staffers %>

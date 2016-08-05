@@ -1,0 +1,7 @@
+mailhub:
+  #cron: "0 7,15 * * *" #format: minute hour dom m dow
+  #cron: "16 * * * *" #format: minute hour dom m dow
+  every: 10m
+  class: MailhubWorker
+  queue: mailhub_worker
+  description: "每10分钟处理批量整合邮件"

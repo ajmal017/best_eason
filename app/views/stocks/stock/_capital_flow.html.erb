@@ -1,0 +1,94 @@
+<div>
+  <div class="compare_title noBorder">
+    <ol class="asSwitchBtn">
+      <li data-target="stockFoundChart" class="active">主力资金流向</li>
+      <li data-target="stockFoundTable">板块资金流向</li>
+    </ol>
+  </div>
+  <div class="compare_area">
+    <div class="stockFoundChart" style="display:none;">
+      <ul class="stock-in">
+        <li class="flow-1" index="0"><span>超大单流入</span> <em></em></li>
+        <li class="flow-2" index="1"><span>大单流入</span> <em><em></li>
+        <li class="flow-3" index="2"><span>中单流入</span> <em><em></li>
+        <li class="flow-4" index="3"><span>小单流入</span> <em><em></li>
+      </ul>
+      <ul class="stock-out">
+        <li class="flow-1" index="7"><em></em><span>超大单流出</span></li>
+        <li class="flow-2" index="6"><em></em><span>大单流出</span></li>
+        <li class="flow-3" index="5"><em></em><span>中单流出</span></li>
+        <li class="flow-4" index="4"><em></em><span>小单流出</span></li>
+      </ul>
+      <div class="stockFoundPieChart" style="width:300px; margin:0 auto;"></div>
+      <table class="themeStocks" id="j_trading_flow_table">
+        <caption></caption>
+        <thead>
+          <tr>
+            <td>类型</td>
+            <td width="22%">流入</td>
+            <td width="22%">流出</td>
+            <td width="22%">净流入</td>
+            <td width="22%">净占比</td>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="stockFoundTable clearfix">
+      <dl class="float-left">
+        <dt><%=@stock.sector_name%>板块资金流向</dt>
+        <dd>
+          <div id="j_industry_percent_flows" style="width:460px;height:200px;">
+            
+          </div>
+        </dd>
+      </dl>
+      <dl class="float-right">
+        <dt><!--行业资金流向--></dt>
+        <dd></dd>
+      </dl>
+      <div>
+        <!--div class="selectbox">
+          <input type="hidden" value="">
+          <label style="width:120px;">今日板块资金流向</label><kbd></kbd>
+          <ul class="selectoption">
+            <li data-value="1">今日板块资金流向</li>
+            <li data-value="2">今日板块资金流向</li>
+          </ul>
+        </div-->
+      </div>
+      <br class="break" />
+      <table class="themeStocks" id="j_bubble_trading_flow_table">
+        <thead>
+          <tr>
+            <td rowspan="2">代码</td>
+            <td rowspan="2">名称</td>
+            <td rowspan="2">涨跌幅</td>
+            <td colspan="2">主力净流入</td>
+            <td colspan="2">超大单净流入</td>
+            <td colspan="2">大单净流入</td>
+            <td colspan="2">中单净流入</td>
+            <td colspan="2">小单净流入</td>
+          </tr>
+          <tr>
+            <td>净额</td>
+            <td>净占比</td>
+            <td>净额</td>
+            <td>净占比</td>
+            <td>净额</td>
+            <td>净占比</td>
+            <td>净额</td>
+            <td>净占比</td>
+            <td>净额</td>
+            <td>净占比</td>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

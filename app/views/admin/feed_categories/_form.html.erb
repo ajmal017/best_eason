@@ -1,0 +1,43 @@
+<%= form_for([:admin, @feed_category], as: :feed_category) do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b>名称:</td>
+        <td><%= f.text_field :name, size: 30 %></td>
+      </tr>
+      <!-- <tr>
+        <td class="field"><b>*</b>推荐类型:</td>
+        <td> 新闻类<%#= f.select :recommend_category, MD::FeedRule::FEED_TYPES.keys %></td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>Feed展示模版:</td>
+        <td><%#= f.select :feed_type, MD::FeedRule::LAYOUTS.keys %></td>
+      </tr> -->
+      <tr>
+        <td class="field"><b>*</b>时间策略:</td>
+        <td class="collection_select">
+          <%= f.collection_check_boxes :time_rule, MD::FeedRule::TimeRule.all, :id, :name_with_desc do |b| %>
+          <% b.label { b.check_box + raw(b.text + "<br/>") } %>
+          <% end -%>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>过期策略:</td>
+        <td class="collection_select">
+          <%= f.collection_radio_buttons :ttl_rule, MD::FeedRule::TTLRule.all, :id, :name do |b| %>
+          <% b.label { b.radio_button + raw(b.text + "<br/>") } %>
+          <% end -%>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>默认权重:</td>
+        <td><%= f.select :weight, MD::FeedCategory::WEIGHT_RANGE %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>

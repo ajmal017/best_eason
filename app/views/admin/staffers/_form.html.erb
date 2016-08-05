@@ -1,0 +1,98 @@
+<%= form_for @staffer do |f|%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b>电子邮箱:</td>
+        <td>
+          <%= f.text_field :email, :size=>30 %>&nbsp;&nbsp;
+          
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="field"><b>*</b>密码:</td>
+        <td>
+          <%= f.password_field :password, :size=>20 %>
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="field"><b>*</b>确认密码:</td>
+        <td>
+          <%= f.password_field :password_confirmation, :size=>20 %>
+        </td>
+      </tr>
+
+      <% if params[:action] == "edit" || params[:action] == "update" %>
+        <tr>
+          <td class="field">用户名:</td>
+          <td>
+            <%= f.text_field :username, :size=>30 %>
+          </td>
+        </tr>
+      <% end %>
+      
+      <tr>
+        <td class="field"><b>*</b>真实姓名:</td>
+        <td>
+          <%= f.text_field :fullname, :size=>20 %>
+        </td>
+      </tr>
+      
+      <% if params[:action] == "edit" ||  params[:action] == "update" %>
+        <tr>
+          <td class="field">是否为超级管理员:</td>
+          <td>
+            <%= f.check_box :admin %>
+          </td>
+        </tr>
+      <% end %>
+
+    <% if params[:action] == "edit" || params[:action] == "update" %>
+      <tr>
+        <td class="field">角色名称:</td>
+        <td>
+          <%= f.select :role_id, Admin::Role.all.map{|x| [x.name, x.id]}, prompt: '请选择'%>
+        </td>
+      </tr>
+    <% end %>
+
+      <tr>
+        <td class="field"></td>
+        <td>
+          <%= f.submit params[:action] == "edit" ? "修改管理员" : "创建管理员" %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<% end -%>
+
+<script type="text/javascript">
+  $(function(){
+    
+    if ($("#admin_staffer_email").next().length > 0){
+      if ($("#admin_staffer_email").next().get(0).innerHTML == "StafferEmail不正确"){
+        $("#admin_staffer_email").next().get(0).innerHTML = "邮箱格式不正确,以@caishuo.com结尾"
+      }
+      if ($("#admin_staffer_email").next().get(0).innerHTML == "StafferEmail已经被占用"){
+        $("#admin_staffer_email").next().get(0).innerHTML = "此邮箱已经被占用"
+      }
+    }
+
+    if ($("#admin_staffer_password").next().length > 0){
+      if ($("#admin_staffer_password").next().get(0).innerHTML == "StafferPassword最短为6个字符"){
+        $("#admin_staffer_password").next().get(0).innerHTML = "密码为6-20个字符"
+      }
+      if ($("#admin_staffer_password").next().get(0).innerHTML == "StafferPassword不能为空"){
+        $("#admin_staffer_password").next().get(0).innerHTML = "密码不能为空"
+      }
+    }
+
+    if ($("#admin_staffer_fullname").next().length > 0){
+      if ($("#admin_staffer_fullname").next().get(0).innerHTML == "StafferFullname已经被占用"){
+        $("#admin_staffer_fullname").next().get(0).innerHTML = "姓名已被占用"
+      }
+    }
+
+  });
+</script>

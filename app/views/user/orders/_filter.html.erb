@@ -1,0 +1,60 @@
+<thead>
+  <tr>
+    <td class="w120">
+      <div class="selectbox">
+        <input type="hidden" value="<%= @search.product_type %>">
+        <label style="width:2em;"><%= @search.product_type_desc %></label><kbd></kbd>
+        <ul class="selectoption" id="product_type">
+          <% OrderSearch::PRODUCT_TYPES.each do |k, v| %>
+            <li class="<%= 'active' if @search.product_type_active?(k) %>" data-value="<%= k %>">
+              <%= v %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </td>
+    <td class="w100">
+      <div class="selectbox">
+        <input type="hidden" value="<%= @search.market %>">
+        <label style="width:2em;"><%= @search.market_desc %></label><kbd></kbd>
+        <ul class="selectoption" id="market">
+          <% OrderSearch::MARKETS.each do |k, v| %>
+            <li class="<%= 'active' if @search.market_active?(k) %>" data-value="<%= k %>">
+              <%= v %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </td>
+    <td class="text-center w90">
+      <div class="selectbox">
+        <input type="hidden" value="<%= @search.trade_type %>">
+        <label style="width:2em;"><%= @search.trade_type_desc %></label><kbd></kbd>
+        <ul class="selectoption" id="trade_type">
+          <% OrderSearch::TRADE_TYPES.each do |k, v| %>
+            <li class="<%= 'active' if @search.trade_type_active?(k) %>" data-value="<%= k %>">
+              <%= v %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </td>
+    <td class="text-center" width="140">数量</td>
+    <td width="120">成交均价/金额</td>
+    <td width="90">实际盈亏</td>
+    <td class="text-center" width="100">
+      <div class="selectbox">
+        <input type="hidden" value="<%= @search.status %>">
+        <label style="width:2em;"><%= @search.status_desc %></label><kbd></kbd>
+        <ul class="selectoption" id="status">
+          <% OrderSearch::STATUSES.each do |k, v| %>
+            <li class="<%= 'active' if @search.status_active?(k) %>" data-value="<%= k %>">
+              <%= v %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </td>
+    <td class="text-center" width="100">交易操作</td>
+  </tr>
+</thead>

@@ -1,0 +1,12 @@
+<nav class="SubDock">
+  <% if TradingAccount.published.active.exists?(user_id: current_user.id) %>
+    <a href="<%= account_overview_index_path(account_id: account_id) %>" class="<%= sub_menu_tab_class("investment", @sub_menu_tab) %>">投资概览</a>
+  <a href="<%= accounts_positions_path(account_id: account_id) %>" class="<%= sub_menu_tab_class("position", @sub_menu_tab) %>">持仓明细</a>
+  <a href="<%= accounts_orders_path(account_id: account_id) %>" class="<%= sub_menu_tab_class("orders", @sub_menu_tab) %>">订单管理</a>
+  <% else %>
+    <a href="javascript:void(0);" class="gray">投资概览</a>
+    <a href="javascript:void(0);" class="gray">持仓明细</a>
+    <a href="javascript:void(0);" class="gray">订单管理</a>
+  <% end %>
+  <a href="<%= accounts_path(account_id: account_id) %>" class="<%= sub_menu_tab_class("accounts", @sub_menu_tab) %>">交易账号管理</a>
+</nav>

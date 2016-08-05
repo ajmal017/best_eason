@@ -1,0 +1,7 @@
+<% if !@valid_password %>
+  $("#user_password").next('span').text("用户密码不正确");
+<% elsif @user.errors[:email].present? %>
+  $("#user_new_email").next('span').text("<%=@user.errors[:email].first%>");
+<% else %>
+  window.location.href = "<%=account_activate_path(email: self.resource.email, from: 'change_email')%>";
+<% end %>

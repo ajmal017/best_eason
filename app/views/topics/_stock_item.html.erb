@@ -1,0 +1,18 @@
+<a href="<%= stock_path(stock) %>" class="j_stock_layer" data-stock-id="<%= stock.id %>" target="_blank">
+    <span class="codename">
+      <b><%= stock.symbol %></b><%= stock.truncated_com_name %>
+    </span>
+    <span class="pricerate">
+      <%= stock.realtime_price_with_unit %> 
+      <%= stock_change_percent_style(stock, postfix: "%", force_precision: 2, with_arrow: true, operator: false) %>
+    </span>
+    <span class="stockchart" style="width:232px;height:102px;"></span>
+    <span class="scores">
+        <span class="ratestar1">
+          <span style="width:<%= stock_ratestar_width(stock.stock_screener.try(:score).try(:round, 1)) %>%;"></span>
+        </span>
+        <span class="hotdegree">
+          热度 <em class="ico <%= topic_stock.hot_score_up? ? "plus": "mins" %>"></em>
+        </span>
+    </span>
+</a>

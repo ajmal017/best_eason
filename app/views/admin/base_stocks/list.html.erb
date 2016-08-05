@@ -1,0 +1,78 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%=link_to "重置上海分时图", reset_bar_by_exchange_admin_base_stocks_path(exchange: 'sh'), method: :post, :data => {confirm: '你确认重置上海所有股票的分时图数据吗?'}, remote: true%>
+    <%=link_to "重置深圳分时图", reset_bar_by_exchange_admin_base_stocks_path(exchange: 'sz'), method: :post, :data => {confirm: '你确认重置深圳所有股票的分时图数据吗?'}, remote: true%>
+    <%=link_to "补全上海分时图", fill_bar_by_exchange_admin_base_stocks_path(exchange: 'sh'), method: :post, :data => {confirm: '你确认补全上海所有股票的分时图数据吗?'}, remote: true%>
+    <%=link_to "补全深圳分时图", fill_bar_by_exchange_admin_base_stocks_path(exchange: 'sz'), method: :post, :data => {confirm: '你确认补全深圳所有股票的分时图数据吗?'}, remote: true%>
+    <%=link_to "重置上海四日分时图", reset_4days_bar_by_exchange_admin_base_stocks_path(exchange: 'sh'), method: :post, :data => {confirm: '你确认重置上海所有股票的四日分时图数据吗?'}, remote: true%>
+    <%=link_to "重置深圳四日分时图", reset_4days_bar_by_exchange_admin_base_stocks_path(exchange: 'sz'), method: :post, :data => {confirm: '你确认重置深圳所有股票的四日分时图数据吗?'}, remote: true%>
+    <%=link_to "重置上海实时数据", reset_cn_rt_admin_base_stocks_path(base_stock_id: 'sh'), method: :post, :data => {confirm: '你确认重置实时上海数据吗?'}, remote: true%>
+    <%=link_to "重置深圳实时数据", reset_cn_rt_admin_base_stocks_path(base_stock_id: 'sz'), method: :post, :data => {confirm: '你确认重置深圳实时数据吗?'}, remote: true%>
+  </span>   
+</h1>
+<h1 class="title">
+  <span class="title_left"></span>
+  <span class="title_right">
+    <%=link_to "重置香港实时数据", reset_rt_admin_base_stocks_path(market: 'hk'), method: :post, :data => {confirm: '你确认重置香港实时数据吗?'}, remote: true%>
+    <%=link_to "重置美股实时数据", reset_rt_admin_base_stocks_path(market: 'us'), method: :post, :data => {confirm: '你确认重置美股实时数据吗?'}, remote: true%>
+    <%=link_to "重置香港1日分时图", reset_minute_charts_admin_base_stocks_path(market: 'hk', day: 1), method: :post, :data => {confirm: '你确认重置香港1日分时图吗?'}, remote: true%>
+    <%=link_to "重置香港5日分时图", reset_minute_charts_admin_base_stocks_path(market: 'hk', day: 4), method: :post, :data => {confirm: '你确认重置香港5日分时图吗?'}, remote: true%>
+    <%=link_to "重置美股1日分时图", reset_minute_charts_admin_base_stocks_path(market: 'us', day: 1), method: :post, :data => {confirm: '你确认重置美股1日分时图吗?'}, remote: true%>
+    <%=link_to "重置美股5日分时图", reset_minute_charts_admin_base_stocks_path(market: 'us', day: 4), method: :post, :data => {confirm: '你确认重置美股5日分时图吗?'}, remote: true%>
+  </span>
+</h1>
+<h1 class="title">
+  <span class="title_left"></span>
+  <span class="title_right">
+    <%=link_to "重置上海主力资金Cache", reset_tf_cache_admin_base_stocks_path(stock_id: 'sh'), method: :post, :data => {confirm: '你确认吗?'}, remote: true%>
+    <%=link_to "重置深圳主力资金Cache", reset_tf_cache_admin_base_stocks_path(stock_id: 'sz'), method: :post, :data => {confirm: '你确认吗?'}, remote: true%>
+    <%=link_to "重置停牌股票交易时间", reset_halted_trade_time_admin_base_stocks_path, method: :post, data: {confirm: "你确认吗?"}, remote: true%>
+    <%=link_to "抓取东财停牌股票", halted_fetch_admin_base_stocks_path, method: :post, remote: true%>
+  </span>
+</h1>
+<div class="box">
+  <%= search_form_for @q, url: list_admin_base_stocks_path, class: "form-inline", role: "form" do |f| %>
+    <%= f.text_field :symbol_cont, :placeholder => "股票代码", class: "form-control" %>
+    <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+  <% end %>
+</div>
+  <%= page_info(@base_stocks) %>
+
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <%= content_tag :th, sort_link(@q, :symbol, '股票代码') %>
+        <%= content_tag :th, sort_link(@q, :name, '名称') %>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @base_stocks.each_with_index do |bs, index| %>
+        <tr>
+          <td><%= bs.id %></td>
+          <td><%= link_to(bs.symbol, stock_path(bs), target: "_blank",title: "查看详情") %></td>
+          <td class="align_left"><%= bs.com_name %></td>
+          <td class="action">
+            <% if bs.is_a?(Stock::Cn) %>
+              <%=link_to "重置分时图", reset_bar_admin_base_stock_path(bs), method: :post, :data => {confirm: '你确认重置吗?'}, remote: true%>
+              <%=link_to "补全分时图", fill_bar_admin_base_stock_path(bs), method: :post, :data => {confirm: '你确认补全吗?'}, remote: true%>
+              <%=link_to "重置历史数据", reset_quote_admin_base_stock_path(bs), method: :post, :data => {confirm: '你确认重置历史数据吗?'}, remote: true%>
+              <%=link_to "分股分红", split_and_dividend_list_admin_base_stock_path(bs), target: '_blank' %>
+              <%=link_to "重置4日分时图", reset_4days_bar_admin_base_stock_path(bs), method: :post, :data => {confirm: '你确认重置四日分时图吗?'}, remote: true%>
+              <%=link_to "重置实时数据", reset_cn_rt_admin_base_stocks_path(base_stock_id: bs.id), method: :post, :data => {confirm: '你确认重置实时数据吗?'}, remote: true%>
+              <%=link_to "重置MainFundCache", reset_tf_cache_admin_base_stocks_path(stock_id: bs.id), method: :post, :data => {confirm: '你确认吗?'}, remote: true%>
+              <%=link_to "编辑", edit_admin_quote_path(bs.id) %>
+            <% end %>
+            <% if bs.is_a?(Stock::Us) || bs.is_a?(Stock::Hk) %>
+              <%=link_to "重置实时数据",  reset_rt_admin_base_stocks_path(stock_id: bs.id), method: :post, :data => {confirm: '你确认重置实时数据吗?'}, remote: true%>
+              <%=link_to "重置1日分时图", reset_minute_charts_admin_base_stocks_path({day: 1, stock_id: bs.id}), method: :post, :data => {confirm: '你确认重置1日分时图吗?'}, remote: true%>
+              <%=link_to "重置4日分时图", reset_minute_charts_admin_base_stocks_path({day: 4, stock_id: bs.id}), method: :post, :data => {confirm: '你确认重置4日分时图吗?'}, remote: true%>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @base_stocks %>

@@ -1,0 +1,252 @@
+<% @page_title = "猜大盘 - 赢手机"%>
+<%= content_for :header do %>
+<%= javascript_include_tag "base", "/javascripts/mo.caishuo.bridge.min.js", "/zt/150827/attach/award.js?#{Time.now.strftime('%Y%m%d%H')}" %>
+<%= csrf_meta_tags %>
+
+<style type="text/css">
+    body {padding: 0;margin: 0;}
+    body.tip {overflow: hidden;}
+    #banner img {display: block;width: 100%;}
+
+    #content {background: #f1f1f1;}
+    #content .waiting {text-align: center;font-size: 15px;line-height: 180px;}
+    #content .enter {padding: 40px 0;}
+    #content label {display: block;text-align: center;padding-bottom: 24px;}
+    #content label b {color: #cd0000;}
+    #content div {width: 280px;margin: 0 auto;}
+    #content input {border: 1px solid #cd0000;border-radius: 3px 0 0 3px;line-height: 1;font-size: 14px;height: 33px;margin: 0;padding: 0;vertical-align: middle;outline: 0;padding-left: 6px;width: 200px;background: white;}
+    #content button {border-radius: 0 3px 3px 0;background: #cd0000;color: white;font-weight: bold;border: none;font-size: 16px;height: 35px;line-height: 35px;vertical-align: middle;width: 70px;text-align: center;padding: 0;}
+    #content span {font-size: 12px;display: block;padding-top: 8px;}
+
+    #content .result h2 {font-size: 15px;font-weight: normal;text-align: center;margin: 0;line-height: 2.6;}
+    #content .result h2.bottom {margin-top: -10px;}
+    #content .result .mine {color: #ff5962; font-family: inherit;}
+
+    #content  #chart {width: auto;margin: 0;padding: 0 0 10px 80px;}
+    #chart ul {border-left: 1px solid #959595;border-bottom: 1px solid #959595;margin: 0;padding: 4px 0;}
+    #chart li {margin: 0;padding: 0;list-style: none;height: 22px;position: relative;white-space: nowrap;}
+    #chart li b {position: absolute;height: 11px;background: #959595;width: 100%;left: 0;top:25%;box-shadow: 0 0 1px ;}
+    #chart .current {color: #ff5962;}
+    #chart li.current b {background-color: #ff5962;}
+    #chart li i {position: absolute;font-style:normal;text-align: right;font-size: 16px;right: 100%;top:0;margin-right: 8px;}
+    #chart section {white-space: nowrap;font-size: 15px;position: relative;text-align: right;}
+    #chart section:before {content: "0%";position: absolute;left: 0;}
+    #chart em {font-style: normal;width: 22%;display: inline-block;}
+
+
+    #detail {font-size: 12px;padding-bottom: 12px;}
+    #detail dl {padding: 0 10px 0 24px;}
+    #detail dl:after {content: "";display: block;clear: both;}
+    #detail dt {float: left;}
+    #detail dt img {width: 80px;}
+    #detail dd {line-height: 2;margin-left: 100px;padding:16px 0;}
+    #detail div {padding-left: 17px;}
+    #detail dd span {color: #cd0000;}
+    #detail div span {font-size:16px;color:#cd0000;}
+    #detail h2 {font-size: 15px; color: #cd0000;border-left: 10px solid #cd0000;padding-left: 6px;font-weight: normal;line-height: 20px;margin: 15px 0;}
+    #detail ul {list-style: none;margin: 0;padding: 0;}
+    #detail li {padding-left: 20px;padding-right:6px;position: relative;line-height: 2;font-size: 12px;}
+    #detail li:before {content: "";position:absolute;width: 4px;height: 4px;margin-top:.8em;left:1em;background: #ff793e;border-radius: 50%;}
+
+    #Tip {position: fixed;z-index: 100;left: 0;right: 0;top:0;bottom:0;background: rgba(0,0,0,.3); display: none;}
+    #Tip div {text-align: center;font-size: 15px;border-radius: 3px;background: white;width: 180px;position: absolute;left: 50%;margin-left: -120px;top:50%;margin-top: -40px;padding: 20px 30px 20px;}
+    #Tip label {display: block; color: #333333;margin-bottom: 20px;line-height: 1.8;}
+    #Tip span {display: inline-block; color: white; background: #4285f4;line-height: 2.4;min-width: 8em;border-radius: 2px;}
+
+    .comment {font-size: 12px; color: initial;}
+    #award {width: 100%; text-align: center; border-collapse: collapse;line-height: 35px;}
+    #award thead {background-color: #ff5962; color:#ffffff;}
+    #award tbody {background-color: #f1f1f1;}
+    #award tbody td {border-bottom: 1px solid #ddd; }
+    #award th {font-weight: normal; text-align: left; padding: 0 10px;}
+    #award td:nth-child(2) {text-align: left;}
+    #award tbody tr:last-child > th {border-bottom: 1px solid #ddd;}
+  </style>
+<% end %>
+
+
+<section id="banner"><%= image_tag "/zt/150827/attach/banner.png" %></section>
+<section id="content">
+  <% if GuessIndex.exchange.trading? %>
+    <div class="waiting">竞猜尚未开始，15点后再来吧！</div>
+  <% elsif !@guessed %>
+    <div class="enter">
+      <label>最新收盘指数：<b><%= @prev_index %></b></label>
+      <div><input type="number" placeholder="请输入下一交易日大盘收盘点数" /><button>提交</button></div>
+      <div><span>* 提交后能看到其他人猜的点数哦！</span></div>
+    </div>
+  <% end %>
+
+  <div class="result" style="display:none;">
+    <h2 >您猜的<code class="mine">--</code>点已提交成功，祝您获奖！</h2>
+    <div id="chart">
+      <ul></ul>
+      <section></section>
+    </div>
+    <h2 class="bottom">看看大家都是怎么猜的吧</h2>
+  </div>
+</section>
+<section id="detail">
+  <h2>获奖通知</h2>
+  <div>关注财说微信号&nbsp;<span>caishuo-caishuo</span>&nbsp;获取每日获奖信息</div>
+  <h2>获奖信息<span class="comment">（恭喜以下用户各获得坚果手机一部）</span></h2>
+    <div style="padding: 0 10px;">
+      <table id="award">
+        <thead>
+          <tr>
+            <th>日期</th>
+            <td>用户名</td>
+            <td>竞猜点数</td>
+            <td>当日点数</td>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  <h2>活动奖品及规则</h2>
+  <ul>
+    <li>连续10个交易日，每个交易日送出一部坚果手机；</li>
+    <li>当天15:00至下一交易日9:00猜下一个交易日沪指收盘指数；</li>
+    <li>最接近收盘点数、且误差不高于±10个点的用户可获得坚果手机一部；</li>
+    <li>所猜指数截至小数点后两位，点数相同的，最早竞猜的用户获奖；</li>
+    <li>本活动最终解释权归财说所有；</li>
+  </ul>
+</section>
+<div id="Tip">
+  <div>
+    <!-- <label>竟猜范围不得超过±10%，再试试吧！</label> -->
+    <label>竟猜范围不得超过小数点后面俩位哦，再试试吧！</label>
+    <span>重新猜</span>
+  </div>
+</div>
+  
+<script type="text/javascript">
+  var lastData = <%= @prev_index %>;
+  var isLogin = <%= current_user.present? %>;
+  if (!isLogin){
+    showtip('参与竞猜请先登录！', '立即登录');
+  }
+
+  $(function(){
+    <% if @guessed %>
+      loadCharts();
+    <% end %>
+
+    addTrackEvent('MO_APP','View', "CaiDapan");
+  })
+
+  function showtip(txt, btn){
+    var btn_txt = "重新猜";
+    if (btn != undefined)
+      btn_txt = btn;
+
+    $('body').addClass('tip');
+    $('#Tip').show().find('label').text(txt);
+
+    $('#Tip span').text(btn_txt);
+  }
+
+  $('#Tip span').click(function(){
+    if ($('#Tip span').text().trim() == "立即登录"){
+      Caishuo.trigger('sendback', {'event':'forcelogin', 'status':'authfailed'});
+      isLogin = true;
+    }
+    else{
+      $('body').removeClass();
+      $('#Tip').hide();
+      $('#content .enter input').focus();
+    }
+  });
+
+  $('#content .enter button').click(function(){
+    var VAL = $(this).prev('input').val();
+    var val = parseFloat(VAL), min = lastData*.9, max = lastData*1.1;
+    if (isNaN(val) || isNaN(VAL)){
+      showtip('请输入下一交易日大盘收盘点数');
+    }else if (VAL.split('.')[1]&&VAL.split('.')[1].length>2){
+      showtip('竟猜范围不得超过小数点后面俩位哦，再试试吧！');
+    }else if (val<min || val>max){
+      showtip('竟猜范围不得超过±10%，再试试吧！');
+    }else{
+      $.post("<%= mobile_link mobile_events_guess_indices_path %>", {market_index: val}, function(response){
+        if (response.status){
+          loadCharts();
+        }else{
+          if (response.login == false){
+            forceLogin();
+          }else{
+            showtip(response.msg);
+          }
+        }
+      });
+      //真正发送数据时才发送event
+      addTrackEvent('MO_APP','Click', "CaiDapan");
+    }
+  });
+
+  function loadCharts(){
+    $.get("<%= mobile_link charts_mobile_events_guess_indices_path %>", {}, function(response){
+      if (response.login == false){
+        forceLogin();
+      }else{
+        $("#content > div").hide();
+        $("#content > div.result").show();
+        $(".result .mine").text(response.user_index);
+        drawchart($('#chart ul'), $('#chart section'), response.datas);
+      }
+    })
+  };
+
+  var drawchart=function($chart, $mark, data){
+    // data.sort(function(a,b){return b.count-a.count});
+    var total=0, max=0, cur=0, len = data.length;
+    for (var i=0; i<len; i++){
+      var item = data[i];
+      total += item.count;
+      max = Math.max(max,item.count);
+    }
+    $chart.empty();
+    for (var i=0; i<len; i++){
+      var item = data[i];
+      var $item = $('<li/>').append(
+        $('<i/>').text(item.name)
+      ).append(
+        $('<b/>').width(item.count*100/max+'%')
+      )
+      if (item.active){
+        cur = item.count;
+        $item.addClass('current');
+      }
+      $item.appendTo($chart);
+    }
+    var step = Math.ceil(max*25/total);
+    $mark.empty();
+    for (var i=1;i<=4;i++){
+      var $item = $('<em/>').text(step*i +'%');
+      if (100*cur/total <= step*i){
+        $item.addClass('current');
+        cur = total*2
+      }
+      $item.appendTo($mark);
+    }
+  }
+
+  Caishuo.connect('index',function(){});
+  function forceLogin(){
+    Caishuo.trigger('sendback', {'event':'forcelogin','status':'authfailed'});
+  }
+
+  $(function() {
+    var len = award.length,
+      $target = $('#award tbody');
+    for (var i = 0; i < len; i++) {
+      var item = award[i];
+      $('<tr/>')
+        .append($('<th/>').text(item.date))
+        .append($('<td/>').text(item.winner))
+        .append($('<td/>').text(item.point))
+        .append($('<td/>').text(item.index))
+        .appendTo($target);
+    }
+  });
+</script>

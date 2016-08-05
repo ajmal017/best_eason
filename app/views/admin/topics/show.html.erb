@@ -1,0 +1,44 @@
+<h1 class="title">
+  <span class="title_left">热点内容</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @topic], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_topics_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">标题</td>
+      <td>
+        <%= @topic.full_title %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">市场分类</td>
+      <td>
+        <%= BaseStock::MARKET_AREA_NAMES[@topic.market.try(:to_sym)] %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">概要</td>
+      <td>
+        <%= @topic.summary %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">描述</td>
+      <td>
+        <%= link_to "点击预览", @topic, target: "_blank", class: "action" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">最后修改</td>
+      <td>
+        <%= @topic.updated_at %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<%= render 'info_form'%>

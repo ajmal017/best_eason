@@ -1,0 +1,70 @@
+<div class="demo_left">
+  <h2>Demo:</h2>
+  <div class="demo_box">
+    <% stocks = BaseStock.limit(3) %>
+    <table class="grid_form">
+      <tr>
+        <th colspan="2">股票自动检索</th>
+      </tr>
+      <tr>
+        <td class="field">股票:</td>
+        <td>
+          <input type="text" placeholder="股票自动检索(根据股票name/symble)" id="stock_search"/>
+          <input type="hidden" id="stocks_search_ids" value="<%= stocks.pluck(:id).join(",") %>"/>
+        </td>
+      </tr>
+      <tr>
+        <td class="field">已添股票展示:</td>
+        <td id="new_stock">
+          <% if !stocks.empty? %>
+            <% stocks.each do |stock| %>
+              <ul id="stock_<%= stock.id %>">
+                <li id="stock" style="float:left;"><%= stock.symbol %>
+                  (<%= stock.c_name == nil ? stock.name : stock.c_name %>)<a href="javascript:"  style="color:red;" onclick="destroyStock(<%= stock.id %>)">X</a>
+                </li>
+              </ul>
+            <% end %>
+          <% else %>
+            <span id="prompt" style="color:red;">暂时没有关联的股票！</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th colspan="2">用户自动检索</th>
+      </tr>
+      <tr>
+        <td class="field">用户:</td>
+        <td>
+          <select style="width: 30%" class="select_user" name="user_id" id="search_user"></select>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="demo_right">
+  <h2>股票自动检索代码:</h2>
+  <%== code(:auto_search_stock, :js) %>
+  <br/>
+  <h2 class="title">使用说明:</h2>
+  <p>
+    1. 文件位置 app/assets/javascripts/admin/base.js<br/><br/>
+    2. 公开方法:<br/><br/>
+    2.1&nbsp;$("#stock_search").autocomplete({source: function()/select: function()})<br/><br/>
+    2.1.1&nbsp;source: function()():调用/ajax/stocks/search返回五个满足条件的stocks<br/><br/>
+    2.1.2&nbsp;select: function()():选择要添加的stock,并追加到指定的位置<br/><br/>
+    2.2&nbsp;autocomplete( "instance" )._renderItem...显示方法2.2.1的五条stocks<br/><br/>
+  </p>
+
+  <h2>用户自动检索代码:</h2>
+  <%== code(:auto_search_user, :js) %>
+  <br/>
+  <h2 class="title">使用说明:</h2>
+  <p>
+    1. 文件位置 app/assets/javascripts/admin/base.js<br/><br/>
+    2. 公开方法:<br/><br/>
+    2.1&nbsp;$(".select_user").select2({......});通过search_user找到五个用户<br/><br/>
+    2.1.1&nbsp;function formatUser (user) {......};在下拉框显示五个满足条件的用户<br/><br/>
+    2.1.2&nbsp; function formatUserSelection (user) {......};在搜索框中显示选中的用户<br/><br/>
+    注意：必须用select标签input标签不行
+  </p>
+</div>

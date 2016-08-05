@@ -1,0 +1,42 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+</h1>
+
+<div class="box">
+  <%= form_tag admin_md_stock_trading_flows_path, method: :get, class: "form-inline", role: "form" do %>
+    <%= text_field_tag :base_stock_id, params[:base_stock_id], placeholder: 'BaseStockId' %>
+    <%= submit_tag "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+  <% end %>
+</div>
+
+<%= page_info(@flows) %>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>股票ID</th>
+      <th>股票Symbol</th>
+      <th>中文名称</th>
+      <th>主力净流入</th>
+      <th>主力净流入百分比</th>
+      <th>创建时间</th>
+      <th>更新时间</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @flows.each do |lh| %>
+    <tr>
+      <td><%= lh.id %></td>
+      <td><%= lh.base_stock_id %></td>
+      <td><%= lh.symbol %></td>
+      <td><%= lh.c_name %></td>
+      <td><%= lh.main_value %></td>
+      <td><%= lh.main_percent %></td>
+      <td><%= lh.created_at %></td>
+      <td><%= lh.updated_at %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= will_paginate @flows %>  

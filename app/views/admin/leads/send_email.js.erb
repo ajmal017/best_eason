@@ -1,0 +1,9 @@
+<% if @result %>
+  alert('邮件发送成功');
+<% elsif @lead.email.nil? %>
+  alert('用户邮件不存在');
+<% elsif @lead.invitation_code.nil? %>
+  alert('激活码不存在');
+<% else %>
+  alert('发送失败');
+<% end %>

@@ -1,0 +1,36 @@
+<%= form_for @push_log, url: "/admin/pushs", html: {method: "post"} do |f|%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b>推送类型:</td>
+        <td>
+          <%= f.select :push_type, PushLog::PUSH_TYPE.invert %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>推送对象(USER_ID, 群发时无需填写):</td>
+        <td>
+          <%= f.text_field :push_key %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>推送内容:</td>
+        <td>
+          <%= f.text_area :content, rows: 5, style: "width: 305px;" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>推送密码:</td>
+        <td>
+          <%= f.password_field :password, :size=>20, placeholder: "请输入密码" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td>
+          <%= f.submit "推送" %>
+        </td>
+      </tr>
+     </tbody>
+  </table>
+<% end -%>

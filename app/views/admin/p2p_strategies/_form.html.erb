@@ -1,0 +1,28 @@
+<%= form_for [:admin, @p2p_strategy] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b><%= f.label "类型" %></td>
+        <td><%= f.select :base_type, options_for_select(P2pStrategy::BASE_TYPE, @p2p_strategy.base_type) %></td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b><%= f.label "对象" %></td>
+        <td><%= f.select :mentionable_id, [], {}, {class: "select_stock_by_symbol", style: "width: 15%"} %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label "上涨下跌" %></td>
+        <td><%= f.select :change_type, options_for_select(P2pStrategy::CHANGE_TYPE, @p2p_strategy.change_type) %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label "权重" %></td>
+        <td><%= f.text_field :weight %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+

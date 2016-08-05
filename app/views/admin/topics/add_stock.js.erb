@@ -1,0 +1,5 @@
+<% if @topic_stock && @topic_stock.valid? %>
+$("#topic_stocks_table tbody").append("<%= j render partial: 'stock_item', locals: {topic_stock: @topic_stock, base_stock: @stock} %>");
+<% else %>
+alert("不符合热点市场分类或者股票已存在！");
+<% end %>

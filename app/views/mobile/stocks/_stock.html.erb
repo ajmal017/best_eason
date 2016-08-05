@@ -1,0 +1,10 @@
+<%= link_to mobile_link("/mobile/stocks/#{stock.id}") do %>
+  <h2><b><%= stock.symbol %></b> <%= stock.c_name %> </h2>
+  <span>
+    <mark class="ratestar">
+      <mark style="width:<%= stock_ratestar_width(stock.stock_screener.score) %>%;"></mark>
+    </mark>
+  </span>
+  <span class="<%= up_or_down_class(stock.change_from_previous_close) %> cell"><%= stock.realtime_price %></span>
+  <span class="<%= up_or_down_class(stock.change_from_previous_close) %> cell"><%= stock.change_percent.round(2) %>%</span>
+<% end %>

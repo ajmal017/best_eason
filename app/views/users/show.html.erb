@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>所在地</strong>
+  <%= @user.province %><%=@user.city%>
+</p>
+
+<p>
+  <strong>性别</strong>
+  <%= @user.gender%>
+</p>
+
+
+<p>
+  <strong>简介:</strong>
+  <%= @user.headline %>
+</p>
+
+<p>
+  <strong>头像:</strong>
+  <%= image_tag(@user.avatar_url(:normal)) %><br/>
+  <%= image_tag(@user.avatar_url(:large)) %><br/>
+  <%= image_tag(@user.avatar_url(:small)) %>
+</p>
+
+<p>
+  <strong>logo头像:</strong>
+  <%= image_tag(@user.logo_url(:normal)) %><br/>
+  <%= image_tag(@user.logo_url(:large)) %><br/>
+  <%= image_tag(@user.logo_url(:small)) %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

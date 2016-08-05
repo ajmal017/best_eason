@@ -1,0 +1,22 @@
+<!-- 评论区域 开始 -->
+<div class="itemBox commentArea float-left" id="review">
+    <h3>观点评论<em class="plus">（<i class="comments_total_count"><%= @contest.comments_count.to_i %></i>）</em></h3>
+    <%= form_tag comment_ajax_contest_path(@contest), remote: true, class: 'richEditorArea clearfix', onsubmit: "javascript: Comment.disableCommentButton();" do |f| %>
+      <% if user_signed_in? %>
+        <%=image_tag current_user.avatar_url(:large), class: 'avator' %>
+      <% else %>
+        <%= image_tag("/images/v2/userAvator.jpg", class: "avator") -%>
+      <% end %>
+      <textarea id="comment_tx" class="autocomplete" name="comment[content]"></textarea>
+      <div class="review-but">
+        <span>尝试输入<em class="blues">$</em>来添加股票代码</span>
+        <input type="submit" class="<%='j-login-popup' unless user_signed_in? %> btn btn_blue" value="发表" />
+      </div>
+    <% end %>
+
+    <ul class="comments">
+
+    </ul>
+    <div class="btn btn-more">加载更多</div>
+</div>
+<!-- 评论区域 结束 -->

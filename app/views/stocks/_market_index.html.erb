@@ -1,0 +1,65 @@
+<div class="stockIndex" style="display:none;">
+  <div class="content">
+    <ul class="stockStatus clearfix">
+      <% ["上证指数", "深证指数", "创业板指数", "恒生指数", "S&P 500", "纳斯达克"].zip([:sh, :sz, :gem, :hs, :bp, :nasdq]).each_with_index do |market_index, index| %>
+        <li data-id="<%= @market_index_infos[market_index[1].to_s][:id] %>" data-end-timestamps="<%= @market_index_infos[market_index[1].to_s][:end_timestamps] %>" data-previous-close="<%= @market_index_infos[market_index[1].to_s][:previous_close] %>" data-market-symbol="<%= market_index[1] %>" data-utc-end-ts="<%= @market_index_infos[market_index[1].to_s][:utc_end_timestamps] %>">
+          <%= display_market_index_info(market_index[0], market_index[1], @market_indexes, index.zero?) %>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class="stockWrap">
+      <ol id="chart_type_btns" class="asSwitchBtn" style="margin-bottom:13px;">
+        <li class="active" onclick="javascript:MarketIndexChart.showQuotePricesChart(this);">分时图</li>
+        <li onclick="javascript:MarketIndexChart.showKlinesChart('day', this);">日K</li>
+        <li onclick="javascript:MarketIndexChart.showKlinesChart('week', this);">周K</li>
+        <li onclick="javascript:MarketIndexChart.showKlinesChart('month', this);">月K</li>
+      </ol>
+      <a href="javascript:" onclick="javascript:window.open('/stocks/'+$('ul.stockStatus a.active:first').parent().attr('data-id'));" class="index_details">指数详情></a>
+      <div>
+        <div id="minutes_chart_info" style="position:absolute;z-index:10;margin-top:4px;"></div>
+        <div id="market_index_minute_chart" style="width:690px;height:360px;" class="barloading"></div>
+      </div>
+      <div style="position:relative;display:none;">
+        <div id="kline_mainfo" style="display:none;position:absolute;z-index:10;margin-top:4px;margin-left:6px;">
+          MA5：<span style="color:#D2691E;"></span> MA10：<span style="color:#6A5ACD;"></span> MA20：<span style="color:#4daf7b;"></span> MA30：<span style="color:#D02090;"></span>
+        </div>
+        <div id="market_index_kline_chart" style="width:690px;height:360px;" class="barloading"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stockRecommend">
+    <h3>大家都在怎么玩选股神器</h3>
+    <a href="<%= stocks_path(search: {market_region: "us", capitalization: "capitalization_dy4"}) %>" class="j_gfh">
+      <span>美股还是要找高分红</span>
+      <%= @recommend[:gfh][1] %>等 <%= @recommend[:gfh][0] %>只个股
+      <b><em><%= @recommend[:gfh][0] %></em>支股票</b>
+    </a>
+    <a href="<%= stocks_path(search: {market_region: "cn", sector: 40, style: "style_lp"}) %>" class="j_jrg">
+      <span>寻下A股市盈率合理的金融股</span>
+      <%= @recommend[:jrg][1] %>等 <%= @recommend[:jrg][0] %>只个股
+      <b><em><%= @recommend[:jrg][0] %></em>支股票</b>
+    </a>
+    <a href="<%= stocks_path(search: {market_region: "us", score: 4}) %>" class="j_score_us">
+      <span>财说价值投资高分美股</span>
+      <%= @recommend[:score_us][1] %>等 <%= @recommend[:score_us][0] %>只个股
+      <b><em><%= @recommend[:score_us][0] %></em>支股票</b>
+    </a>
+    <a href="<%= stocks_path(search: {market_region: "hk", score: 4}) %>" class="j_score_hk">
+      <span>财说价值投资高分港股</span>
+      <%= @recommend[:score_hk][1] %>等 <%= @recommend[:score_hk][0] %>只个股
+      <b><em><%= @recommend[:score_hk][0] %></em>支股票</b>
+    </a>
+    <a href="<%= stocks_path(search: {market_region: "cn", score: 4}) %>" class="j_score_cn">
+      <span>财说价值投资高分A股</span>
+      <%= @recommend[:score_cn][1] %>等 <%= @recommend[:score_cn][0] %>只个股
+      <b><em><%= @recommend[:score_cn][0] %></em>支股票</b>
+    </a>
+    <a href="<%= stocks_path(search: {consideration: "consideration_bg"}) %>" class="j_revert">
+      <span>全球市场扭亏为盈的股票来看看</span>
+      <%= @recommend[:revert][1] %>等 <%= @recommend[:revert][0] %>只个股
+      <b><em><%= @recommend[:revert][0] %></em>支股票</b>
+    </a>
+  </div>
+</div>

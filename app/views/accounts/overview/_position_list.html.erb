@@ -1,0 +1,40 @@
+<% baskets.map do |infos| %>
+  <tr onclick="javascript:window.open('/baskets/<%=infos[:id]%>');">
+    <td class="text-left">
+      <%=infos[:title]%><mark>组合</mark>
+    </td>
+    <td class="text-right">--</td>
+    <td data-sort="0">--</td>
+    <td data-sort="<%= infos[:today_change] %>">
+      <%= up_down_style(infos[:today_change], currency_format: true) %></br><%= up_down_style(infos[:today_change_percent], postfix: "%") %>
+    </td>
+    <td data-sort="<%= to_usd_value(infos[:total_value], infos[:currency_unit]) %>">
+      <%= number_to_cash(infos[:total_value], unit: infos[:currency_unit]) %>
+    </td>
+  </tr>
+<% end %>
+
+<% if baskets.blank? %>
+  <tr></tr>
+<% end %>
+<% stocks.map do |infos| %>
+  <tr onclick="javascript:window.open('/stocks/<%=infos[:id]%>')">
+    <td class="text-left">
+      <%=infos[:com_name]%><i><%=infos[:symbol]%></i>
+    </td>
+    <td class="text-right">
+      <%= infos[:realtime_price] %></br>
+      <%= number_to_currency(infos[:average_cost], unit: '', precision: 3) %>
+    </td>
+    <td data-sort="<%= infos[:change_percent] %>">
+      <%= up_down_style(infos[:change_from_previous_close], force_precision: 2) %></br><%= stock_change_percent_style_v2(infos[:change_percent], infos[:realtime_price], postfix: "%") %>
+    </td>
+    <td data-sort="<%= infos[:today_change] %>">
+      <%= up_down_style(infos[:today_change], currency_format: true) %></br><%= up_down_style(infos[:today_change_percent], postfix: "%") %>
+    </td>
+    <td data-sort="<%= to_usd_value(infos[:total_value], infos[:currency_unit]) %>">
+      <%= number_to_cash(infos[:total_value], unit: infos[:currency_unit])%>
+    </td>
+  </tr>
+<% end %>
+

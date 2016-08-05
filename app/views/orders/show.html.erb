@@ -1,0 +1,59 @@
+<% content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/order.css" %>
+<% end %>
+<div class="container order">
+  <h5>订单编号：<%= @order.sn %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下单时间：<%= @order.created_at %></h5>
+  <table>
+    <tr>
+      <th>代码</th>
+      <th>名称</th>
+      <th>动作</th>
+      <th>數量</th>
+      <th>价格类型</th>
+      <th>价格</th>
+      <th>预估总金额</th>
+    </tr>
+    <% @order.order_details.each do |od| %>
+      <tr>
+        <td><%= od.symbol %></td>
+        <td><%= od.com_name %></td>
+        <%= order_action(od) %>
+        <td><%= od.size.to_i.abs %></td>
+        <td><%= od.market? ? '市价' : '限价' %></td>
+        <td><%= currency_money(od.market? ? od.realtime_price : od.limit_price, od.currency_unit) %></td>
+        <td><%= currency_money(od.est_cost, od.currency_unit) %></td>
+      </tr>
+    <% end %>
+  </table>
+  <div class="operation">
+    <span>合计：<em class="red"><%= currency_money(@order.est_cost, @order.currency_unit) %></em></span>
+    <span>佣金：<em><%= currency_money(@order.simulated_fee, @order.currency_unit) %></em></span>
+  </div>
+  <div class="estimate">
+    <%= form_tag confirm_order_path(@order), remote: true, onsubmit: 'return checkForm();' do |f| %>
+      <span>订单预估金额：<em class="red"><%= currency_money(@order.est_cost + @order.simulated_fee, @order.currency_unit) %></em></span>
+      <button class="btn btn_col" type="submit" id="submit_btn" >提交</button>
+      <button id="cancel_btn" class="btn">取消</button>
+    <% end %>
+  </div>
+</div>
+<script type="text/javascript">
+  function checkForm(){
+    document.getElementById("submit_btn").disabled = true;
+    // return true;
+  }
+
+  function openSavedSuccessfully(){
+    CaishuoDialog.open({content: '提交成功', theme: 'tip'});
+  }
+
+  function goToOrders(){
+    window.location.href = "/accounts/orders?account_id=<%= @order.trading_account.pretty_id %>";
+  }
+
+  $("#cancel_btn").click(function(){
+    window.close();
+    return false;
+  })
+  
+</script>

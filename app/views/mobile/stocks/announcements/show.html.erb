@@ -1,0 +1,41 @@
+<%= content_for :header do %>
+<%= javascript_include_tag "mobile.js", "/javascripts/jquery.caishuo", "/javascripts/mo.caishuo.bridge.min" %>
+<style type="text/css">
+	body {padding:8px;color:#333333;margin: 0;font: 15px/1.5 Helvetica,"Helvetica Neue",微软雅黑,"segoe UI Light","Kozuka Gothic Pro";}
+	hgroup {border-bottom: 1px solid #e0e0e0;padding-bottom: 8px;}
+	h1 {margin: 0;font-size: 20px;}
+	h2 {margin: 0;font-size: 12px;font-weight: normal;color: #666666;}
+	#RelatedStocks {margin: 8px 0;line-height: 1.6;}
+	#RelatedStocks a {text-decoration: none;color:#3b8ede;white-space: nowrap;margin-left: 6px;}
+	section.content {margin: 8px 0;}
+	section.content img {margin: 8px 0;display: block;width: 100%;}
+</style>
+<style type="text/css">
+	body {padding:8px;color:#333333;margin: 0;font: 15px/1.5 Helvetica,"Helvetica Neue",微软雅黑,"segoe UI Light","Kozuka Gothic Pro";}
+	hgroup {border-bottom: 1px solid #e0e0e0;padding-bottom: 8px;}
+	h1 {margin: 0;font-size: 20px;}
+	h2 {margin: 0;font-size: 12px;font-weight: normal;color: #666666;}
+	#RelatedStocks {margin: 8px 0;line-height: 1.6;}
+	#RelatedStocks a {text-decoration: none;color:#3b8ede;white-space: nowrap;margin-left: 6px;}
+	section.content {margin: 8px 0;}
+	section.content img {margin: 8px 0;display: block;width: 100%;}
+</style>
+<% end %>
+<hgroup>
+  <h1><%=@announcement["info_title"]%></h1>
+  <h2><%=@announcement["info_publ_date"]%></h2>
+</hgroup>
+
+<section class="content">
+<p><%= simple_format(@content) %></p>
+</section>
+
+<script type="text/javascript">
+Caishuo.connect("index", function(){
+$("#RelatedStocks a").removeAttr("href").click(function(){
+	var data = $(this).data();
+	Caishuo.trigger("openpage", {"goto":"stock","id":data.id,"name":data.name,"symbol":data.symbol});
+});
+});
+</script>
+

@@ -1,0 +1,23 @@
+<table class="holding-box holding_b" style="border:1px solid #FAC68B;line-height:24px;margin-bottom:20px;">
+  <thead>
+    <tr>
+      <th colspan="9" class="text-center">下列数据正在同步中，暂无更多信息。</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% positions.each do |position| %>
+      <tr>
+        <td class="w40"></td>
+        <td class="text-left">
+          <a href="/stocks/<%= position.base_stock.id %>" class="t-name">
+            <%= position.base_stock.com_name %> <i><%= position.base_stock.symbol %></i>
+          </a>
+        </td>
+        <td>当前价<br /><%= position.base_stock.realtime_price_with_unit %></td>
+        <td>异常数量<br /><%= position.shares %></td>
+        <td>价值<br /><%= position.base_stock.currency_unit %><%= position.shares * position.base_stock.realtime_price %></td>
+        <td class="w40"></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

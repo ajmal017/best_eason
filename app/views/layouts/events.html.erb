@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=600" />
+    <title><%= @page_title %></title>
+    <%= favicon_link_tag '/images/favicon_32.ico', type: "image/x-icon" -%>
+    <%= javascript_include_tag "application", "/javascripts/jquery.caishuo.js" %>
+    <%= seo_title(@page_title) %>
+    <%= yield :header %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body class="siteIndex">
+    <%= render '/shared/analytics/gtm'%>
+    <%= render :partial => "layouts/header" if @header %>
+    <%=yield%>
+    <%= yield :script %>
+    <%= render 'layouts/base_dialog' %>
+    <%= render 'layouts/login_popup'%>
+    <%= render :partial => "layouts/footer" %>
+    <%= render '/shared/analytics/baidu' -%>
+  </body>
+</html>

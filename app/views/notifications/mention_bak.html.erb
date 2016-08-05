@@ -1,0 +1,86 @@
+<%- @page_title = "个人资料修改-@我的" -%>
+
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+
+<div class="container userEdit clearfix">
+
+  <%=render partial: 'shared/setting_left_box' %>
+
+  <div class="rightBox">
+    <h2>@我的</h2>
+    <div class="review">
+      <ul>
+        <% @notifications.each do |notification| %>
+        <li class="<%='unRead' unless notification.read? %>">
+          <%=link_to_user notification.triggered_user, inner: image_tag(notification.triggered_user.avatar_url(:small), class: 'head_portrait', width: 40, height: 40), target: '_blank', class: 'comment_avator', card: true%>
+          <%=link_to_user notification.triggered_user, inner: notification.triggered_user.username + ' ' + content_tag(:span, notification.triggered_user.headline), class: 'username', target: '_blank'%>
+          <div class="text"><a href="javascript:void(0);"><%= notification.originable.body.html_safe %></a></div>
+          <section class="commentReplies clearfix">
+            <article>
+            <%= notification.targetable_human_name%>: <%=link_to "#{notification.targetable_title}", notification.targetable_link_url, target: '_blank'%>
+            </article>
+          </section>
+          <div class="commentActions">
+            <span class="date"><%=notification.created_at.to_s(:short)%></span>
+            <%= link_to "删除", notification_path(notification), :method=>:delete, data: {:confirm=>"你确认删除吗?"}, remote: true %><a href="javascript:void(0);" class="j_reply">回复</a>
+            <form class="clearfix logReplies me" onsubmit="return false;" action="post" style="display:none;">
+              <textarea class="autocomplete autoheight" rows="1"></textarea>
+              <div class="saveBox">
+                <input type="submit" value="回复" class="b_btn small float-right j_direct_comment" comment-id="<%=notification.originable_id%>">
+                <a href="javascript:void(0);">@人</a>
+                <a href="javascript:void(0);">$股票</a>
+              </div>
+            </form>
+          </div>
+        </li>
+        <% end %>
+      </ul>
+
+      <%= will_paginate @notifications, class: 'pageNav', inner_window: 2, outer_window: 0 %>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $(function(){
+    // 消息标记已读
+    $.post('/ajax/notifications/mark_read', {ids: <%= @notifications.map(&:id).to_s %>, type: 'mention'});
+
+    $(".j_reply").bind('click', function(){
+      var target = $(this).nextAll('form');
+      if(target.is(":hidden")){
+        target.show();
+      }else{
+        target.hide();  
+      }
+    })
+
+    // 评论
+    $('.j_direct_comment').on('click', function(){
+      var currentDom = $(this);  
+      var content = currentDom.parents('form').find('textarea').val();//.replace(/回复.*：/, ''); 
+      
+      if($.trim(content).length == 0) { return false; }
+      
+      $.ajax({
+        type: 'post',
+        url: '/ajax/comments/' + currentDom.attr('comment-id') + '/reply',
+        dataType: 'json',
+        data: { content: content },
+        success: function(datas){
+          if(datas.id){
+            CaishuoAlert('回复成功');
+          }else{
+            CaishuoAlert('回复失败');
+          }
+        
+          currentDom.parents('form').find('textarea').val('').end().hide();
+        }
+      })
+    })
+
+  })
+</script>

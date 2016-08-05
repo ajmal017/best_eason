@@ -1,0 +1,30 @@
+<table class="grid">
+  <thead>
+    <tr>
+      <th>broker账号</th>
+      <th>已调平?</th>
+      <th>调平等级</th>
+      <th>symbol</th>
+      <th>portfolio</th>
+      <th>position</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% user_bindings.each_with_index do |ub, index| %>
+      
+      <% ub.reconcile_request_list.unreconciled.each do |item| %>
+        <tr <%= tr_class(index) %>>
+          <td><%= ub.broker_user_id %></td>
+          <td><%= ub.available ? "是" : "否" %></td>
+          <td><%= ub.count %></td>
+          <td><%= item[0] %></td>
+          <td><%= item[1] %></td>
+          <td><%= item[2] %></td>
+          <td class="action"><%= render 'commands', user_binding: ub, symbol: item[0] %></td>
+        </tr>
+      <% end if ub.reconcile_request_list %>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate user_bindings, class: "page" %>

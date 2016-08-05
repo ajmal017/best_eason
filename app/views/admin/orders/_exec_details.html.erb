@@ -1,0 +1,16 @@
+<% if exec_details.size > 0 %>
+  <% exec_details.each do |exec| %>
+    <tr>
+      <td><%= exec.exec_id%></td>
+      <td><%= exec.side%></td>
+      <td><%= exec.time%></td>
+      <td><%= exec.created_at%></td>
+      <td><%= exec.symbol %></td>
+      <td><%= exec.cum_quantity%></td>
+      <td><%= exec.shares%></td>
+      <td><%= exec.avg_price%></td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr><td colspan="8">暂无execution数据</td></tr>
+<% end %>

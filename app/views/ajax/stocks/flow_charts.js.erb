@@ -1,0 +1,8 @@
+<% if @percents.present? && @percents.reject(&:zero?).present?%>
+  StockShow.setTradingFlowPieChart(<%=@percents%>);
+  
+  <% @percents.each_with_index do |percent, index| %>
+    $(".stockFoundChart li[index='<%=index%>']").find('em').text("<%=percent%>%")
+    $(".stockFoundChart").show();
+  <% end %>
+<% end %>

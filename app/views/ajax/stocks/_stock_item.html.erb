@@ -1,0 +1,9 @@
+<tr>
+  <td class="j_stock_symbol"><%= stock.symbol %></td>
+  <td><%= text_field_tag "suggests[#{suggest.id}]", suggest.position.to_f  %></td>
+  <td>
+    <a onclick="javascript:Suggest.unSuggestStock(<%= stock.id %>,this)" href="javascript:">
+      <%= raw("<i class='glyphicon glyphicon-remove'></i>") %>
+    </a>
+  </td>
+</tr>

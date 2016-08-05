@@ -1,0 +1,65 @@
+<h1 class="title">
+  <span class="title_left">猜大盘指数活动数据</span>
+  <span class="title_right">
+    
+  </span>   
+</h1>
+<div class="box">
+  <% @dates.each do |date| %>
+    <%= link_to date, admin_guess_indices_path(date: date), class: @date == date ? 'current' : ''  -%>
+  <% end -%>
+</div>
+
+<div class="box">
+  <h1 class="title">
+    <span class="title_left">猜指数统计</span>
+  </h1>
+  <table class="grid">
+    <thead>
+      <tr>
+        <td>点数</td>
+        <td>参与人数</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @grouped_datas.each do |data| %>
+        <tr>
+          <td><%= data[:name] %></td>
+          <td><%= data[:count] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="box">
+  <h1 class="title">
+    <span class="title_left">最接近记录</span>
+  </h1>
+  
+  <% if @market_closed %>
+    <div>收盘指数：<%= @final_index %></div>
+    <table class="grid">
+      <thead>
+        <tr>
+          <td>猜的指数</td>
+          <td>差值</td>
+          <td>猜的时间</td>
+          <td>用户名</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% GuessIndex.nearest_records(@date, @final_index).each do |gi| %>
+        <tr>
+          <td><%= gi.index %></td>
+          <td><%= gi.diff_val %></td>
+          <td><%= gi.updated_at %></td>
+          <td><%= gi.user.try(:username) %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div>收盘指数：未收盘，无法取到收盘指数！</div>
+  <% end %>
+</div>

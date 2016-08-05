@@ -1,0 +1,2 @@
+$("#details_view_div").html("<%= j render partial: 'details', locals: {order: @order, order_details: @order_details} %>");
+CaishuoDialog.open({theme: 'custom', content: $("#details_view_div > div.viewBox"), skin: 'noPadding'});

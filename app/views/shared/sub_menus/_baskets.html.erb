@@ -1,0 +1,8 @@
+<div class="SubDock">
+  <div class="container">
+  	<%#= link_to "A股大赛", baskets_path(search: {market: 'contest', order: "contest_return"}), class: "plus #{sub_menu_tab_class("contest", @sub_menu_tab)}" %>
+    <%= link_to "大家创建的", baskets_path, class: sub_menu_tab_class("all", @sub_menu_tab)  %>
+    <%= link_to "我创建的", my_baskets_path, class: sub_menu_tab_class("my", @sub_menu_tab)  %>
+    <button class="btn_blue btn_add j_create_basket" onclick="window.open('/baskets/new','_blank');">创建组合</button>
+  </div>
+</div>

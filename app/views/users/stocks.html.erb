@@ -1,0 +1,155 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/focus.css" %>
+  <%= javascript_include_tag "/javascripts/utils.js", "/javascripts/focus.js" %>
+<% end %>
+<%- @page_title = "自选股" -%>
+
+<div class="container">
+  <%= render :partial => "/shared/sub_menus/following" %>
+  <br class="break" />
+  <dl class="cateGroup clearfix">
+    <dt><div id="allStocks" data-gid="0" class="active">
+        <span>全部关注</span>
+        <dl id="groupAction"><dt></dt><dd class="j_rename">更改名称</dd><dd class="j_manage">批量管理</dd><dd class="j_remove">删除分组</dd></dl>
+      </div>
+    </dt>
+    <dd id="groupWindow"></dd>
+    <dt><div id="newCombo">+ 添加分组</div></dt>
+  </dl>
+
+  <div id="myFocus" class="noneSelect">
+    <div class="focusFilter">
+      <div class="focusPanel">
+        <ol class="asSwitchBtn" id="marketSwitch">
+          <li data-market="all" class="active">全部</li>
+          <li data-market="cn">沪深</li>
+          <li data-market="us">美股</li>
+          <li data-market="hk">港股</li>
+        </ol>
+        <span class="marketStatus"></span>
+        <div class="searchgroup float-right">
+            <input type="text" placeholder="股票代码、名称、拼音" class="search search_stocks" size="32"><kbd></kbd>
+            <ul class="searchresult" style="display: none;"></ul>
+        </div>
+      </div>
+      <div class="batchAction" style="display:none;">
+        <button class="s-btn gap" id="addToGroup">添加到分组</button><button class="s-btn-n" id="quitEdit">退出分组管理</button>
+      </div>
+      <div class="focusTitle f_row">
+        <div class="f_cell c1"><input type="checkbox" id="CheckAllItem" class="itemCheck" />代码</div>
+        <div class="f_cell c2">名称</div>
+        <div class="f_cell c10"><span class="sortcolumn">财说SCORE</span></div>
+        <div class="f_cell c11"><span class="sortcolumn">关注时价格</span></div>
+        <div class="f_cell c3"><span class="sortcolumn">最新价</span></div>
+        <div class="f_cell c4"><span class="sortcolumn">涨跌额</span></div>
+        <div class="f_cell c5"><span class="sortcolumn">涨跌幅</span></div>
+        <div class="f_cell c6"><span class="sortcolumn">成交量(股)</span></div>
+        <div class="f_cell c7"><span class="sortcolumn">成交额</span></div>
+        <div class="f_cell c8"><span class="sortcolumn">市值(亿)</span></div>
+        <div class="f_cell c9"><span class="sortcolumn">市盈率</span></div>
+        <div class="f_cell c0">备注</div>
+        <div class="f_cell c0">交易</div>
+        <div class="f_cell c0">删除</div>
+      </div>
+    </div>
+    <div class="focusData">
+      <% @following_stocks.each do |fs| %>
+        <%= render :partial => "stock_item", locals: {stock: fs.followable, follow: fs, stock_score: @stock_scores[fs.followable_id], rs_stock: @rs_stocks[fs.followable_id] || fs.followable, usd_rate: @usd_rates[fs.followable.currency_by_market] } -%>
+      <% end %>
+    </div>
+
+    <div id="stockTip" class="sortcell">
+      <div class="chartArea" style="width:248px;height:93px;">
+      </div>
+      <div class="textArea"></div>
+    </div>
+
+    <div class="orderTable" id="orderTable"></div>
+
+    <div id="emptyList" class="stockListDefault">
+      <h3>您还没有添加股票，立即添加</h3>
+      <div class="searchgroup">
+              <input type="text" placeholder="股票代码、名称、拼音" class="search search_stocks" size="32"><kbd></kbd>
+              <ul class="searchresult" style="display: none;"></ul>
+          </div>
+          <br><br>
+      （输入股票代码、名称、拼音首字母缩写搜索，如：北车、平安、招商银行）
+    </div>
+  </div>
+</div>
+
+<div id="BubbleBox">
+    <div class="trangle"></div>
+    <div class="mainBody"></div>
+</div>
+<div id="TradeDateTip" style="display:none;">
+  <div class="StockTradeTimeTip">
+    <b>当日有效</b> - 下单当天有效<br />
+    <b>始终有效</b> - 除非手动取消，否则始终有效直到订单被执行。<br />
+    <b>以下情况会被自动取消：</b>
+    <ul>
+      <li>拆股</li>
+      <li>分红率超过昨收的3%</li>
+      <li>90天未登录</li>
+      <li>下一个季度末</li>
+    </ul>
+  </div>
+</div>
+
+<% content_for :dialog_div do %>
+  <!--提示框内容（addDialog）-->
+  <div id="addDialog">
+    <div class="group-add">
+      <input type="text" class="dialog-input large" placeholder="请输入分组名称" maxlength="16" />
+      <div>
+        <span>(分组名称不超过8个汉字或16个字符)</span>
+      </div>
+    </div>
+  </div>
+  <!--提示框内容（editDialog）-->
+  <div id="editDialog">
+    <div class="dialog-stock clearfix"></div>
+    <div class="dialog-remarks">
+      备注
+      <textarea placeholder="请输入备注内容" rows="4"></textarea>
+      <span>（140个字以内）</span>
+    </div>
+  </div>
+  <!--提示框内容（MoveTo）-->
+  <div id="groupDialog">
+    <div class="groupDialog">
+      <h3>我的关注组</h3>
+      <ul></ul>
+      <h3>新建关注组</h3>
+      <input type="text" maxlength="16" class="dialog-input" />
+      <span>(分组名称不超过8个汉字或16个字符)</span>
+    </div>
+  </div>
+
+  <!--提示框内容（deleteGroup）-->
+  <div id="deleteGroup">
+    <div class="group-delete">
+      <p>你确定要删除分组吗？</p>
+      <label><input type="checkbox" id="GroupDeleteStock" class="custom1" ><span class="check-text">同时删除分组内的股票</span></label>
+    </div>
+  </div>
+<% end %>
+
+<%=content_for :script do %>
+  <script type="text/javascript">
+    // 现有分组信息
+    var groupInfo = <%= Tag::FollowStock.group_info(current_user).to_json.html_safe %>;
+    var timedata = <%= markets_time_infos.to_json.html_safe %>;
+
+    $(function(){
+      setInterval("FollowingStocks.refreshStocks();", 10000);
+
+      // $('.marketStatus').timeformat(timedata, '%name% %datetime% <em>%stat%</em> ', 'hh:ii:ss', ['cn', 'us', 'hk']);
+
+      $('.searchgroup li').off("click");
+    })
+  </script>
+
+  <%= javascript_include_tag "users/stocks", "highstock" %>
+
+<% end %>

@@ -1,0 +1,13 @@
+<div class="container register">
+  <nav class="createStep regStepBox">
+    <strong>注册财说</strong>
+    <span class="done"><i>1</i> 设置登录名</span><span class="done"><i>2</i> 填写账户信息</span><span class="step3 current"><i></i> 注册成功</span>
+  </nav>
+  <div class="hint">
+    <h3><i></i> 注册成功！恭喜您加入财说！</h3>
+    <p>
+    <strong>您的账户为：</strong><br />登录名：<span><%= current_user.email %></span><br />昵称：<%= current_user.username %><br /><br />
+    <a href="/setting" class="btn fakeButton">完善其它资料</a><a href="/home" class="righta">跳过直接使用</a>
+    </p>
+  </div>
+</div>

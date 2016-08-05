@@ -1,0 +1,173 @@
+  <%=content_for :header do %>
+  <%= javascript_include_tag "stock", "highstock" %>
+  <%= stylesheet_link_tag "/stylesheets/v3/stocks.css" %>
+<% end %>
+
+<%- @page_title = "#{@stock.page_title} - 个股投资 个股详情" -%>
+
+  <div class="container stockInfo">
+    <%= render :partial => "stocks/stock/info" %>
+  </div>
+  <br />
+  <%= render :partial => "stocks/stock/chart" %>
+  <br />
+  
+  <div class="content">
+    <%= render partial: 'stocks/stock/tabs' %>
+    
+    <div class="MultiTabDisplayArea">
+      <% if @is_index %>
+        <!--领涨领跌-->
+        <%= render partial: 'stocks/stock/top_list', locals: {stocks: @top_up_stocks} %>
+        <%= render partial: 'stocks/stock/top_list', locals: {stocks: @top_down_stocks} %>
+      <% else %>
+        <!--财说SCORE-->
+        <%= render partial: 'stocks/stock/score' %>
+        <%= render partial: 'stocks/stock/compare' %>
+        
+        <!--关注度-->
+        <%= render partial: 'stocks/stock/focus' if @topic_stocks.present? || @stock.relevant_baskets.present? || @stock.articles.present? %>
+        <!--新闻及公告-->
+        <%= render partial: 'stocks/stock/news' if !@stock.is_us? %>
+        <%= render partial: 'stocks/stock/desc' %>
+        <!--主力资金-->
+        <%= render partial: 'stocks/stock/capital_flow' if @stock.is_cn? %>
+      <% end %>
+    </div>
+  </div>
+  <br/>
+  <div class="content insights_partake clearfix">
+    <div id="Comments" class="comments review">
+      <h3>观点评论 <span></span></h3>
+      <%= render partial: '/comments/base' %>      
+    </div>
+    <div class="community_views circlelink">
+      <h3>看涨看跌</h3>
+      <div class="charbox" id="opinions_chart">
+        <div class="bullish" style="height:0%"><em>0%看涨</em></div>
+        <div class="bearish" style="height:0%;"><em>0%看跌</em></div>
+      </div>
+      <div class="linkbtn" id="opinions_btn">
+        <label>快来发表你的观点</label>
+        <button class="handup"><i></i>看跌</button><button class="handown"><i></i>看涨</button>
+      </div>
+      <h3 class="c_attention">关注该股的好友</h3>
+      <ul class="clearfix j_friends_followed_stock">
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="BubbleBox">
+    <div class="trangle"></div>
+    <div class="mainBody"></div>
+</div>
+
+<div style="display:none;">
+    <div id="tip1">
+        <div class="extraFloatTip">集合市盈率、长期增长率、现金流、毛利率、华尔街目标价、现金分红6项对单只股票的综合评分。</div>
+    </div>
+    <div id="tip3">
+        <div class="extraFloatTip">公式为公司股票价格除以每股利润。这个指标主要是衡量公司的价值，高市盈率一般都是由高成长支撑着。</div>
+    </div>
+    <div id="tip4">
+        <div class="extraFloatTip">三年预期成长率，华尔街分析师对公司未来三年利润成长率的预期。</div>
+    </div>
+    <div id="tip5">
+        <div class="extraFloatTip">经营性现金流收益率，公式为经营所得的现金除以公司市值。</div>
+    </div>
+    <div id="tip6">
+        <div class="extraFloatTip">毛利率是毛利与销售收入的百分比</div>
+    </div>
+    <div id="tip7">
+        <div class="extraFloatTip">华尔街分析师对该股票的平均目标价格</div>
+    </div>
+    <div id="tip8">
+        <div class="extraFloatTip">每股发放的现金除以当前股票价格</div>
+    </div>
+    <div id="tip9">
+        <div class="extraFloatTip">ROA，用来衡量每单位资产创造多少净利润的指标</div>
+    </div>
+    <div id="tip10">
+        <div class="extraFloatTip">每股股价与每股净资产的比率</div>
+    </div>
+    <div id="tip11">
+        <div class="extraFloatTip">本年主营业务收入总额与去年主营业业务收入总额比率</div>
+    </div>
+    <div id="TradeDateTip">
+        <div class="StockTradeTimeTip">
+            <b>当日有效</b> - 下单当天有效<br />
+            <b>始终有效</b> - 除非手动取消，否则始终有效直到订单被执行。<br />
+            <b>以下情况会被自动取消：</b>
+            <ul>
+                <li>拆股</li>
+                <li>分红率超过昨收的3%</li>
+                <li>90天未登录</li>
+                <li>下一个季度末</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<%=render '/comments/script' %>
+
+<script type="text/javascript">
+  var trade_param = '<%= params[:trade] %>', _top_commentable_id = <%=@stock.id%>, _top_commentable_type = 'stocks',
+    timedata = <%= markets_time_infos.to_json.html_safe %>,
+    _is_index = <%= @is_index %>,
+    init_options = {
+      stock_previous_close_price: <%= @stock.previous_close %>,
+      start_trade_timestamp: <%= stock_start_trade_timestamp(@stock.market_area) %>,
+      end_trade_timestamp: <%= stock_end_trade_timestamp(@stock.market_area) %>,
+      start_trade_timestamp_of_utc: <%= stock_start_trade_timestamp_of_utc(@stock.market_area) %>,
+      end_trade_timestamp_of_utc: <%= stock_end_trade_timestamp_of_utc(@stock.market_area) %>,
+      six_months_ago_timestamp: <%= (6.months.ago-3.day).to_i*1000 %>,
+      stock_id: <%= @stock.id %>, money_unit: '<%= @currency_unit %>', market_area: '<%= @stock.market_area%>'
+    };
+
+  HighStockExt.minute_chart_compare_value = <%= @stock.previous_close %>;
+
+  $(function(){
+    StockShow.init(init_options);
+    HighChartExt.hackPointerRunPointActions();
+    HighChartExt.hackSeriesTypeCandlestickGetAttribs();
+    
+    $.get("/ajax/stocks/" + _top_commentable_id + "/friends_with_followed");
+
+    Stock.init();
+    $('.tradeTime i:first').timeformat(timedata, '%stat%', 'yyyy-mm-dd hh:ii:ss', ['<%= @stock.market_area %>']);
+    <% if @is_index && !@stock.is_cn? %>
+      $('.tradeTime i:eq(1)').timeformat(timedata, '%datetime%', 'yyyy-mm-dd hh:ii:ss', ['<%= @stock.market_area %>']);
+    <% end %>
+
+    Opinion.init({opinionable_type: 'BaseStock', opinionable_id: <%= @stock.id %>});
+  });
+</script>
+
+<%=content_for :script do %>
+<script type="text/javascript">
+
+commentPack.init({
+  Emotion: {imagePrefix: '<%= Setting.cdn_host %>/images/emotions/'},
+  Completer:{},
+  Comments: {
+    ajaxpath: "stocks/<%=@stock.id%>",
+    afterloadEvent: function(totalNumber){
+      initBubbleBox();
+      $(".timeago").timeago();
+      caishuo.adjustFooter();
+      // 个股导航条评论数量
+      // $("#nav_comments > em").find('i').text(totalNumber).end().show();
+    }
+  },
+  isloginEvent: function(){
+    return isLogined();
+  },
+  dologinEvent:function(){
+    openLoginDialog();
+  }
+
+});
+</script>
+<% end %>

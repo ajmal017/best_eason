@@ -1,0 +1,39 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+</h1>
+<!--子导航-->
+<div class="box">
+  <a href="?market=cn" class="<%="current" if @market=="cn"%>">沪深</a>
+  <a href="?market=us" class="<%="current" if @market=="us"%>">美股</a>
+  <a href="?market=hk" class="<%="current" if @market=="hk"%>">港股</a>
+  只统计权重>=10%的组合
+</div>
+<table class="grid">
+  <thead>
+    <tr>
+      <th width="100">排名</th>
+      <th width="100">股票代码</th>
+      <th width="250">股票名称</th>
+      <th width="100">类别</th>
+      <th>组合总数</th>
+      <th>平均比重</th>
+      <th>相关组合ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @data.each_with_index do |data, index| %>
+      <%- stock = data.stock -%>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= link_to(stock.symbol, stock_path(stock), target: "_blank",title: "查看详情", class: "action") %></td>
+        <td class="align_left"><%= link_to(stock.com_name, stock_path(stock), target: "_blank",title: "查看详情") %></td>
+        <td><%=stock.market_area_name%></td>
+        <td><%= data.total_count %></td>
+        <td><%= (data.avg_weight * 100).round(2)%>%</td>
+        <td class="align_left action" width="300"><%= raw(data.basket_ids.split(",").sort_by(&:to_i).map{|basket_id| link_to(basket_id, "/baskets/#{basket_id}", target: "_blank")} * " ")%></td>
+      </tr>
+    <% end %>
+    <%= blank_table(7) if @data.blank? -%>
+  </tbody>
+</table>
+

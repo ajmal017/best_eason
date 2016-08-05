@@ -1,0 +1,39 @@
+<table class="grid">
+  <thead>
+    <tr>
+      <%= content_tag :th, sort_link(q, :symbol, '股票代码') %>
+      <%= content_tag :th, sort_link(q, :ib_symbol, 'IB股票代码') %>
+      <%= content_tag :th, sort_link(q, :name, '名称') %>
+      <%= content_tag :th, sort_link(q, :board_lot, '交易单位') %>
+      <th>数据来源</th>
+      <th>IB内部id</th>
+      <th>是否合格</th>
+      <th>合格?</th>
+      <th>交易所</th>
+      <th>更新日期</th>
+      <th>上市状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% base_stocks.each_with_index do |bs, index| %>
+      <tr>
+        <td><%= link_to(bs.symbol, stock_path(bs), target: "_blank",title: "查看详情") %></td>
+        <td><%= bs.ib_symbol %></td>
+        <td class="align_left"><%= bs.com_name %></td>
+        <td><%= bs.board_lot %></td>
+        <td><%= bs.data_source %></td>
+        <td><%= bs.ib_id %></td>
+        <td class="action"><%= qualified_detail_href(bs.qualified, bs.id) %></td>
+        <td><%= bs.qualified %></td>
+        <td><%= bs.exchange %></td>
+        <td><%= bs.ib_last_date %></td>
+        <td><%= BaseStock::LISTED_STATE_NAMES[bs.listed_state]%></td>
+        <td class="action">
+          <%= render "commands", :bs => bs %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate base_stocks %>

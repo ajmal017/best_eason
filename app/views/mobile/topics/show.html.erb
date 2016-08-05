@@ -1,0 +1,102 @@
+<%= content_for :header do%>
+  <style type="text/css">
+    body {padding-top:8px;padding-left:8px;padding-right:8px;color:#333333;margin: 0;font: 16px/1.5 Helvetica,"Helvetica Neue",微软雅黑,"segoe UI Light","Kozuka Gothic Pro";background: white;}
+    hgroup {border-bottom: 1px solid #e0e0e0;padding-bottom: 8px;}
+    hgroup h1 {margin: 0;font-size: 22px;font-weight: bold;}
+    hgroup h2 {margin: 0;font-size: 12px;font-weight: normal;color: #666666;}
+    blockquote {font-size: 22px;font-weight: bold;background: #f2f2f2;border-left: 4px solid #00E1E1;margin: 8px 0;padding: 8px 8px;}
+    #RelatedStocks {margin: 8px 0;line-height: 1.6;}
+    #RelatedStocks a {text-decoration: none;color:#3b8ede;white-space: nowrap;margin-left: 6px;}
+    body > section {margin: 8px 0;}
+    section#content img {margin: 8px 0;display: block;width: 100%;}
+
+    section > h1 {font-size: 16px;background: #f2f2f2;margin: 16px 0 8px;padding: 8px 8px;}
+    section > h1 em {font-size: 15px;color: #999999;font-style: normal;font-weight: normal;}
+    #Stocks a {text-decoration: none;display: block;border-bottom: 1px solid #e0e0e0;font-size: 14px;color: #333333;line-height: 45px;}
+    #Stocks a:after {content: "";display: block;clear: both;}
+    #Stocks a .plus {color:#ff4546; }
+    #Stocks a .mins {color:#2fb959; }
+    #Stocks a span {display: block;float: left;text-align: right;box-sizing:border-box;}
+    #Stocks a span:first-child {width: 55%;}
+    #Stocks a span:last-child {width: 45%;color: #666666;}
+    #Stocks a span label {float: left;width:6.5em;text-align:left;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;}
+    #Stocks a span b {float: left;min-width: 5em;}
+    #Stocks a span em {font-weight: bold;font-style:normal;}
+    #Stocks a:last-child {border: none;}
+
+    #Baskets a {text-decoration: none;display: block;position: relative; border-bottom: 1px solid #e0e0e0; padding-bottom: 8px; margin:8px 0;color: #333333;}
+    #Baskets a:after {content: "";display: block;clear: both;}
+    #Baskets a label {float:left;height: 49px;width: 65px;border-radius: 50%;border:1px solid white;text-align: center;font-size: 14px;padding-top: 16px;margin-right: 20px;}
+    #Baskets a label em {font-size: 10px;font-style: normal;display: block;opacity: 0.4;}
+    #Baskets a label.plus {border-color:#ff4546;background: #fff4f4;color:#ff4546;}
+    #Baskets a label.mins {border-color:#2fb959;background: #f3fcf6;color:#2fb959;}
+    #Baskets a span {display: block;font-size: 9px;padding-top: 4px;white-space: nowrap;overflow: hidden;}
+    #Baskets a span i {font-style: normal;line-height: 11px;vertical-align: middle; display:inline-block;padding: 2px 4px;border:1px solid #cccccc;border-radius: 3px; color:#666666;background: white;}
+    #Baskets a span i:first-child {border-color:#007aff;color:#007aff;}
+    #Baskets a strong {display: block;font-weight: normal;padding: 4px 0;white-space: nowrap;overflow: hidden;text-overflow:ellipsis;}
+    #Baskets a cite {display: block;font-style: normal;font-size: 11px;}
+    #Baskets a cite i {font-style: normal;color:#999999;float:right;}
+    #Baskets a:last-child {border: none;}
+
+    #CopyRight {margin-left:-8px;margin-right: -8px;}
+  </style>
+<% end %>
+
+<hgroup>
+  <h1><%= @topic.sub_title %></h1>
+  <h2><%= @topic.modified_at %></h2>
+</hgroup>
+
+<section id="content">
+  <%= raw @topic.notes %>
+</section>
+
+<section id="Stocks">
+  <h1>最受益个股 <em>(<%= @topic_stocks.count %>)</em></h1>
+  <% @topic_stocks.each do |ts| %>
+    <a href="<%=mobile_link("/mobile/stocks/#{ts.base_stock.id}")%>" data-id="<%=ts.base_stock.id%>" data-name="<%=ts.base_stock.c_name||ts.base_stock.name%>" data-symbol="<%=ts.base_stock.symbol%>">
+      <span>
+        <label><%=ts.base_stock.c_name||ts.base_stock.name%></label>
+        <strong><%=ts.base_stock.realtime_price%></strong>
+      </span>
+      <span>
+        <b class="<%= ts.base_stock.change_percent > 0 ? "plus" : "mins" %>"><%=ts.base_stock.change_percent%>%</b>
+        评分
+        <em class="plus"><%=ts.base_stock.stock_screener.score.round(1)%></em>
+      </span>
+    </a>
+  <% end %>
+</section>
+
+<section id="Baskets">
+  <h1>大家怎么玩 <em>(<%= @topic_baskets.count %>)</em></h1>
+  <% @topic_baskets.each do |basket| %>
+    <a href="<%=mobile_link("/mobile/baskets/#{basket.id}")%>" data-id="<%=basket.id%>" data-name="<%=basket.title%>">
+      <label class="<%= basket.one_month_return.to_f > 0 ? "plus" : "mins"%>">
+        <%= basket.one_month_return.to_f.round(2) %>%
+        <em>组合月收益</em>
+      </label>
+      <span>
+        <% basket.tags.limit(3).each do |tag| %>
+          <i><%= tag.name %></i>
+        <% end %>
+      </span>
+      <strong><%= basket.title %></strong>
+      <cite>操盘手：<%= basket.author.username %><i><%=timeago(basket.created_at)%>创建</i></cite>
+    </a>
+  <% end %>
+</section>
+<script type="text/javascript">
+  $(".timeago").timeago();
+  
+  Caishuo.connect("index", function(){
+    $("#Stocks a").removeAttr("href").click(function(){
+      var data = $(this).data();
+      Caishuo.trigger("openpage", {"goto":"stock","id":data.id,"name":data.name,"symbol":data.symbol});
+    });
+    $("#Baskets a").removeAttr("href").click(function(){
+      var data = $(this).data();
+      Caishuo.trigger("openpage", {"goto":"basket","id":data.id,"name":data.name});
+    });
+  });
+</script>

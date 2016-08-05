@@ -1,0 +1,52 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%=link_to '生成邀请码', admin_invitation_codes_path, method: :post, remote: true%>
+    <%=link_to '生成大V邀请码', new_admin_invitation_code_path%>
+  </span>
+</h1>
+
+<div class="box">
+  <%= link_to '全部', admin_invitation_codes_path, class: (params[:q].blank? ? "current" : nil) %>
+  <%= link_to '普通', admin_invitation_codes_path(:q => {:type_present => false}), class: (params[:q] && params[:q][:type_present] ? "current" : nil) %>
+  <%= link_to '大V', admin_invitation_codes_path(:q => {:type_eq => 'InvitationCodeSuper'}), class: (params[:q] && params[:q][:type_eq] == 'InvitationCodeSuper' ? "current" : nil) %>
+</div>
+
+<%= page_info @invitation_codes %>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>邀请码</th>
+      <th>邀请的人</th>
+      <th>财说ID</th>
+      <th>大VID</th>
+      <th>类型</th>
+      <th>剩余次数</th>
+      <th>已经使用次数</th>
+      <th>创建时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @invitation_codes.each do |ic| %>
+      <tr>
+        <td><%= ic.id%></td>
+        <td><%= ic.code %></td>
+        <td>
+          <% if ic.is_a?(InvitationCodeSuper) %>
+            <%= link_to '更多', admin_users_path(:q => {invite_code_eq: ic.code}), target: '_blank'%>
+          <% else %>
+            <%= ic.lead.try(:email)%>
+          <% end %>
+        </td>
+        <td><%= ic.user_id%></td>
+        <td><%= ic.super_user_id %></td>
+        <td><%= ic.is_a?(InvitationCodeSuper) ? '大V邀请码' : '普通' %></td>
+        <td><%= InvitationCode::MAX_LIMIT - ic.invitation_limit.to_i %></td>
+        <td><%= ic.invitation_limit.to_i %></td>
+        <td><%= ic.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @invitation_codes %>

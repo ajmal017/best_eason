@@ -1,0 +1,59 @@
+<h1 class="title">
+  <span class="title_left">马甲用户详情页面</span>
+  <span class="title_right">
+    <%= link_to "返回列表", admin_majia_users_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Email</td>
+      <td>
+        <%= @majia_user.email %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">用户名</td>
+      <td>
+        <%= @majia_user.username %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">初始密码</td>
+      <td>
+        <%= @majia_user.password %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">性别</td>
+      <td>
+        <%= @majia_user.gender ? '男' : '女' %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">我是谁</td>
+      <td>
+        <%= @majia_user.headline %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">投资方向</td>
+      <td>
+        <%= @majia_user.orientation_values * "," %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">关注</td>
+      <td>
+        <%= @majia_user.concern_values * "," %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">持仓时间</td>
+      <td>
+        <%= @majia_user.duration_value %>
+      </td>
+    </tr>
+  </tbody>
+</table>

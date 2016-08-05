@@ -1,0 +1,45 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right"><%= link_to '返回', admin_trading_accounts_path %></span>
+</h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>市场类别</th>
+      <th>委托编号</th>
+      <th>证券账号</th>
+      <th>证券代码</th>
+      <th>证券名称</th>
+      <th>买入方向</th>
+      <th>成交价格</th>
+      <th>成交数量</th>
+      <th>成交时间</th>
+      <th>成交金额</th>
+      <th>成交类型</th>
+      <th>成交状态</th>
+      <th>成交编号</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @executions.each_with_index do |execution, index| %>
+    <tr>
+      <td><%= index + 1 %></td>
+      <td><%= execution['exchange_type'] %></td>
+      <td><%= execution['entrust_no'] %></td>
+      <td><%= execution['stock_account'] %></td>
+      <td><%= execution['stock_code'] %></td>
+      <td><%= execution['stock_name'] %></td>
+      <td><%= execution['entrust_bs'] %></td>
+      <td><%= execution['business_price'] %></td>
+      <td><%= execution['business_amount'] %></td>
+      <td><%= execution['business_time'] %></td>
+      <td><%= execution['business_balance'] %></td>
+      <td><%= execution['real_type'] %></td>
+      <td><%= execution['real_status'] %></td>
+      <td><%= execution['business_no'] %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

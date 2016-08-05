@@ -1,0 +1,98 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/creat1.css" %>
+  <%= javascript_include_tag "baskets_base" %>
+<% end %>
+<%- @page_title = "创建投资组合-个股入选理由" -%>
+
+<div class="container">
+  <div class="content">
+    <nav class="createStep">
+      <strong>创建组合投资</strong>
+      <span class="done"><i>1</i> 添加股票</span><span class="current"><i>2</i> 个股入选理由</span><span class="step3"><i></i> 取个名字</span>
+    </nav>
+
+    <div class="whiteBox noBorder">
+      <h3>为组合中每支股票注释（选填） <br >
+      <span class="chartTextDesc">您共为本组合挑选了<%= @basket_stocks.count %>支个股，如果需要，你可以为每一支股票做详细说明，告诉大家选择的意义。</span></h3>
+
+      <%=form_for @basket, url: update_stocks_reason_basket_path(@basket), method: :put, html: {onsubmit: "return checkNewBasketSecondStep();"} do |f|%>
+        <div class="wrapCorner">
+          <table class="themeStocks noflag baseketPie">
+            <thead>
+              <tr>
+                <th>比重</th>
+                <th>公司名</th>
+                <th width="90">代码</th>
+                <th>当前价</th>
+                <th width="500">入选理由</th>
+              </tr>
+            </thead>
+            <% @grouped_basket_stocks.each do |sector_name, basket_stocks| %>
+              <tbody>
+                <tr>
+                  <th colspan="5" class="sector">
+                    <div class="sectorPie"></div><%= sector_name %> (<span><%= @sector_percents[sector_name] %>%</span>)
+                  </th>
+                </tr>
+
+                <% basket_stocks.each do |basket_stock| %>
+                  <tr>
+                    <td><%= basket_stock.weight_percent %>%</td>
+                    <td>
+                      <a href="<%= stock_path(basket_stock.stock) %>" target="_blank">
+                        <%= basket_stock.com_name %>
+                      </a>
+                    </td>
+                    <td>
+                      <a href="<%= stock_path(basket_stock.stock) %>" target="_blank">
+                        <%= basket_stock.symbol %>
+                      </a>
+                    </td>
+                    <td>
+                      <%= number_to_currency(basket_stock.realtime_price, unit: basket_stock.currency_unit, format:"%u%n") %> 
+                      &nbsp; <%= up_down_style(basket_stock.change_percent, postfix: '%') %>
+                    </td>
+                    <td align="left" class="td_padding">
+                      <div class="commentAction">
+                        <%= f.fields_for(:basket_stocks, basket_stock) do |bs| %>
+                          <%= bs.hidden_field :id, name: "basket[basket_stocks_attributes][#{basket_stock.id}][id]" %>
+                          <%= bs.text_area :notes, placeholder: "入选理由，不超过150字", class: "stock_reason", name: "basket[basket_stocks_attributes][#{basket_stock.id}][notes]" %>
+                        <% end %>
+                      <div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            <% end %>
+            <tfoot>
+              <tr>
+                <td><%= @cash_percent %>%</td>
+                <td>现金</td>
+                <td></td>
+                <td></td>
+                <td><div class="scrollBar"><i><%= @cash_percent %>%</i></div></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        
+        <br class="break" />
+        <br class="break" />
+        <div>
+          <% if @basket.can_edit? %> 
+            <a href="javascript:" onclick="javascript:previousStepAction(this, <%= @basket.id %>);" class="a_step">&lt; 上一步：添加股票</a>
+          <% end %>
+          <input type="submit" value="下一步" class="b_btn dialog_btn_y float-right">
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var weights_data = {cash: <%= @cash_percent/100 %>, sectors: <%= @sector_percents.values.map{|v| (v/100).to_f }.to_json.html_safe %>}
+</script>
+
+<style type="text/css">
+  .message {color: #e4462e!important;}
+</style>

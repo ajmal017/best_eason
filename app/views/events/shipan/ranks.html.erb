@@ -1,0 +1,50 @@
+<%= render partial: "top" %>
+
+<div class="container">
+    <!-- 排行榜 开始 -->
+    <div class="itemBox rankingList">
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>排名</td>
+                    <td></td>
+                    <td>用户</td>
+                    <td>总收益率</td>
+                    <td>日收益率</td>
+                    <td>仓位</td>
+                    <td>调仓次数</td>
+                    <td>胜率</td>
+                    <td>排名变化</td>
+                    <td>状态</td>
+                    <td>关注选手</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+              <%= render partial: "rank_list", locals: {ranks: @ranks, page: params[:page]} %>
+            </tbody>
+        </table>
+        <div class="btn btn-more" data-page="<%= params[:page] %>">加载更多</div>
+    </div>
+    <!-- 排行榜 结束 -->
+</div>
+
+<script type="text/javascript">
+
+  $(function(){
+    $(document).on('click', ".focus", function(){
+      if ($(this).attr("status") == "following") return;
+      $(this).attr("status", "following");
+      followUser($(this).parent().parent().attr("data-user-id"));
+    });
+
+    $(".btn-more").on("click", function(){
+      var status = $(this).attr("data-status"),
+          page = parseInt($(this).attr("data-page"));
+      if (status == "loading") return;
+      setLoading();
+      $.get("/events/shipan/ranks.js", {page: page+1})
+    })
+  })
+</script>

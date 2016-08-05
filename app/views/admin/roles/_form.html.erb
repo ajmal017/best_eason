@@ -1,0 +1,18 @@
+<%= form_for @role  do |f|%>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>角色名称:</td>
+      <td>
+        <%= f.text_field :name, :size=>50 %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"></td>
+      <td>
+        <%= f.submit params[:action] == "edit" ? "修改角色" : "创建角色" %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end -%>

@@ -1,0 +1,75 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.users.css", "/stylesheets/mobile/mo.compare.css" %>
+  <%= javascript_include_tag "/javascripts/mo.compare.js" %>
+<% end %>
+
+<!-- 我的排名 -->
+<div class="user-rank">
+  <!-- 排名在我之前的一位 -->
+  <div class="col prev <%= 'hide' unless @prev_rank %>" data-id="<%= @prev_rank.try(:user_id) %>">
+    <div class="header">
+      <%= image_tag @prev_rank.try(:user).try(:avatar_url, :large), class: "avatar" %>
+      <div class="ranking"><%= (@my_rankings-1) if @my_rankings %></div>
+    </div>
+    <div class="name"><%= @prev_rank.try(:user).try(:username) %></div>
+    <div class="result">收益:<span><%= up_down_value(@prev_rank.try(:percent), postfix: "%") %></span></div>
+  </div>
+
+  <!-- 我的排名 -->
+  <div class="col cur" data-id="<%= current_user.id %>" data-change="<%= @my_rank.try(:profit) %>">
+    <div class="header">
+      <%= image_tag current_user.avatar_url(:large), class: "avatar" %>
+      <% if @my_rankings %><div class="ranking"><%= @my_rankings %></div><% end %>
+    </div>
+    <div class="name"><%= current_user.username %></div>
+    <% if @my_rankings %><div class="result">收益:<span><%= up_down_value(@my_rank.try(:percent), postfix: "%") %></span></div><% end %>
+  </div>
+
+  <!-- 排名在我之后的一位 -->
+  <div class="col next <%= 'hide' unless @next_rank %>" data-id="<%= @next_rank.try(:user_id) %>">
+    <div class="header">
+      <%= image_tag @next_rank.try(:user).try(:avatar_url, :large), class: "avatar" %>
+      <div class="ranking"><%= (@my_rankings+1) if @my_rankings %></div>
+    </div>
+    <div class="name"><%= @next_rank.try(:user).try(:username) %></div>
+    <div class="result">收益:<span><%= up_down_value(@next_rank.try(:percent), postfix: "%") %></span></div>
+  </div>
+</div>
+
+
+<!-- 我的好友排名 -->
+<div class="users">
+  <table>
+    <thead>
+        <td>排名</td>
+        <td>昵称</td>
+        <td>资产</td>
+        <td>盈亏</td>
+    </thead>
+    <tbody>
+      <% @ranks.each_with_index do |rank, index| %>
+        <%= render partial: "rank_item", locals: {rank: rank, rankings: index+1} %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% if (@ranks.map{|x| x[:user_id]}-[current_user.id]).size.zero? %>
+  <div class="prompt">
+    <div class="msg">您的好友还未开通模拟账号</div>
+  </div>
+<% end %>
+
+<!-- 底部导航栏 -->
+<div class="nav-bar">
+  <% %w(day month total).zip(%w(今日排行 近一月排行 累计排行)).each do |type, desc| %>
+    <div class="<%= type %> <%= 'active' if type == @type %>" data-shareurl="<%= @account.snapshot_url(type) %>"><span><%= desc %></span></div>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var cs_compare = new CS_COMPARE('friends', '<%= mobile_link compare_friends_mobile_account_path(@account.pretty_id, format: :json) %>');
+    cs_compare.init();
+  });
+</script>

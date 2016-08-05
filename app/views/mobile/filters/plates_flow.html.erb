@@ -1,0 +1,39 @@
+<%= render partial: '/mobile/filters/style' %>
+
+<div class="tableholder">
+  <label><%= @page_title %><div class="last-update"><em><%= @update_date %></em> 更新</div></label>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>行业</th>
+          <td>涨跌幅</td>
+          <td>主力流入<span>净额/占比</span></td>
+          <td>最大个股</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @filters.each do |filter| %>
+          <% if filter.led %>
+            <tr data-plate-path="<%= mobile_link("/plates/#{filter.base_stock_id}") %>">
+              <th><%= filter.name %></th>
+              <td>
+                <em class="<%= up_or_down_class(filter.change_percent) %>">
+                  <%= number_with_operator(filter.change_percent) %>%
+                </em>
+                </td>
+              <td><span><%= filter.main_net_inflow_value.to_s.to_c_unit %></span> <%= filter.main_net_inflow_percent.round(2) %>%</td>
+              <td>
+                <a data-id="<%=filter.led.id%>" data-name="<%=filter.led.cname%>" data-symbol="<%=filter.led.symbol%>">
+                  <span><%=filter.led.cname%></span> <i><%=filter.led.symbol%></i>
+                </a>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= render partial: '/mobile/filters/plate_base' %>

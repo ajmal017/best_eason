@@ -1,0 +1,96 @@
+<%= form_for [:admin, @channel_code] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+
+      <tr>
+        <td class="field"><b>*</b><%= f.label :code, '推广媒体:' %></td>
+        <td><%= f.text_field :media, size: 30 %> 
+        <br/>比如 sina, sohu, sogou, baidu, 不能为空
+        </td>
+      </tr>
+
+      <tr>
+        <td class="field"><b></b><%= f.label :code, '推广类型:' %></td>
+        <td>
+          <%= f.select(:ad_type, grouped_options_for_select(ChannelCode::AD_TYPES), prompt: "请选择") %>
+        </td>
+      </tr>
+
+
+      <tr>
+        <td class="field"><b></b><%= f.label :code, '注册统计渠道号:' %></td>
+        <td><span id="code_demo" class='red'></span>
+        <br/>格式: {推广媒体}_{推广类型} 
+        <br/>例如: baidu_sem, baidu_seo
+        </td>
+      </tr>
+
+      <tr>
+        <td class="field"><b></b><%= f.label :code, '推广链接:' %></td>
+        <td><span id="url_demo"></span>
+        <br/>格式: 
+        <br/>http://m.caishuo.com/market/download?channel={注册统计渠道号}&utm_source={推广媒体}&utm_medium={推广类型}&utm_campaign={计划名}&utm_term={关键字}&utm_content={创意}
+        </td>
+      </tr>
+
+      <tr>
+        <td class="field"><b></b><%= f.label :code, '是否开启:' %></td>
+        <td><%= f.check_box :status, {}, 1, 0 %> 选中开启
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="field"></td>
+        <td>
+          <%= f.submit '提交' %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+
+<script type="text/javascript">
+  $(function(){
+
+    var get_channel_code = function(){
+      var media = $('#channel_code_media').val();
+      var ad_type = $('#channel_code_ad_type').val();
+
+      if(media.length == 0){
+        return '请输入推广媒体编码';
+      }
+      if(ad_type.length == 0){
+        return media;
+      }else{
+        return media + "_" + ad_type;
+      }
+    };
+
+    var get_baidu_link = function(media, ad_type){
+      var media = $('#channel_code_media').val();
+      var ad_type = $('#channel_code_ad_type').val();
+
+      return "http://m.caishuo.com/market/download?channel=<b class='red'>"+get_channel_code()+"</b>&utm_source=<b class='red'>"+media+"</b>&utm_medium=<b class='red'>"+ad_type+"</b>&utm_campaign={计划名}&utm_term={关键字}&utm_content={创意}"
+    };
+
+
+    $("#code_demo").text(get_channel_code());
+    $("#url_demo").html(get_baidu_link());
+
+    $("#channel_code_media").on('keyup',function(){
+      $("#code_demo").text(get_channel_code());
+      $("#url_demo").html(get_baidu_link());
+    });
+
+    $("#channel_code_ad_type").on('change', function(){
+      $("#code_demo").text(get_channel_code());
+      $("#url_demo").html(get_baidu_link());
+    });
+
+
+  });
+
+</script>
+

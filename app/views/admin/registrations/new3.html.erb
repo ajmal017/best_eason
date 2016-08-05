@@ -1,0 +1,151 @@
+<div class="signup">
+  <div class="container">
+    <h2>距离全球资产配置，只有一次鼠标点击的距离 ...</h2>
+    <%=form_for resource, :as => resource_name, :url => registration_path(resource_name), html: {class: 'form-horizontal', role: 'form', id: 'new_user'} do |f|%>
+      <div class="form-group">
+        <label for="invitationCode" class="col-md-2 control-label">邀请码</label>
+        <div class="col-md-3">
+          <%=Invitation.create(:sender_id => rand(100.1000)).try(:token)%>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="invitationCode" class="col-md-2 control-label">邀请码</label>
+        <div class="col-md-3">
+          <%=f.text_field :invitation_token, class: 'form-control', placeholder: '请输入邀请码'%>
+        </div>
+      </div>
+      <div class="form-group">
+        <%=f.label :username, class: 'col-md-2 control-label'%>
+        <div class="col-md-3">
+          <%=f.text_field :username, class: 'form-control', placeholder: '4 - 16字符内'%>
+        </div>
+      </div>
+      <div class="form-group">
+        <%=f.label :email, class: 'col-md-2 control-label'%>
+        <div class="col-md-3">
+          <%=f.text_field :email, class: 'form-control', placeholder: '登录用，请牢记'%>
+        </div>
+      </div>
+      <div class="form-group">
+        <%=f.label :password, class: 'col-md-2 control-label'%>
+        <div class="col-md-3">
+          <%=f.password_field :password, class: 'form-control', placeholder: '6 - 16位'%>
+        </div>
+      </div>
+      <div class="form-group">
+        <%=f.label :password_confirmation, class: 'col-md-2 control-label'%>
+        <div class="col-md-3">
+          <%=f.password_field :password_confirmation, class: 'form-control', placeholder: '再输一次密码以确认'%>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 control-label"></label>
+        <div class="col-md-3">
+          <%= captcha_tag({id: 'img_captcha', alt: '点击刷新图片', onclick: 'javascript:refresh_captcha();', style: 'cursor:pointer;'}) %>
+          <a href="javascript:void(0);" onclick="javascript:refresh_captcha();">刷新图片</a>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= f.label :captcha, "图片验证码", class: 'col-md-2 control-label' %>
+        <div class="col-md-3">
+          <%= f.text_field :captcha, class: 'form-control', placeholder: '请输入图片验证码' %>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-4">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="user[protocol]"> 我已阅读并同意<a href="">《财说服务协议》</a>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-3">
+          <button type="submit" class="btn btn-primary">注册</button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $("#new_user").validate({
+    rules: {
+      'user[invitation_token]': {
+        required: true,
+        remote: '/ajax/users/check_invite_code'
+      },
+      'user[username]': {
+        required: true,
+        minlength: 4,
+        maxlength: 16,
+        remote: '/ajax/users/check_username'
+      },
+      'user[email]': {
+        required: true,
+        format: /^([^@\s]+)@((?:[a-z0-9-]+\.)+[a-z]{2,})$/i,
+        remote: '/ajax/users/check_email'
+      },
+      'user[password]': {
+        required: true,
+        minlength: 6,
+        maxlength: 16
+      },
+      'user[password_confirmation]': {
+        required: true,
+        minlength: 6,
+        maxlength: 16,
+        equalTo: '#user_password'
+      },
+      'user[captcha]':{
+        required: true,
+        remote: '/ajax/users/check_captcha'
+      },
+      'user[protocol]': {
+        required: true
+      }
+    },
+    messages: {
+      'user[invitation_token]': {
+        required: "<%=resource.errors.generate_message :invitation_token, :blank%>",
+        remote: "<%=resource.errors.generate_message :invitation_token, :invalid%>"
+      },
+      'user[username]': {
+        required: "<%=resource.errors.generate_message :username, :blank%>",
+        minlength: "<%=resource.errors.generate_message :username, :too_short, count: 4%>",
+        maxlength: "<%=resource.errors.generate_message :username, :too_long, count: 16%>",
+        remote: "<%=resource.errors.generate_message :username, :taken%>"
+      },
+      'user[email]': {
+        required: "<%=resource.errors.generate_message :email, :blank%>",
+        format: "<%=resource.errors.generate_message :email, :format%>",
+        remote: "<%=resource.errors.generate_message :email, :taken%>"
+      },
+      'user[password]': {
+        required: "<%=resource.errors.generate_message :password, :blank%>",
+        minlength: "<%=resource.errors.generate_message :password, :too_short, count: 6%>",
+        maxlength: "<%=resource.errors.generate_message :password, :too_long, count: 16%>"
+      },
+      'user[password_confirmation]': {
+        required: "<%=resource.errors.generate_message :password_confirmation, :blank%>",
+        minlength: "<%=resource.errors.generate_message :password_confirmation, :too_short, count: 6%>",
+        maxlength: "<%=resource.errors.generate_message :password_confirmation, :too_long, count: 16%>",
+        equalTo: "<%=resource.errors.generate_message :password_confirmation, :confirmation%>"
+      },
+      'user[captcha]': {
+        required: "请输入图片验证码",
+        remote: "验证码不正确"
+      },
+      'user[protocol]': {
+        required: '您还未接受财说服务协议'
+      }
+    }
+  });
+  
+  function refresh_captcha(){
+    var current_date = new Date();
+    var captcha_url = "/captcha?i=" + current_date.getTime().toString();
+    $("#img_captcha").attr("src", captcha_url);
+  }
+</script>

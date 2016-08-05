@@ -1,0 +1,28 @@
+<header>
+  <div class="container large">
+    <div class="SiteMenu">
+      <a id="SiteLogo" href="/">财说</a>
+      <%= link_to "首页", "/", title: "首页", class: top_menu_tab_class('index', @top_menu_tab) unless user_signed_in? -%>
+      <%= link_to("我的财说", "/home", title: "我的财说", class: top_menu_tab_class('users', @top_menu_tab)) if user_signed_in? -%>
+      <%= link_to "个股投资", "/stocks", title: "个股投资", class: top_menu_tab_class('stock', @top_menu_tab) -%>
+      <%= link_to "组合投资", "/baskets", title: "组合投资", class: top_menu_tab_class('baskets', @top_menu_tab) -%>
+    </div>
+    <%- if user_signed_in? -%>
+      <div class="accountMenu loggedin">
+        <div>
+          <span><%= current_user.username %> <i></i></span>
+          <a href="/setting">个人设置</a>
+          <%=link_to "退出登录", logout_path, title: '退出登录' %>
+        </div>
+        <a id="accountMesg" href="#">消息<i>99</i></a>
+      </div>
+    <% else %>
+      <div class="accountMenu login">
+        <%= link_to "登录", login_path, class: "dropdown-toggle", title: "登录" -%> &nbsp;|&nbsp;
+        <%= link_to "注册", signup_path, title: "注册" -%>
+      </div>
+    <% end %>
+  </div>
+  <%= yield :stock_bar %>
+  <%= render "/shared/stock_bar" if @require_stock_bar-%>
+</header>

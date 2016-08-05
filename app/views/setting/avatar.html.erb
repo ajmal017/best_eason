@@ -1,0 +1,41 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+
+<div class="container userEdit clearfix">
+	<%=render partial: 'shared/setting_left_box'%>
+  
+	<div class="rightBox">
+		<h2>头像设置</h2>
+		<div class="uploadBox" id="j_crop_logo">
+			<div class="clearfix topBox">
+				<div class="leftSide">
+					<a class="w_btn default" onclick="$('#real_setting_avatar').trigger('click');return false;" href="javascript:;">上传图片</a>
+					<span>支持JPG、JPEG、GIF、PNG格式，文件小于5M。</span>
+				</div>
+				<div class="rightSide">
+					<h3>预览</h3>
+					<ul>
+						<li>
+              <%=image_tag current_user.avatar_url(:large), style: 'width:100px;height:100px;border-radius:50%;' %>
+            </li>
+						<li>
+              <%=image_tag current_user.avatar_url(:small), style: 'width:40px;height:40px;border-radius:50%;' %>
+            </li>
+						<li>
+              <%=image_tag current_user.avatar_url(:small), style: 'width:30px;height:30px;border-radius:50%;' %>
+            </li>
+						<li>
+              <%=image_tag current_user.avatar_url(:small), style: 'width:24px;height:24px;border-radius:50%;' %>
+            </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div style="display: none;">
+<%=form_for current_user, url: save_avatar_setting_path(current_user), method: :put do |f| %>
+  <%=f.file_field :avatar, id: 'real_setting_avatar', accept:".jpg,.jpeg,.png,.gif"%>
+<% end %>
+</div>

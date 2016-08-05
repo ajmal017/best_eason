@@ -1,0 +1,5 @@
+<% if @favorite.errors.present? %>
+  alert("<%=@favorite.errors[:feed_id]%>");
+<% else %>
+  $(".j_feed_favorite[data-id=<%=@favorite.feed_id%>]").text("取消收藏");
+<% end %>

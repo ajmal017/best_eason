@@ -1,0 +1,74 @@
+<%= stylesheet_link_tag "jquery-ui" %>
+<div class="container" style="margin-top:50px;">
+  <div>
+    <h2>基本资料</h2>
+    <%=image_tag @user.avatar_url(:large)%>
+    <%=@user.username%>
+    粉丝：<%=@user.followers_count%>
+    关注：<%=@user.followings_count%>
+    投资组合：<%=@user.baskets_count%>
+    <br/>
+    <br/>
+    <span class="follow_span"> 
+      <% if user_signed_in? && current_user.followed?(@user.id) %>
+        <a href="#" id="j_unfollow">取消关注</a> 
+      <% else %>
+        <a href="#" id="j_follow">关注</a> 
+      <% end %>
+    </span>
+    <a href="javascript:void(0);" id='j_private_message'>私信</a> 
+    <% if user_signed_in? && current_user == @user %>
+      <a href='/setting/info'>修改资料</a>
+    <% end %>
+  </div>
+
+  <div>
+    <h2>feed展示区</h2>
+    <%=render 'sidebar' %>
+    <div></div>
+  </div>
+</div>
+
+<div id="dialog" title="给<%=@user.username%>发私信" style="display:none;">
+  <%=form_for Message.new, url: messages_path, method: :post, remote: true do |f|%>
+    <%=f.hidden_field :receiver_id, value: @user.id%>
+    <%=f.text_area :content, cols: 25, rows: 4%><br/>
+    <%=f.submit '发送'%>
+  <% end %>
+</div>
+
+<script>
+  
+  $(function() {
+    $("#dialog" ).dialog({
+      autoOpen: false,
+      height: 200,
+      width: 400,
+      resizable: false,
+      modal: true
+    });
+  });
+
+  $(document).on('click', '#j_follow', function(){
+    <% if user_signed_in? %>
+      $.post("/ajax/users/<%=@user.id%>/follow");
+    <% else %>
+      alert("请登录");
+    <% end %>
+  })
+
+  $(document).on('click', '#j_unfollow', function(){
+    if(confirm('你确认要取消关注吗？')){
+      $.post("/ajax/users/<%=@user.id%>/unfollow");
+    }
+  })
+
+  $("#j_private_message").on('click', function(){
+    <% if user_signed_in? %>
+      $("#dialog").dialog('open');
+    <% else %>
+      alert('请登录');
+      return false;
+    <% end %>
+  })
+</script>

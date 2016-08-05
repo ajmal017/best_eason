@@ -1,0 +1,43 @@
+<div class="f_row" data-market="<%= stock.market_area %>" data-sid="<%= follow.id %>"  data-remark="<%= follow.notes %>" data-stock-id="<%= stock.id %>">
+  <div class="f_cell_group">
+    <div class="f_cell c1">
+      <input type="checkbox" class="itemCheck" />
+      <%= link_to stock.symbol, stock_path(stock), title: stock.symbol, class: "limitLength flag #{stock.market_area}", target: "_blank" -%>
+    </div>
+    <div class="f_cell c2">
+      <%= link_to stock.truncated_com_name, stock_path(stock), title: stock.com_name, target: "_blank" -%>
+    </div>
+    <div class="f_cell c10" data-sort="<%= stock_score.to_f %>">
+      <span class="ratestar2">
+        <span style="width: <%= stock_score.to_f * 20 %>%;"></span>
+      </span>
+    </div>
+    <div class="f_cell c11" data-sort="<%= value_to_usd(follow.price.to_f, usd_rate) %>">
+      <%= format_number(follow.price) %>
+    </div>
+    <div class="f_cell c3" data-sort="<%= value_to_usd(rs_stock.try(:realtime_price), usd_rate) %>">
+      <%= up_down_style(rs_stock.try(:realtime_price), operator: false, class_value: rs_stock.try(:change_from_previous_close), force_precision: 2) %>
+    </div>
+  </div>
+  <div class="f_cell c4" data-sort="<%=value_to_usd(rs_stock.try(:change_from_previous_close), usd_rate)%>">
+    <%= up_down_style(rs_stock.try(:change_from_previous_close), force_precision: 2) %>
+  </div>
+  <div class="f_cell c5">
+    <%= stock_change_percent_style_v2(rs_stock.try(:change_percent), rs_stock.try(:realtime_price), postfix: "%", force_precision: 2) %>
+  </div>
+  <div class="f_cell c6" data-sort="<%=rs_stock.try(:lastest_volume).to_i%>">
+    <%= humanlize_capitalization(rs_stock.try(:pretty_lastest_volume)) %><%= stock.pretty_volume_unit %>
+  </div>
+  <div class="f_cell c7" data-sort="<%=rs_stock.try(:total_value_trade)%>">
+    <%= humanlize_capitalization(rs_stock.try(:total_value_trade)) %>
+  </div>
+  <div class="f_cell c8" data-sort="<%= value_to_usd(rs_stock.try(:adj_market_capitalization), usd_rate) %>">
+    <%= rs_stock.try(:market_capitalization_by_c_yi_unit) %>
+  </div>
+  <div class="f_cell c9" data-sort="<%=rs_stock.try(:pe_ratio)%>">
+    <%= rs_stock.try(:adj_pe_ratio) %>
+  </div>
+  <div class="f_cell c0"><span class="stockicon config">&nbsp;</span></div>
+  <div class="f_cell c0"><span class="stockicon trade">&nbsp;</span></div>
+  <div class="f_cell c0"><span class="stockicon remove">&nbsp;</span></div>
+</div>

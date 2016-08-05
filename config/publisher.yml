@@ -1,0 +1,94 @@
+defaults: &defaults
+  connect:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: admin
+    heartbeat: 6
+
+  stomp:
+    host: http://localhost:15674/stomp
+    connect:
+      login: 'caishuo'
+      passcode: 'caishuo'
+      host: '/'
+    debug: true
+
+  exchange:
+    event_queue:
+      name: events
+      type: topic
+      durable: true
+    order:
+      name: caishuox.fanout
+      type: fanout
+      durable: true
+      arguments:
+        alternate-exchange: "caishuox.unroutable"
+  queue:
+    event_queue:
+      name: events
+      durable: true
+    cts:
+      name: com.unicorn.cts
+      durable: true
+      arguments:
+        x-dead-letter-exchange: "caishuox.deadletter"
+        x-dead-letter-routing-key: "com.unicorn.cts.deadletter"
+
+  binding:
+    event_queue:
+      exchange: :event_queue
+      queues:
+        - event_queue
+    cts:
+      exchange: :order
+      queues:
+        - cts
+
+development:
+  <<: *defaults
+  connect:
+    host: 192.168.1.10
+    port: 5672
+    username: admin
+    password: www.caishuo.c0m
+    vhost: 'caishuo'
+  stomp:
+    host: https://office.caishuo.com/stomp
+    connect:
+      login: 'caishuo'
+      passcode: 'caishuo'
+      host: 'caishuo'
+
+staging:
+  <<: *defaults
+  connect:
+    host: 127.0.0.1
+    port: 5672
+    username: admin
+    password: www.caishuo.c0m
+    vhost: 'caishuo'
+  stomp:
+    host: /stomp
+    connect:
+      login: 'caishuo'
+      passcode: 'caishuo'
+      host: 'caishuo'
+
+production:
+  <<: *defaults
+  connect:
+    host: 10.10.1.101
+    port: 5672
+    username: rubyClient
+    password: admiaa3dd20nc0m
+    vhost: caishuo
+    heartbeat: 6
+  stomp:
+    host: /stomp
+    connect:
+      login: 'caishuo'
+      passcode: 'caishuo'
+      host: 'caishuo'
+    debug: false

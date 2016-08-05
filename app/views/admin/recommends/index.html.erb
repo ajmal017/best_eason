@@ -1,0 +1,141 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%=link_to '新建推荐文章', new_admin_recommend_path%>
+  </span>
+</h1>
+
+<% search_params = [:category_id, :status, :title] %>
+
+<div class="box">
+  <div class="float_left">
+    当前状态: &nbsp;&nbsp;
+    <a href="<%= admin_recommends_path(params.slice(*search_params).merge(status: nil))%>" class="<%='current' if params[:status].blank? || params[:status] == "all" %>">全部</a>
+    <% BaseRecommend::STATUS.each do |k,v| %>
+      <a href="<%= admin_recommends_path(params.slice(*search_params).merge(status: k))%>" class="<%='current' if params[:status] == k %>"><%= v %></a>
+    <% end %>
+  </div>
+
+  &nbsp;&nbsp;
+  <%= form_tag @q, url: "?", method: :get, class: 'form-inline float_left', role: 'form' do -%>
+    <%= text_field_tag :title, params[:title], :placeholder => '搜索标题', class: 'form-control' %>
+    <%= submit_tag '搜索', :class => 'btn btn-primary' %>
+  <% end -%>
+
+</div>
+
+<!--搜索框-->
+<div class="box content_categories">
+    <span>内容分类:  &nbsp;&nbsp;&nbsp;</span>
+    <a href="<%= admin_recommends_path(params.slice(*search_params).merge(category_id: nil))%>" class="<%='current' if params[:category_id].blank?%>">全部</a>
+
+    <% @feed_categories.first(10).each do |feed_category| %>
+      <%= link_to admin_recommends_path(params.slice(*search_params).merge(category_id: feed_category.category_id)), class: (params[:category_id].to_s == feed_category.category_id.to_s ? "current" : nil) do %>
+      <%= feed_category.name %>
+      <ul class="popup_feed_content_categories">
+        <li>默认权重: <%=feed_category.weight%></li>
+        <li>时间策略: <%=feed_category.time_rule_name%></li>
+        <li>过期策略: <%=feed_category.ttl_rule_name%></li>
+      </ul>
+      <% end -%>
+    <% end -%>
+
+    <% if @feed_categories.length > 10 %>
+      <div class="more_categories">
+        <span></span>更多分类
+        <ul class="popup_feed_content_categories">
+          <% @feed_categories[10, @feed_categories.length-10].each do |feed_category| %>
+            <li>
+              <%= link_to feed_category.name, admin_recommends_path(params.slice(*search_params).merge(category_id: feed_category.category_id)), class: (params[:category_id].to_s == feed_category.category_id.to_s ? "current" : nil) %>
+            </li>
+          <% end -%>
+        </ul>
+      </div>
+    <% end -%>
+
+    &nbsp;
+</div>
+
+
+<%= page_info(@recommends) %>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>源地址</th>
+      <th>标题</th>
+      <th>创建人</th>
+      <th>审批人</th>
+      <th>分类</th>
+      <th>当前状态</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @recommends.each do |r| %>
+      <tr>
+        <td><%= r.id %></td>
+        <td style="max-width: 100px; overflow: hidden;"><a title="<%= r.original_url %>" href="<%= r.original_url %>" target="_blank"><%= r.original_url.to_s.truncate(30) %></a></td>
+        <td class="align_left" style="max-width: 100px; overflow: hidden;">
+          <% if r.current_url %>
+            <%= link_to r.title, r.current_url, target: '_blank', class: 'action' %>
+          <% else %>
+            <%= r.title %>
+          <% end %>
+        </td>
+        <td><%= r.staffer.fullname %></td>
+        <td><%= r.verifiers_list.map(&:fullname).join(",") %></td>
+        <td><%= r.category_name %></td>
+        <td><%= r.status_zh %></td>
+        <td style="max-width: 100px;"><%= r.created_at %></td>
+        <td class="action">
+          <% if r.news_id %>
+            <%= link_to '查看', "/admin/es/spider_news/#{r.news_id}", target: "_blank" if !%w{pulling error}.include?(r.status) %>
+            <%= link_to '编辑', "/admin/es/spider_news/#{r.news_id}/edit", target: "_blank" if %w{auditing published}.include?(r.status)%>
+          <% else %>
+            <%= link_to '查看', admin_recommend_path(r) if !%w{pulling error}.include?(r.status) %>
+            <%= link_to '编辑', edit_admin_recommend_path(r) if %w{auditing published}.include?(r.status) %>
+          <% end %>
+          <%= link_to '重推', resend_admin_recommend_path(r), method: :post if %w{pulling audited error}.include?(r.status) %>
+          <%= link_to '审批', approve_admin_recommend_path(r), method: :post if r.can_approve?(current_admin_staffer) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @recommends %>
+
+
+
+<style type="text/css">
+  .content_categories span{float: left;}
+  .content_categories a{display: block; float: left;}
+  .content_categories .popup_feed_content_categories{
+    position: absolute;
+    margin-left: 0px;
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #DEDEDE;
+    color: #666;
+    display: none;
+  }
+
+  .content_categories .more_categories{display: inline;float: left;cursor: pointer;color: #666;}
+  .content_categories .more_categories .popup_feed_content_categories{width: 320px;padding-left: 10px;}
+  .content_categories .more_categories .popup_feed_content_categories li{float: left;}
+  .content_categories .more_categories .popup_feed_content_categories li a{
+    width: 70px;
+    overflow: hidden;
+    display: block;
+  }
+  .content_categories a:hover .popup_feed_content_categories, .content_categories .more_categories:hover .popup_feed_content_categories{display: block;}
+</style>
+
+
+
+<script type="text/javascript">
+
+  if($(".content_categories .more_categories .popup_feed_content_categories li a.current").length > 0){
+    $(".content_categories .more_categories span").html($(".content_categories .more_categories .popup_feed_content_categories li a.current").clone());
+  }
+</script>

@@ -1,0 +1,33 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%= link_to "返回Feed推荐池", "/admin/feeds/hub" %>
+  </span>
+</h1>
+<table class="grid">
+  <thead>
+    <tr>
+      <th width="150">编号</th>
+      <th width="150">名称</th>
+      <th width="150">Feed类型</th>
+      <th>时间策略</th>
+      <th>过期时间</th>
+      <th>默认权重</th>
+      <th>当前状态</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% ::MD::FeedRecommendContent::TYPES.each do |k, v| %>
+    <tr>
+      <td class="align_left"><%= k %></td>
+      <td class="align_left"><%= v[:title] %></td>
+      <td class="align_left"><%= v[:category] %>/<%= v[:feed_type] %></td>
+      <td class="align_left"><%= ::MD::FeedRule::TimeRule.feed_rule_name(v[:time_rule]) %></td>
+      <td class="align_left"><%= ::MD::FeedRule::TTLRule.feed_rule_name(v[:ttl_rule]) %></td>
+      <td class="align_left"><%= v[:weight] %></td>
+      <td class="align_left">暂无</td>
+    </tr>
+    <% end -%>
+  </tbody>
+</table>
+

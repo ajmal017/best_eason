@@ -1,0 +1,20 @@
+defaults: &defaults
+  hosts:
+    - http://baobao.caishuo-testing.com:8080
+  admin: 4a3bf8164658b52d67ac9db1f068b6ec6a05d146
+
+development:
+  <<: *defaults
+
+staging:
+  <<: *defaults
+
+testing:
+  <<: *defaults
+
+production:
+  <<: *defaults
+  hosts:
+    - 10.10.4.100:8088
+    - 10.10.4.101:8088
+  admin: 4ac9db1f068b6ec6a05d146a3bf8164658b52d67

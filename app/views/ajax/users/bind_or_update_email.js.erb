@@ -1,0 +1,5 @@
+<% if @result %>
+  window.location.href="/setting/check_bind_email";
+<% else %>
+  CaishuoAlert("<%= @msg %>");
+<% end %>

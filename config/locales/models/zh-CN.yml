@@ -1,0 +1,132 @@
+zh-CN:
+  activerecord:
+    models:
+      user: 用户
+      article: 专栏
+      landing: 用户
+      symbol_change_log: 股票变更
+      topic: 头条
+      basket: 组合
+      basket_normal: 组合
+      contest: 大赛      
+      trading_account: 交易账号
+      base_stock: 股票
+      stock_component: 股票概念板块
+      push_log: Push记录
+    attributes:
+      user:
+        email: 邮箱
+        username: 昵称
+        invitation_token: 邀请码
+        password: 密码
+        password_confirmation: 重复密码
+        current_password: 当前密码
+        remember_me: 下次自动登录
+        gender: 性别
+      majia_user:
+        email: 邮箱
+        username: 昵称
+        invitation_token: 邀请码
+        password: 密码
+        gender: 性别
+        province: 省份
+        city: 城市
+        headline: 性别
+        orientation: 投资方向
+        concern: 投资时您最关注哪些
+        duration: Hold多久
+      article: 
+        tag_list: 标签
+        position: 置顶
+      feed_article: 
+        title: 标题
+        content: 正文
+        views_count: 浏览数
+        comments_count: 评论数
+      article_content: 
+        content: 博客正文
+      landing:
+        email: 邮箱
+      symbol_change_log:
+        base_stock_id: 股票ID
+        field: 字段
+        log: 信息
+        log_type: 类别
+        created_at: 创建时间
+        updated_at: 更新时间
+      trading_account:
+        email: 邮箱
+        broker_no: 用户编号
+      contest:
+        players_csv: 导入用户文件
+        status: 状态
+        name: 名称
+        start_at: 开始时间
+        end_at: 结束时间
+        broker_id: 主账号
+        users_count: 参赛人数
+        total_invest: 总资金
+      player:
+        id: ID
+        user_id: 财说ID
+        contest_id: 大赛
+        original_money: 初始资金
+        status: 状态
+        trading_account_id: 交易账号
+      basket:
+        title: 标题
+      stock_component:
+        id: ID
+        base_stock_id: 股票内部ID
+        inner_code: 聚源内部编码
+        cs_code: 聚源板块代码
+        name: 板块名称
+        created_at: 创建时间
+        updated_at: 更新时间
+      push_log:
+        content: 内容
+        password: 密码
+    errors: 
+      models:
+        user: 
+          attributes:
+            email: 
+              format: 邮件格式不正确
+              exceed_limit: 邮件发送超过规定次数
+            invitation_token:
+              invalid: 邀请码不正确
+            username:
+              repeat: 已被占用
+        landing:
+          attributes: 
+            email:
+              invalid: 邮件格式不正确，请您再次尝试
+        trading_account:
+          attributes:
+            broker_no:
+              taken: 证券账号已经绑定或审核中
+        basket:
+          attributes:
+            title:
+              blank: "请填写标题"
+              custom_length_long: "标题不超过20个汉字或40个字符"
+  mongoid:
+    models:
+      md/feed_category: Feed种类
+      md/source/spider_news_source: 抓取来源
+      md/source/spider_news_category: 抓取分类
+    attributes:
+      md/feed_category:
+        name: 名称
+      md/source/spider_news_source:
+        name: 名称
+        list_page_url: 列表页url
+        source_name: Feed来源显示
+        crawler_name: 抓取爬虫名称
+        category_id: 分类
+        interval_time: 抓取间隔(分钟)
+        auto_adjust: 自动调整抓取间隔
+        last_run_at: 最后运行时间
+      md/source/spider_news_category:
+        name: 名称
+        lvl: 优先级(-10~10)

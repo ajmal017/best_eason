@@ -1,0 +1,8 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right"><%=link_to '返回列表', admin_leads_path %></span>
+</h1>
+
+<%= form_for @lead, url: update_info_admin_lead_path(@lead), method: :put do |f|%>
+<%= render 'form', f: f%>
+<% end -%>

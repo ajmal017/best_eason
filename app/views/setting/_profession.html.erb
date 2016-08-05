@@ -1,0 +1,41 @@
+<%= form_for @profile, url: update_profile_setting_index_path, method: :post, remote: true, html: {id: 'j_profile_pro', class: "professional boxBorder"} do |f| %>  
+  <h3 class="profession">专业领域
+    <a id="profes" href="javascript:;">修改</a>
+    <span>我的交易风格</span>
+  </h3>
+  <div class="content">
+		<dl class="clearfix">
+      <dt>您的投资方向？</dt>
+      <dd>
+          <%= f.fields_for :orientations, (@profile.orientations || {}) do |orientation_fields| %>
+            <% Profile::ORIENTATION.each do |key, orientation_val| -%>
+              <div class="checkgroup">
+                <label><%= orientation_fields.check_box key, {checked: @profile.orientations[key].to_i == 1 ? true : false}  %><%= orientation_val %></label>
+              </div>
+            <% end -%>
+          <% end -%>
+      </dd>
+      <dt>投资时您最关注哪些？</dt>
+      <dd>
+          <%= f.fields_for :concerns, (@profile.concerns || {}) do |concern_fields| %>
+            <% Profile::CONCERN.each do |key, concern_val| -%>
+              <div class="checkgroup">
+                <label><%= concern_fields.check_box key, {checked: @profile.concerns[key].to_i == 1 ? true : false} %><%= concern_val %></label>
+              </div>
+            <% end -%>
+          <% end -%>
+      </dd>
+      <dt>一般持仓时间</dt>
+      <dd>
+          <div class="selectbox">
+              <%= f.select :duration, [["不填写", ""]] + Profile::DURATION.invert.to_a %>
+          </div>
+      </dd>
+    </dl>
+    <div class="saveBox">
+    	<a class="b_btn dialog_btn_y j_profile_pro" href="javascript:void(0)">保存</a>
+    	<a onclick="$('#infoEdit').trigger('click')" class="b_btn dialog_btn_c">取消</a>
+    </div>
+        
+	</div>
+<% end -%>

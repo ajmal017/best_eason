@@ -1,0 +1,95 @@
+<%=content_for :header do %>
+  <%= javascript_include_tag "basket_info", "/javascripts/kindeditor/kindeditor.js" %>
+  <%= stylesheet_link_tag "/stylesheets/v3/creat1.css", "jquery.Jcrop.css" %>
+  <style>
+    #CaishuoDialog .FloatContent {background: white;}
+    #CaishuoDialog .themeFile {width: 650px;}
+    #CaishuoDialog .width640 {width: 640px;}
+    #CaishuoDialog .width700 {width: 700px;}
+    #CaishuoDialog .FloatContent .header {padding: 30px 30px 20px;}
+    #CaishuoDialog .FloatContent .header h2 {padding:0; margin:0; font-size: 16px;}
+    #CaishuoDialog .FloatContent .textbody {padding:30px;border:1px solid #e5e5e5; background: #fdfdfd; border-style: solid none;}
+    #CaishuoDialog .FloatContent .textbody p {font-size: 14px;}
+    #CaishuoDialog .dialogHeader {border-bottom: 0;}
+    #CaishuoDialog .dialogBody {padding: 0;}
+    #CaishuoDialog .FloatContent .footer {padding: 30px 0;text-align: center;}
+  </style>
+<% end %>
+<%- @page_title = "创建投资组合-设置标题" -%>
+
+<div class="container">
+  <br class="break" />
+  <div class="content">
+    <nav class="createStep">
+      <strong>创建组合投资</strong>
+      <span class="done"><i>1</i> 添加股票</span><span class="done"><i>2</i> 个股入选理由</span><span class="current step3"><i></i> 取个名字</span>
+    </nav>
+
+    <%=form_for @basket, url: update_title_basket_path(@basket), method: :put, html: {onsubmit: "return checkNewBasketThreeStep();", remote: true, class: "whiteBox createBody clearfix"} do |f|%>
+      <h3><strong>标题</strong> <span class="title_error">(标题长度要在1~40个字符以内)</span></h3>
+      <div class="articleTitle clearfix">
+        <div class="leftBox noPadding">
+          <%=f.text_field :title, id: "basket_title", name: 'basket[title]', maxlength: 100, class: 'title' %>
+          <div class='error_prompt'></div>
+        </div>
+      </div>
+      <div class="leftBox noPadding">
+        <h3><strong>描述</strong> <span>(说说关于这个组合投资的想法跟研究吧)</span></h3>
+        <div class="richEditor">
+          <textarea name="basket[description]" id="basket_description" style="width:600px;height:370px;visibility:hidden;"><%= @basket.description %></textarea>
+        </div>
+        <script type="text/javascript">
+          initDescriptionEditor();
+        </script>
+        <input type="hidden" value="" name="basket[copy_upload_temp_picture]" id="copy_upload_temp_picture">
+        <br class="break" />
+        <div class="text-right" style="line-height:2.5;">
+          <a href="javascript:" onclick="javascript:previousStepAction(this, <%= @basket.id %>);" class="a_step float-left">&lt; 上一步 : 入选理由</a>
+          <input type="submit" value="创建" class="b_btn dialog_btn_y float-right" id="btn_submit">
+        </div>
+      </div>
+
+      <div class="rightBox noPadding">
+        <h3><strong>组合配图，一图胜千言：</strong></h3>
+        <span class="chartTextDesc">仅支持JPG、JPEG、GIF、PNG格式，<br />文件小于5M。</span>
+        <div class="coverPic" id="j_basket_preview">
+          <%=image_tag @basket.img_url(:large), size: '180x144' %>
+        </div>
+        <br class="break" />
+        <input type="button" class="b_btn dialog_btn_y" value="上传" onclick="javascript:triggerRealAvatar();"/>
+      </div>
+    <% end %>
+
+    <%=form_for @basket, url: save_img_ajax_basket_path(@basket), method: :put, html: {target: 'curform', class: 'real-file'} do |f| %>
+      <%=f.file_field :img, id: 'real_avatar', name: "basket[img]", accept:"image/png,image/gif,image/jpeg,image/bmp" %>
+    <% end %>
+  </div>
+</div>
+
+<div id="upload_pic_div" style="display:none;">
+  <div class="FloatContent width640" id="FloatWindow">
+    
+    <%=form_for @basket, url: crop_pic_ajax_basket_path(@basket), method: :put, html: {onsubmit: "return cropPicAction();"}, remote: true do |f|%>
+      <% %w(x y w h).each do |attribute| %>
+        <%= f.hidden_field "crop_#{attribute}", id: "basket_crop_#{attribute}", name: "basket[crop_#{attribute}]" %>
+      <% end %>
+      <div class="textbody center">
+
+      </div>
+      <div class="footer">
+        <%=f.submit '确定', class: 'b_btn dialog_btn_y', style: 'display:none;' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+  #real_avatar {
+    cursor: pointer;
+    position: absolute;
+    opacity: 0;
+    width: 0px;
+    height: 0px;
+    filter: alpha(opacity=0);
+  }
+</style>

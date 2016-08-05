@@ -1,0 +1,33 @@
+<% ranks.each_with_index do |rank, index| %>
+<tr data-user-id="<%= rank.user_id %>">
+  <td></td>
+  <td class="<%= "plus" if page==1 && index<3 %>"><%= rank_no_by(page, index) %></td>
+  <td>
+    <%= link_to image_tag(rank.user.avatar_url(:small)), basket_path(rank.basket_id), target: "_blank", class: "avator" %>
+  </td>
+  <td>
+    <%= link_to rank.user.username, basket_path(rank.basket_id), target: "_blank" %>
+  </td>
+  <td>
+    <%= up_down_style(rank.ret_with_status, {postfix: "%", force_precision: 2}) %>
+  </td>
+  <td>
+    <%= up_down_style(rank.one_day_ret, {postfix: "%", force_precision: 2}) %>
+  </td>
+  <td><%= rank.position_percent %>%</td>
+  <td><%= rank.adjust_count %></td>
+  <td><%= rank.win_rate %>%</td>
+  <td>
+    <span class="<%= rank_change_class(rank.rank_change) %>">
+      <%= rank.rank_change_abs %>
+    </span>
+  </td>
+  <td style="color:<%= rank.status_color %>;"><%= rank.status_desc %></td>
+  <td>
+    <% if rank.user_id != current_user.try(:id) %>
+      <span class=" <%= login_popup_class %> focus <%= 'active' if current_user && current_user.followed?(rank.user_id) %>"></span>
+    <% end %>
+  </td>
+  <td></td>
+</tr>
+<% end %>

@@ -1,0 +1,24 @@
+<article class="tops"> <!-- !!!指数有这个模块!!! -->
+  <nav>
+    <span class="active">领涨榜</span>
+    <span>领跌榜</span>
+  </nav>
+  <table class="lists" style="display:table;">
+    <% @guide_up.each do |stock|%>
+      <tr>
+        <th><a href="<%= mobile_link(mobile_stock_path(stock)) %>"><%= stock.c_name %><span><%= stock.symbol %></span></a></th>
+        <td><em class="plus"><%= format_number(stock.realtime_price) %><i><%= up_down_style(stock.percent_change_from_previous_close, postfix: '%', with_arrow: false) %></i></em></td>
+        <td><em><%= stock.stock_screener.try(:score).try(:round, 1) %></em></td>
+      </tr>
+    <% end %>
+  </table>
+  <table class="lists">
+    <% @guide_down.each do |stock|%>
+        <tr>
+          <th><a href="<%= mobile_link(mobile_stock_path(stock)) %>"><%= stock.c_name %><span><%= stock.symbol %></span></a></th>
+          <td><em class="mins"><%= format_number(stock.realtime_price) %><i><%= up_down_style(stock.percent_change_from_previous_close, postfix: '%', with_arrow: false) %></i></em></td>
+          <td><em><%= stock.stock_screener.try(:score).try(:round, 1) %></em></td>
+        </tr>
+    <% end %>
+  </table>
+</article>

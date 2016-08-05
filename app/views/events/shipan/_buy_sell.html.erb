@@ -1,0 +1,58 @@
+<!-- 买入卖出 -->
+<div class="itemBox adjustRecord">
+    <h3>盘中<span class="plus">买入最多</span><span class="small">（截止时间：<%= Time.now.to_s(:short) %>）</span></h3>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>排名</td>
+                    <td>股票</td>
+                    <td>实时价格</td>
+                    <td>涨跌(%)</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+              <% @contest.buy_most_stocks.each_with_index do |stock, index| %>
+                <tr>
+                    <td></td>
+                    <td><%= index + 1%></td>
+                    <td><%= link_to stock.com_name, stock_path(stock), target: "_blank" %></td>
+                    <td><%= number_to_currency(stock.realtime_price, unit: "") %></td>
+                    <td><%= stock_change_percent_style(stock, postfix: "%") %></td>
+                    <td></td>
+                </tr>
+              <% end %>
+            </tbody>
+        </table>
+    </div>
+    <h3>盘中<span class="mins">卖出最多</span><span class="small">（截止时间：<%= Time.now.to_s(:short) %>）</span></h3>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>排名</td>
+                    <td>股票</td>
+                    <td>实时价格</td>
+                    <td>涨跌(%)</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+              <% @contest.sell_most_stocks.each_with_index do |stock, index| %>
+                <tr>
+                    <td></td>
+                    <td><%= index + 1%></td>
+                    <td><%= link_to stock.com_name, stock_path(stock), target: "_blank" %></td>
+                    <td><%= number_to_currency(stock.realtime_price, unit: "") %></td>
+                    <td><%= stock_change_percent_style(stock, postfix: "%") %></td>
+                    <td></td>
+                </tr>
+              <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 买入卖出 -->

@@ -1,0 +1,103 @@
+<h1 class="title">
+  <span class="title_left">Basket adjustment详情页面</span>
+  <span class="title_right">
+    <%= link_to "返回列表", admin_basket_adjustments_path %>
+  </span>
+</h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>stock_id</th>
+      <th>action</th>
+      <th>weight_from</th>
+      <th>weight_to</th>
+      <th>realtime_weight_from</th>
+      <th>stock_price</th>
+      <th>stock_state</th>
+      <th>created_at</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @basket_adjustment.basket_adjust_logs.each do |log| %>
+      <tr>
+      <td><%= log.id %></td>
+      <td>
+        <% if log.stock_id %>
+          <%= link_to log.stock_id, stock_path(log.stock_id), target: "_blank" %>
+        <% else %>
+          现金
+        <% end %>
+      </td>
+      <td><%= log.action %></td>
+      <td><%= log.weight_from %></td>
+      <td><%= log.weight_to %></td>
+      <td><%= log.realtime_weight_from %></td>
+      <td><%= log.stock_price %></td>
+      <td><%= log.stock_state %></td>
+      <td><%= log.created_at %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Id</td>
+      <td>
+        <%= @basket_adjustment.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Prev basket</td>
+      <td>
+        <%= @basket_adjustment.prev_basket_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Next basket</td>
+      <td>
+        <%= @basket_adjustment.next_basket_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Original basket</td>
+      <td>
+        <%= @basket_adjustment.original_basket_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Reason</td>
+      <td>
+        <%= @basket_adjustment.reason %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Date</td>
+      <td>
+        <%= @basket_adjustment.date %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Created at</td>
+      <td>
+        <%= @basket_adjustment.created_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Updated at</td>
+      <td>
+        <%= @basket_adjustment.updated_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">State</td>
+      <td>
+        <%= @basket_adjustment.state %>
+      </td>
+    </tr>
+  </tbody>
+</table>

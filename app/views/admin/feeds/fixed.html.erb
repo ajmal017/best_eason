@@ -1,0 +1,53 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%= link_to "返回列表", "/admin/feeds/hub" %>
+  </span>
+</h1>
+
+<%= form_for @feed_hub, url: '', as: :feed do |f|%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b>标题:</td>
+        <td>
+          <%= f.text_field :title, :size=>30 %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>图片:</td>
+        <td>
+          <%= f.url_field :pic, :size=>20 %>
+          <input type="button" id="upload_common_file_btn" value="上传图片"/>
+          <br/>
+          <a target="_blank" href="<%= @feed_hub.pic %>" id="upload_img_a_link"><img src="<%= @feed_hub.pic %>" height="100" id="upload_img"/></a>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>URL:</td>
+        <td>
+          <%= f.url_field :url, :size=>20 %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>是否开启:</td>
+        <td>
+          <%= f.check_box :status, {}, 'true', false %>
+        </td>
+      </tr>
+     
+      <tr>
+        <td class="field"></td>
+        <td>
+          <%= f.submit '保存'%>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<% end -%>
+
+<script type="text/javascript">
+  $(function(){
+    $("#upload_common_file_btn").uploader({url_field_id: "feed_pic", a_link_id: "upload_img_a_link", image_show_id: "upload_img"});
+  })
+</script>

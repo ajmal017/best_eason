@@ -1,0 +1,11 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+  </span>   
+</h1>
+<%= render "base_stocks_summary" %>
+<%= render "search_form", :search => @q, :base_stocks => @base_stocks %>
+
+<%= render "import_and_export" %>
+<%= page_info(@base_stocks) %>
+<%= render 'stock_list', q: @q, base_stocks: @base_stocks %>

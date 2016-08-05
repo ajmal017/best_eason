@@ -1,0 +1,58 @@
+<h1 class="title">
+  <span class="title_left">股票概念板块列表页</span>
+  <span class="title_right">
+    <%#= link_to "新建股票概念板块", new_admin_stock_component_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_stock_components_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :base_stock_id_eq, :placeholder => '股票内部ID', class: 'form-control' %>
+    <%= f.text_field :cs_code_eq, :placeholder => '聚源板块代码', class: 'form-control' %>
+    <%= f.text_field :name_cont, :placeholder => '板块名称', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @stock_components.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>股票内部ID</th>
+      <th>股票名称</th>
+      <th>聚源内部编码</th>
+      <th>聚源板块代码</th>
+      <th>板块名称</th>
+      <th>创建时间</th>
+      <th>更新时间</th>
+      <th colspan="3">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @stock_components.each do |stock_component| %>
+    <tr>
+      <td><%= stock_component.id %></td>
+      <td><%= stock_component.base_stock_id %></td>
+      <td><%= stock_component.base_stock.try(:c_name)%></td>
+      <td><%= stock_component.inner_code %></td>
+      <td><%= stock_component.cs_code %></td>
+      <td><%= stock_component.name %></td>
+      <td><%= stock_component.created_at %></td>
+      <td><%= stock_component.updated_at %></td>
+      <td class="action"><%= link_to '详情', [:admin, stock_component] %></td>
+      <td class="action"><%= link_to '编辑', [:edit, :admin, stock_component] %></td>
+      <td class="action"><%= link_to '删除', [:admin, stock_component], method: :delete, data: { confirm: '你确定删除吗?' } %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @stock_components %>

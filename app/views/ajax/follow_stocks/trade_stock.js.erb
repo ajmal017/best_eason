@@ -1,0 +1,2 @@
+$("#orderTable").html("<%= j render partial:"users/following_stock_trade", locals:{stock: @stock, trading_accounts: @trading_accounts, trading_account: @trading_account, currency_unit: @stock.currency_unit} %>");
+Order.init();

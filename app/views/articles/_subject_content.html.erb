@@ -1,0 +1,15 @@
+<div class="subjectContent">
+  <% if article.title.include?('亚投行获欧洲大国力挺')  %>
+    <%= raw article.content %>
+  <% elsif article.parsed_content.present? %>
+    <% article.parsed_content.each do |p| %>
+      <%= raw p.to_html %>
+    <% end %>
+  <% else %>
+    <%= raw article.content %>
+  <% end %>
+</div>
+
+<style>
+
+</style>

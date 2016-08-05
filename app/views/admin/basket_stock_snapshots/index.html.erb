@@ -1,0 +1,67 @@
+<h1 class="title">
+  <span class="title_left">Basket stock snapshot列表页</span>
+  <span class="title_right">
+    <a href="/admin/basket_adjustments">adjustments</a> &nbsp;&nbsp;
+    <a href="/admin/basket_weight_logs">weight_logs</a> &nbsp;&nbsp;
+    <a href="/admin/basket_stock_snapshots">stock_snapshots</a>
+  </span>
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_basket_stock_snapshots_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :id_eq, :placeholder => 'ID', class: 'form-control' %>
+    <%= f.text_field :basket_id_eq, :placeholder => 'basket_id', class: 'form-control' %>
+    <%= f.text_field :basket_adjustment_id_eq, :placeholder => 'basket_adjustment_id', class: 'form-control' %>
+    <%= f.text_field :next_basket_id_eq, :placeholder => 'next_basket_id', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%#= @basket_stock_snapshots.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Basket</th>
+      <th>Stock</th>
+      <th>Basket adjustment</th>
+      <th>Weight</th>
+      <th>Stock price</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+      <th>Change percent</th>
+      <th>Next basket</th>
+      <th>Notes</th>
+      <th>Adjusted weight</th>
+      <th>Ori weight</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @basket_stock_snapshots.each do |basket_stock_snapshot| %>
+    <tr>
+      <td><%= basket_stock_snapshot.id %></td>
+      <td><%= basket_stock_snapshot.basket_id %></td>
+      <td><%= basket_stock_snapshot.stock_id %></td>
+      <td><%= basket_stock_snapshot.basket_adjustment_id %></td>
+      <td><%= basket_stock_snapshot.weight %></td>
+      <td><%= basket_stock_snapshot.stock_price %></td>
+      <td><%= basket_stock_snapshot.created_at %></td>
+      <td><%= basket_stock_snapshot.updated_at %></td>
+      <td><%= basket_stock_snapshot.change_percent %></td>
+      <td><%= basket_stock_snapshot.next_basket_id %></td>
+      <td><%= basket_stock_snapshot.notes %></td>
+      <td><%= basket_stock_snapshot.adjusted_weight %></td>
+      <td><%= basket_stock_snapshot.ori_weight %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @basket_stock_snapshots %>

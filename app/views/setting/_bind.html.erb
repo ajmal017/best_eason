@@ -1,0 +1,11 @@
+<div class="envelope">
+  <i>恭喜你！获得财说 <span><%= @title %>礼包</span></i>
+  <p>美股/港股首单交易后，享受 <span><%= @length %>天</span> 免佣金优惠</p>
+  <b>（美股交易费全免，港股直送交易费88港币）</b>
+  <div class="text-center mt30">
+    <%= link_to '美股交易', stocks_path(search: { market_region: :us }, sort: { sort_by: :change_rate, direction: :desc }), class: 'b_btn trade mr25' %>
+    <%= link_to '港股交易', stocks_path(search: { market_region: :hk }, sort: { sort_by: :change_rate, direction: :desc }), class: 'b_btn trade' %>
+  </div>
+  <%= render partial: 'update_invition' if @length == 15 %>
+  <%= render partial: 'rule' %>
+</div>

@@ -1,0 +1,95 @@
+<div class="container cs-container account-container">
+  <h1>注册</h1>
+  <%=form_for @user || User.new, url: users_path, html: {class: 'form-horizontal', role: 'form', id: 'j_new_user'} do |f| %>
+
+    <div class="form-group">
+    <div class="col-xs-7" class="postion-img">
+      <%=f.text_field :email, class: 'form-control', placeholder: 'E-mail'%>
+      <span class="cs-form-icon-ok" style="display:none;">
+        <%=image_tag '/img/check.png', width: 21%>
+      </span>
+      <span class="cs-form-main-icon cs-form-icon-email">
+        <%=image_tag '/img/0.gif'%>
+      </span>
+    </div>
+
+    <label class="col-xs-5 info-label" style="display:none;" notice="登录用，请牢记"></label>
+  </div>
+
+  <div class="form-group">
+    <div class="col-xs-7" class="postion-img">
+      <%=f.text_field :username, class: 'form-control', placeholder: '昵称' %>
+      <span class="cs-form-icon-ok" style="display:none;">
+        <%=image_tag "/img/check.png", width: 21 %>
+      </span>
+      <span class="cs-form-main-icon cs-form-icon-nickname">
+        <%=image_tag "/img/0.gif" %>
+      </span>
+    </div>
+    <label class="col-xs-5 info-label" style="display:none;" notice="4 - 16字符内"></label>
+  </div>
+
+  <div class="form-group">
+    <div class="col-xs-7" class="postion-img">
+      <%=f.password_field :password, class: 'form-control', placeholder: '密码'%>
+      <span class="cs-form-icon-ok" style="display:none;">
+        <%=image_tag "/img/check.png", width: 21%>
+      </span>
+      <span class="cs-form-main-icon cs-form-icon-password">
+        <%=image_tag "/img/0.gif" %>
+      </span>
+    </div>
+    <label class="col-xs-5 info-label" style="display:none;" notice="6 - 16位"></label>
+  </div>
+
+  <div class="form-group" style="display:none;">
+    <div class="col-xs-7" class="postion-img">
+      <%=f.password_field :password_confirmation, class: 'form-control', placeholder: '确认密码'%>
+      <span class="cs-form-icon-ok" style="display:none;">
+        <%=image_tag "/img/check.png", width: 21%>
+      </span>
+      <span class="cs-form-main-icon cs-form-icon-password">
+        <%=image_tag "/img/0.gif"%>
+      </span>
+    </div>
+    <label class="col-xs-5 info-label" style="display:none;" notice="6 - 16位"></label>
+  </div>
+
+
+  <div class="form-group">
+    <div class="col-xs-7" class="postion-img">
+
+      <%= f.text_field :captcha, class: 'form-control', placeholder: '验证码' %>
+
+      <span class="cs-form-icon-ok" style="display:none;">
+        <%=image_tag "/img/check.png", width: 21%>
+      </span>
+      <span class="cs-form-main-icon cs-form-icon-verifycode">
+        <%=image_tag "/img/0.gif"%>
+      </span>
+      <div class="verfirycode">
+        <a href="javascript:void(0);" onclick="javascript:refresh_captcha();">
+          <%= captcha_tag({id: 'img_captcha', alt: '点击刷新图片', onclick: 'javascript:refresh_captcha();', style: 'cursor:pointer;'}) %>
+        </a>
+      </div>
+    </div>
+    <label class="col-xs-5 info-label" style="display:none;" notice="请输入验证码"></label>
+  </div>
+
+  <div class="cs-checkbox-container">
+    <div class="checkbox" id="j_protocol_div">
+      <%=image_tag "/img/0.gif", id: 'j_protocol_img'%>
+    </div>
+    <div class="text">我已阅读并同意<a href="">《财说服务协议》</a>
+      <span class="error j_protocol_err_text" style="display:none;">必须同意财说服务协议才能注册</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-0 col-sm-12">
+      <button type="submit" class="but cs-button-primary">注册</button>
+    </div>
+  </div>
+<% end %>
+</div>
+

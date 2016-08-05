@@ -1,0 +1,11 @@
+<div class="demo_left" style="width: 100%;padding-top: 20px;">
+  <h3>1. 配置model各个字段的i18n</h3>
+  <br/>
+  <h3>2.生成后台的controller, 注意SymbolChangeLog格式,是类名</h3>
+  <br/>
+  <%== CodeRay.scan("rails generate admin:controller SymbolChangeLog", :ruby).div(:css => :class) %>
+  <br/>
+  <h3>3.生成后台的views</h3>
+  <br/>
+  <%== CodeRay.scan("rails generate admin:views symbol_change_log", :ruby).div(:css => :class) %>
+</div>

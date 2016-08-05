@@ -1,0 +1,48 @@
+<div class="complete-theme <%= 'draft' if basket.draft? %>">
+  <div class="head">
+    <div class="head-state">
+      <%=image_tag basket.img_url(:small), size: '110' %>
+      <div class="establish">
+        <div class="establish-button clearfix">
+          <h2><%= basket.title %></h2><button>草稿</button>
+        </div>
+        <p>
+          <span>创建于：<%= basket.created_at.try(:strftime, "%Y.%m.%d %H:%M:%S") %></span>
+          <span>最后修改：<%= basket.updated_at.try(:strftime, "%Y.%m.%d %H:%M:%S") %></span>
+        </p>
+        <p>
+          
+        </p>
+      </div>
+    </div>
+
+    <div class="head-button">
+      <button id="button-continue"><a href="<%= add_basket_path(basket) %>" target="_blank">继续完成组合</a></button>
+      <button id="del-button" onclick="javascript:destroyDraftBasket(<%= basket.id %>, this);">删除草稿</button>
+    </div>
+  </div>
+  <div class="theme-details">
+    <div class="theme-index">
+      <div class="theme-indexs">
+        <span class="index-font">财说指数</span>
+        <span class="index-number">-</span>
+      </div>
+      <div class="theme-indexs">
+        <span class="index-font">关注人数</span>
+        <span class="index-number">-</span>
+      </div>
+      <div class="theme-indexs">
+        <span class="index-font">创建至今收益率</span>
+        <span class="index-number">-</span>
+      </div>
+      <div class="theme-indexs">
+        <span class="index-font">建仓人次/金额</span>
+        <span class="index-number theme-red theme-size">-/-</span>
+      </div>
+    </div>
+    <div class="theme-share share">
+      <p>分享与邀请</p>
+      <p>完成组合后即可分享</p>
+    </div>
+  </div>
+</div>

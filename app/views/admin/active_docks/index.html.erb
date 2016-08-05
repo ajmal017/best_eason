@@ -1,0 +1,40 @@
+<h1 class="title">
+  <span class="title_left">活动数据对接列表</span>
+  <span class="title_right">
+    <%= link_to "添加数据", new_admin_active_dock_path %>
+  </span>
+</h1>
+<div class="page_info">
+  总数： <b><%= @active_docks.total_entries %></b>
+</div>
+<table class="grid" id="role-grid">
+    <thead>
+        <tr>
+          <th width="8%">内部ID</th>
+          <th width="8%">短ID</th>
+          <th width="8%">名称</th>
+          <th>描述</th>
+          <th>内容</th>
+          <th>创建时间</th>
+          <th width="15%">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+      <% @active_docks.each do |active| %>
+        <tr>
+          <td><%= active.id %></td>
+          <td><%= active.short_id %></td>
+          <td><%= active.name %></td>
+          <td><%= active.description %></td>
+          <td><%= active.dock_date %></td>
+          <td><%= active.created_at.to_s %></td>
+          <td class="action">
+            <%= link_to '删除', [:admin, active], method: :delete, data: {confirm: "你确定删除吗？"} %>
+            <%= link_to '详情', [:admin, active] %>
+            <%= link_to '编辑', [:edit, :admin, active] %>
+          </td>
+        </tr>
+      <% end -%>
+    </tbody>
+</table>
+<%= will_paginate @active_docks %>

@@ -1,0 +1,6 @@
+<%= render partial: "nav" %>
+<% if @rank %>
+  <%= render partial: "show_joined" %>
+<% else %>
+  <%= render partial: "show_not_joined" %>
+<% end %>

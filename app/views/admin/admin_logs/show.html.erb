@@ -1,0 +1,53 @@
+<h1 class="title">
+  <span class="title_left">Admin log详情页面</span>
+  <span class="title_right">
+    <%= link_to "返回列表", admin_admin_logs_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Id</td>
+      <td>
+        <%= @admin_log.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">操作员</td>
+      <td>
+        <%= @admin_log.staffer.fullname %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">操作</td>
+      <td>
+        <%= @admin_log.content %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">资源</td>
+      <td>
+        <%= @admin_log.resource %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">操作类型</td>
+      <td>
+        <%= @admin_log.cn_log_type %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">ip</td>
+      <td>
+        <%= @admin_log.request_ip %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">操作时间</td>
+      <td>
+        <%= @admin_log.created_at %>
+      </td>
+    </tr>
+  </tbody>
+</table>

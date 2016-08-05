@@ -1,0 +1,176 @@
+<%= content_for :header do %>
+  <style>
+    /* 涨 & 公共样式 */
+    body {-moz-user-select:none;-webkit-user-select:none;-webkit-touch-callout: none;-webkit-tap-highlight-color:rgba(255,255,255,0);}
+    .highlight-card {height: 334px; background: url(<%= cdn_file("/stylesheets/mobile/images/compare-plus-bg.jpg") %>);background-size: 100% 100%;}
+    .highlight-card .date {text-align: right;font-size: 12px;color: white;padding: 12px 14px 5px 0;opacity: 0.7;}
+    .highlight-card .avatar {display: block; margin: auto; height: 76px;width: 76px;border: 1px solid #eacdca;border-radius: 50%;}
+    .highlight-card .name {height:36px;line-height: 36px;overflow: hidden;margin: auto;font-size: 14px;color: white;text-align: center;}
+    .highlight-card .pk::before {content: '';height: 21px;background: url(<%= cdn_file("/stylesheets/mobile/images/compare-pk-bg.png") %>) no-repeat;background-size: auto 100%;display: inline-block;vertical-align: bottom;position: relative;left: -24px;width: 32px;}
+    .highlight-card .pk {width: 136px; height: 21px;line-height: 19px;font-size: 13px;background-color: white;color: #ea422b;border-radius: 0 14px 14px 0;position: relative;left: 50%; margin-left: -62px;}
+    .highlight-card .pk .text {display: inline-block;margin-left: -28px;}
+    .highlight-card .pk .text b {font-size: 18px;}
+    .highlight-card .slogan::after {content: '我是股神我怕谁，不服来战！';display: block;font-size: 15px;color: white;text-align: center;margin-top: 10px;}
+    .highlight-card .result {border-collapse: collapse;width: 100%;margin-top: 51px;color: white;}
+    .highlight-card .result td {padding: 0;height: 55px;width: 50%;text-align: center;}
+    .highlight-card .result tr td:first-child {border-right: 1px solid #f1c3bd;}
+    .highlight-card .result .value {font-size: 26px;}
+    .highlight-card .result .suffix {font-size: 24px;}
+    .highlight-card .result .percent::after, .highlight-card .result .change::after {display: block;font-size: 14px;opacity: .7;margin-top: 9px;}
+    .highlight-card .result.day .percent::after {content: '今日盈亏幅';}
+    .highlight-card .result.day .change::after {content: '今日盈亏额';}
+    .highlight-card .result.month .percent::after {content: '近一月盈亏幅';}
+    .highlight-card .result.month .change::after {content: '近一月盈亏额';}
+    .highlight-card .result.total .percent::after {content: '累计盈亏幅';}
+    .highlight-card .result.total .change::after {content: '累计盈亏额';}
+
+    .summary {text-align: center;background-color: #f4f4f4;}
+    .summary .col {float: left;width: 33.3%;height: 95px;line-height: 95px;}
+    .summary .col .circle {width: 64px;height: 64px;border: 1px solid white;border-radius: 50%;position: relative;left: 50%;top: 50%;margin-left: -33px;margin-top: -33px;}
+    .summary .col .circle .row {font-size: 12px;color: #333333;line-height: 17px;margin-top: 12px;}
+    .summary .col .circle .row::after {content: '';display: block;opacity: .7;font-size: 9px;line-height: 14px;margin-top: 6px;}
+    .summary.day .col1 .circle .row::after {content: '近一月盈亏';}
+    .summary.day .col2 .circle .row::after {content: '累计盈亏';}
+    .summary.month .col1 .circle .row::after {content: '今日盈亏';}
+    .summary.month .col2 .circle .row::after {content: '累计盈亏';}
+    .summary.total .col1 .circle .row::after {content: '今日盈亏';}
+    .summary.total .col2 .circle .row::after {content: '近一月盈亏';}
+    .summary .col3 .circle .row::after {content: '平均胜率';}
+    .banner {clear: left;margin: 0 12px;height: 45px;padding: 10px 0;background-color: #ffd300;border-radius: 4px;}
+    .banner .content {width: 245px;height: 45px;line-height: 45px;margin: auto;font-size: 16px;color: #333;background: url(<%= cdn_file("/stylesheets/mobile/images/gold-coins.png") %>) right top no-repeat;background-size: auto 45px;}
+    .top-link {height: 63px;width: 100%;font-size: 12px;}
+    .top-link a {display: block;color: #3b8ede;margin: auto; line-height: 63px;width: 160px;text-align: center;}
+
+    /* 跌 */
+    .highlight-card.mins {background: url(<%= cdn_file("/stylesheets/mobile/images/compare-mins-bg.jpg") %>);}
+    .highlight-card.mins .avatar {border: 2px solid #d1ecd7;}
+    .highlight-card.mins .pk {color: #1b9e30;}
+    .highlight-card.mins .slogan::after {content: '涨跌不由人，来个模拟盘练练手！';}
+    .highlight-card.mins .result tr td:first-child {border-right: 1px solid #afdbb5;}
+  </style>
+
+  <%= javascript_include_tag "/javascripts/utils.js" %>
+<% end %>
+
+<%= content_for :body_top do %>
+  <%= render partial: "/layouts/top_download" unless mobile_request? %>
+<% end %>
+
+<div class="highlight-card" data-key="highlight.change" data-convert='{"hook_dom":"toggleClass", "no_update":"true"}'>
+  <div class="date" data-key="date"></div>
+  <img class="avatar" data-key="avatar" data-convert='{"hook_dom":"avatarlink"}' src="" alt="">
+  <div class="name" data-key="name"></div>
+  <div class="pk"><div class="text">战胜 <b data-key="vs">--</b>％ 财说用户</div></div>
+  <div class="slogan"></div>
+  <table class="result day" data-key="type" data-convert='{"hook_dom":"toggle_type_class", "no_update":"true"}'>
+    <tbody>
+      <tr>
+        <td>
+          <div class="percent"><span class="value" data-key="highlight.percent" data-convert='{"method":"percent", "suffix":"", "demicals":2}'>--</span><span class="suffix">%</span></div>
+        </td>
+        <td>
+          <div class="change"><span class="value" data-key="highlight.change" data-convert='{"hook_dom":"highlight_change", "no_update":"true"}'>--<em class="suffix">万</em></span></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="summary day" data-key="type" data-convert='{"hook_dom":"toggle_type_class", "no_update":1}'>
+  <div class="col col1">
+    <div class="circle">
+      <div class="row" class="value" data-key="summary.percent1" data-convert='{"method":"percent", "demicals":1}'>--%</div>
+    </div>
+  </div>
+  <div class="col col2">
+    <div class="circle">
+      <div class="row" class="value" data-key="summary.percent2" data-convert='{"method":"percent", "demicals":1}'>--%</div>
+    </div>
+  </div>
+  <div class="col col3">
+    <div class="circle">
+      <div class="row" class="value" data-key="summary.win_rate_avg" data-convert='{"method":"percent", "demicals":0, "prefix":""}'>--%</div>
+    </div>
+  </div>
+</div>
+
+<div class="banner">
+  <div class="content">玩模拟炒股，赢现金大奖</div>
+</div>
+
+<div class="top-link">
+  <a href="<%= mobile_link("/mobile/downloads/redirect?channel=shares") %>" target="_blank">查看财说模拟炒股排行榜</a>
+</div>
+
+<%= content_for :script do %>
+  <script type="text/javascript">
+    var data = <%= @datas.to_json.html_safe %>;
+
+    // 数据预处理
+    data.percent_day = data.percent_day == null ? '－－' : data.percent_day;
+    data.percent_month = data.percent_month == null ? '－－' : data.percent_month;
+    data.percent_total = data.percent_total == null ? '－－' : data.percent_total;
+    data.win_rate_avg = data.win_rate_avg == null ? '－－' : data.win_rate_avg;
+
+    // 转换数据结构
+    var data_to_fill = {
+      date: data.date,
+      name: data.name,
+      avatar: data.avatar,
+      vs: data.vs, // 战胜 88% 财说用户
+      type: data.type, // 'day' or 'month' or 'total'
+      highlight: {
+        percent: (data.type === "day") ? data.percent_day : ((data.type === "month") ? data.percent_month : data.percent_total),
+        change: data.change
+      },
+      summary: {
+        percent1: (data.type === "day") ? data.percent_month : data.percent_day,
+        percent2: (data.type === "total") ? data.percent_month : data.percent_total,
+        win_rate_avg: data.win_rate_avg
+      }
+    };
+
+    convert.setData(data_to_fill);
+    convert.avatarlink = function(val) {
+      if(typeof(val) === "string" && val.length > 0) {
+        $(this).attr('src', val);
+      }
+    };
+    convert.toggle_type_class = function(val) {
+      if(typeof(val) === "string" && val.length > 0) {
+        $(this).removeClass('day month total').addClass(val);
+      }
+    };
+    convert.highlight_change = function(v) {
+      var opt = {
+        prefix: "+",
+        demicals: 2,
+        change: [
+          [1e12, '<span class="suffix">万亿</span>'],
+          [1e8, '<span class="suffix">亿</span>'],
+          [1e4, '<span class="suffix">万</span>']
+        ]
+      };
+      opt.change.push([1, ""]);
+      if ($.isNumeric(v)) {
+        var val = v - 0,
+          abs = Math.abs(val);
+        while (opt.change.length) {
+          var change = opt.change.shift();
+          if (abs >= change[0]) {
+            val /= change[0];
+            break;
+          }
+        }
+        v = ((v - 0) >= 0 ? opt.prefix : '') + val.toFixed(opt.demicals);
+      }
+
+      var $change = $(this).closest('.change');
+      $change.find('.suffix').remove();
+      $change.append(change[1]);
+      $(this).html(v);
+    };
+
+    $('[data-key]').each(convert.$action);
+  </script>
+<% end %>

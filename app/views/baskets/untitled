@@ -1,0 +1,25 @@
+var pageTopics = {
+  lists:[
+    {id:20,userid:4,username:'站着睡觉的猫',avator:'../images/v3/icon_pic1.jpg',message:'我说什么了么 <a href="#">@思成</a> <a href="#">//思成: </a>一个月内如果是满仓操作，能保持不被斩仓，都是件不容易的事情啊！<a href="#">//道客: </a>财说选这个点很好，如果单边上涨都是股神了。退潮之后，才知道谁在裸泳。',date:'06月26日 12:57',block:'<a href="#">欧阳靖: </a>这个点搞实盘大赛才有意思',voted:0,isvoted:0,isowner:1,ischat:1,iserased:0},
+    {id:15,userid:3,username:'思成',avator:'https://cdn.caishuo.com/static/uploads/user/avatar/1869/large_cf4cef88c832ab7363a23f58dffb1f23.png',message:'一个月内如果是满仓操作，能保持不被斩仓，都是件不容易的事情啊！<a href="#">//道客: </a>财说选这个点很好，如果单边上涨都是股神了。退潮之后，才知道谁在裸泳。',date:'06月26日 12:57',block:'<a href="#">欧阳靖: </a>这个点搞实盘大赛才有意思',voted:0,isvoted:0,isowner:0,ischat:1,iserased:0},
+    {id:10,userid:2,username:'道客',avator:'https://cdn.caishuo.com/images/v3/userEditLogo.png',message:'财说选这个点很好，如果单边上涨都是股神了。退潮之后，才知道谁在裸泳。',date:'06月26日 12:57',block:'<a href="#">欧阳靖: </a>这个点搞实盘大赛才有意思',voted:10,isvoted:1,isowner:0,ischat:1,iserased:0},
+    {id:5,userid:1,username:'欧阳靖',avator:'https://cdn.caishuo.com/static/uploads/user/avatar/11711/large_bcd8e2508a85ab002a0a203371dab4c1.JPG',message:'这个点搞实盘大赛才有意思',date:'06月26日 12:27',block:'',voted:282,isvoted:0,isowner:0,ischat:0,iserased:1},
+  ],
+  totalNumber:20,
+  nextStart:2
+}
+
+
+{
+  lists:
+  totalNumber:20,
+  nextStart:2
+}
+
+
+var chatsdata = [
+  {id:20,userid:4,username:'站着睡觉的猫',avator:'../images/v3/icon_pic1.jpg',message:'我说什么了么 <a href="#">@思成</a> <a href="#">//思成: </a>一个月内如果是满仓操作，能保持不被斩仓，都是件不容易的事情啊！<a href="#">//道客: </a>财说选这个点很好，如果单边上涨都是股神了。退潮之后，才知道谁在裸泳。',date:'06月26日 12:57',voted:0,isvoted:0,isowner:1,ischat:1,iserased:1},
+  {id:15,userid:3,username:'思成',avator:'https://cdn.caishuo.com/static/uploads/user/avatar/1869/large_cf4cef88c832ab7363a23f58dffb1f23.png',message:'一个月内如果是满仓操作，能保持不被斩仓，都是件不容易的事情啊！<a href="#">//道客: </a>财说选这个点很好，如果单边上涨都是股神了。退潮之后，才知道谁在裸泳。',date:'06月26日 12:57',voted:0,isvoted:0,isowner:0,ischat:1,iserased:1},
+  {id:10,userid:2,username:'道客',avator:'https://cdn.caishuo.com/images/v3/userEditLogo.png',message:'财说选这个点很好，如果单边上涨都是股神了。退潮之后，才知道谁在裸泳。',date:'06月26日 12:57',voted:10,isowner:false,ischat:1,isvoted:1,iserased:1},
+  {id:5,userid:1,username:'欧阳靖',avator:'https://cdn.caishuo.com/static/uploads/user/avatar/11711/large_bcd8e2508a85ab002a0a203371dab4c1.JPG',message:'这个点搞实盘大赛才有意思',date:'06月26日 12:27',voted:282,isowner:1,ischat:0,isvoted:0,iserased:1},
+];

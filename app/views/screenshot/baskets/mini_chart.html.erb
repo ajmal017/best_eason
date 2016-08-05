@@ -1,0 +1,10 @@
+<% content_for :script do %>
+  <%= javascript_include_tag "highcharts" %>
+<% end %>
+
+<div class="basket_chart" data-basket-id="<%= @bid %>" id="basket_chart_<%= @bid %>" style="width:200px;height:126px;">
+</div>
+
+<script type="text/javascript">
+  BasketMiniChart.init();
+</script>

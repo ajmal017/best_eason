@@ -1,0 +1,30 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+<%- @page_title = "如何绑定账号" -%>
+<div class="container userEdit clearfix contactUs">
+  <%= render :partial => "left_bar" %>
+  <div class="rightBox">
+    <h2>开户指引</h2>
+    <div class="about_right account_guide">
+      <%= render 'account_banner' %>
+      <div class="content account_guide binding">
+        <h5>第一步：登录财说后选择「持仓」-- 「交易账号管理」</h5>
+        <div><%= image_tag "/images/v3/help/pastedFile1.png" %></div>
+        <h5>第二步：找到您希望绑定的券商选择「我要授权」</h5>
+        <div><%= image_tag "/images/v3/help/pastedFile2.png" %></div>
+        <h5>第三步：输入您在券商的客户编号，点击确认授权！</h5>
+        <div>
+          <p>1、当您是益群用户时，请直接授权</p>
+          <%= image_tag "/images/v3/help/pastedFile3.png" %>
+          <p>2、当您是中信用户时，请直接授权</p>
+          <%= image_tag "/images/v3/help/preview4.png" %>
+          <p>3、当您是盈透用户时，您需要先将盈透与益群连接，再进行授权</p>
+          <%= image_tag "/images/v3/help/preview5.png" %>
+          <%= image_tag "/images/v3/help/preview6.png" %>
+        </div>
+        <h5>授权确认后，您会收到一封提示授权成功的邮件，请随时关注您的邮箱。</h5>
+      </div>
+    </div>
+  </div>
+</div>

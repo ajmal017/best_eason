@@ -1,0 +1,71 @@
+<h1 class="title">
+  <span class="title_left">登录后首页--banners设置</span>
+  <span class="title_right"><a href="/admin/home_settings">返回首页设置</a></span>
+</h1>
+
+<%= render partial: "sub_menus" %>
+
+<div class="box">
+  <h1 class="title">
+    <span class="title_left" onclick="javascript:newBanner();"><a href="javascript:">新建</a></span>
+
+    <span class="right">
+      拖动一列进行排序，排序完成后请点击&nbsp;<input type="button" value="保存排序结果" onclick="javascript:saveBannersSort();"></input>
+    </span>
+  </h1>
+  <table class="grid">
+    <thead>
+      <tr>
+        <th width="200">标题</th>
+        <th>链接url</th>
+        <th width="450">图片</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody class="sortable">
+      <% @banners.each do |banner_upload_id, infos| %>
+        <tr data-id="<%= banner_upload_id %>">
+          <td><%= infos[:title] %></td>
+          <td><%= infos[:url] %></td>
+          <td><%= image_tag infos[:image_url], width: "300" %></td>
+          <td class="action">
+            <a href="javascript:" onclick="javascript:deleteBanner(this);">删除</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<script type="text/javascript">
+  function newBanner(){
+    remote_dialog("/admin/banners/new", "这里是标题", 500, 300);
+  }
+
+  function deleteBanner(obj){
+    if (confirm("确定要删除吗？")){
+      var banner_upload_id = $(obj).parent().parent().attr("data-id");
+      $.post("/admin/banners/"+banner_upload_id, {_method: "delete"}, function(){
+        window.location.reload();
+      })
+    }
+  }
+
+  function saveBannersSort(){
+    var upload_ids = [];
+    $(".sortable tr").each(function(){
+      upload_ids.push($(this).attr("data-id"));
+    })
+    $.post("/admin/banners/update_sort", {_method: "patch", upload_ids: upload_ids}, function(){
+      alert("保存成功！");
+    })
+  }
+
+  $(function(){
+    $( ".sortable" ).sortable({
+      items: "tr",
+      placeholder: "ui-state-highlight"
+    });
+  })
+</script>

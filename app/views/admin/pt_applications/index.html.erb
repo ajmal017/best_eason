@@ -1,0 +1,29 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+  </span>   
+</h1>
+<!--子导航-->
+<div class="box">
+  <%= link_to '全部', [:admin, :pt_applications] %>
+  <% PtApplication::STATUS_NAMES.each_with_index do |name, index| %>
+    <%= link_to name, admin_pt_applications_path(status: index) %>
+  <% end -%>
+</div>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>财说ID</th>
+      <th>昵称</th>
+      <th>手机号</th>
+      <th>当前步骤</th>
+      <th>状态</th>
+      <th>操作</th>
+      <th>登记时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: 'pt_application', collection: @pt_apps %>
+  </tbody>
+</table>
+<%= will_paginate @pt_apps %>

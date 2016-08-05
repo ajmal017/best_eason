@@ -1,0 +1,23 @@
+<%= form_for [:admin, @tag_basis] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b>名称</td>
+        <td>
+            <%= f.text_field :name, size: 30 %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field">是否显示到注册页</td>
+        <td><%= f.check_box :hot %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+

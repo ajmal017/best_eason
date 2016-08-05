@@ -1,0 +1,50 @@
+
+<div class="container cs-container account-container">
+  <div class="inputs">
+    <h1>登录</h1>
+    <%=form_for @user, url: login_path, :html => {class: 'form-horizontal', role: 'form'} do |f|%>
+      <div class="form-group">
+        <div class="col-xs-7">
+          <% if flash[:alert].present? %>
+            <div class="alert alert-danger" role="alert">
+            </div>
+        <% end %>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-7 postion-img">
+          <%=f.text_field :email, class: 'form-control', placeholder: '请输入电子邮箱', autofocus: true%>
+          <span class="cs-form-main-icon cs-form-icon-email">
+            <%=image_tag "/img/0.gif"%>
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-7 postion-img">
+          <%=f.password_field :password, class: 'form-control', placeholder: '密码'%>
+          <span class="cs-form-main-icon cs-form-icon-password">
+            <%=image_tag "/img/0.gif"%>
+          </span>
+        </div>
+      </div>
+
+      <div class="cs-checkbox-container tip-text">
+        <%=check_box_tag :remember_me %>
+        <div class="checkbox" id="j_remember_div">
+          <%=image_tag "/img/0.gif", id: 'j_remember_img'%>
+        </div>
+        <div class="text">记住登录状态</div>
+      </div>
+
+      <div class="form-group margin-bot" style="width:348px;">
+        <div class="col-md-9">
+          <button type="submit" class="pull-left cs-button-primary cs-button-short">登录</button>
+          <%=link_to "忘记密码了？", '#', class: 'skip' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="register">没有财说账号？
+    <%= link_to '立即注册', '#' %>
+  </div>
+</div>

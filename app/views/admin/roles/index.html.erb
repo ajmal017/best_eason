@@ -1,0 +1,54 @@
+<h1 class="title">
+  <span class="title_left">后台角色列表</span>
+  <span class="title_right">
+    <%= link_to "添加角色", new_admin_role_path %>
+  </span>
+</h1>
+<div class="page_info">
+  总数： <b><%= @roles.total_entries %></b>
+</div>
+<table class="grid" id="role-grid">
+    <thead>
+        <tr>
+          <th width="5%">ID</th>
+          <th width="20%">名称</th>
+          <th>管理员数量</th>
+          <th>超级管理员数量</th>
+          <th>拥有权限数量</th>
+          <th width="15%">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+      <% @roles.each do |role| %>
+        <tr id="role_<%= role.id %>">
+          <td><%= role.id %></td>
+          <td><%= role.name %></td>
+          <td><%= role.staffers.count %></td>
+          <td><%= role.staffers.where("admin != ?",0).count %></td>
+          <td><%= role.permissions.where("father_id != ?",0).count %></td>
+          <td class="action">
+            <%= link_to "修改名称", edit_admin_role_path(role), title: "修改" %>
+            <a href="#", onclick="del_role(<%= role.id %>)">删除角色</a>
+            <a href="/admin/permissions/show_permission_by_role?role_id=<%=role.id%>" style="color:#338FCC;">修改权限</a>
+          </td>
+        </tr>
+      <% end -%>
+    </tbody>
+</table>
+<%= will_paginate @staffers %>
+<script type="text/javascript" charset="utf-8">
+  function del_role(id){
+    var c = $("#role_"+id).children("td")[2].innerHTML
+    if (c == 0) {
+      var r = confirm("你确定删除吗？")
+      if (r == true){
+        $.post("/admin/roles/ajax_delete_role?id="+id, function(){
+          $("#role_"+id).remove();
+          location.reload();
+        })
+      }
+    } else {
+      alert("此角色有其它管理员管理暂时不能删除！")
+    }
+  }
+</script>

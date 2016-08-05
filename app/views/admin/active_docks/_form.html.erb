@@ -1,0 +1,36 @@
+<%= form_for [:admin, @active_dock] do |f| %>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>短ID:</td>
+      <td>
+        <%= f.text_field :short_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>名称:</td>
+      <td>
+        <%= f.text_field :name %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>描述:</td>
+      <td>
+        <%= f.text_area :description, style: "width:400px;height:150px;" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>对接数据:</td>
+      <td>
+        <%= f.text_area :dock_date, style: "width:400px;height:150px;"%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"></td>
+      <td>
+        <%= f.submit params[:action] == "edit" ? "修改数据" : "新建数据" %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end -%>

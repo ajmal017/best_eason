@@ -1,0 +1,9 @@
+if ($.trim($(".review").html()) == ""){
+  $(".review").prepend("<%= j render partial: 'show_review', locals: {basket: @basket, comments: @comments} %>");
+}
+
+<% if params[:comment_id].present? %>
+  highlightAndGotoComment(<%= params[:comment_id] %>);
+<% end %>
+
+$('span.timeago').timeago();

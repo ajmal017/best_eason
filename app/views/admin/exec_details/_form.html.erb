@@ -1,0 +1,117 @@
+<%= form_for [:admin, @exec_detail] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b></b><%= f.label :basket_id %></td>
+        <td><%= f.text_field :basket_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :order_id %></td>
+        <td><%= f.number_field :order_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :instance_id %></td>
+        <td><%= f.text_field :instance_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :exchange %></td>
+        <td><%= f.text_field :exchange, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :currency %></td>
+        <td><%= f.text_field :currency, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :symbol %></td>
+        <td><%= f.text_field :symbol, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :contract_id %></td>
+        <td><%= f.number_field :contract_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :account_name %></td>
+        <td><%= f.text_field :account_name, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :avg_price %></td>
+        <td><%= f.text_field :avg_price, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :cum_quantity %></td>
+        <td><%= f.number_field :cum_quantity, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :exec_exchange %></td>
+        <td><%= f.text_field :exec_exchange, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :exec_id %></td>
+        <td><%= f.text_field :exec_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :ib_order_id %></td>
+        <td><%= f.text_field :ib_order_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :perm_id %></td>
+        <td><%= f.number_field :perm_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :price %></td>
+        <td><%= f.text_field :price, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :shares %></td>
+        <td><%= f.number_field :shares, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :side %></td>
+        <td><%= f.text_field :side, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :time %></td>
+        <td><%= f.text_field :time, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :ev_rule %></td>
+        <td><%= f.text_field :ev_rule, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :ex_multiplier %></td>
+        <td><%= f.text_field :ex_multiplier, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :processed %></td>
+        <td><%= f.check_box :processed, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :type %></td>
+        <td><%= f.text_field :type, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :user_id %></td>
+        <td><%= f.number_field :user_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :stock_id %></td>
+        <td><%= f.number_field :stock_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :trading_account_id %></td>
+        <td><%= f.number_field :trading_account_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :rt_order_id %></td>
+        <td><%= f.text_field :rt_order_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+

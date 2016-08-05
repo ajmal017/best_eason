@@ -1,0 +1,20 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/site.css", "/stylesheets/v3/global.css", "/stylesheets/v3/match.css" -%>
+  <%= javascript_include_tag 'events/shipan.js', '/javascripts/match.js' %>
+<% end %>
+
+<div class="banner">
+    <div class="container">
+        <div class="countDown"><span><%= shipan_left_days %></span></div>
+        <div id="moneyPool"></div>
+    </div>
+</div>
+<div class="container nav">
+    <a href="/events/shipan" class="<%= shipan_menu_class("index") %>">首页</a>
+    <a href="/events/shipan/trading" class="<%= shipan_menu_class("trading") %>">动态</a>
+    <a href="/events/shipan/ranks" class="<%= shipan_menu_class("ranks") %>">排行榜</a>
+    <a href="/events/shipan/rules" class="<%= shipan_menu_class("rules") %>">大赛规则</a>
+    <a href="https://www.caishuo.com/zt/150520/" target="_blank">往期</a>
+</div>
+
+<div class="consult"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&amp;key=XzkzODAxOTgxM18yNDMxODJfNDAwNzcxODg1OF8yXw" target="_blank">在线咨询</a></div>

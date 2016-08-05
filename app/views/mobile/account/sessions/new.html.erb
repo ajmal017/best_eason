@@ -1,0 +1,47 @@
+<%= render partial: "/mobile/account/share/shared_header"%>
+<div class="container">
+	<div class="logo"></div>
+	<div id="errorTip">&nbsp;</div>
+	<ul class="account">
+	  <%=form_for @user, url: mobile_link(mobile_login_path) do |f| %>
+	  <li>
+	    <%= f.text_field :mobile, id: :account, placeholder: '手机/邮箱' %><span class="empty"></span>
+	  </li>
+	  <li>
+	    <%= f.password_field :password, id: :password, placeholder: '请输入密码' %><span class="empty" style="right:1.5em"></span><span class="view"></span>
+	  </li>
+	  <% end %>
+	</ul>
+	<dl class="confirm">
+	  <dd onclick="checklogin()">登 录</dd>
+	  <dt><%= link_to '注册账户', mobile_link(mobile_signup_path) %></dt>
+	</dl>
+</div>
+<% content_for :script do %>
+<script type="text/javascript">
+  <% if @message %>
+    showError('<%= @message %>');
+  <% end %>
+  $('.account input').bind('keyup blur focus input', function(){
+    $(this).siblings('span.empty').toggle(this.value!='');
+  });
+  $('.account li span.empty').click(function(){
+    $(this).hide().siblings('input').val('').focus();
+  });
+  $('.account li span.view').click(function(){
+    $(this).toggleClass('viewon').siblings('input').attr('type',$(this).hasClass('viewon')?'text':'password').focus();
+  });
+  function showError(txt,delay){
+    $('#errorTip').text(txt).clearQueue().stop().fadeTo(500,1);
+    if (delay>0){
+      window.setTimeout(function(){
+        $('#errorTip').clearQueue().stop().fadeTo(500,0);
+      },delay);
+    }
+  }
+  function checklogin(){
+    $('form').submit();
+    // showError('账号密码错误', 1800)
+  }
+</script>
+<% end %>

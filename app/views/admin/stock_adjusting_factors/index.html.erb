@@ -1,0 +1,64 @@
+<h1 class="title">
+  <span class="title_left">Stock adjusting factor列表页</span>
+  <span class="title_right">
+    <%#= link_to "新建Stock adjusting factor", new_admin_stock_adjusting_factor_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_stock_adjusting_factors_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :inner_code_eq, :placeholder => 'InnerCode', class: 'form-control' %>
+    <%= f.text_field :base_stock_id_eq, :placeholder => 'BaseStockId', class: 'form-control' %>
+    <%= f.text_field :ex_divi_date_eq, :placeholder => 'ExDiviDate', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @stock_adjusting_factors.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>StockId</th>
+      <th>证券内部编码</th>
+      <th>除权除息日</th>
+      <th>精确</th>
+      <th>精确复权常数</th>
+      <th>比例</th>
+      <th>Xgrq</th>
+      <th>累计分红</th>
+      <th>累计送股</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+      <th colspan="3">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @stock_adjusting_factors.each do |stock_adjusting_factor| %>
+    <tr>
+      <td><%= stock_adjusting_factor.id %></td>
+      <td><%= stock_adjusting_factor.base_stock_id %></td>
+      <td><%= stock_adjusting_factor.inner_code %></td>
+      <td><%= stock_adjusting_factor.ex_divi_date %></td>
+      <td><%= stock_adjusting_factor.adjusting_factor %></td>
+      <td><%= stock_adjusting_factor.adjusting_const %></td>
+      <td><%= stock_adjusting_factor.ratio_adjusting_factor %></td>
+      <td><%= stock_adjusting_factor.xgrq %></td>
+      <td><%= stock_adjusting_factor.accu_cash_divi %></td>
+      <td><%= stock_adjusting_factor.accu_bonus_share_ratio %></td>
+      <td><%= stock_adjusting_factor.created_at %></td>
+      <td><%= stock_adjusting_factor.updated_at %></td>
+      <td class="action"><%= link_to '详情', [:admin, stock_adjusting_factor] %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @stock_adjusting_factors %>

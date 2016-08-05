@@ -1,0 +1,89 @@
+<%= form_for [:admin, @historical_quote] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b></b><%= f.label :base_stock_id %></td>
+        <td><%= f.number_field :base_stock_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :symbol %></td>
+        <td><%= f.text_field :symbol, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :last %></td>
+        <td><%= f.text_field :last, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :open %></td>
+        <td><%= f.text_field :open, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :high %></td>
+        <td><%= f.text_field :high, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :low %></td>
+        <td><%= f.text_field :low, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :last_close %></td>
+        <td><%= f.text_field :last_close, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :change_from_open %></td>
+        <td><%= f.text_field :change_from_open, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :percent_change_from_open %></td>
+        <td><%= f.text_field :percent_change_from_open, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :change_from_last_close %></td>
+        <td><%= f.text_field :change_from_last_close, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :percent_change_from_last_close %></td>
+        <td><%= f.text_field :percent_change_from_last_close, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :index %></td>
+        <td><%= f.text_field :index, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :volume %></td>
+        <td><%= f.number_field :volume, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :date %></td>
+        <td><%= f.date_select :date, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :currency %></td>
+        <td><%= f.text_field :currency, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :ma5 %></td>
+        <td><%= f.text_field :ma5, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :ma10 %></td>
+        <td><%= f.text_field :ma10, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :ma20 %></td>
+        <td><%= f.text_field :ma20, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :ma30 %></td>
+        <td><%= f.text_field :ma30, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+

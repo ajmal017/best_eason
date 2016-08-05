@@ -1,0 +1,16 @@
+$(".normal").hide();
+$(".attended").hide();
+$(".alert").hide();
+
+
+<% if @survey.valid? %>
+  $("#alertBox").show();
+  $(".normal").show();
+<% else %>
+   <% if !@survey.q1_12 || !@survey.at_least_one || @survey.q4.blank? || @survey.q5.blank? || @survey.user_name.blank? || @survey.user_phone.blank? || @survey.user_gender.blank? %>
+     $(".alert").show();
+   <% else %>
+     $("#alertBox").show();
+     $(".attended").show();
+   <% end %>
+<% end %>

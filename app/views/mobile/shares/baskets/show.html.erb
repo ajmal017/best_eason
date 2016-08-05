@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title><%= @page_title %></title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <%= stylesheet_link_tag "/stylesheets/mobile/mo.caishuo.css" %>
+    <%= stylesheet_link_tag "/stylesheets/mobile/mo.global.css" %>
+  </head>
+
+  <body>
+    <%= render '/shared/analytics/gtm'%>
+    <header id="CaishuoMenu">
+    </header>
+    <div class="basket <%= @basket.change_percent.to_f < 0 ? 'mins' : 'plus' %>">
+      <div class="tags">
+        <% @tags[0..2].each do |tag| %>
+          <span><%= tag %></span>
+        <% end %>
+      </div>
+      <h1><%= @basket.title %></h1>
+      <article>
+        <div><%= up_down_value @basket.change_percent, postfix: '%' %><span>最新涨幅</span></div>
+        <div><%= up_down_value @basket.return_from_start_on, postfix: '%' %><span>创建至今收益</span></div>
+      </article>
+    </div>
+    <article>
+      <h2 class="avator">
+        <%= image_tag @basket.author.avatar.url, alt: @basket.author.username %>
+        <label><%= @basket.author.username %></label>
+        <span><%= @basket.author.pretty_fans_count %>关注</span>
+      </h2>
+      <section>
+        <strong>投资理念</strong>
+        <% if action_name == 'content' %>
+          <%= @basket.description.html_safe %>
+        <% else %>
+          <%= Sanitize.clean(@basket.description||'暂无信息').truncate(66) %>
+          <%= link_to '更多', mobile_link(content_mobile_shares_basket_path(@basket)), class: 'more' %>
+        <% end %>
+      </section>
+    </article>
+    <article>
+      <h2>收益走势图
+        <span class="line standard"><%= @basket.market_index_name %></span>
+        <span class="line basket">组合</span>
+      </h2>
+      <div id="BasketChart"></div>
+    </article>
+    <article>
+      <h2>组合配置 <%= link_to '调仓纪录', mobile_link('/app?from=shares_basket') %></h2>
+      <div id="BasketPieChart"></div>
+    </article>
+    <article>
+      <table class="basketDetail" cellpadding="0">
+        <thead>
+          <tr>
+            <th>名称</th>
+            <td>操作</td>
+            <th>当前价</th>
+            <td>比重</td>
+          </tr>
+        </thead>
+          <% @groups.each do |sector, group| %>
+            <tbody class="category" style="border-color:<%= group[:color] %>;">
+              <tr><th colspan="4"><%= sector %> <%= group[:num] %>%</th></tr>
+            </tbody>
+            <tbody>
+              <% group[:stocks].each do |stock| %>
+                <tr>
+                  <th><label><%= stock.c_name %></label><span><%= stock.symbol %></span></th>
+                  <td style="color:<%= BasketAdjustLog.stock_action_color(@logs_hash[stock.id]) %>;"><%= BasketAdjustLog.stock_action_desc(@logs_hash[stock.id]) %></td>
+                  <th>
+                    <% if stock.listed_state == 1 %>
+                      <label><%= stock.realtime_price %></label><span class="<%=  up_or_down_class(stock.percent_change_from_previous_close) %>"><%= up_down_value(stock.percent_change_from_previous_close, postfix: '%') %></span>
+                    <% else %>
+                      <small><%= BaseStock::LISTED_STATE_NAMES[stock.listed_state] %></small>
+                    <% end %>
+                  </th>
+                  <td><b><%= @weights_hash[stock.id]||0.0 %>%</b></td>
+                </tr>
+              <% end %>
+            </tbody>
+          <% end %>
+      </table>
+    </article>
+    <div id="DownLoad">
+      <a class="close" onclick="$(this).parent().hide();$('body').css('padding-bottom','0')"></a>
+      <a href="#" class="siteLogo"></a>
+	  <%= link_to '下载', mobile_link("/app?from=shares_basket"), class: 'downLoad' %>
+    </div>
+  </body>
+
+  <%= javascript_include_tag "mobile/shares/wechat_share.js", "/javascripts/jquery.caishuo.js", "/javascripts/mo.caishuo.js" %>
+  <script type="text/javascript">
+    var basketId = <%= @basket.id %>;
+    <% if @data %>
+      window.data = <%= @data.to_json.html_safe %>;
+      moCaishuo.basket.drawCompare('#BasketChart', data.basket, data.market);
+    <% else %>
+      $.getJSON('<%=mobile_link "/mobile/data/baskets/#{@basket.id}/chart_datas"%>',{}, function(data){
+        window.data = data;
+        moCaishuo.basket.drawCompare('#BasketChart', data.basket, data.market);
+      });
+    <% end %>
+
+    $('#BasketPieChart').BaseketPieChart([
+      <% @groups.each do |title, hash| %>
+        { title: '<%= title %>', num: <%= hash[:num]*10 %>, color: '<%= hash[:color] %>'},
+      <% end %>
+    ]);
+    
+    $('.timeago').timeago();
+  </script>
+</html>

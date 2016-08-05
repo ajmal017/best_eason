@@ -1,0 +1,5 @@
+if (Adjust.checkCanAddAreaStocks('<%= @stock.market_area %>')){
+  $(".themeStocks>tbody").append("<%= j render :partial => 'adjust_add_stock', locals: {stock: @stock} %>");
+}else{
+  CaishuoAlert('由于汇率转换的原因，目前不同地区股票不能在一个组合投资里并存。');
+}

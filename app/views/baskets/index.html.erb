@@ -1,0 +1,19 @@
+<%=content_for :header do %>
+  <%= javascript_include_tag "basket_index" %>
+  <%= stylesheet_link_tag "/stylesheets/v3/themeList.css" %>
+<% end %>
+
+<div class="container">
+  <%= render :partial => "/shared/sub_menus/baskets" %>
+  <div class="narrowBox clearfix">
+      <%= render :partial => 'left_box' %>
+      <%= render :partial => 'right_box' %>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+    // var search_params = getSearchParamsFromUrl();
+    var _pre_search_params = <%= @search.to_json.html_safe %>;
+    setSearchConditions(_pre_search_params);
+</script>

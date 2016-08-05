@@ -1,0 +1,23 @@
+<div class="clearfix">
+  <div class="userAvator float-left">
+    <a href="<%= avatar_setting_index_path %>" class="avator">
+      <%= image_tag @user.avatar_url(:large) %>
+      <span>修改头像</span>
+    </a>
+    <a class="editProBtn" href="<%= profile_setting_index_path %>">编辑个人资料</a>
+  </div>
+  <div class="userInfo float-right">
+    <label><strong><%= @user.username %></strong><%= @user.headline %></label>
+    <div class="wherefrom">
+      <span>
+        <% if @user.gender_name.present? && @user.city.present? %>
+          <%= @user.gender_name %>，来自<%= @user.city %>
+        <% else %>
+          <%= link_to "填写性别，填写城市", profile_setting_index_path(to: 'basic_info') %>
+        <% end %>
+      </span> 
+      <span>加入财说<%= @user.joined_days %>天</span>
+    </div>
+    <p>简介：<%= @user.profile.try(:intro) %></p>
+  </div>
+</div>

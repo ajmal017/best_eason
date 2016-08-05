@@ -1,0 +1,29 @@
+<!-- 参赛用户 -->
+<div class="itemBox userPanel">
+    <div class="userInfo">
+        <a class="avator avator_70">
+          <%= image_tag current_user.avatar_url(:large) %>
+          <span><%= current_user.username %>
+              <em><%= current_user.headline %></em>
+          </span>
+        </a>
+        <dl class="rank">
+            <dt class="<%= 'crown' if @basket_rank.champion? %>"><%= @basket_rank.now_rank %></dt>
+            <dd>当前排名</dd>
+        </dl>
+    </div>
+    <dl class="basketInfo clearfix">
+        <dt>
+            <span>大赛平均收益</span>
+            <strong><%= up_down_style(@contest.avg_ret, {postfix: "%", force_precision: 2}) %></strong>
+        </dt>
+        <dt>
+            <span>我的收益</span>
+            <strong><%= up_down_style(@basket_rank.ret, {postfix: "%", force_precision: 2}) %></strong>
+        </dt>
+        <dt>
+            <span>我的盈亏</span>
+            <strong><%= up_down_style(@basket_rank.basket.pt_account.total_profit, currency_format: true) %></strong>
+        </dt>
+    </dl>
+</div>

@@ -1,0 +1,63 @@
+development:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: true
+  database: caishuo
+  pool: 5
+  username: root
+  password: 
+  host: localhost
+  timeout: 5000
+
+staging:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: true
+  database: caishuo
+  pool: 5
+  username: caishuo
+  password: caishuo
+  timeout: 5000
+  host: localhost
+
+test:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: true
+  database: caishuo_test
+  pool: 5
+  username: root
+  password: 
+  host: localhost
+  timeout: 5000
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: true
+  database: caishuo
+  pool: 5
+  username: caishuo
+  password: caishuo
+  timeout: 5000
+  host: localhost
+
+sqlserver:
+  adapter: sqlserver
+  host: stockdata01.chinacloudapp.cn
+  port: 1433
+  database: JYDB
+  username: jydb
+  password: jydb
+  encoding: gbk
+  
+docker_dev:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: true
+  database: caishuo
+  pool: 5
+  username: root
+  password: '1234'
+  timeout: 5000
+  host: mysql

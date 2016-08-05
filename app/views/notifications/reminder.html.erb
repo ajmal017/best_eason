@@ -1,0 +1,56 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+<%- @page_title = "提醒通知" -%>
+<div class="container userEdit clearfix">
+  <%=render partial: 'shared/setting_left_box' %>
+<div class="rightBox">
+  <div class="review remind">
+    <h2 class="text-center">
+      <%= render "tab_title" %>
+    </h2>
+    <% if @reminders.present? %>
+      <ul class="p_margin">
+        <% @reminders.each do |reminder| %>
+          <li class="<%='unRead' unless reminder.read?%>" onclick="javascript:window.location.href='<%= reminder.try(:url) %>';">
+            <% if reminder.class == Notification::StockReminder %>
+              <%= link_to_stock(reminder.mentionable, {class: "j_bop username", "data-sid" => reminder.mentionable.id, inner: "#{reminder.title}"}) %>
+            <% else %>
+              <a class="username" href="<%= basket_path(reminder.mentionable.id) %>"><%= reminder.title %></a>
+            <% end %>
+            <p><%= raw reminder.content %></p>
+            <div class="commentActions">
+              <span class="date"><%= reminder.created_at.to_s(:short) %></span>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <article class="noContents remindNotice" style="display: block;"></article>
+    <% end %>
+    <%= will_paginate @reminders, class: 'pageNav', inner_window: 2, outer_window: 0 %>
+  </div>
+</div>
+</div>
+<script>
+  $(function(){
+    // 消息标记已读
+    $.post('/ajax/notifications/mark_read', {ids: <%= @reminders.map(&:id).to_s %>, type: 'reminder'});
+
+    $(".commentActions a").bind('click', function(){
+      var target = $(this);
+
+      $.ajax({
+        url: '/ajax/notifications/' + target.attr('notify-id'),
+        type: 'delete',
+        success: function(datas){
+          if(datas.result){
+            target.parents('li').remove();
+          }else{
+            alert('删除失败');
+          }
+        }
+      })
+    })
+  })
+</script>

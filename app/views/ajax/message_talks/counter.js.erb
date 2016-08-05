@@ -1,0 +1,5 @@
+<% @counters.map do |talk_id, unread_count| %>
+  <% if unread_count > 0 %>
+    $(".j_talk_list li[talk-id=" + <%=talk_id%> + "]").addClass('unRead');
+  <% end %>
+<% end %>

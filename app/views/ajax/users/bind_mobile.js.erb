@@ -1,0 +1,4 @@
+CaishuoDialog.open({content: "<%= @msg %>", theme:'tip'})
+<% if @result %>
+  setTimeout(function(){location.reload();}, 1500);
+<% end %>

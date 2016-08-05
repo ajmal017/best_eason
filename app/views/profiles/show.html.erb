@@ -1,0 +1,62 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/profile.css", "/stylesheets/v3/commentPack.css" %>
+  <%= javascript_include_tag "jquery.timeago.js", "jquery.timeago.settings.js", "/javascripts/commentPack.min.js" %>
+<% end %>
+
+<div class="container profile clearfix">
+  <div class="float-left">
+    <%= render partial: "profiles/profile/head_#{@render_type}" %>
+    <!-- 实盘大赛暂时未做进来，现无大赛不需要显示 -->
+    <%= render partial: "profiles/profile/baskets_#{@render_type}" %>
+    <%= render partial: "profiles/profile/follows_#{@render_type}" %>
+    <%= render partial: "profiles/profile/combines" %>
+  </div>
+  
+  <dl class="float-right">
+    <%= render partial: "profiles/profile/right_#{@render_type}" %>
+  </dl>
+</div>
+
+<div style="display:none;">
+  <div id="chatingBox" class="comments"></div>
+</div>
+<div id="emotionBox"></div>
+<dl id="autoComplete"></dl>
+<div id="eraseComment">
+  <label>确定要删除这条评论么？</label>
+  <button class="b_btn dialog_btn_y">确定</button>
+  <button class="b_btn dialog_btn_c">取消</button>
+</div>
+
+<script type="text/javascript" role="rick">
+  var _user_id = "<%= @user.id %>";
+</script>
+<!-- <script type="text/javascript" role="online_remove_this" src="http://192.168.1.121/test/commentPack.js"></script> -->
+
+<script type="text/javascript" role="rick">
+  
+  commentPack.init({
+    holder:'#Feeds',
+    isloginEvent: function(){
+      return isLogined();
+    },
+    dologinEvent:function(){
+      openLoginDialog();
+    },
+    Emotion: {imagePrefix: '<%= Setting.cdn_host %>/images/emotions/'},
+    Completer:{},
+    Feeds: {
+      username: '<%= @user.username %>',
+      afterloadEvent: function(){
+        initBubbleBox();
+        $(".timeago").timeago();
+        $('#Feeds .empty').toggle(!$('#Feeds article').length);
+      },
+      getfeedsEvent: function(last_id, callback){
+        $.get("/profiles/"+_user_id+"/feeds", {last_id: last_id}, function(data){
+          callback(data);
+        }, 'json');
+      }
+    }
+  });
+</script>

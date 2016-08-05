@@ -1,0 +1,2 @@
+class ApiExec < ExecDetail
+end

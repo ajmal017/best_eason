@@ -1,0 +1,9 @@
+<% trading_flows.each do |tf| %>
+  <tr>
+    <td><%= tf.category_name %></td>
+    <td><em class="plus"><%= humanlize_number_with_flag(tf.in) %></em></td>
+    <td><em class="mins"><%= humanlize_number_with_flag(tf.out) %></em></td>
+    <td><em class="<%= up_or_down_class(tf.net_in) %>"><%= humanlize_number_with_flag(tf.net_in) %></em></td>
+    <td><em class="<%= up_or_down_class(tf.net_in) %>"><%= number_to_percentage(tf.net_in_percent, precision: 2)%></em></td>
+  </tr>
+<% end %>

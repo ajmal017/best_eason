@@ -1,0 +1,21 @@
+<?xml version="1.0"encoding="UTF-8"?>
+<urlset>
+  <url>
+    <loc><![CDATA[https://www.caishuo.com/]]></loc>
+    <data>
+      <display>
+        <pc_url_pattern><![CDATA[https://www.caishuo.com/baskets/(\d+)]]></pc_url_pattern>
+        <html5_url_pattern><![CDATA[https://m.caishuo.com/baskets/($1)]]></html5_url_pattern>
+      </display>
+    </data>
+  </url>
+  <url>
+    <loc><![CDATA[https://www.caishuo.com/]]></loc>
+    <data>
+      <display>
+        <pc_url_pattern><![CDATA[https://www.caishuo.com/stocks/(\d+)]]></pc_url_pattern>
+        <html5_url_pattern><![CDATA[https://m.caishuo.com/stocks/($1)]]></html5_url_pattern>
+      </display>
+    </data>
+  </url>
+</urlset>

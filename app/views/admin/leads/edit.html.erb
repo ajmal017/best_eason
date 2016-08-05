@@ -1,0 +1,23 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right"><%=link_to '返回列表', admin_leads_path %></span>
+</h1>
+<%= form_for @lead, url: update_info_admin_lead_path(@lead), method: :put do |f|%>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>邀请码:</td>
+      <td>
+        <%= f.text_field :code, :size=>50 %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"></td>
+      <td>
+        <%= f.submit '提交'%>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end -%>
+ 

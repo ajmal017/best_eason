@@ -1,0 +1,59 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+</h1>
+
+
+<!--搜索框-->
+<div class="box">
+  内容分类:  &nbsp;&nbsp;
+  <a href="?recommend_type=" class="<%='current' if params[:recommend_type].blank?%>">全部</a>
+  <% MD::FeedRecommendContent::FEED_TYPES.each do |k, v| %>
+    <a href="?recommend_type=<%=k%>" class="<%='current' if params[:recommend_type].to_s == k.to_s %>"><%=v[:title]%></a>
+  <% end -%>
+
+</div>
+
+<!--搜索框-->
+<div class="box">
+  <!-- 系统时间维度: <%= MD::FeedRule::TimeRule.get_rule_name %>  -->
+
+  时间维度:  &nbsp;&nbsp;
+  <a href="?time_rule=&recomment_type=<%=params[:recomment_type]%>" class="<%='current' if params[:time_rule].blank?%>">全部</a>
+  <% MD::FeedRule::TimeRule::RULES.each_with_index do |rule, index| %>
+    <a href="?time_rule=<%=index%>&recomment_type=<%=params[:recomment_type]%>" class="<%='current' if params[:time_rule].to_s == index.to_s %>"><%=rule%></a>
+  <% end -%>
+
+</div>
+
+
+
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>模块</th>
+      <th>分类</th>
+      <th>Feed内容</th>
+      <th>展示时间</th>
+      <th>记录时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @feeds.each do |feed| %>
+      <tr>
+        <td><%= feed.id %></td>
+        <td><%= feed.feed_category_name %></td>
+        <td><%= feed.recommend_type_name %></td>
+        <td class="align_left"><%= feed.title %></td>
+        <td><%= feed.recommend_time_name %></td>
+        <td><%= feed.created_at %></td>
+        <td>
+          <%= link_to "内容查看", feed.source, class: "action", target: "_blank" %>
+        </td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>
+

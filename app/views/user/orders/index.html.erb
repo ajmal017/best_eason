@@ -1,0 +1,40 @@
+
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/investmentnew.css" %>
+<% end %>
+
+<div class="container">
+  <%= render partial: "/shared/sub_menus/positions", locals: {account_id: @search.account_for_menu} %>
+
+  <%= render partial: "top" %>
+
+  <div class="content pl20">
+    <table class="order-box" cellpadding="0" cellspacing="0">
+      <%= render partial: "filter" %>
+
+      <% @in_progress_orders.each do |order| %>
+        <%= render partial: "trading_order", locals: {order: order} %>
+      <% end %>
+      
+      <tbody class="spacing">
+        <tr><td></td></tr>
+      </tbody>
+
+      <% @history_orders.each do |order| %>
+        <%= render partial: "order", locals: {order: order} %>
+      <% end %>
+
+      <% if @in_progress_orders.blank? && @history_orders.blank? %>
+        <tbody class="spacing">
+          <tr class="noContent"><td colspan="8" style="height:100px;">暂无内容</td></tr>
+        </tbody>
+      <% end %>
+    </table>
+
+    <%= will_paginate @history_orders, :class => 'pageNav rightbox_pageNav', style: "padding:0 30px 20px 0;", inner_window: 2, outer_window: 0 %>
+  </div>
+
+</div>
+
+<div class="hide" id="details_view_div">
+</div>

@@ -1,0 +1,80 @@
+<h1 class="title">
+  <span class="title_left"><%= @page_title %></span>
+  <span class="title_right"><%=link_to "添加渠道", "/admin/channel_codes/new"%></span>
+</h1>
+<div class="box">
+  当前状态: &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="/admin/channel_codes" class="<%='current' if params[:q].blank? or params[:q][:status_eq].blank?%>">全部</a>
+  <%= link_to "开启中", admin_channel_codes_path(q: {status_eq: 1}), class: ((params[:q].present? and params[:q][:status_eq].to_s == '1') ? 'current' : '')%>
+  <%= link_to "已关闭", admin_channel_codes_path(q: {status_eq: 0}), class: ((params[:q].present? and params[:q][:status_eq].to_s == '0') ? 'current' : '')%>
+
+
+  <%=link_to "通知APP负责人", "/admin/channel_codes/notice", style: "float: right;"%>
+
+</div>
+<div class="box">
+  <%= search_form_for @q, url: admin_channel_codes_path, class: "form-inline", role: "form", method: :get do |f| %>
+    <label>统计时间</label>
+    <%= text_field_tag :start_date, params[:start_date], class: "datetimepicker", :placeholder => "时间大于", "data-date-format" => "yyyy-mm-dd" %>
+    ~
+    <%= text_field_tag :end_date, params[:end_date], class: "datetimepicker", :placeholder => "时间小于", "data-date-format" => "yyyy-mm-dd" %>
+
+    <%= f.hidden_field :status_eq %>
+
+    <%= f.submit '查询', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <%= content_tag :th, sort_link(@q, :code, '渠道号') %>
+      <%= content_tag :th, sort_link(@q, :status, '状态') %>
+      <th>浏览/UV(30分钟)/UV(24小时)</th>
+      <th>下载数</th>
+      <th>注册链接</th>
+      <th>推广链接</th>
+      <th>APK链接</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @channel_codes.each do |channel_code| %>
+      <tr>
+        <td class="align_left"><%= channel_code.id %></td>
+        <td class="align_left"><%= channel_code.code %></td>
+        <td>
+          <% if channel_code.status == 0 %>
+            <span><%= channel_code.status_name %></span>
+          <% else %>
+            <span class="green"><%= channel_code.status_name %></span>
+          <% end -%>
+
+          <%= link_to "更改状态", [:admin, channel_code, channel_code: {status: channel_code.status_toggle}], method: :put, class: "action"  %>
+        </td>
+        <td class="align_left"><%= @statistics[channel_code.id].try(:[], :views) || 0 %> / <%= @statistics[channel_code.id].try(:[], :visits) || 0 %> / <%= @statistics[channel_code.id].try(:[], :uv) || 0 %></td>
+        <td class="align_left"><%= @statistics[channel_code.id].try(:[], :downloads) || 0 %></td>
+        <td class="align_left">
+        <%= link_to channel_code.url, channel_code.url, target: "_blank" %>
+        </td>
+
+        <td><%= link_to "点击查看", "javascript:void(0);", data: {url: channel_code.pretty_ga_url}, class: "j_ga_link" %></td>
+        <td><%= link_to "点击下载", channel_code.apk_url, target: "_blank" %></td>
+        <td><%= link_to "删除", [:admin, channel_code], method: :delete, data: {confirm: '确认删除该条记录吗？此操作无法恢复'}, class: "red" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<script type="text/javascript">
+  $(function(){
+    $(".j_ga_link").on('click', function(){
+      open_dialog("Baidu推广URL", "<b>"+decodeURI($(this).data('url'))+"</b><br/><br/>拷贝以上链接到浏览器", 700);
+    });
+
+  });
+
+
+</script>

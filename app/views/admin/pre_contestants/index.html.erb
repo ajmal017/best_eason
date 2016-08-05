@@ -1,0 +1,28 @@
+<h1 class="title">
+  <span class="title_left">实盘大赛预申请记录（通过实盘大赛首页申请）</span>
+</h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>用户id</th>
+      <th>用户username</th>
+      <th>用户email</th>
+      <th>用户手机</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @contestants.each do |c| %>
+    <tr>
+      <td><%= c.user_id %></td>
+      <td><%= c.user.username %></td>
+      <td><%= c.user.email %></td>
+      <td><%= c.user.mobile %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @contestants %>

@@ -1,0 +1,37 @@
+<div class="demo_left">
+  <h2>Demo:</h2>
+  <div class="demo_box">
+    <table class="grid_form">
+      <tbody>
+        <tr>
+          <td class="field">图片:</td>
+          <td>
+            <input type="text" id="upload_pic" size="20">
+            <input type="button" id="upload_common_file_btn" value="上传图片"/>
+            <div>
+              <a target="_blank" href="" id="upload_img_a_link"><img src="" id="upload_img" style="max-height:100px"/></a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<div class="demo_right">
+  <h2>代码:</h2>
+  <%== code(:upload, :erb) %>
+
+  <br/>
+  <h2 class="title">支持参数:</h2>
+  <p>
+    1. url_field_id：上传成功后赋值到的input的id；默认赋值到id：common_uploader_input<br/><br/>
+    2. accept_type：可选，默认 图片类型 "image/png,image/gif,image/jpeg,image/bmp"，只前端控制<br/><br/>
+    3. a_link_id：可选，如果有查看大图链接，添加此参数，上传成功后会修改此链接的url为最新上传的文件url<br/><br/>
+    4. image_show_id：可选，如果现实图片预览，添加此参数，上传成功后会更新此img的src为新url<br/><br/>
+  </p>
+</div>
+
+<script type="text/javascript">
+  $("#upload_common_file_btn").uploader({url_field_id: "upload_pic", a_link_id: "upload_img_a_link", image_show_id: "upload_img"});
+</script>

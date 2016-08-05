@@ -1,0 +1,144 @@
+<h1 class="title">
+  <span class="title_left">订单管理-详情页面</span>
+  <span class="title_right">
+    <%= link_to "返回列表", admin_orders_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">id</td>
+      <td>
+        <%= @order.id%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">订单号</td>
+      <td>
+        <%= @order.sn%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">instance_id</td>
+      <td>
+        <%= @order.instance_id%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">类型</td>
+      <td>
+        <%= @order.instance_id == 'others' ? '个股' : '组合'%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">user_id</td>
+      <td>
+        <%= @order.user_id%> 
+      </td>
+    </tr>
+    <tr>
+      <td class="field">创建时间</td>
+      <td>
+        <%= @order.created_at%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">预计总价格</td>
+      <td>
+        <%= @order.est_cost%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">实际总价格</td>
+      <td>
+        <%= @order.real_cost%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">状态</td>
+      <td>
+        <%= @order.status_name%>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">操作</td>
+      <td>
+        <%= link_to "强制更新executions", execution_admin_order_path(@order), method: :put, class: "action"%>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 class="title">
+  <span class="title_left">订单项信息</span>
+</h1>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>symbol</th>
+      <th>stock_id</th>
+      <th>创建时间</th>
+      <th>预计总价格</th>
+      <th>实际总价格</th>
+      <th>预计股数</th>
+      <th>实际股数</th>
+      <th>状态</th>
+      <th>券商返回信息</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.order_details.each do |od| %>
+      <tr>
+        <td><%= od.stock.symbol%></td>
+        <td><%= od.base_stock_id%></td>
+        <td><%= od.created_at %></td>
+        <td><%= od.est_cost %></td>
+        <td><%= od.real_cost %></td>
+        <td><%= od.est_shares%></td>
+        <td><%= od.real_shares %></td>
+        <td><%= od.status_name %></td>
+        <td><%= od.result %></td>
+        <td class="action"><%= link_to "执行日志", log_admin_order_path(@order, base_stock_id: od.base_stock_id), remote: true%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<h1 class="title">
+  <span class="title_left">order_logs与exec_details</span>
+</h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>order_id</th>
+      <th>symbol</th>
+      <th>交易时间</th>
+      <th>已完成</th>
+      <th>本次完成股数</th>
+      <th>剩余股数</th>
+    </tr>
+  </thead>
+  <tbody class="j_order_log">
+  </tbody>
+</table>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>exec_id</th>
+      <th>买卖</th>
+      <th>交易时间</th>
+      <th>创建时间</th>
+      <th>symbol</th>
+      <th>已完成股数</th>
+      <th>本次完成股数</th>
+      <th>平均价格</th>
+    </tr>
+  </thead>
+  <tbody class="j_execution">
+  </tbody>
+</table>

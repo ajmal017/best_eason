@@ -1,0 +1,5 @@
+<tbody class="shares">
+  <% stocks_infos.each do |stock_infos| %>
+    <%= render partial: "user/positions/stock", locals: {account: account, stock_infos: stock_infos} %>
+  <% end %>
+</tbody>

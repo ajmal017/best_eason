@@ -1,0 +1,93 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "autocomplete", "/stylesheets/v3/investment.css" %>
+<% end %>
+<%- @page_title = "组合调整" -%>
+
+<div class="container">
+
+  <div class="content">
+    <h2>调整组合</h2>
+    <div class="themeInfo adjust">
+      <%=image_tag @basket.img_url(:small), class: "themePic" %>
+      <h3><%= @basket.title %></h3>
+      <table cellspacing="6" cellpadding="6">
+        <tr>
+          <td width="30%" class="noBorder">
+            今日盈亏(%)<br />
+            <%= up_down_style(@basket_infos[:today_change], currency_format: true) %>
+            (<%= up_down_style(@basket_infos[:today_change_percent], postfix: "%") %>)
+          </td>
+          <td width="30%">
+            累计盈亏(%)<br />
+            <%= up_down_style(@basket_infos[:total_change], currency_format: true) %>
+            (<%= up_down_style(@basket_infos[:total_change_percent], postfix: "%") %>)
+          </td>
+          <td width="20%">成本<br /><%= number_to_currency(@basket_infos[:total_cost].round(2), unit: @basket.currency_unit) %></td>
+          <td width="20%">当前市值<br /><%= number_to_currency(@basket_infos[:total_value], unit: @basket.currency_unit) %></td>
+        </tr>
+      </table>
+    </div>
+    <div class="buyTheme_table adjust">
+      <div class="searchgroup">
+        <input type="text" size="30" placeholder="搜索添加新股票" class="search">
+        <kbd></kbd>
+        <ul class="searchresult" style="display: none;"></ul>
+      </div>
+      <div class="wrapCorner">
+        <table cellspacing="0" cellpadding="0" class="themeStocks">
+          <thead>
+            <tr>
+              <th width="90">代码</th>
+              <th>公司名</th>
+              <th>比重</th>
+              <th>数量</th>
+              <th>成本均价</th>
+              <th>当前价</th>
+              <th width="100">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @positions.each do |position| %>
+              <%= render :partial => "adjust_stock_item", locals: {position: position} %>
+            <% end %>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="BubbleBox">
+    <div class="trangle"></div>
+    <div class="mainBody"></div>
+</div>
+<div id="TradeDateTip" style="display:none;">
+  <div class="StockTradeTimeTip">
+    <b>当日有效</b> - 下单当天有效<br />
+    <b>始终有效</b> - 除非手动取消，否则始终有效直到订单被执行。<br />
+    <b>以下情况会被自动取消：</b>
+    <ul>
+      <li>拆股</li>
+      <li>分红率超过昨收的3%</li>
+      <li>90天未登录</li>
+      <li>下一个季度末</li>
+    </ul>
+  </div>
+</div>
+
+<script type="text/javascript">
+  AdjustOrder._original_basket_id = <%= @original_basket.id %>;
+  var link_trade_type = "<%= params[:type] %>";
+  var link_stock_id = "<%= params[:stock_id] %>";
+
+  $(function(){
+    Adjust.init();
+    AdjustOrder.stockSizeInputEventHandle();
+
+    if (link_trade_type != "" && link_stock_id != ""){
+      $("input.j_adjust_stock_id[value="+link_stock_id+"]").parent().find("a."+link_trade_type).trigger("click");
+    }
+  })
+</script>

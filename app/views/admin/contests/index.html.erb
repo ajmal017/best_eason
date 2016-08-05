@@ -1,0 +1,66 @@
+<h1 class="title">
+  <span class="title_left"><%= @page_title %></span>
+  <span class="title_right">
+    <%= link_to "新建大赛", new_admin_contest_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_contests_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :name_cont, :placeholder => '名称', class: 'form-control' %>
+    <%= f.select :status_eq, Contest.status_options.unshift(['全部', nil]), class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @contests.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>状态</th>
+      <th>开始时间</th>
+      <th>结束时间</th>
+      <th>主账号名称</th>
+      <th>主账号</th>
+      <th>参加人数</th>
+      <th>总资金</th>
+      <th>总奖金(现在)</th>
+      <th>总奖金同步时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @contests.each do |contest| %>
+    <tr>
+      <td><%= contest.name %></td>
+      <td><%= contest.status_name %></td>
+      <td><%= contest.start_at %></td>
+      <td><%= contest.end_at %></td>
+      <td><%= contest.broker.try(:cname) %></td>
+      <td><%= contest.broker.try(:master_account) %></td>
+      <td><%= contest.users_count %></td>
+      <td><%= contest.total_invest %></td>
+      <td><%= contest.bonus %></td>
+      <td><%= contest.bonus_sync_at.strftime('%H:%M:%S') %><%= link_to '同步', [:sync_asset, :admin, contest] %></td>
+      <td class="action">
+        <%= link_to '详情', [:admin, contest] %>
+        <%= link_to '更新奖金池', [:cash, :admin, contest] %>
+        <%= link_to '导入参赛用户', [:import, :admin, contest] %>
+        <%= link_to '参赛用户列表', admin_players_path(q: {contest_id_eq: contest.id}) %>
+        <%= link_to '编辑', [:edit, :admin, contest] %>
+        <%= link_to '删除', [:admin, contest], method: :delete, data: { confirm: '你确定删除吗?' } %>
+      </td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @contests %>

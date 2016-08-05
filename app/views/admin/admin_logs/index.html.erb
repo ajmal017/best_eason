@@ -1,0 +1,48 @@
+<h1 class="title">
+  <span class="title_left">后台操作日志列表页</span>
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= link_to '全部', admin_admin_logs_path, class: (params[:q].blank? ? "current" : nil) %>
+  <%= link_to '交易', admin_admin_logs_path(:q => {:log_type_eq => 'Trading'}), class: (params[:q] && params[:q][:log_type_eq].present? && params[:q][:log_type_eq] == 'Trading' ? "current" : nil) %>
+  <%= link_to '用户', admin_admin_logs_path(:q => {:log_type_eq => 'User'}), class: (params[:q] && params[:q][:log_type_eq].present? && params[:q][:log_type_eq] == 'User' ? "current" : nil) %>
+  <%= link_to '组合', admin_admin_logs_path(:q => {:log_type_eq => 'Basket'}), class: (params[:q] && params[:q][:log_type_eq].present? && params[:q][:log_type_eq] == 'Basket' ? "current" : nil) %>
+  <%= link_to '内容', admin_admin_logs_path(:q => {:log_type_eq => 'Article'}), class: (params[:q] && params[:q][:log_type_eq].present? && params[:q][:log_type_eq] == 'Article' ? "current" : nil) %>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @admin_logs.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>操作员</th>
+      <th>操作</th>
+      <th>操作类型</th>
+      <th>ip</th>
+      <th>操作时间</th>
+      <th colspan="3">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @admin_logs.each do |admin_log| %>
+    <tr>
+      <td><%= admin_log.id %></td>
+      <td><%= admin_log.staffer.fullname %></td>
+      <td><%= admin_log.content %></td>
+      <td><%= admin_log.cn_log_type %></td>
+      <td><%= admin_log.request_ip %></td>
+      <td><%= admin_log.created_at %></td>
+      <td class="action"><%= link_to '详情', [:admin, admin_log] %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @admin_logs %>

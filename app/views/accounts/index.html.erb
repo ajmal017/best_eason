@@ -1,0 +1,75 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/bindaccount.css" %>
+<% end %>
+  <div class="container">
+    <%= render :partial => "/shared/sub_menus/positions", locals: {account_id: @account_id} %>
+
+    <% if @trading_accounts.size > 0 %>
+    <div class="content acountBox">
+      <h2>已绑定券商</h2>
+      <dl class="OpenAuthAccount">
+        <dd class="clearfix">
+          <% @trading_accounts.each do |account| %>
+          <div class="item <%= 'fail' if account.recert? %>">
+            <%=image_tag account.broker.logo_url(:mini) %>
+            <p><span>账户: <%= account.broker_no %> 类型: <%= account.category_name %></span></p>
+            <div>
+              <label>状态: <em class="<%= account_status_class(account.status) %>"><%= account_status_name(account.status) %></em></label> 
+              <% if account.recert? %>
+              <%=link_to "重新绑定", "javascript:void(0);", class: "b_btn dialog_btn_c btn_rebind_account", onclick: "javascript:bindAuth('##{account_bind_form_id(account.broker)}','#{account.broker.cname}', '#{account.broker.id}', '#{account.broker_no}')"%>
+              <% end %>
+              <% if account.cancelable? %>
+                <a href="javascript:void(0)" class="b_btn dialog_btn_c" onclick="cancelAuth('<%=account.pretty_id%>','<%=account.broker.cname%>', '<%= account.broker_no %>')">解除绑定</a>
+              <% end %>
+            </div>
+          </div>
+          <% end %>
+        </dd>
+      </dl>
+    </div>
+    <% end %>
+
+    <div class="content acountBox">
+      <% if !TradingAccount.exists?(user_id: current_user.id) %>
+        <%=image_tag "/images/v3/adOpenAC.jpg", alt: "开户授权就是这么简单，只需4步，轻松开始股市之旅！", id: "adOpenAC"%>
+      <% end %>
+    </div>
+
+    <div class="content">
+      <h2>绑定券商<span>客服热线：400-771-8858</span></h2>
+      <dl class="OpenAuthAccount">
+        <dt>A股券商</dt>
+        <dd class="clearfix">
+          <% Broker.by_market('cn').published.displayed.order(position: :asc).each do |broker|%>
+            <div class="item">
+              <%= image_tag broker.logo_url(:mini) %>
+              <p></p>
+              <a href="javascript:void(0)" class="btn_blue" onclick="bindAuth('#authZhongxin','<%=broker.cname%>','<%=broker.id%>')">绑定</a>
+            </div>
+          <% end %>
+          
+          <div class="item more">
+            <blockquote>更多券商即将推出</blockquote>
+            <p></p>
+            <a href="javascript:void(0)" class="btn_blue">...</a>
+          </div>
+        </dd>
+        <dt>港股、美股券商</dt>
+        <dd class="clearfix">
+          <% Broker.where(name: ['unicorn', 'ib']).each do |broker|%>
+            <div class="item">
+              <%= image_tag broker.logo_url(:mini) %>
+              <p></p>
+              <a href="javascript:void(0)" class="btn_blue" onclick="bindAuth('#<%= broker.name%>_bind_form','<%=broker.cname%>', '<%=broker.id%>')">绑定</a>
+              <% if broker.name == "unicorn" %>
+              <a href="http://unicornsecurities.hk/kaihu.html" target="_blank" class="btn_blue">开户</a>
+              <a href="https://www.caishuo.com/about/account" target="_blank" class="link_open">操作指南</a>
+              <% end %>
+            </div>
+          <% end %>
+        </dd>
+      </dl>
+    </div>
+  </div>
+ 
+  <%= render partial: "shared/accounts/binding" %>

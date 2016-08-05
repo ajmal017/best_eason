@@ -1,0 +1,54 @@
+<%= form_for stock, url: orders_path, :html => {target:'_blank', onsubmit: 'return Order.checkOrderNewForm();', method: 'post'} do |f| -%>
+  <div class="tradeInfo">
+    <em communication="<%= trading_account.need_communication_password? %>"><%= trading_account.broker_info %></em>
+    <input type="hidden" id="trading_account_id" value="<%= trading_account.pretty_id %>">
+    <% if trading_accounts.count>1 %>
+      <a href="javascript:Account.showBroker();" class="b_btn small">切换账户</a>
+    <% end %>
+    <span>可用金额：<i data='<%= trading_account.usable_cash_with_currency(stock.currency) %>'><%= number_to_currency(trading_account.usable_cash, unit: trading_account.cash_unit) %></i></span>
+    <span>账户总金额：<i data='<%= trading_account.total_cash %>'><%= number_to_currency(trading_account.total_cash, unit: trading_account.cash_unit) %></i></span>
+  </div>
+
+  <% if stock.is_cn? %>
+    <%= render :partial => "users/stock_trade_table_cn", locals: {stock: stock, trading_accounts: trading_accounts, trading_account: trading_account, currency_unit: currency_unit, order_types: trading_account.order_types_by(stock)} %>
+  <% else %>
+    <%= render :partial => "users/stock_trade_table", locals: {stock: stock, trading_account: trading_accounts.first, currency_unit: currency_unit} %>
+  <% end %>
+
+<div class="buying-power">
+  <input type="hidden" name="trade_type" id="order_trade_type" class="trade_type" value="OrderBuy" />
+  <input type="hidden" value="<%= stock.id %>" name="order[order_details_attributes][0][base_stock_id]" class="j_stock_id">
+  <input type="hidden" value="<%= stock.realtime_price %>" class="j_stock_price">
+</div>
+<%- end -%>
+
+<div style="display:none;">
+  <div id="brokerList">
+    <ul class="<%= trading_account.broker.market_cn? ? "cn" : "us" %>">
+      <% trading_accounts.each do |account| %>
+        <li>
+          <a href="javascript:" onclick="javascript:FollowingStocks.loadTradingContent(<%= stock.id %>, '<%= account.pretty_id %>');">
+            <img src="<%= account.broker.logo[:mini] %>">
+            <span>账号：<i><%= account.secret_broker_no %></i></span>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<%= render partial: "shared/accounts/binding" if trading_accounts.map(&:recert?).any? %>
+
+<script type="text/javascript">
+  function triggerBindAuth(){
+    bindAuth("#<%= account_bind_form_id(trading_account.broker) %>","<%= trading_account.broker.cname %>","<%= trading_account.broker.id %>","<%= trading_account.broker_no %>");
+  }
+
+  $(function(){
+    <% if trading_account.recert? %>
+      triggerBindAuth();
+    <% else %>
+      Account.checkLogined('<%= trading_account.pretty_id %>');
+    <% end %>
+  })
+</script>

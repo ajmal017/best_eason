@@ -1,0 +1,1 @@
+Caishuo::Utils::Email.defaults

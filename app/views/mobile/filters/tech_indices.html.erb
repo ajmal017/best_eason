@@ -1,0 +1,66 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.wr_page.css", "/stylesheets/mobile/mo.stocklist.css" %>
+  <%= javascript_include_tag "/javascripts/mo.stocklist.js" %>
+<% end %>
+
+
+<header class="<%= @header_class %>">
+  <h1><span class="arrow"></span><span><%= @page_title %></span></h1>
+  <h2><span class="indicator">技术指标</span><span class="indicator">短线</span><div class="last-update"><span><%= @update_date %></span>更新</div></h2>
+</header>
+
+<%= render partial: "mobile/filters/description/#{action_name.split("_").first}" %>
+
+<div class="stocks">
+  <table>
+    <thead>
+      <tr>
+        <td>名称</td>
+        <td>最新价</td>
+        <td class="sortable"><span class="name desc">涨跌幅</span></td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @stocks.each do |stock| %>
+        <%= render partial: "stock_item", locals: {stock: stock} %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<a id="goto" target="_blank" href="javascript:void(0);" onclick="window.open(this.href); return false;" style="display: none;"><span></span></a>
+
+<script type="text/javascript">
+
+  // 点击某一行时跳转至股票详情页面
+  $('.stocks tbody').on('click', 'tr', function() {
+    var data = $(this).data();
+    var href = location.origin + '/stocks/' + data.id;
+    $('#goto').attr('href', href).find('span').click();
+  });
+
+  Caishuo.connect("event", function(){
+    $('.stocks tbody').off('click');
+    $('.stocks tbody').on('click', 'tr', function() {
+      var data = $(this).data();
+      Caishuo.trigger("openpage", {"goto":"stock","id":data.id,"name":data.name,"symbol":data.symbol});
+    });
+  })
+
+  $(function(){
+    
+    $('#showmore').on('click', function(e) {
+      if ($(this).hasClass('more')) {
+        $(this).removeClass('more').addClass('less').text('我知道了');
+        $('.comment-detail').removeClass('hide');
+      } else {
+        $(this).removeClass('less').addClass('more').text('展开释义');
+        $('.comment-detail').addClass('hide');
+      }
+    });
+
+    var stock_list = new STOCK_LIST();
+    stock_list.init($('.stocks'));
+
+  });
+</script>

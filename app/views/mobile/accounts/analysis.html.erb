@@ -1,0 +1,443 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.investment_analysis.css" %>
+  <%= javascript_include_tag "/javascripts/highcharts.js", "/javascripts/utils.js" %>
+<% end %>
+
+<div class="ia" data-shareurl="<%= @account.analysis_snapshot_url(@year) %>" data-key="shareurl" data-convert='{"hook_dom": "update_shareurl", "no_update": true}'>
+  <div class="mask hide"></div>
+  <div class="overview">
+    <img class="avatar" data-key="avatar" data-convert='{"hook_dom": "update_avatar", "no_update": true}' alt="头像">
+    <div class="year">
+      <label><span data-key="year">--</span>年</label>
+      <ul data-key="year_list" data-convert='{"hook_dom":"update_year_list", "no_update":true}'>
+        <div class="triangle"></div>
+      </ul>
+    </div>
+    <div class="name" data-key="user_name"></div>
+    <div class="aggregate-profit-label">累计盈亏</div>
+    <div class="aggregate-profit" data-key="aggregate.profit" data-convert='{"method":"human_money", "prefix":"+"}'>--</div>
+    <table class="detail">
+      <tbody>
+        <tr>
+          <td>
+            <div class="label">累计交易次数</div>
+            <div class="value">买 <span data-key="aggregate.buy_cnt">－－</span><span class="space"></span>卖 <span data-key="aggregate.sell_cnt">--</span></div>
+          </td>
+          <td>
+            <div class="label">月均交易次数</div>
+            <div class="value" data-key="trading_cnt_monthly">--</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="label">重点关注行业</div>
+            <div class="value" data-key="industry_focused">--</div>
+          </td>
+          <td>
+            <div class="label">投资分布</div>
+            <div class="value" data-key="type_preferred">--</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <table class="summary std">
+    <tbody>
+      <tr>
+        <td>
+          <div class="label">清仓股票</div>
+          <div class="value"><span data-key="clear_stocks_cnt">--</span>只</div>
+        </td>
+        <td>
+          <div class="label">胜率</div>
+          <div class="value"><span data-key="win_rate">--</span>%</div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="label">挣钱股票</div>
+          <div class="value"><span data-key="earn_stocks_cnt">--</span>只</div>
+        </td>
+        <td>
+          <div class="label">赔钱股票</div>
+          <div class="value"><span data-key="loss_stocks_cnt">--</span>只</div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="label">平均持有时间</div>
+          <div class="value"><span data-key="hold_time_avg">--</span>天</div>
+        </td>
+        <td>
+          <div class="label">佣金</div>
+          <div class="value"><span data-key="commission_rate">--</span>%</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="separator top-border"></div>
+
+  <div class="investment-type">
+    <div class="first">
+      <div class="label"><span data-key="holding.first.text"></span><span class="cnt" data-key="holding.first.count">－－</span>次</div>
+      <div class="value percent" data-key="holding.first.percent" data-convert='{"method":"percent","prefix":""}'>－－</div>
+    </div>
+    <table class="std">
+      <tbody>
+        <tr>
+          <td class="second">
+            <div class="label"><span data-key="holding.second.text"></span><span class="cnt" data-key="holding.second.count">－－</span>次</div>
+            <div class="value percent" data-key="holding.second.percent" data-convert='{"method":"percent","prefix":""}'>－－</div>
+          </td>
+          <td class="third">
+            <div class="label"><span data-key="holding.third.text"></span><span class="cnt" data-key="holding.third.count">－－</span>次</div>
+            <div class="value percent" data-key="holding.third.percent" data-convert='{"method":"percent","prefix":""}'>－－</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="separator top-border"></div>
+
+  <div class="top">
+    <table class="std">
+      <tbody>
+        <tr>
+          <td data-key="top.net_change_max" data-convert='{"hook_dom":"stocklink"}'>
+            <div class="label">盈亏额最高</div>
+            <div class="value">
+              <div class="col1" data-key="top.net_change_max.name">－－</div>
+              <div class="col2" data-key="top.net_change_max.value" data-convert='{"method":"human_number", "hook_dom":"toggleClass", "prefix":"+"}'>－－</div>
+            </div>
+          </td>
+          <td data-key="top.net_change_min" data-convert='{"hook_dom":"stocklink"}'>
+            <div class="label">盈亏额最低</div>
+            <div class="value">
+              <div class="col1" data-key="top.net_change_min.name">－－</div>
+              <div class="col2" data-key="top.net_change_min.value" data-convert='{"method":"human_number", "hook_dom":"toggleClass", "prefix":"+"}'>－－</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td data-key="top.hold_time_max" data-convert='{"hook_dom":"stocklink"}'>
+            <div class="label">持有时间最长</div>
+            <div class="value">
+              <div class="col1" data-key="top.hold_time_max.name">－－</div>
+              <div class="col2"><span data-key="top.hold_time_max.value">－－</span>天</div>
+            </div>
+          </td>
+          <td data-key="top.hold_time_min" data-convert='{"hook_dom":"stocklink"}'>
+            <div class="label">持有时间最短</div>
+            <div class="value">
+              <div class="col1" data-key="top.hold_time_min.name">－－</div>
+              <div class="col2"><span data-key="top.hold_time_min.value">－－</span>天</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td data-key="top.amount_max" data-convert='{"hook_dom":"stocklink"}'>
+            <div class="label">投入金额最多</div>
+            <div class="value">
+              <div class="col1" data-key="top.amount_max.name">－－</div>
+              <div class="col2" data-key="top.amount_max.value" data-convert='{"method":"human_number"}'>－－</div>
+            </div>
+          </td>
+          <td data-key="top.amount_min" data-convert='{"hook_dom":"stocklink"}'>
+            <div class="label">投入金额最少</div>
+            <div class="value">
+              <div class="col1" data-key="top.amount_min.name">－－</div>
+              <div class="col2" data-key="top.amount_min.value" data-convert='{"method":"human_number"}'>－－</div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="separator top-border"></div>
+
+  <div class="aggregate">
+    <div class="total">
+      <div class="label">净投入金额</div>
+      <div class="value" data-key="aggregate.total" data-convert='{"method":"human_money"}'>－－</div>
+    </div>
+    <table class="std">
+      <tbody>
+        <tr>
+          <td class="buy">
+            <div class="label">累计买入金额</div>
+            <div class="value plus" data-key="aggregate.buy" data-convert='{"method":"human_money"}'>－－</div>
+          </td>
+          <td class="sell">
+            <div class="label">累计卖出金额</div>
+            <div class="value mins" data-key="aggregate.sell" data-convert='{"method":"human_money"}'>－－</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="separator top-border"></div>
+
+  <div class="analysis">
+    <div class="header">投资分布</div>
+    <div class="chart" data-key="analysis.pie_data" data-convert='{"hook_dom":"draw_piechart"}'></div>
+    <table class="std">
+      <tbody>
+        <tr>
+          <td>
+            <div class="label">主板</div>
+            <div class="value" data-key="analysis.main_plate" data-convert='{"method":"human_number"}'>－－</div>
+          </td>
+          <td>
+            <div class="label">创业板</div>
+            <div class="value" data-key="analysis.gem_plate" data-convert='{"method":"human_number"}'>－－</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="label">投资方向</div>
+            <div class="value" data-key="analysis.orientation">－－</div>
+          </td>
+          <td>
+            <div class="label">投资关注</div>
+            <div class="value" data-key="analysis.concerns">－－</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="separator top-border"></div>
+  <a id="goto" target="_blank" href="javascript:void(0);" onclick="window.open(this.href); return false;" style="display: none;"><span></span></a>
+
+</div>
+
+<%= content_for :script do %>
+<script>
+  // 点击某一行时跳转至股票详情页面
+  $('.top tbody').on('click', 'td', function() {
+    var data = $(this).data();
+    var href = location.origin + '/stocks/' + data.id;
+    $('#goto').attr('href', href).find('span').click();
+  });
+
+  var shareurl = function(){};
+  var init_year_dropdown = function(){};
+
+  Caishuo.connect("event", function(){
+    $('.top tbody').off('click');
+    $('.top tbody').on('click', 'td', function(){
+      var data = $(this).data();
+      if (data.id) {
+        Caishuo.trigger("openpage", {"goto":"stock","id":data.id,"name":data.name,"symbol":data.symbol});
+      }
+    });
+
+    shareurl = function(){
+      var url = $(".ia").data('shareurl');
+      if (url) {
+        Caishuo.trigger('sendback', {
+          'event':'sharepageargu',
+          'snapshot':true,
+          'link': url,
+          'title': '谁是投资大咖，一看就知道',
+          'content': '财说对我的投资分析的头头是道，你也来看看呗！'
+        });
+      }
+    };
+    shareurl();
+
+    init_year_dropdown = function(){
+      $('.ia .overview').addClass('app');
+
+      if (ia_data['year_list'].length > 1) {
+        $('.ia .overview .year').addClass('multiple');
+        
+        $('.ia .overview .year').off("click");
+        $('.ia .overview .year').on('click', 'label', function(){
+          $('.ia').toggleClass('active');
+        });
+
+        $('.year ul').off("click");
+        $('.year ul').on('click', 'li', function(){
+          var y = $(this).text();
+          $('.ia .overview .year label').trigger('click');
+
+          // 填充数据
+          if (data_list[y]) {
+            ia_data_fill(data_list[y]);
+          } else {
+            var callback = function(d){
+              if ($.isArray(d.holding_terms) && d.holding_terms.length > 0) {
+                ia_data_prepare(d);
+                ia_data_fill(d);
+              }
+            };
+
+            $.get(data_url, {year: y}, callback, 'json');
+          }
+        });
+
+        $('.ia .mask').off("click");
+        $('.ia .mask').on('click', function(){
+          $('.ia .mask').toggleClass('hide');
+          $('.ia').toggleClass('active');
+        });
+      }
+    };
+    init_year_dropdown();
+  });
+
+  
+  var data_url = "<%= mobile_link analysis_mobile_account_path(id: @account.pretty_id, format: :json) %>";
+  var ia_data = <%= @analysis.web_datas.to_json.html_safe %>;
+
+  $.extend(convert, {
+    update_year_list: function(val) {
+      $(this).find('li').remove();
+      var t = [], len = val.length;
+      for(var i = 0; i < len; i++) {
+        t.push(caishuo.tplFormat('<li>{0}</li>', val[i]));
+      }
+
+      if (len > 0) {
+        $(this).append(t.join(''));
+      } else {
+        $('.ia .overview').removeClass('app');
+      }
+    },
+    update_shareurl: function(val){
+      $(this).data('shareurl', val);
+      $(this).attr('data-shareurl', val);
+    },
+    update_avatar: function(val){
+      $(this).attr('src', val);
+    },
+    stocklink: function(val) {
+      $(this).attr('data-id', val.stock_id);
+      $(this).attr('data-name', val.name);
+      $(this).attr('data-symbol', val.symbol);
+      $.data(this, 'id', val.stock_id);
+      $.data(this, 'name', val.name);
+      $.data(this, 'symbol', val.symbol);
+    },
+    draw_piechart: function(data){
+      // 如果数据为空则隐藏 .chart-container
+      if (data.length == 0) {
+        $(this).addClass('hide');
+        return;
+      } else {
+        $(this).removeClass('hide');
+      }
+
+      data.sort(function(a, b) {
+        return b[1] - a[1];
+      });
+      $(this).highcharts({
+        chart: {
+          type: 'pie',
+          spacingTop: 25,
+          height: 202 + 17 * Math.ceil(data.length / 2), // max: 280?
+        },
+        credits: {
+          enabled: false
+        },
+        title: {
+          text: ''
+        },
+        tooltip: {
+          pointFormat: '<b>{point.percentage:.2f}%</b>'
+        },
+        plotOptions: {
+          pie: {
+            size: 150,
+            innerSize: 110,
+            allowPointSelect: false,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: false
+            },
+            showInLegend: true,
+            point: {
+              events: {
+                legendItemClick: function(e) {
+                  return false;
+                }
+              }
+            }
+          }
+        },
+        legend: {
+          useHTML: true,
+          labelFormatter: function() {
+            return '<span class="legend-percent">' + (this.percentage - 0).toFixed(2) + '%  ' + '</span>' + this.name;
+          },
+          symbolRadius: 4,
+          symbolWidth: 8,
+          symbolHeight: 8,
+          width: 310,
+          itemWidth: 155,
+          itemStyle: {
+            'font-size': '11px',
+            'font-weight': 'normal',
+            'lineHeight': '20px'
+          },
+          y: 5
+        },
+        series: [{
+          name: '',
+          data: data
+        }]
+      });
+    }
+  });
+
+  function ia_data_prepare(d) {
+    if ($.isArray(d.holding_terms) && d.holding_terms.length > 0) {
+      var text_map = {
+        "short": "短线（小于15天）",
+        "mid": "中长线（15-90天）",
+        "long": "长线（大于90天）"
+      };
+      var t = d.holding_terms;
+
+      d.holding = {};
+      d.holding.first = {};
+      d.holding.first.type = t[0].type;
+      d.holding.first.count = t[0].count;
+      d.holding.first.percent = t[0].percent;
+      d.holding.first.text = text_map[t[0].type];
+      d.holding.second = {};
+      d.holding.second.type = t[1].type;
+      d.holding.second.count = t[1].count;
+      d.holding.second.percent = t[1].percent;
+      d.holding.second.text = text_map[t[1].type];
+      d.holding.third = {};
+      d.holding.third.type = t[2].type;
+      d.holding.third.count = t[2].count;
+      d.holding.third.percent = t[2].percent;
+      d.holding.third.text = text_map[t[2].type];
+
+      data_list[d.year] = d;
+    }
+  }
+  // ********* 准备 holding 数据 - 结束 *********
+
+  function ia_data_fill(d){
+    convert.setData(d);
+
+    for (var i=0; i<1; i++){
+      $('[data-key]').each(convert.$action);
+    }
+
+    shareurl();
+  }
+
+  // cache data
+  var data_list = {};
+
+  ia_data_prepare(ia_data);
+  ia_data_fill(ia_data);
+
+  init_year_dropdown();
+  $('.ia .mask').css("height", $('.ia').height());
+</script>
+<% end %>

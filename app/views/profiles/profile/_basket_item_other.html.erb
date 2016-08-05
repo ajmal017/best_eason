@@ -1,0 +1,8 @@
+<tr data-id="<%= basket.id %>">
+  <td><%= link_to basket.title, basket_path(basket), target: "_blank", class: "limitLength" %></td>
+  <td><%= up_down_style(basket.one_month_return, postfix: "%") %></td>
+  <td><%= up_down_style(basket.total_return, postfix: "%") %></td>
+  <td><%= basket.net_worth %></td>
+  <td class="timeago_c" title="<%= basket.start_on.try(:iso8601) %>"><%= basket.start_date %></td>
+  <td><span class="focus <%= 'active' if followed %> <%= login_popup_class %>"></span></td>
+</tr>

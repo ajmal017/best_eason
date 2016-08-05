@@ -1,0 +1,4 @@
+$("#suggest_<%= @suggest.id%>").children("td:eq(0)").text("<%= @suggest.title%>");
+$("#suggest_<%= @suggest.id%>").children("td:eq(1)").text("<%= @suggest.article.try(:title)%>");
+$("#suggest_<%= @suggest.id%>").children("td:eq(2)").text("<%= @suggest.article.try(:id)%>");
+$('#suggest').modal('hide');

@@ -1,0 +1,200 @@
+# 管理后台菜单配置
+# 新增角色后，在roles下面添加数据库中角色字段abbrev。
+# 只支持两级菜单;二级菜单可用属性： name/href/rel/data-confirm/data-method
+menu:
+  - name: 系统设置
+    roles:
+      - Ruby开发
+    menus:
+      - name: 管理员
+        href: /admin/staffers
+      - name: 角色管理
+        href: /admin/roles
+      - name: 权限管理
+        href: /admin/permissions
+      - name: 网站配置
+        href: /admin/configs
+      - name: 后台操作日志
+        href: /admin/admin_logs
+  - name: 技术研发
+    roles:
+      - Ruby开发
+    menus:
+      - name: 后台功能开发规范
+        href: /admin/dev/templates
+      - name: 查看短信发送状态
+        href: /admin/sms_reports
+      - name: 查看回复短信内容
+        href: /admin/sms_contents
+  - name: 数据抓取
+    roles:
+      - Ruby开发
+    menus:
+      - name: 新闻
+        href: /admin/es/news
+      - name: 新闻抓取
+        href: /admin/es/spider_news
+      - name: 公告
+        href: /admin/es/announcements
+      - name: 邮件测试
+        href: /admin/dev/test_email
+  - name: 基本数据
+    roles:
+      - Ruby开发
+    menus:
+      - name: 个股主数据
+        href: /admin/base_stocks
+      - name: 分红列表
+        href: /admin/ca_dividends
+      - name: 拆股列表
+        href: /admin/ca_splits
+      - name: 除权除息列表
+        href: /admin/stock_adjusting_factors
+      - name: 交易所管理
+        href: /admin/brokers
+      - name: 股票变化记录
+        href: /admin/symbol_change_logs
+      - name: 汇率列表
+        href: /admin/data/currency
+      - name: 大赛列表
+        href: /admin/contests
+      - name: 大赛选手列表
+        href: /admin/players
+      - name: 大赛现金变动
+        href: /admin/players/cash
+  - name: 数据处理
+    roles:
+      - Ruby开发
+    menus:
+      - name: 个股行情
+        href: /admin/base_stocks/list
+      - name: 禁止加入组合列表
+        href: /admin/base_stocks/unqualified_list
+  - name: 交易处理
+    roles:
+      - Ruby开发
+    menus:
+      - name: 用户调平管理
+        href: /admin/reconcile_request_lists
+      - name: 订单列表
+        href: /admin/orders
+      - name: 账号绑定管理
+        href: /admin/trading_accounts
+      - name: 账号绑定重试
+        href: /admin/trading_accounts/tries
+      - name: 交易状态
+        href: /admin/trading/status
+
+  - name: 交易账号
+    roles:
+      - 高级编辑
+    menus:
+      - name: 账号绑定管理
+        href: /admin/trading_accounts
+
+  - name: 用户管理
+    roles:
+      - 高级编辑
+      - 网站编辑
+    menus:
+      - name: 注册用户列表
+        href: /admin/users
+      - name: 用户名禁止词
+        href: /admin/forbidden_names
+      - name: 首页邀请码申请记录
+        href: /admin/landings
+      - name: 邀请码管理
+        href: /admin/invitation_codes
+      - name: 邀请人管理
+        href: /admin/leads
+      - name: 能力圈标签
+        href: /admin/tag/groups
+      - name: 反馈管理
+        href: /admin/feedbacks
+  - name: 用户马甲管理
+    roles:
+      - 高级编辑
+      - 网站编辑
+    menus:
+      - name: 马甲用户
+        href: /admin/majia_users
+
+  - name: 热点和组合
+    roles:
+      - 高级编辑
+      - 网站编辑
+    menus:
+      - name: 投资组合
+        href: /admin/baskets
+      - name: 组合标签
+        href: /admin/tag/commons
+      - name: 热点管理
+        href: /admin/topics
+      - name: 热股分析
+        href: /admin/baskets/stocks_data
+  - name: 内容管理
+    roles:
+      - 高级编辑
+      - 网站编辑
+    menus:
+      - name: 财说专栏文章列表
+        href: /admin/articles
+      - name: 财说专栏推荐位
+        href: /admin/suggests
+      - name: 登录后首页推荐位
+        href: /admin/home_settings
+      - name: 财说评论列表
+        href: /admin/comments
+  - name: Feeds动态推荐
+    roles:
+      - senior_editor
+      - editor
+    menus:
+      - name: Filter数据
+        href: /admin/feeds/filters
+      - name: 内容推荐
+        href: /admin/feeds/contents
+  - name: 活动
+    roles:
+      - 高级编辑
+    menus:
+      - name: 大赛调仓数据
+        href: /admin/adjusted_stocks
+      - name: 到期红包列表
+        href: /admin/hongbaos
+      - name: 实盘大赛申请列表
+        href: /admin/pt_applications
+      - name: 实盘大赛预申请记录
+        href: /admin/pre_contestants
+  - name: 调查
+    roles:
+      - 高级编辑
+    menus:
+      - name: 调查报告数据
+        href: /admin/surveys
+  - name: 站内信
+    roles:
+      - 高级编辑
+    menus:
+      - name: 发站内信
+        href: /admin/target_messages
+  - name: app 发现页
+    roles:
+      - 高级编辑
+    menus:
+      - name: 推荐面板
+        href: /admin/panels
+      - name: 高手
+        href: /admin/aces
+      - name: 热门股票
+        href: /admin/hot_stocks
+      - name: 精选组合
+        href: /admin/featured_baskets
+  - name: app 短信发送状态后台  
+    roles:
+      - 高级编辑
+    menus:
+       - name: 查看短信发送状态
+         href: /admin/sms_reports
+       - name: 查看回复短信内容
+         href: /admin/sms_contents

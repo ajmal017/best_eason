@@ -1,0 +1,64 @@
+<!--个股详情页关注度标签-->
+<% cache "stock:focus:#{@stock.id}", expires_in: 30.minutes do %>
+<div class="CombineNews">
+  <% if @topic_stocks.size > 0 %>
+  <dl class="cs_hotspot clearfix">
+    <dt>包含“<%=@stock.c_name%>”的头条 <a href="/topics" target="_blank">更多 &gt;</a></dt>
+    <% @topic_stocks.each do |topic_stock| %>
+    <dd>
+      <%= link_to topic_path(topic_stock.topic), target: '_blank' do %>
+        <i><%= topic_stock.topic.title %></i>
+        <b><%= topic_stock.topic.sub_title %></b>
+        <%= image_tag(topic_stock.topic.img_url(:large), width: 222, height: 177) %>
+      <% end %>
+    </dd>
+    <% end %>
+  </dl>
+  <% end %>
+
+  <% if @relevant_baskets.present? %>
+  <dl class="cs_theme clearfix">
+    <dt>包含“<%=@stock.c_name%>”的组合 <a href="/baskets?q=<%=@stock.c_name%>" target="_blank">更多 &gt;</a></dt>
+    
+    <% @relevant_baskets.each do |basket| %>
+    <dd>
+      <a href="/baskets/<%=basket.id%>" target="_blank">
+        <b><%= basket.title.truncate(28) %></b>
+        <span class="chartinfo clearfix">
+          <div class="chart basket_chart" data-basket-id="<%= basket.id %>" id="basket_chart_<%= basket.id %>">
+          </div>
+      
+          <% basket.basket_stocks.order(weight: :desc).limit(3).includes(:stock).each do |bs| %>
+            <span class="info"><%= bs.weight_percent %>% <%= bs.stock.symbol %> <%= bs.stock.com_name %></span>
+          <% end %>
+        </span>
+        
+        <span class="links clearfix">
+          <span class="avator"><%=image_tag basket.author.avatar_url(:small), width: 24, height: 24 %> <%= basket.author.try(:username) %></span>
+          <span class="recieve">创建至今 <%=up_or_down_style_with_arrow(basket.total_return, '%', 'ico')%></span>
+        </span>
+      </a>
+    </dd>
+    <% end %>
+    <dd class="createTheme"><a href="<%= new_basket_path(stock_ids: [@stock.id]) %>"><b>创建</b>包含<%= @stock.com_name %>的组合</a></dd>
+  </dl>
+  <% end %>
+  
+  <% if @stock.articles.present? %>
+  <dl class="cs_column clearfix">
+    <dt>包含“<%=@stock.c_name%>”的专栏 <a href="/articles" target="_blank">更多 &gt;</a></dt>
+
+    <% @stock.articles.limit(3).each do |article| %>
+      <% next if article.blank? %>
+    <dd>
+      <a href="/articles/<%=article.id%>" target="_blank">
+        <b><%= article.title %></b>
+        <%=image_tag article.img_url, width: 105, height: 84, alt: '专栏图片'%>
+        <span><%=html_to_text(article.content, 200).try(:full_strip)%></span>
+      </a>
+    </dd>
+    <% end %>
+  </dl>
+  <% end %>
+</div>
+<% end %>

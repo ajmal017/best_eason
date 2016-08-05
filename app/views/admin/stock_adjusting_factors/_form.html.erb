@@ -1,0 +1,49 @@
+<%= form_for [:admin, @stock_adjusting_factor] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b></b><%= f.label :base_stock_id %></td>
+        <td><%= f.number_field :base_stock_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :inner_code %></td>
+        <td><%= f.number_field :inner_code, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :ex_divi_date %></td>
+        <td><%= f.date_select :ex_divi_date, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :adjusting_factor %></td>
+        <td><%= f.text_field :adjusting_factor, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :adjusting_const %></td>
+        <td><%= f.text_field :adjusting_const, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :ratio_adjusting_factor %></td>
+        <td><%= f.text_field :ratio_adjusting_factor, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :xgrq %></td>
+        <td><%= f.datetime_select :xgrq, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :accu_cash_divi %></td>
+        <td><%= f.text_field :accu_cash_divi, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :accu_bonus_share_ratio %></td>
+        <td><%= f.text_field :accu_bonus_share_ratio, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+

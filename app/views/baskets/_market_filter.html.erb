@@ -1,0 +1,12 @@
+<% if @search[:market] == "contest" %>
+  <div class="sortLinks market"> 
+    <%= link_to "大赛", baskets_path(search: @search.merge(market: "contest")), market: "contest", class: "active", style: "display:none;" %>
+  </div>
+<% else %>
+  <h4 class="bottom-content">股票市场</h4>
+  <div class="sortLinks market"> 
+    <% %w(all us hk a).zip(%w(全部 美股 港股 沪深)).each do |market_symbol, market_name| %>
+      <%= link_to market_name, baskets_path(search: @search.merge(market: market_symbol)), market: market_symbol, class: "#{ "active" if @search[:market] == market_symbol }" %>
+    <% end %>
+  </div>
+<% end %>

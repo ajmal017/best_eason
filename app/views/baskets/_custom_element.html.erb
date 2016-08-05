@@ -1,0 +1,25 @@
+<tr>
+  <% stock_weight = @stock_weights.try(:[], stock.id) || 0 %>
+  <input type="hidden" value="<%=stock.id%>" name="basket[basket_stocks_attributes][<%=stock.id%>][stock_id]">
+  <input type="hidden" value="<%=stock_weight%>" name="basket[basket_stocks_attributes][<%=stock.id%>][weight]" class="j_stock_weight">
+
+  <td class="j_stock_symbol" area="<%=stock.market_area%>">
+    <%=link_to_stock(stock, class: "flag #{stock.market_area}", target: '_blank')%>
+  </td>
+  <td><%=stock.truncated_com_name%></td>
+  <td class="customPercent">
+    <kbd onclick="javascript:WeightSlider.toggleLockButton(this);" class="icon lockoff"></kbd>
+    <div id="slider_<%=stock.id%>" class="scrollBar"></div>
+    <input type="text" value="<%=stock_weight * 100%>" />%
+  </td>
+  <th data="<%=stock.realtime_price%>">
+    <%= number_to_currency(stock.realtime_price, unit: stock.currency_unit, format:"%u%n") %> 
+    <%=up_down_style(stock.change_percent, postfix: '%')%>
+  </th>
+  <th data="<%= stock.one_year_return %>">
+    <%=up_down_style(stock.one_year_return, postfix: '%')%>
+  </th>
+  <th><%= stock.adj_pe_ratio %></th>
+  <th><%= humanlize_capitalization(stock.adj_market_capitalization) %></th>
+  <td class="j_remove_stock"><del>x</del></td>
+</tr>

@@ -1,0 +1,50 @@
+<h1 class="title">
+  <span class="title_left">Basket weight log列表页</span>
+  <span class="title_right">
+    <a href="/admin/basket_adjustments">adjustments</a> &nbsp;&nbsp;
+    <a href="/admin/basket_weight_logs">weight_logs</a> &nbsp;&nbsp;
+    <a href="/admin/basket_stock_snapshots">stock_snapshots</a>
+  </span>
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_basket_weight_logs_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :id_eq, :placeholder => 'ID', class: 'form-control' %>
+    <%= f.text_field :basket_id_eq, :placeholder => 'basket_id', class: 'form-control' %>
+    <%= f.text_field :date_eq, :placeholder => 'date', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%#= @basket_weight_logs.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Stock</th>
+      <th>Basket</th>
+      <th>Adjusted weight</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @basket_weight_logs.each do |basket_weight_log| %>
+    <tr>
+      <td><%= basket_weight_log.id %></td>
+      <td><%= basket_weight_log.stock_id %></td>
+      <td><%= basket_weight_log.basket_id %></td>
+      <td><%= basket_weight_log.adjusted_weight %></td>
+      <td><%= basket_weight_log.date %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @basket_weight_logs %>

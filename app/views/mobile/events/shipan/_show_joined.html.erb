@@ -1,0 +1,118 @@
+<section id="profile">
+<!--非参赛者添加  visitor -->
+  <div class="userInfo">
+    <a class="avator" data-id="<%= @user.id %>">
+      <%= image_tag @user.avatar_url(:small) %>
+      <span class="user"><%= @user.username %></span>
+      <span>
+        <b>
+          <% if @last_trade_at %>
+            <%= @last_trade_at.strftime("%Y.%m.%d") %>最后交易
+          <% else %>
+            暂无交易&nbsp;&nbsp;&nbsp;&nbsp;
+          <% end %>
+        </b>
+        <em class="status"><%= @rank.status_desc %></em>
+      </span>
+    </a>
+    <dl class="rank">
+        <dt class="<%= rank_change_class_2(@rank.rank_change) %>"><%= @rank.now_rank || "--" %><em><%= @rank.rank_change_abs %></em></dt>
+        <dd>当前排名</dd>
+    </dl>
+  </div>
+
+  <table class="overview">
+      <tr>
+        <td>今日盈亏<span class="<%= up_or_down_class(@basket.shipan_ret_percent) %>"><%= up_down_value(@basket.shipan_ret_percent, {postfix: "%", force_precision: 1, operator: false}) %></span></td>
+        <td>累计盈亏<span class="<%= up_or_down_class(@rank.realtime_total_ret) %>"><%= up_down_value(@rank.realtime_total_ret, {postfix: "%", force_precision: 1, operator: false}) %></span></td>
+        <td>胜率<span><%= @rank.win_rate %>%</span></td>
+      </tr>
+      <tr>
+        <td>总资产<span><%= to_chinese_unit(@account.total_property) %></span></td>
+        <td>仓位<span><%= @rank.position_percent %>%</span></td>
+        <td>交易次数<span><%= @rank.adjust_count %></span></td>
+      </tr>
+  </table>
+
+
+  <div class="chart">
+    <h3>收益走势图</h3>
+    <section id="topicChart" style='height:200px'>
+    </section>
+  </div>
+  <div class="detail">
+    <table cellpadding="0">
+      <thead>
+        <tr>
+          <th width="12"></th>
+          <th>名称</th>
+          <th>股数</th>
+          <th>当前价</th>
+          <th>仓位</th>
+          <th width="12"></th>
+        </tr>
+      </thead>
+      <% @grouped_stock_infos.each do |sector_name, infos| %>
+        <tbody>
+          <tr>
+            <td colspan="6">
+              <div class="plate <%= stock_category_class(sector_name) %>">
+                <%= sector_name%>   <%= @sector_percents[sector_name] %>%
+              </div>
+            </td>
+          </tr>
+          <% infos.each do |info| %>
+            <tr>
+              <td width="12"></td>
+              <td>
+                  <a href="<%= mobile_link(mobile_stock_path(info[:id])) %>" data-id="<%= info[:id] %>" data-name="<%= info[:com_name] %>" data-symbol="<%= info[:symbol] %>">
+                  <%= info[:com_name] %><span><%= info[:symbol] %></span>
+                </a>
+              </td>
+              <td><%= info[:total_count] %></td>
+              <td>
+                <% if info[:listed_state]== 1 %>
+                  <%= info[:realtime_price] %><span><%= up_down_style(info[:change_percent], {force_precision: 2, postfix: "%"}) %></span>
+                <% else %>
+                  维持
+                <% end %>
+              </td>
+              <td><%= info[:single_position].round(2) %>%</td>
+              <td width="12"></td>
+            </tr>
+          <% end %>
+        </tbody>
+      <% end %>
+      <tbody>
+        <tr>
+          <td colspan="6">
+            <div class="plate cash">现金   <%= @cash_percent %>%</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+</section>
+
+<%= content_for :script do  %>
+  <%= javascript_include_tag "/javascripts/mo.caishuo.js", '/javascripts/highstock.js', "/javascripts/mo.caishuo.bridge.min.js" %>
+  <script type="text/javascript">
+    $(function(){
+      $.getJSON('<%=mobile_link "/mobile/data/baskets/#{@basket.id}/chart_datas"%>',{}, function(data){
+        window.data = data
+        moCaishuo.basket.drawCompare('#topicChart', data.basket, data.market);
+      });
+    });
+    Caishuo.connect("index", function(){
+        $('.userInfo a.avator').click(function(){
+            var data = $(this).data();
+            Caishuo.trigger("openpage", {"goto":"profile", id:data.id});
+        });
+        $("div.detail td a").removeAttr("href").click(function(){
+            var data = $(this).data();
+            Caishuo.trigger("openpage", {"goto":"stock","id":data.id,"name":data.name,"symbol":data.symbol});
+        });
+    });
+  </script>
+<% end %>

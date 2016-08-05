@@ -1,0 +1,8 @@
+<a href="/stocks/<%= stock.id %>" stock-id="<%= stock.id %>" target="_blank">
+	<span class="codename"><%= stock.truncated_com_name %><b><%= stock.symbol %></b></span>
+	<span class="pricerate"><%= pretty_number_to_currency(stock.realtime_price, unit: stock.currency_unit, format: "%u%n", negative_format: "%u-%n") %> <%= stock_change_percent_style(stock, postfix: "%", operator: false, with_arrow: true) %></span>
+	<span class="stockchart" request-already="" style="width:232px;height:102px;"></span>
+	<span class="scores">
+		<span class="ratestar1"><span style="width:<%= stock_ratestar_width(stock.stock_screener.score) %>%;"></span></span>
+	</span>
+</a>

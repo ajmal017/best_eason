@@ -1,0 +1,18 @@
+<script type="text/javascript" role="rick">
+  Caishuo.connect("event", function(){
+    $(".tableholder a").attr("href",'javascript:void(0)').closest('tr').click(function(){
+      var data = $(this).data();
+      Caishuo.trigger("openpage", {"goto":"stock","id":data.id,"name":data.name,"symbol":data.symbol});
+    });
+
+    $(".stockholder table tbody tr").click(function(){
+      var data = $(this).data();
+      Caishuo.trigger("openpage", {"goto":"stock","id":data.id,"name":data.name,"symbol":data.symbol});
+    });
+  });
+
+  $(function(){
+    var stock_list = new STOCK_LIST();
+    stock_list.init($('.stocks'));
+  });
+</script>

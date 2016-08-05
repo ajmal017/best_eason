@@ -1,0 +1,2 @@
+module Admin::PtApplicationsHelper
+end

@@ -1,0 +1,29 @@
+<% if show_analytics? %>
+<!-- Start of XMO site-wide Tag -->
+<script type="text/javascript">
+
+  (function(){
+  var script0 = document.createElement("script");
+  script0.src = "//j03.optimix.asia/events/opxLoader.js";
+  script0.type = "text/javascript";
+  script0.async = "async";
+  document.getElementsByTagName("head")[0].appendChild(script0);
+  var opxUid='0';
+  var opxcounter='1';
+  var opxClientID='1065';
+  var opxParams="opxvrsn=ut;opxUid="+opxUid+";"+"opxClientID="+opxClientID+";"+"opxcounter="+opxcounter+";";
+  if (script0.readyState) {
+    script0.onreadystatechange = function() {
+      if (script0.readyState == "loaded" || script0.readyState == "complete") {
+        opxLoad("//e03.optimix.asia", opxParams);
+      }
+    };
+  } else {
+    script0.onload = function () {
+      opxLoad("//e03.optimix.asia", opxParams);
+    };
+  }
+  })();
+</script>
+<!-- End of XMO site-wide Tag -->
+<% end %>

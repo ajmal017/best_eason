@@ -1,0 +1,33 @@
+<div class="container TopBar text-right">
+  <div class="float-left MarketInfo j_stock_index">
+    <dl class="SlideBoard"></dl>
+    <div class="InfoBox">
+      <dl id="stock-cn">
+        <dt>沪深：--</dt>
+        <dd class="hua"><span>上证综指</span><em><span>--</span> -- (--)</em></dd>
+        <dd class="sha"><span>深证成指</span><em><span>--</span> -- (--)</em></dd>
+        <dd class="hs300"><span>沪深300</span><em><span>--</span> -- (--)</em></dd>
+        <dd class="cyb"><span>创业板指</span><em><span>--</span> -- (--)</em></dd>
+      </dl>
+      <dl id="stock-us">
+        <dt>美股：--</dt>
+        <dd class="bp500"><span>标普500</span><em><span>--</span> -- (--)</em></dd>
+        <dd class="nasdaq"><span>纳斯达克</span><em><span>--</span> -- (--)</em></dd>
+      </dl>
+      <dl id="stock-hk">
+        <dt>港股：交易中 10:15</dt>
+        <dd class="hs"><span>恒生指数</span><em><span>--</span> -- (--)</em></dd>
+      </dl>
+    </div>
+  </div>
+  <!-- <a href="/about/faq">使用帮助</a><span class="lineGap"></span><a href="/articles">财说专栏</a><span class="lineGap"></span><a href="<%= Setting.brokers.unicorn.create_account_url %>">开通交易账户</a> -->
+</div>
+
+<script>
+var timedata = <%= markets_time_infos.to_json.html_safe %>;
+$('#stock-us dt').timeformat(timedata, '<span>%name%</span> %stat% %datetime%', 'hh:ii:ss', ['us', 'hk', 'cn'], ['#stock-us dt','#stock-hk dt','#stock-cn dt']);
+
+var stockinfo = <%= ::StockIndex.all.to_json.html_safe %>;
+$('.MarketInfo .SlideBoard').stockSlide('.InfoBox dd');
+StockIndex(stockinfo);
+</script>

@@ -1,0 +1,22 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/stocks.css" %>
+<% end %>
+
+<%- @page_title = "个股投资" -%>
+	
+<div class="container clearfix">
+
+  <%= render :partial => 'search_menu' %>
+
+  <%= render :partial => 'market_index' %>
+
+  <%= render :partial => 'stock_result', locals: {stocks: @stocks||[]} %>
+</div>
+
+<%=content_for :script do %>
+  <%= javascript_include_tag "stocks_index.js" %>
+<% end %>
+
+<script type="text/javascript">
+var _pre_search_params = <%= {search: @search, sort: @sort}.to_json.html_safe %>;
+</script>

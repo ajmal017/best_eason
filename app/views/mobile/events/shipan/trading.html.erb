@@ -1,0 +1,30 @@
+<%= render partial: "nav" %>
+<div class="title tre">
+  <div class="clearfix">
+    <span>选手</span>
+    <span>操作</span>
+    <span>股票</span>
+    <span>成交价</span>
+  </div>
+</div>
+<section class="trends">
+  <div class="list" id="list">
+    <% @order_details.each do |od| %>
+      <a href="<%= mobile_link mobile_events_shipan_path(@contest.basket_id_of(od.user_id)) %>" class="clearfix">
+        <span>
+          <strong><%= od.user.username %></strong>
+          <%= od.trade_time.to_s(:short) %>
+        </span>
+        <span class="<%= shipan_trade_class(od) %>">
+          <% if od.sell? %>
+            卖出
+          <% else %>
+            买入
+          <% end %>
+        </span>
+        <span><%= od.stock.com_name %></span>
+        <span><%= od.avg_price %></span>
+      </a>
+    <% end %>
+  </div>
+</section>

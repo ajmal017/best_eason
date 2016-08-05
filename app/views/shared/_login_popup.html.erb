@@ -1,0 +1,17 @@
+<div id="login_popup_dialog" style="display:none;">
+  <h2>用户登录</h2>
+
+  <%= form_for User.new, url: user_session_path, html: {remote: true, 'data-type' => 'json', id: 'login_popup_form'} do |f|%>
+    <div></div>
+    <div class="form-inputs">
+      邮箱：<%=f.text_field :email, autofocus: true%></br>
+      密码: <%=f.password_field :password%></br>
+      记住我：<%=f.check_box :remember_me%></br>
+    </div>
+    
+    <div class="form-actions">
+      <%= f.submit "登录" %>
+    </div>
+  <% end %>
+
+</div>

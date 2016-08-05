@@ -1,0 +1,7 @@
+$("#order_details tbody").append("<%= j render partial: '/baskets/order_details', locals: {order_details: @order_details} %>");
+<% if @order_details.size == 0 %>
+  $("#addmore").attr("loading", "true").text("没有更多了");
+<% else %>
+  $("#addmore").attr("loading", "false").text("加载更多");
+<% end %>
+$("#addmore").attr("data-page", "<%= params[:page] %>");

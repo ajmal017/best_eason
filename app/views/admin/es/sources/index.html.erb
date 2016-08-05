@@ -1,0 +1,46 @@
+<h1 class="title">
+  <span class="title_left">Source列表页</span>
+  <span class="title_right">
+    <%= link_to "新建Source", new_admin_es_source_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_es_sources_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :name_eq, :placeholder => '新闻源', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @es_sources.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>code</th>
+      <th>新闻源</th>
+      <th>地址</th>
+      <th>CRUD操作</th>
+      <th>同步操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @es_sources.each do |es_source| %>
+    <tr>
+      <td><%= es_source.code %></td>
+      <td><%= es_source.name %></td>
+      <td><%= es_source.url.truncate(50) %></td>
+      <td class="action"><%= link_to '详情', [:admin, es_source] %> <%= link_to '编辑', [:edit, :admin, es_source] %>  <%= link_to '删除', [:admin, es_source], method: :delete, data: { confirm: '你确定删除吗?' } %></td>
+      <td class="action"><%= link_to "新闻列表", "/admin/es/news"%> <%= link_to "开始同步", sync_source_admin_es_news_index_path(es_source.code.to_sym)%></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @es_sources %>

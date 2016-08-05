@@ -1,0 +1,8 @@
+<% if @suggest.temp_image.errors.present? %>
+  alert("<%=@suggest.temp_image.errors.first%>");
+<% else %>
+  alert("上传成功");
+  hideCropModal();
+<% end %>
+window.location.reload();
+

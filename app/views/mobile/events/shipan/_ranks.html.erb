@@ -1,0 +1,14 @@
+<% ranks.each do |rank| %>
+  <a href="<%= mobile_link mobile_events_shipan_path(rank.basket_id) %>" class="clearfix" data-id="<%=rank.basket_id%>">
+    <span>
+      <em><%= rank.now_rank%></em>
+      <%= image_tag rank.user.avatar_url(:small) %>
+      <span>
+        <strong><%= rank.user.username %></strong>
+        <%= rank.user.headline %>
+      </span>
+    </span>
+    <span class=""><%= up_down_style(rank.ret, {postfix: "%", force_precision: 2}) %></span>
+    <span class="<%= rank_change_class_2(rank.rank_change) %>"><i><%= rank.rank_change_abs %></i></span>
+  </a>
+<% end %>

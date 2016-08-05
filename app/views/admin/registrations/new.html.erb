@@ -1,0 +1,42 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+</h1>
+<%= form_for resource, :as => resource_name, url: registration_path(resource_name) do |f| %>
+ <table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>邮箱地址:</td>
+      <td>
+        <%=f.text_field :email, placeholder: '邮箱地址', required: true, autofocus: true %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>真实姓名:</td>
+      <td>
+        <%= f.text_field :fullname, :size=>30, required: true %>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="field"><b>*</b>密码:</td>
+      <td>
+        <%= f.password_field :password, :size=>20 %>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="field"><b>*</b>确认密码:</td>
+      <td>
+        <%= f.password_field :password_confirmation, :size=>20 %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"></td>
+      <td>
+        <%= f.submit "注册账号" %> <span></span><%= link_to "已有账号？请直接登录", new_admin_staffer_session_path %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<% end -%>

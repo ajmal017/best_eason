@@ -1,0 +1,82 @@
+<%= content_for :header do%>
+  <meta name="format-detection" content="telephone=no" />
+<% end %>
+  <form class="container" id="password_by_phone" action="/mobile/account/password/update_password_by_mobile" method="post" onsubmit="return checkForm();">
+    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+    <input name="mobile" id="mobile" type="hidden" value="<%= @result %>" />
+    <div class="resetTip">您的手机 <em class="blue"><%=@result%></em><br>会收到一条含有<em class="blue">4</em>位数字验证码的短信</div>
+    <div id="errorTip">&nbsp;</div>
+    <ul class="account">
+        <li><input type="text" id="captcha" name="captcha" placeholder="输入验证码" maxlength="6" /><span class="empty" style="right:120px;"></span><span id="captchaBtn">重新发送</span></li>
+        <li><input type="password" id="password" name="password" placeholder="输入新密码" /><span class="empty" style="right:1.5em"></span><span class="view"></span></li>
+        <li><input type="password" id="password2" name="password_confirmation" placeholder="再次输入" /><span class="empty" style="right:1.5em"></span><span class="view"></span></li>
+    </ul>
+    <dl class="confirm">
+        <dd onclick="$('form#password_by_phone').submit()">重设密码</dd>
+    </dl>
+  </form>
+<script type="text/javascript">
+    function checkForm(){
+        var pass1 = $('#password').val(), pass2 = $('#password2').val(), captcha = $('#captcha').val();
+        if (!pass1){
+            return showError('请输入密码', 1800);
+        }else if (pass1.length < 6 || pass1.length>20){
+            return showError('密码控制在6-20位', 1800);
+        }else if (!passParten.test(pass1)){
+            return showError('密码不能包含特殊符号', 1800);
+        }else if (!pass2){
+            return showError('请输入确认密码', 1800);
+        }else if (pass1 != pass2){
+            return showError('两次输入密码不一致', 1800);
+        }else if (!captcha){
+            return showError('请输入验证码', 1800);
+        }else if (captcha.length!=4){
+            return showError('请正确输入验证码',1800);
+        }else{
+            var form = $('form#password_by_phone')
+            var valuesToSubmit = form.serialize();
+            $.ajax({
+                type: "POST",
+                url: form.attr('action'),
+                data: valuesToSubmit,
+                dataType: "JSON"
+            }).success(function(data){
+                if (data['status']){
+                    window.location.href="/mobile/account/password/finish";
+                } else {
+                    return showError(data['msg'], 1800);
+                }
+            });
+            return false;
+        }
+    }
+    var timer;
+    $('#captchaBtn').click(function(){
+        if (!timer){
+          $.ajax({
+            url: "/mobile/account/users/send_sms_code",
+            type: 'PUT',
+            data: {"mobile": $("#mobile").val()},
+            success:
+              function(data){
+                if (data['status']) {
+                  var seconds=60;
+                  $('#captchaBtn').text('重新发送('+ seconds +')');
+                  timer = window.setInterval(function(){
+                      if (seconds>1){
+                          $('#captchaBtn').text('重新发送('+ --seconds +')')
+                      }else{
+                          $('#captchaBtn').text('重新发送');
+                          window.clearInterval(timer);
+                          timer = null;
+                      }
+                  },1000);
+                } else {
+                  return showError(data['msg'], 1800);
+                }
+              }
+          });
+        }
+    }).click();
+
+</script>

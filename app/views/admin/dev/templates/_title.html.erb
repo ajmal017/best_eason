@@ -1,0 +1,49 @@
+<div class="demo_left">
+  <h2>Demo:</h2>
+  <div class="demo_box">
+    <h1 class="title">
+      <span class="title_left">这里是页面标题</span>
+      <span class="title_right"><%=link_to "右侧链接", "#"%></span>
+    </h1>
+
+    <div class="box">
+      <a href="#" class="current">全部</a>
+      <% 5.times do |i| %>
+      <a href="#">分类<%=i+1%></a>
+      <% end -%>
+    </div>
+
+    <div class="box">
+      <form method="get" id="basket_search" class="form-inline" action="/admin/baskets" accept-charset="UTF-8"><div style="display:none"><input type="hidden" value="✓" name="utf8"></div>
+        <input type="text" placeholder="组合" name="q[title_cont]" id="q_title_cont" class="form-control">
+        <input type="text" placeholder="注释" name="q[description_cont]" id="q_description_cont" class="form-control">
+        <select name="q[state_eq]" id="q_state_eq" class="form-control"><option value="">状态</option>
+          <option value="-1">已删除</option>
+          <option value="1">草稿</option>
+          <option value="4">已完成</option>
+          <option value="5">已归档</option>
+        </select>
+        <select name="q[basket_audits_state_eq]" id="q_basket_audits_state_eq" class="form-control">
+          <option value="">待审核？</option>
+          <option value="0">是</option>
+        </select>
+        <input type="submit" value="搜索" name="commit">
+      </form>
+    </div>
+
+    </div>
+</div>
+<div class="demo_right">
+  <h2>代码:</h2>
+  <%== code(:title, :erb) %>
+  <%== code(:menu, :erb) %>
+  <%== code(:search, :erb) %>
+  <br/>
+  <h2 class="title">使用说明:</h2>
+  <p>
+    1. title 页面标题，分左右两部分，左部分必填，右部分可选<br/>
+    2. title_left: 左部分, 页面主标题<br/>
+    3. title_right: 右部分, 一般是添加、返回列表等连接<br/>
+    4. box: 子导航和搜索框<br/>
+  </p>
+</div>

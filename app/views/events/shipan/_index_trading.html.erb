@@ -1,0 +1,41 @@
+<!-- 实时交易信息 -->
+<div class="itemBox tradeRecord">
+    <h3>实时交易信息<a href="/events/shipan/trading" class="rightlink">查看详情</a></h3>
+    <table id="TradingInfo">
+        <thead>
+          <tr>
+            <td></td>
+            <td>选手</td>
+            <td>操作</td>
+            <td>股票</td>
+            <td>成交价</td>
+            <td>时间</td>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+          <% order_details.each do |od| %>
+          <tr data-id="<%= od.id %>">
+              <td></td>
+              <td>
+                <%= link_to od.user.username, basket_path(@contest.basket_id_of(od.user_id)), target: "_blank" %>
+              </td>
+              <td class="<%= shipan_trade_class(od) %>">
+                <% if od.sell? %>
+                  卖出
+                <% else %>
+                  买入
+                <% end %>
+              </td>
+              <td>
+                <%= link_to od.stock.com_name, stock_path(od.base_stock_id), target: "_blank" %>
+              </td>
+              <td><%= od.avg_price %></td>
+              <td><%= od.trade_time.try(:to_s, :only_time) %></td>
+              <td></td>
+          </tr>
+          <% end %>
+        </tbody>
+    </table>
+</div>
+<!-- 实时交易信息 -->

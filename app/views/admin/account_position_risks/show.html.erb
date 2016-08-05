@@ -1,0 +1,72 @@
+<h1 class="title">
+  <span class="title_left">Account position risk详情页面</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @account_position_risk], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_account_position_risks_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Id</td>
+      <td>
+        <%= @account_position_risk.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Stock focus score</td>
+      <td>
+        <%= @account_position_risk.stock_focus_score %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Industry focus score</td>
+      <td>
+        <%= @account_position_risk.industry_focus_score %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Plate focus score</td>
+      <td>
+        <%= @account_position_risk.plate_focus_score %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Trading account</td>
+      <td>
+        <%= @account_position_risk.trading_account_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Date</td>
+      <td>
+        <%= @account_position_risk.date %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Created at</td>
+      <td>
+        <%= @account_position_risk.created_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Updated at</td>
+      <td>
+        <%= @account_position_risk.updated_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Var95</td>
+      <td>
+        <%= @account_position_risk.var95 %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Basket fluctuation</td>
+      <td>
+        <%= @account_position_risk.basket_fluctuation %>
+      </td>
+    </tr>
+  </tbody>
+</table>

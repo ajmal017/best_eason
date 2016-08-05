@@ -1,0 +1,14 @@
+<div class="envelope actived">
+  <div class="pic"></div>
+  <p>您的礼包已激活</p>
+  <!-- <% rest = @length - (@trading_since.to_date - @start_time.to_date).to_i %> -->
+  <% rest = [@length - (Date.today - @trading_since).to_i, 0].max %>
+  <b>您还有<span><%= rest %></span>天的免佣期</b>
+  <div class="time"><span style="width:<%= rest*100/@length %>%;"></span></div>
+  <div class="text-center mt30">
+    <%= link_to '美股交易', stocks_path(search: { market_region: :us }, sort: { sort_by: :change_rate, direction: :desc }), class: 'b_btn trade mr25' %>
+    <%= link_to '港股交易', stocks_path(search: { market_region: :hk }, sort: { sort_by: :change_rate, direction: :desc }), class: 'b_btn trade' %>
+  </div>
+  <%= render partial: 'update_invition' if @length == 15 %>
+  <%= render partial: 'rule' %>
+</div>

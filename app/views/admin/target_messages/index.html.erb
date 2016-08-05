@@ -1,0 +1,47 @@
+<h1 class="title">
+  <span class="title_left">站内信列表</span>
+  <span class="title_right">
+    <%= link_to "创建新站内信", new_admin_target_message_path %>
+  </span>
+</h1>
+<table class="grid" id="role-grid">
+    <thead>
+        <tr>
+            <th width="10%">ID</th>
+            <th width="50%">内容</th>
+            <th width="10%">目标用户</th>
+            <th width="10%">进度(已进行/总数)</th>
+            <th width="10%">成功数</th>
+            <th width="10">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+      <% @paginated_target_messages.each do |message| %>
+        <tr>
+            <td><%= message.id %></td>
+            <td class="align_left"><%= truncate(message.content, length: 60) %></td>
+            <td>
+              <%= truncate(message.target) %>
+            </td>
+            <td><div class= <%= message.id %> ><span>
+              <% if message.succ_count.nil? %>
+                <%= message.r_succ_counter %>
+              <% else %>
+                <%= message.succ_count %>
+              <% end %>
+              </span>/<em><%= message.target_counter %></em></div></td>
+            <td><div class= <%= message.id %> ><span class="succ2">
+              <% if message.succ_count.nil? %>
+                <%= message.r_succ_counter %>
+              <% else %>
+                <%= message.succ_count %>
+              <% end %>
+              </span></div></td>
+            <td class="action">
+              <%= link_to "查看", admin_target_message_path(message) %>
+            </td>
+        </tr>
+      <% end -%>
+    </tbody>
+</table>
+<%= will_paginate @paginated_target_messages %>

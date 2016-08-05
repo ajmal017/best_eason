@@ -1,0 +1,23 @@
+<!-- 登录财说 -->
+<%= form_for @user || User.new, url: login_url, method: :post, remote: true, html: {class: "itemBox userPanel"} do |f| %>
+  <%=hidden_field_tag :from, 'events'%>
+  <dl class="loginPanel">
+    <dt>
+      登录财说
+      <%= link_to "注册账号", signup_path, class: 'aRegister', target: "_blank" %>
+    </dt>
+    <dd>
+      <span class="errorTip" id="j_new_user_error" style="display:none;">账号或密码输入有误，请重新输入</span>
+      <%=f.text_field :email, value: cookies[:email], placeholder: "请输入注册邮箱或手机号"%>
+      <%=f.password_field :password, placeholder: "请输入密码"%>
+    </dd>
+    <dd class="login_dd">
+      <button type="submit" class="btn btn-login">登录</button>
+    </dd>
+    <dd class="forgetPas">
+      <%= link_to "忘记密码", new_account_password_path, class: "reglink", target: "_blank" %>
+    </dd>
+    <%= render partial: "/shared/other_login", locals: {show_text: true} -%>
+  </dl>
+<% end %>
+<!-- 登录财说 -->

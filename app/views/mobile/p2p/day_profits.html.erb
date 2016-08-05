@@ -1,0 +1,54 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.global.css" %>
+  <%= javascript_include_tag "/javascripts/mo.caishuo.js", "/javascripts/mo.caishuo.bridge.min.js", "/javascripts/mo.gaintable.js" %>
+  <style type="text/css">
+    .plus {color: #ff4546;}
+    .mins {color: #31c464;}
+    #GainChart {background: #e5472e;min-height: 262px;position: relative;}
+    #GainChart dl {position: absolute;left: 0;right: 0;top: 0;padding: 15px 12px;margin: 0;text-align: right;}
+    #GainChart dt {font-size: 15px;color: white;opacity: .8;float: left;margin-top: -2px;}
+    #GainChart dd {font-size: 10px;color: white;display:inline-block;position: relative;margin-top: -3px;padding-left: 18px;margin-left: 12px;opacity: .8;}
+    #GainChart dd:before {content: "";position: absolute;left: 0;top:50%;margin-top: -.5em;display: block;width: 1em;height: 1em;border-radius: 50%;background: white;}
+    #GainChart dd.gain:before {opacity: .375;}
+    #GainChart.nogain dd {display: none;}
+    #GainChart.nogain h1 {display: block;}
+    #GainChart.nogain h2 {display: block;}
+    #GainChart h1 {font-size: 40px;text-align: center;color: white;display: none;position: absolute;left: 0;right: 0;bottom: 50%;}
+    #GainChart h2 {font-size: 16px;text-align: center;color: white;display: none;position: absolute;left: 0;right: 0;top: 60%;opacity: .6;}
+    .content {background: white;border-bottom: 1px solid #e0e0e0;}
+    dl#GainList {margin:0; padding: 0;font-size: 16px;line-height: 24px;background:white;}
+    dl#GainList dt {border-bottom: 1px solid #e0e0e0; font-size: 17px;background: #f2f2f2;padding: 10px 12px;}
+    dl#GainList dd {margin: 0 0 0 12px;padding: 10px 12px 10px 0;border-bottom: 1px solid rgba(224, 224, 224, 0.4);color: #333;}
+    dl#GainList dd:last-child {border:none;}
+    dl#GainList dd em {font-style: normal;float: right;}
+  </style>
+<% end %>
+
+<div id="GainChart">
+  <dl><dt>最近七天收益(元)</dt><dd class="gain">保底收益</dd><dd>浮动收益</dd></dl>
+  <h1>暂无收益</h1>
+  <h2>起息日第二天开始显示昨日收益</h2>
+</div>
+<div class="content">
+  <dl id="GainList">
+    <dt>每日收益(元)</dt>
+    <!-- <dd><span>2015.10.21</span><em class="plus">+67.05</em></dd> -->
+  </dl>
+  <div id="loadMore"><a style="display:none;">加载更多</a><div class="barloading"></div></div>
+</div>
+
+<script type="text/javascript" role="fake_data">
+// fake data start
+  var GainChartData = <%= raw @chart_data %>;
+// fake data end;
+</script>
+<script type="text/javascript">
+  GainChart.call($('#GainChart'), GainChartData);
+  GainList.call($('#GainList'), '', function(last_id, callback){
+    $.get("<%=mobile_link('/mobile/ajax/p2p/day_profits')%>", {uid:<%= @current_user.id %>, perpage: 20, last_id: last_id}, function(data){
+      callback(data);
+    });
+  });
+</script>
+</html>
+

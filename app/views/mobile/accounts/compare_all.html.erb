@@ -1,0 +1,64 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.users.css", "/stylesheets/mobile/mo.compare.css" %>
+  <%= javascript_include_tag "/javascripts/mo.compare.js" %>
+<% end %>
+
+<!-- 用户信息  -->
+<div class="user-card" data-id="<%= current_user.id %>">
+  <%= image_tag current_user.avatar_url(:large), class: "avatar" %>
+  <div class="name"><%= current_user.username %></div>
+  <% if @ordered %>
+    <div class="result">战胜 <span class="percent"><%= @account.ranking_percent(@type) %>％</span> 财说用户</div>
+  <% end %>
+</div>
+
+<div class="result-card">
+  <table>
+    <tbody>
+      <% if @ordered %>
+        <tr class="<%= up_down_class(@my_rank.profit) %>">
+          <td><%= up_down_value(@my_rank.percent, postfix: "%") %></td>
+          <td class="change" data-change="<%= @my_rank.profit %>">
+            <%= humanlize_number_with_flag(@my_rank.profit) %>
+          </td>
+          <td><%= @account.win_rate %>%</td>
+        </tr>
+      <% else %>
+        <tr class="new"><td>－－</td><td>－－</td><td>－－</td></tr>
+      <% end %>
+      <tr><td>盈亏幅</td><td>盈亏额</td><td>平均胜率</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 财说用户排名 -->
+<div class="users">
+  <div class="header">财说A股模拟交易前20名</div>
+  <table>
+    <thead>
+        <td>排名</td>
+        <td>昵称</td>
+        <td>资产</td>
+        <td>盈亏</td>
+    </thead>
+    <tbody>
+      <% @ranks.each_with_index do |rank, index| %>
+        <%= render partial: "rank_item", locals: {rank: rank, rankings: index+1} %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<!-- 底部导航栏 -->
+<div class="nav-bar">
+  <% %w(day month total).zip(%w(今日排行 近一月排行 累计排行)).each do |type, desc| %>
+    <div class="<%= type %> <%= 'active' if type == @type %>" data-shareurl="<%= @account.snapshot_url(type) %>"><span><%= desc %></span></div>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    var cs_compare = new CS_COMPARE('all', '<%= mobile_link compare_all_mobile_account_path(@account.pretty_id, format: :json) %>');
+    cs_compare.init();
+  });
+</script>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=600" />
+<%= favicon_link_tag '/images/favicon_32.ico', type: "image/x-icon" -%>
+<!--seo 相关属性-->
+<%= seo_title(@page_title) %>
+<meta name="Keyword", content="<%= localize(@page_keyword) %>"/>
+<meta name="Description", content="<%= localize(@page_description) %>"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/sitemap/open_search.xml.gz" title="财说"/>
+<!--弹窗登录的样式在register.css-->
+<%= stylesheet_link_tag "/stylesheets/v3/site.css", "/stylesheets/v3/global.css"-%>
+
+<%= include_gon -%>
+<%= javascript_include_tag "application", "/javascripts/jquery.caishuo.js" %>
+<%= controller_javascript_include_tag %>
+<%= yield :header %>
+
+<%= csrf_meta_tags %>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <%= javascript_include_tag "/javascripts/html5shiv-v3.7.js", "/javascripts/respond-v1.4.2.min.js" %>
+<![endif]-->
+</head>
+<body class="<%=@body_class%> <%=@background_color%>">
+<%= render '/shared/analytics/gtm'%>
+<%= javascript_include_tag "translate" -%>
+<%= render :partial => (@header_file || "layouts/header") %>
+
+<%=yield%>
+
+<%= render :partial => "layouts/footer" %>
+
+<%= render 'layouts/login_popup'%>
+
+<%= render 'layouts/base_dialog' %>
+
+<%= render "/shared/publisher_client" -%>
+
+<%= yield :script %>
+<%= render '/shared/analytics' -%>
+</body>
+</html>

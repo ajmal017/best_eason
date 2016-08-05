@@ -1,0 +1,230 @@
+<%=content_for :header do %>
+  <%= javascript_include_tag "highstock", "basket_show", "/javascripts/kindeditor/kindeditor.js", "/javascripts/basket_detail.js", "/javascripts/commentPack.min.js" %>
+  <%= stylesheet_link_tag "/stylesheets/v3/match_details.css", "/stylesheets/v3/commentPack.css" %>
+<% end %>
+<%- @page_title = "#{@basket.title} - 投资组合" -%>
+
+<div class="banner" onclick="window.location.href='/events/shipan';"></div>
+
+<div class="container">
+  <%= render :partial => "show_title" %>
+
+    <div class="doubleBox">
+      <%= render partial: "show_charts", locals: {chart_width: "590px", chart_height: "350px", show_period: false} %>
+
+      <div class="doubleBox_right">
+        <div class="userPanel">
+          <div class="userInfo">
+              <a class="avator avator_70" href="<%= profile_path(@basket.author_id) %>">
+                  <%= image_tag @basket.author.avatar_url(:large) %>
+                  <span><%= @basket.author.username %>
+                      <em><%= @basket.author.headline %></em>
+                  </span>
+                  <div class="status">状态：<%= @basket_rank.status_desc %></div>
+              </a>
+              <dl class="rank">
+                  <dt class="<%= 'crown' if @basket_rank.champion? %>"><%= @basket_rank.now_rank || "--" %></dt>
+                  <dd class="text">当前排名</dd>
+                  <dd class="grow <%= rank_change_class_2(@basket_rank.rank_change) %>"><em><%= @basket_rank.rank_change_abs %></em></dd>
+              </dl>
+          </div>
+        </div>
+        <table>
+          <tr>
+              <td>今日盈亏<strong class="<%= up_or_down_class(@basket.shipan_ret_percent) %>"><em><%= up_down_value(@basket.shipan_ret_percent, {postfix: "%", force_precision: 1, operator: false}) %></em></strong></td>
+              <td>累计盈亏<strong class="<%= up_or_down_class(@basket_rank.realtime_total_ret) %>"><em><%= up_down_value(@basket_rank.realtime_total_ret, {postfix: "%", force_precision: 1, operator: false}) %></em></strong></td>
+              <td>胜率<strong class="red"><%= @basket_rank.win_rate %>%</strong></td>
+          </tr>
+          <tr>
+              <td>总资产<strong><%= to_chinese_unit(@account.total_property) %></strong></td>
+              <td>交易次数<strong><%= @basket_rank.adjust_count %></strong></td>
+              <td>仓位<strong><%= @basket_rank.position_percent %>%</strong></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="clearfix">
+        <div class="leftBox">
+            <div class="comprehensive">
+                <h3>个股组合</h3>
+                <div class="tbdiv">
+                    <table class="themeStocks noflag baseketPie">
+                        <thead>
+                            <tr>
+                                <th width="">代码</th>
+                                <th width="">名称</th>
+                                <th width="">股数</th>
+                                <th>金额</th>
+                                <th width="">成本价</th>
+                                <th width="">当前价</th>
+                                <th width="">浮动盈利</th>
+                                <th width="">仓位</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <% @grouped_stock_infos.each do |sector_name, infos| %>
+                            <tr>
+                              <th colspan="8" class="sector">
+                                <div class="sectorPie"></div><%= sector_name%>
+                                 (<span><%= @sector_percents[sector_name] %>%</span>)
+                              </th>
+                            </tr>
+                            <% infos.each do |info| %>
+                            <tr>
+                                <td>
+                                  <%= link_to info[:symbol], stock_path(info[:id]), target: "_blank" %>
+                                </td>
+                                <td>
+                                  <%= link_to info[:com_name], stock_path(info[:id]), target: "_blank" %>
+                                </td>
+                                <td><%= info[:total_count] %></td>
+                                <td><%= currency_money(info[:total_value]) %></td>
+                                <td><%= info[:average_cost].round(3) %></td>
+                                <td>
+                                  <%= info[:realtime_price] %>
+                                  <%= up_down_style(info[:stock_change_percent], {force_precision: 2, postfix: '%'}) %>
+                                </td>
+                                <td><%= up_down_style(info[:total_change], {force_precision: 2}) %></td>
+                                <td><%= info[:single_position].round(2) %>%</td>
+                            </tr>
+                            <% end %>
+                          <% end %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td align="center"><%= @cash_percent %>%</td>
+                                <td align="center">现金</td>
+                                <td colspan="2"></td>
+                                <td colspan="4"><div class="scrollBar"><i><%= @cash_percent %>%</i></div></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="comprehensive match_record">
+                <h3>调仓信息</h3>
+                <div class="tbdiv" id="order_details">
+                    <table class="themeStocks baseketPie">
+                        <thead>
+                            <tr>
+                                <th>时间</th>
+                                <th>操作方向</th>
+                                <th>代码</th>
+                                <th>名称</th>
+                                <th>成交价格</th>
+                                <th>成交数量</th>
+                                <th>盈亏</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <button id="addmore" class="w_btn large" data-page="0" data-account="<%= @account.pretty_id %>">加载更多</button>
+                </div>
+            </div>
+            <div class="comprehensive">
+              <div class="comments" id="Comments">
+                  <h3>观点评论 <span></span></h3>
+                  <%= render partial: '/comments/base' %>
+              </div>
+            </div>
+        </div>
+        <div class="rightBox">
+            <div class="comprehensive">
+                <h3>前五高手排行</h3>
+                <table class="rank">
+                    <thead>
+                        <tr>
+                            <th width="20"></th>
+                            <th width="28">排名</th>
+                            <th>用户</th>
+                            <th>总收益率</th>
+                            <th>日收益</th>
+                            <th width="20"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <% @top_5_ranks.each_with_index do |rank, index| %>
+                        <tr>
+                            <td></td>
+                            <td><%= index+1 %></td>
+                            <td>
+                              <%= link_to rank.user.username, basket_path(rank.basket_id), class: "limitLength", target: "_blank" %>
+                            </td>
+                            <td><%= up_down_style(rank.ret, {postfix: "%", force_precision: 2}) %></td>
+                            <td><%= up_down_style(rank.one_day_ret, {postfix: "%", force_precision: 2}) %></td>
+                            <td></td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                </table>
+                <h3>动态<a href="/events/shipan/trading" target="_blank">查看详情</a></h3>
+                <table class="trends">
+                    <thead>
+                        <tr>
+                            <th width="20"></th>
+                            <th width="75">选手</th>
+                            <th width="50">操作</th>
+                            <th>股票</th>
+                            <th>成交价</th>
+                            <th>时间</th>
+                            <th width="20"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="consult"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=1&amp;key=XzkzODAxOTgxM18yNDMxODJfNDAwNzcxODg1OF8yXw" target="_blank">在线咨询</a></div>
+
+<%=render partial: '/comments/script' %>
+<%=content_for :script do %>
+<script type="text/javascript">
+  var _user_signed_in = <%= current_user.present? %>;
+  var _basket_id = <%= params[:id] %>;
+  var weights_data = {cash: <%= @cash_percent/100 %>, sectors: <%= @sector_percents.values.map{|v| (v/100).to_f }.to_json.html_safe %>}
+
+  $(function(){
+    window.setInterval(function(){
+      loadTradingInfos();
+    }, 5000);
+
+    loadTradingInfos();
+
+    $("#addmore").on("click", function(){
+      if ($(this).attr("loading")== "true") return;
+      $(this).attr("loading", "true");
+      var page = parseInt($(this).attr("data-page")) + 1;
+      loadOrderDetails(page, $(this).attr("data-account"));
+    })
+
+    $("#addmore").trigger("click");
+  });
+
+  commentPack.init({
+    Emotion: {imagePrefix: '<%= Setting.cdn_host %>/images/emotions/'},
+    Completer:{},
+    Comments: {
+      ajaxpath: "baskets/<%=params[:id]%>",
+      afterloadEvent: function(totalNumber){
+        initBubbleBox();
+        $(".timeago").timeago();
+        caishuo.adjustFooter();
+        $("#nav_comments > em").find('i').text(totalNumber).end().show();
+      }
+    },
+    isloginEvent: function(){
+      return isLogined();
+    }
+  });
+</script>
+<% end %>

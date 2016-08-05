@@ -1,0 +1,21 @@
+<div class="modal fade" id="suggest">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">编辑文章</h4>
+      </div>
+      <%= form_for suggest, :html => { :class => "form-horizontal"}, multipart: true, method: :put, url: admin_suggest_path(suggest) do |f| %>
+        <div class="modal-body">
+            标题: <%= f.text_field :title, value: suggest.title, style: "width:400px;", placeholder: "请输入推荐标题" %><br/><br/>
+            上传图片: <%= f.file_field :image, placeholder: "请输入推荐标题" %><br/><br/>
+            关联文章id: <%= f.text_field :article_id, value: suggest.article.try(:id), style: "width:400px;", placeholder: "请输入关联文章id" %><br/><br/>
+        </div>
+        <div class="modal-footer">
+          <%= f.submit "提交", :class => "btn btn-primary" %>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

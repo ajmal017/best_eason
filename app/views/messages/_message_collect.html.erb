@@ -1,0 +1,13 @@
+<% if messages.total_pages != messages.current_page %>
+  <%=link_to "查看更多消息", ajax_message_talk_path(talk, last_msg_id: messages.last.id), class: 'findMore j_find_more', remote: true, 'data-id' => messages.last.id %>
+<% end %>
+
+<% if messages.present? %>
+<div class="noticeLine">
+    <span><%=messages.first.created_at.strftime('%Y-%m-%d %H:%M') %></span>
+</div>
+<% end %>
+
+<div class="private_dialogue_cont j_talk_content">
+  <%=render partial: 'messages/message_item', locals: {messages: messages, talk: talk}%>
+</div>

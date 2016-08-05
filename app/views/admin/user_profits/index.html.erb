@@ -1,0 +1,53 @@
+<h1 class="title">
+  <span class="title_left">User profit列表页</span>
+  <span class="title_right">
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_user_profits_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :user_id_eq, :placeholder => 'UserId', class: 'form-control' %>
+    <%= f.text_field :trading_account_id_eq, :placeholder => 'TradingAccountId', class: 'form-control' %>
+    <%= f.text_field :date_eq, :placeholder => 'Date', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @user_profits.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>User</th>
+      <th>Today pnl</th>
+      <th>Total pnl</th>
+      <th>Date</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+      <th>Trading account</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @user_profits.each do |user_profit| %>
+    <tr>
+      <td><%= user_profit.id %></td>
+      <td><%= user_profit.user_id %></td>
+      <td><%= user_profit.today_pnl %></td>
+      <td><%= user_profit.total_pnl %></td>
+      <td><%= user_profit.date %></td>
+      <td><%= user_profit.created_at %></td>
+      <td><%= user_profit.updated_at %></td>
+      <td><%= user_profit.trading_account_id %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @user_profits %>

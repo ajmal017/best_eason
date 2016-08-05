@@ -1,0 +1,11 @@
+<% if params[:from].present? %>
+  $(".userInfo .float-right").html("<%= following_or_followed(current_user, @user) %>");
+<% else %>
+$(".user_<%= @user.id%> .j_follow").each(function(){
+  var next_div = $(this).closest("section").children("div:last");
+  $(next_div).prev().remove();
+  next_div.before("<%= following_or_followed(current_user, @user, 'float-right')%>");
+})
+<% end %>
+
+caishuo.adjustFooter();

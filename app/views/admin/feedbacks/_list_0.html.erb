@@ -1,0 +1,18 @@
+<table class="grid">
+  <thead>
+    <tr>
+      <th>反馈内容</th>
+      <th>联系方式</th>
+      <th width="100px;">反馈时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @feedbacks.each do |feedback| %>
+      <tr>
+        <td><%= feedback.content %></td>
+        <td><%= feedback.contact_way %></td>
+        <td><%= feedback.created_at.to_s(:short) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

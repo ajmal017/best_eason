@@ -1,0 +1,135 @@
+<h1 class="title">
+  <span class="title_left">热点管理</span>
+  <span class="title_right">
+    <%= link_to "+ 新建热点", new_admin_topic_path %>
+  </span>   
+</h1>
+<div class="box">
+  <%= link_to "全部", admin_topics_path, class: params[:market] == nil ? 'current' : '' -%>
+  <% Topic::MARKETS.each do |value, name| %>
+    <%= link_to name, admin_topics_path(market: value), class: params[:market] == value ? 'current' : ''  -%>
+  <% end -%>
+</div>
+<div class="box">
+  <%= search_form_for @q, url: admin_topics_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :title_cont, :placeholder => '标题', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  <span class="left">
+    总数： <b><%= @topics.total_entries %></b>
+  </span>
+  <% unless @can_not_sorted %>
+    <span class="right">
+      拖动一列进行排序，完成后请点击&nbsp;<input type="button" value="保存排序结果" onclick="javascript:saveTopicsPositions();"></input>
+    </span>
+  <% end %>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>标题</th>
+      <th>市场</th>
+      <th>责编</th>
+      <th>前台可见</th>
+      <th>访问次数</th>
+      <th>创建时间</th>
+      <th>更新时间</th>
+      <th colspan="2">操作</th>
+    </tr>
+  </thead>
+  <tbody class="<%= 'sortable' unless @can_not_sorted %>">
+  
+  <% @topics.each do |topic| %>
+    <tr data-id="<%= topic.id %>">
+      <td><%= topic.id %></td>
+      <td><%= link_to topic.title, topic_path(topic), target: "_blank" %></td>
+      <td><%= BaseStock::MARKET_AREA_NAMES[topic.market.to_sym] %></td>
+      <td><%= topic.author.fullname %></td>
+      <td class="action">
+        <i><%= topic.visible ? "是" : "否" %></i>
+        <%= link_to topic.visible ? '设置不可见' : '设置可见', "javascript:", onclick: "javascript:toggleVisible(this);" %>
+      </td>
+      <td><%= topic.views_count %></td>
+      <td><%= topic.created_at %></td>
+      <td><%= topic.updated_at %></td>
+      <td class="action">
+        <%= link_to '基本信息', [:edit, :admin, topic] %>
+        <%= link_to '内容设置', [:admin, topic] %>
+        <%= link_to '股票池', [:pool, :admin, topic] %>
+        <%= link_to "移动最前面", "javascript:", onclick: "javascript:MoveToTopList(this);" %>
+        <%= link_to "发送Feed", "javascript:", onclick: "javascript:sendToFeed(#{topic.id});" if topic.visible %>
+        <%#= link_to('删除', [:admin, topic], method: :delete, data: { confirm: "确定要删除吗？" }) if @current_admin_staffer.try(:admin?) %>
+      </td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @topics %>
+
+<script type="text/javascript">
+  var current_page = <%= @topics.current_page %>;
+
+  $(function(){
+    $( ".sortable" ).sortable({
+      items: "tr",
+      placeholder: "ui-state-highlight"
+    });
+    $( ".sortable" ).disableSelection();
+  })
+
+  function saveTopicsPositions(){
+    var ids = [];
+    $(".sortable tr").each(function(){
+      ids.push($(this).attr("data-id"));
+    })
+    updatePositions("Topic", ids);
+  }
+
+  function updatePositions(class_name, ids){
+    if(ids.length > 0){
+      $.post("/admin/topics/positions", {class_name: class_name, ids: ids, page: current_page}, function(res){
+        if(res.status){
+          alert("排序保存成功！");
+        }
+      });
+    }
+  }
+
+  function toggleVisible(obj){
+    $(obj).attr("disabled", "disabled");
+    var topic_id = $(obj).parent().parent().attr("data-id");
+    $.post("/admin/topics/"+topic_id+"/toggle_visible", {}, function(response){
+      $(obj).text(response.visible ? "设置不可见" : "设置可见");
+      $(obj).prev().text(response.visible ? "是" : "否");
+      $(obj).removeAttr("disabled");
+    })
+  }
+
+  function basketAdjust(obj){
+    var topic_id = $(obj).parent().parent().attr("data-id");
+    $.post("/admin/topics/"+topic_id+"/adjust_basket", {}, function(response){
+      alert("成功！");
+    })
+  }
+
+  function MoveToTopList(obj){
+    var topic_id = $(obj).parent().parent().attr("data-id");
+    $.post("/admin/topics/"+topic_id+"/move_top", {}, function(response){
+      window.location.href = "/admin/topics";
+    })
+  }
+  
+  function sendToFeed(id){
+    publishToFeed({class_name: "Topic", id: id});
+  }
+</script>
+<style>
+  .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+</style>  

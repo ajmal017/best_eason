@@ -1,0 +1,43 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right"><%= link_to '返回', admin_trading_accounts_path %></span>
+</h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>市场类别</th>
+      <th>证券账号</th>
+      <th>证券代码</th>
+      <th>证券名称</th>
+      <th>当前数量</th>
+      <th>可用数量</th>
+      <th>最新价</th>
+      <th>持仓成本价</th>
+      <th>盈亏金额</th>
+      <th>当日盈亏金额</th>
+      <th>市值</th>
+      <th>币种类型</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @positions.each_with_index do |position, index| %>
+    <tr>
+      <td><%= index + 1 %></td>
+      <td><%= position['exchange_type']%></td>
+      <td><%= position['stock_account']%></td>
+      <td><%= position['stock_code']%></td>
+      <td><%= position['stock_name']%></td>
+      <td><%= position['current_amount']%></td>
+      <td><%= position['enable_amount']%></td>
+      <td><%= position['last_price']%></td>
+      <td><%= position['cost_price']%></td>
+      <td><%= position['income_balance']%></td>
+      <td><%= position['day_income_balance']%></td>
+      <td><%= position['market_value']%></td>
+      <td><%= position['money_type']%></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,100 @@
+<% content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/investment.css" %>
+<% end %>
+<div class="container">
+  <div class="content buyTheme">
+    <h2>购买组合</h2>
+    <div class="themeInfo clearfix">
+      <%=image_tag @basket.img_url(:small), class: "themePic" %>
+      <table cellpadding="0" cellspacing="0" align="right">
+        <thead>
+          <tr>
+            <td width="160">
+              <div class="selectbox">
+                <input type="hidden" value="<%= @trading_account.pretty_id %>">
+                <label style="width:6em;height:2em;line-height:2.2em;">
+                  <%= @trading_account.broker_info %>
+                </label><kbd></kbd>
+                <ul class="selectoption">
+                  <% @trading_accounts.each do |account| %>
+                    <li class="<%= @trading_account.pretty_id == account.pretty_id ? 'active' : 'account' %>" data-value="<%= account.pretty_id %>">
+                      <%= account.broker_info %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </td>
+            <td width="120">每份市价</td>
+            <td width="150">
+              预计投入 <span class="baseCurrency"><%= @basket.currency_unit %></span><input id="amount" />
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="buying_power">
+              可用现金：<%= number_to_currency(@user_total_cash, unit: @trading_account.cash_unit, format:"%u%n", negative_format: "%u-%n") || "--" %>
+            </td>
+            <td id="price" data-val="<%= @basket_minimum_amount %>">
+              <%= number_to_currency(@basket_minimum_amount, unit: @basket.currency_unit, format:"%u%n", negative_format: "%u-%n")%>
+            </td>
+            <td class="customPercent"><div class="scrollBar" id="amountslider"></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <h3><%= @basket.title %></h3>
+      <br /><label class="tradeTime"><%= market_status(@basket.stocks.first) %></label>
+      <% unless @basket.is_cn? %>
+        <br />由<%= Setting.brokers.unicorn.name %>提供交易通道
+      <% end %>
+    </div>
+
+    <%= form_for @order, url: orders_path, :html => {onsubmit: 'return Order.checkOrderNewForm();', method: 'post'} do |f| %>
+      <div class="wrapCorner buyTheme_table">
+        <%= f.hidden_field :basket_id, {name: 'order[basket_id]', id: 'order_basket_id'} %>
+        <input type="hidden" name="trade_type" id="order_trade_type" value="OrderBuy"/>
+        <input type="hidden" name="trading_account_id" id="trading_account_id" value="<%= @trading_account.pretty_id %>" />
+        
+        <table cellspacing="0" cellpadding="0" class="themeStocks">
+          <thead>
+            <tr>
+              <td width="133">代码</td>
+              <td width="239">公司名称</td>
+              <td width="108">数量</td>
+              <td width="112">比重</td>
+              <td width="152">当前价</td>
+              <td width="197">估计金额</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% @order_details.each_with_index do |order_detail_hash, index| %>
+              <%= render :partial => "order_detail_item", locals: {order_detail_hash: order_detail_hash, index: index, area: @basket.market, unit: @basket.currency_unit} %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="purchase">
+        总投资金额（预计）： <span id="TotalPrice">0</span>
+        <input type="submit" value="下单" class="b_btn trade" id="btn_submit"/ >
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+Order._basket_currency_unit = '<%= @basket.currency_unit %>';
+var _basket_minimum_amount = <%= @basket_minimum_amount %>;
+var _user_total_cash = <%= @total_cash_of_basket_currency %>;
+var timedata = <%= markets_time_infos.to_json.html_safe %>;
+var market = ["<%= @original_basket.market %>"];
+var _basket_id = <%= params[:basket_id] %>;
+
+$(function(){
+  $('.tradeTime').timeformat(timedata, '%stat% %market% %datetime%', 'yyyy-mm-dd hh:ii:ss', market);
+
+  Order.pageHandler();
+})
+
+</script>

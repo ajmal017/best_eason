@@ -1,0 +1,94 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/zt/151123/attach/default.css?v1.4" %>
+<% end %>
+  <div style="display: none"><%= image_tag "/zt/151123/attach/images/icon.jpg" %></div>
+  <%#= render 'layouts/top_download' unless mobile_request? %>
+  <div id="Share"></div>
+  <section id="announce">
+    <hgroup>
+      <h1>重要通知</h1>
+      <h6></h6>
+    </hgroup>
+    <div>
+      <p>为了更好的促进财说模拟炒股的发展与进步，自11月24日起至12月4日，每天模拟炒股财说用户榜排名前三的高手将各获得现金奖励100元。</p>
+      <p>请广大模拟炒股用户奔走相告，并于每日收盘后到「交易 <i>→</i> 比一比 <i>→</i> 财说用户榜」查看当日排名。</p>
+      <p>如果，你是当天的前三名，还请自觉主动联系财说小蜜书，领钱。</p>
+      <p>财蜜微信号：caishuomi</p>
+    </div>
+    <label></label>
+  </section>
+  <section class="record">
+    <hgroup>
+      <h1>获奖记录</h1>
+      <h6></h6>
+    </hgroup>
+    <table>
+      <thead>
+        <tr>
+          <th>时间</th>
+          <th>财说用户</th>
+          <th>领取金额</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="loadMore"> 查看历史获奖记录</div>
+  </section>
+  <script type="text/javascript">
+    $('<div id="gotoSiteTop"/>').appendTo('body').windowGoTop();
+
+    function fillData(data){
+      var container = $('.record');
+      var holder = $('.record table');
+      var loadMore = $('.loadMore');
+      var len = data.length;
+      if (!len) {return;}
+      for (var i=0; i<len; i++){
+        var item = data[i],
+          tbody = $('<tbody/>').toggle(!i).appendTo(holder),
+          jen = item.lists.length;
+        for (var j=0; j<jen; j++){
+          var tr = $('<tr/>');
+          tr.append(
+            $('<td/>').text(item.date)
+          ).append(
+            $('<td/>').text(item.lists[j])
+          ).append(
+            $('<td/>').text('100 元')
+          ).appendTo(tbody);
+        }
+        if (jen > 1){
+          tbody.find('tr').each(function(i){
+            if (i){
+              $(this).find('td').eq(0).remove();
+            }else{
+              $(this).find('td').eq(0).attr('rowspan', jen)
+            }
+          });
+        }
+      }
+      loadMore.click(function(){
+        holder.find('tbody').removeAttr('style');
+        $(this).remove();
+      });
+      if (len<2){
+        loadMore.remove();
+      }
+      container.show();
+    }
+
+    $.get('<%= mobile_link "/mobile/ajax/data/events/notice1.json" %>', {}, function(datas){
+      fillData(datas);
+    });
+
+    Caishuo.connect('event', function(){
+      $("#Share").click(function(){
+        Caishuo.trigger('sharepage', {
+          'title':'边玩模拟炒股边赢钱',
+          'content':'在财说玩模拟炒股，每天都有机会赢现金，快来找我一起玩吧！',
+          'link': '<%= mobile_link mobile_events_notices_path %>',
+          'picture': '<%= cdn_file("/zt/151123/attach/images/icon.jpg") %>'
+        });
+      }).show();
+    });
+
+  </script>

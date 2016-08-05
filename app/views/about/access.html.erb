@@ -1,0 +1,37 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+<%- @page_title = "如何存款/取款" -%>
+<div class="container userEdit clearfix contactUs">
+  <%= render :partial => "left_bar" %>
+  <div class="rightBox">
+    <h2>开户指引</h2>
+    <div class="about_right account_guide">
+      <%= render 'account_banner' %>
+      <p>如果您是新开立的账户，您需要到益群证券完成存入资金的步骤。</p>
+      <p>在您存入资金之前，您必须先行发起入金通知，再按照入金通知中提供的账号信息存入您的资金，否则会导致入金无法顺利完成。</p>
+      <%= image_tag "/images/v3/help/viewfile_k.png" %>
+      <%= image_tag "/images/v3/help/viewfile_l.png" %>
+      <%= image_tag "/images/v3/help/viewfile_m.png" %>
+      <p>在您发起入金通知后，存入的资金，一般到帐时间为2-3个工作日</p>
+      <br>
+      <h5>以下是从国内银行卡--&gt;香港银行卡--&gt;券商账户的流程演示</h5>
+      <p>首先下载该银行国内客户端</p>
+      <%= image_tag "/images/v3/help/help1.png" %>
+      <p>发起转账</p>
+      <%= image_tag "/images/v3/help/help.png" %>
+      <br>
+      <br>
+      <p>下载该行香港客户端</p>
+      <%= image_tag "/images/v3/help/viewfile_n.png" %>
+      <p>选择国外汇款</p>
+      <%= image_tag "/images/v3/help/viewfile_o.png" %>
+      <p>按照入金通知给出的账号信息发起汇款即可</p>
+      <%= image_tag "/images/v3/help/viewfile_p.png" %>
+      <br>
+      <h5>取款：</h5>
+      <p>取款流程与存款流程一致，您必须要先发起取款通知，再按照流程填入您的账号，提交取款申请。提取的资金，一般到帐时间为2-3个工作日。</p>
+      <%= image_tag "/images/v3/help/viewfile_q.png" %>
+    </div>
+  </div>
+</div>

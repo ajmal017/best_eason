@@ -1,0 +1,17 @@
+<script type="text/javascript">
+
+  window.close();
+
+  <% if @is_bind %>
+    <% if @bind_result[:error] %>
+      window.opener.binderror("<%= @bind_result[:msg] %>");
+    <% else %>
+      window.opener.location.href = "/setting/bind";
+    <% end %>
+  <% elsif @is_new %>
+    window.opener.location.href = "/account/profile/new";
+  <% else %>
+    window.opener.location.href = "/topics";
+  <% end %>
+
+</script>

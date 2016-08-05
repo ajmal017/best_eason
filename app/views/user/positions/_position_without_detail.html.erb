@@ -1,0 +1,22 @@
+<div class="content pl20" account-id="<%= account.pretty_id %>">
+  <div class="holding-status">
+    <h3 class="close" account-id="<%= account.pretty_id %>">
+      <%= account.broker.cname %><br/><%= account.broker_no %>
+    </h3>
+    <a href="javascript:;" onclick="javascript:refreshPositions('<%= account.pretty_id %>',this);" class="refresh"></a>
+    <span>累计盈亏<strong class="">--</strong></span>
+    <span>今日盈亏<strong class="">--</strong></span>
+    <span>可用现金<strong>--</strong></span>
+    <span>账户净值<strong>--</strong></span>
+  </div>
+
+  <table class="holding-box holding_a" style="display:none;" account-id="<%= account.pretty_id %>">
+    <tbody>
+      <tr>
+        <td colspan="11" style="text-align:center;">
+          加载中...
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

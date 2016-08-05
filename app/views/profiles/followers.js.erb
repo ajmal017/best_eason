@@ -1,0 +1,10 @@
+$(".combines .focususer:eq(1) .loadMore").remove();
+<% if @followers.total_entries.zero? %>
+  $(".combines .focususer:eq(1)").append('<div class="empty">暂无粉丝</div>');
+<% end %>
+<% @followers.each do |user| %>
+  $(".combines .focususer:eq(1)").append("<%= j render partial: "profiles/profile/user_item", locals: {user: user} %>");
+<% end %>
+<% if @followers.current_page < @followers.total_pages%>
+  $(".combines .focususer:eq(1)").append('<%= j render partial: "profiles/profile/load_more" %>').attr("next_page", <%= @followers.next_page %>);
+<% end %>

@@ -1,0 +1,10 @@
+<% cache "article_index_suggests", skip_digest: true do %>
+<div class="suggest_subject clearfix">
+  <% Suggest.order("suggests.id asc").includes(:article).each do |s| %>
+  	<a href="/articles/<%= s.article.try(:id) %>">
+      <%= image_tag(s.image_url(:large)) -%>
+  		<span><%= s.title %></span>
+  	</a>
+  <% end %>
+</div>
+<% end %>

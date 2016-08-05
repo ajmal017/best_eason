@@ -1,0 +1,26 @@
+<% if notice.mentionable %>
+<li class="<%='unRead' unless notice.read? %>">
+  <%=link_to_user notice.triggered_user, inner: image_tag(notice.triggered_user.avatar_url(:small), class: 'head_portrait', width: 40, height: 40), target: '_blank', class: 'comment_avator', card: true%>
+  <%=link_to_user notice.triggered_user, inner: notice.triggered_user.username.to_s + ' ' + content_tag(:span, notice.triggered_user.headline), class: 'username', target: '_blank' %>
+  <p><%= notice.safe_content.html_safe %></p>
+  
+  <section class="commentReplies clearfix">
+    <article>
+      <p><%= comment_desc_prefix(notice) %>：<%=link_to raw("#{notice_commentable_content(notice).html_safe}"), notice.targetable_link_url, target: '_blank'%></p>
+    </article>
+  </section>
+
+  <div class="commentActions">
+    <span class="date"><%=notice.created_at.to_s(:short)%></span>
+    <a href="javascript:void(0);" class="j_reply">回复</a><%=link_to "查看对话", notice.targetable_link_url, target: '_blank'%>
+    <form class="clearfix logReplies" onsubmit="return false;" action="post" style="display:none;">
+      <textarea class="autocomplete autoheight" rows="1"></textarea>
+      <div class="saveBox">
+        <input type="submit" value="回复" class="b_btn small float-right j_direct_comment" comment-id="<%= notice.originable_id %>">
+        <a href="javascript:void(0);">@人</a>
+        <a href="javascript:void(0);">$股票</a>
+      </div>
+    </form>
+  </div>
+</li>
+<% end %>

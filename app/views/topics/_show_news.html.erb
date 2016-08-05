@@ -1,0 +1,10 @@
+<h4><a name="seciton1"></a>财说专栏 <em><%= @articles_count %>文章</em></h4>
+<div class="relatedNews clearfix">
+  <% @articles.each do |article| %>
+    <a href="<%= article_path(article) %>" target="_blank">
+      <b><%= article.title %></b>
+      <%=image_tag article.img_url, width: 105, height: 84, alt: '专栏图片'%>
+      <span><%=html_to_text(article.content, 200).try(:full_strip)%></span>
+    </a>
+  <% end %>
+</div>

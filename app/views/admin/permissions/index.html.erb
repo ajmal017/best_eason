@@ -1,0 +1,113 @@
+<h1 class="title">
+  <span class="title_left">后台权限列表</span>
+  <span class="title_right">
+  	<input value="全部展开" onclick="all_button()" id="all_button" type="button"/>&nbsp;&nbsp;
+    <%= link_to "添加权限",new_admin_permission_path %>
+  </span>
+</h1>
+<table class="grid" id="role-grid">
+    <thead>
+        <tr>
+        	<th width="3%">ID</th>
+            <th width="20%">一级菜单</th>
+            <th>二级菜单</th>
+            <th width="20%">对应角色</th>
+            <th>操作</th>
+        </tr>
+        <% i = 0 %>
+        <% @father_permissions.each do |father| %>
+	        <tr id="per_<%= father.id %>">
+	        	<td><%= i+=1 %></td>
+	            <td style="color:#338FCC;text-align:left;"><%= father.name %></td>
+	            <td class="menu"><a href="javascript:void(0);" class="action" data-role='<%= father.id %>'><input onclick="change_btn(<%= i %>,<%= father.id %>)" type="button" value="展开" id=<%= i %>></a></td>
+	            <td style="color:#338FCC;">
+	            	<% if father.roles.blank? == true %>
+	            		<span style="color:red;">此权限暂时没有角色管理</span>
+	            		<%= link_to "去设置",admin_roles_path %>
+	            	<% else %>
+	            		<%= father.roles.map(&:name).join(',')%>
+	            	<% end %>
+	            </td>
+	            <td>
+	            	<a href="#" class="delete_btn" data-id="<%= father.id %>" style="color:red !important;">删除</a>
+	            	<%= link_to "修改", edit_admin_permission_path(father) %>
+	            </td>
+	        </tr>
+
+	        <tr id="menu_<%= father.id %>" class="hidden menu_content">
+	          <td colspan="6">
+	          	<div align="center">
+	          		<% if father.childrens.blank? == true %>
+		          		<span style="color:red;">没有二级菜单 <a href="/admin/permissions/new?id=<%= father.id %>&&father_id=<%= father.father_id%>">去添加</a></span>
+		          	<% else %>
+				        	<ul>
+				        		<% father.childrens.each do |children| %>
+				        			<li style="color:#338FCC;", id="per_<%= children.id %>">
+												<div style="position:absolute;left:270px;"><%= children.name %></div>
+													<% if children.staffer_id != nil %>
+						            		<div style="position:absolute;left:485px; color:#338FCC;"><%= children.staffer.fullname %></div>
+						            	<% else %>
+						            		<div style="position:absolute;left:485px;color:black;">暂时没有负责人</div>
+						            	<% end %>
+												<div style="position:relative;right:145px;">
+							         	 	<a href="#" class="delete_btn" data-id="<%= children.id %>" style="color:red !important;">删除</a>
+							         	 	<%= link_to "修改", edit_admin_permission_path(children) %>
+						         	 	</div>
+				          	  <li>
+				          	<% end %>
+				          	<a href="/admin/permissions/new?id=<%= father.id %>&&father_id=<%= father.father_id%>" style="position:relative;left:-310px;">添加二级权限</a>
+				          </ul>
+			        	<% end %>
+			    		<div>
+	          </td>
+	        </tr>
+        <% end -%>
+    </thead>
+</table>
+<script type="text/javascript" charset="utf-8">
+
+  function change_btn(i,j){
+  	var name = $("#"+i)
+  	var display = $("#menu_"+j).css('display')
+		if (display == 'table-row') {
+			$("#menu_"+j).hide();
+			name.val("展开")
+		} else {
+			$("#menu_"+j).show();
+			name.val("收起")
+		}
+  }
+
+  function all_button(){
+  	var name = $("#all_button")
+	  var array = <%= @fathers %>
+	  if (name.val() == "全部展开"){
+	  	$(".menu_content").hide()
+	  	name.val("全部收起")
+	  } else {
+	  	$(".menu_content").show()
+	  	name.val("全部展开")
+	  }
+
+  	for(var i=0;i<array.length;i++){
+			change_btn(i+1,array[i])
+	  }
+	}
+
+	$(".delete_btn").on("click", del_permission);
+  function del_permission(){
+  	id = $(this).attr("data-id");
+  	var n = $("#per_"+id).next("tr").children("td").children("div").children("ul").length
+  	if (n == 0) {
+  		var c = confirm("你确定删除吗？")
+  		if (c == true) {
+  			$.post("/admin/permissions/ajax_delete_permission?id="+id, function(){
+  				$("#per_"+id).remove();
+  				location.reload();
+  			})
+  		}
+  	} else {
+  		alert("此权限下有其它二级权限暂时不能删除！")
+  	}
+  }
+</script>

@@ -1,0 +1,29 @@
+<!-- 人气榜 -->
+<div class="itemBox userBest">
+    <h3>人气榜</h3>
+    <div class="basket">
+      <% if @basket_most_followed %>
+        <a href="<%= basket_path(@basket_most_followed) %>" target="_blank">
+            <%= image_tag @basket_most_followed.img_url(:small) %>
+            <span title="<%= @basket_most_followed.title %>"><%= @basket_most_followed.title %><br />
+                累计回报 <%= up_down_style(@basket_most_followed.shipan_total_ret_percent, {postfix: "%", force_precision: 2})%>
+            </span>
+            <label class="btn btn-blue">最佳人气组合</label>
+        </a>
+      <% end %>
+    </div>
+    <div class="user">
+      <% if @user_most_followed %>
+        <a href="<%= profile_path(@user_most_followed) %>" class="avator" target="_blank">
+          <%= image_tag @user_most_followed.avatar_url(:small) %>
+            <span title=""><%= @user_most_followed.username %>
+                <em title="<%= @user_most_followed.headline %>">
+                  <%= @user_most_followed.headline %>
+                </em>
+            </span>
+            <label class="btn btn-red">最佳人气选手</label>
+        </a>
+      <% end %>
+    </div>
+</div>
+<!-- 人气榜 -->

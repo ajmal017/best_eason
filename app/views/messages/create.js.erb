@@ -1,0 +1,9 @@
+<% if @message.valid? %>
+  $(".j_talk_content:last").append("<%=j render partial: 'messages/message_item', locals: {messages: @messages, talk: @talk}%>");
+  $('#new_message').find('textarea').val("");
+<% else %>
+  CaishuoAlert("<%= @message.errors.messages.values.join(", ") %>!");
+<% end %>
+
+// 滚动条滑动到最下方
+msgScrollToButtom();

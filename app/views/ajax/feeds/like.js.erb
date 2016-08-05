@@ -1,0 +1,5 @@
+<% if @like.errors.present? %>
+  alert("<%=@like.errors[:feed_id]%>");
+<% else %>
+  $(".j_feed_like[data-id=<%=@like.feed_id%>]").text("取消");
+<% end %>

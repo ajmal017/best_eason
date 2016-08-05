@@ -1,0 +1,35 @@
+<a name="Comment"></a>
+<div class="insights_partake clearfix" id="review">
+
+  <div id="Comments" class="comments review">
+    <h3>观点评论 <span></span></h3>
+    <%= render partial: '/comments/base' %>
+  </div>
+
+  <div class="community_views">
+    <div class="views_top">
+      <h3>社区观点</h3>
+      <div class="charbox" id="opinions_chart">
+        <div class="bullish" style="height:<%= @basket.bullish_percent.to_f.round %>%"><em><%= @basket.bullish_percent.to_f.round %>%看涨</em></div>
+        <div class="bearish" style="height:<%= @basket.bearish_percent.round %>%;"><em><%= @basket.bearish_percent.round %>%看跌</em></div>
+      </div>
+      <div class="linkbtn" id="opinions_btn">
+        <label>快来发表你的观点</label>
+        <button class="handup"><i></i>看跌</button>
+        <button class="handown"><i></i>看涨</button>
+      </div>
+      <div class="linkbtn linkpic">
+        <label><i id="opinioners_count">-</i>人参与</label>
+        <div class="rightlink">
+          <a href="javascript:" onclick="javascript:CommentExt.getOpinionersAvatar('bullished');">看涨</a>|<a href="javascript:" onclick="javascript:CommentExt.getOpinionersAvatar('bearished');">看跌</a>
+        </div>
+        <div class="circlelink">
+          <ul class="clearfix" id="opinioner_avatars">
+          </ul>
+        </div>
+      </div>
+    </div>
+    <h5>大家参与的其它组合</h5>
+    <p id="related_baskets"></p>
+  </div>
+</div>

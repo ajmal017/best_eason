@@ -1,0 +1,24 @@
+<%= form_for [:admin, @suggest], multipart: true do |f| %>
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field"><b>*</b>标题: </td>
+      <td>
+        <%= f.text_field :title, value: @suggest.title, style: "width:400px;", placeholder: "请输入推荐标题" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"><b>*</b>关联文章id:</td>
+      <td>
+        <%= f.text_field :article_id, value: @suggest.article_id, style: "width:400px;", placeholder: "请输入关联文章id" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field"></td>
+      <td>
+        <%= f.submit "提交" %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end -%>

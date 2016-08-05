@@ -1,0 +1,36 @@
+<h1 class="title">
+<span class="title_left"><%= @page_title %></span>
+  <span class="title_right">
+  </span>
+</h1>
+
+<%= page_info(@users) %>
+
+<div class="box">
+  <%= form_tag admin_user_active_path, method: "get", class: 'form-inline', role: 'form' do -%>
+    开始日期：<input type="text" class="Wdate" name="begin_date" id="start_time" size="30" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<%= @begin_date.to_s(:db) %>" />
+    结束日期：<input type="text" class="Wdate" name="end_date" id="end_time" size="30" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<%= @end_date.to_s(:db) %>" />
+    操作：<%= select_tag :deed, options_for_select(User::USER_ACTIVE_DEED, @deed) %>
+    <input type="submit" value="检索" />
+  <% end %>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>用户名</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.id %></td>
+      <td><%= user.username %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+<%= will_paginate @users %>

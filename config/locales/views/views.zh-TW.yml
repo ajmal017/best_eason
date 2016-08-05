@@ -1,0 +1,6 @@
+zh-TW:
+  stocks:
+    indexes:
+      nasdq: "納斯達克指數"
+      bp: "標普500指數"
+      hs: "恒生指數"

@@ -1,0 +1,85 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.searchresult.css"%>
+  <%#= javascript_include_tag "/javascripts/jquery.timeago.js" %>
+<% end %>
+  <section id="SiteSearch">
+    <div class="SiteSearch">
+      <input placeholder="搜索股票、组合" />
+      <ul></ul>
+    </div>
+    <div class="TypeSwitch">
+      <a role="basket">投组合</a>
+      <a role="stock">选个股</a>
+    </div>
+    <dl class="basketFilter">
+      <dt>全部</dt>
+      <dd data-type="market">
+        <span data-item="">全部</span>
+        <span data-item="a">沪深</span>
+        <span data-item="hk">港股</span>
+        <span data-item="us">美股</span>
+      </dd>
+      <dt>月收益</dt>
+      <dd data-type="order">
+        <span data-item="1m_return">月收益</span>
+        <span data-item="1d_return">日收益</span>
+        <span data-item="total_return">总收益</span>
+      </dd>
+    </dl>
+    <div class="stockFilter">
+      <label>全部</label>
+      <a>
+        <span class="sortcolumn">当前价</span>
+        <span class="sortcolumn">涨跌</span>
+      </a>
+      <ul>
+        <li data-market="" data-label="全部">全部</li>
+        <li data-market="us" data-label="美股">只看美股</li>
+        <li data-market="hk" data-label="港股">只看港股</li>
+        <li data-market="cn" data-label="沪深">只看沪深</li>
+      </ul>
+    </div>
+  </section>
+  <section id="Contents"></section>
+  <div id="loadMore"><div class="barloading" style="display:none;"></div></div>
+<script type="text/javascript" role="rick">
+  $('#DownLoad').prependTo('#SiteSearch');
+  SearchResult.init({
+    Search:{
+      holder: '#SiteSearch',
+      popup: '.SiteSearch',
+      basketOpenType: 'ajax',
+      searchEvent: function(query, callback){
+         $.get("/ajax/global/search", {q:query}, function(data){
+            callback(data);
+         });
+      }
+    },
+    Filter:{
+      // 根据当前页面切换
+      //active: 'basket',
+      active: 'stock',
+      stockQuery: {page:1, market:'', search:'keyword'},
+      basketQuery: {page:1, market:'', order:'1m_return', gain:'月收益', search:''}
+    },
+    Result:{
+      afterLoad: function(){
+        $('.basketList .timeago').timeago();
+        $('.stockFilter span.sortcolumn').removeClass('sortup sortdown')
+          .stocksortable({thead:'.stockFilter', tbody:'.stockList', row:'.stockList a', cell:'span'});
+      },
+      getBasketsEvent: function(filter, callback){
+		 filter = {page: filter.page, search: {market: filter.market, order: filter.order, search_word: filter.search}};
+         $.get("<%=mobile_link("/mobile/baskets.json")%>", filter, function(data){
+            callback(data);
+         }, 'json');
+      },
+      getStocksEvent: function(filter, callback){
+		 filter = {page: filter.page, search: {market_region: filter.market, key_word: ""}}
+         $.get("<%=mobile_link("/mobile/stocks.json")%>", filter, function(data){
+            callback(data);
+         }, 'json');
+      }
+    }
+  });
+</script>

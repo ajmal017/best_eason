@@ -1,0 +1,173 @@
+<meta charset="UTF-8" />
+<title></title>
+<style type="text/css">
+body {
+  margin: 0;
+  padding: 0;
+  background: #F4F8FC;
+  font-family: "Helvetica Neue","Open Sans","lucida grande","Segoe UI",arial,verdana,"lucida sans unicode",tahoma,sans-serif;
+  font-size: 14px;
+  color: #748796;
+  font-weight: normal;
+}
+.mail-page {
+  width: 100%;
+  height: 100%;
+  background: #F4F8FC;
+}
+.content {
+  width: 550px;
+  height: 671px;
+  border: 1px solid #BDC7D2;
+  border-radius: 6px;
+  margin: 0 auto;
+  margin-top: 89px;
+  margin-bottom: 93px;
+  background: #FFFFFF;
+}
+.logo {
+  height: 79px;
+  border-bottom: 1px solid #BDC7D2;
+}
+.logo img {
+  width: 86px;
+  height: 35px;
+  margin-left: 34px;
+  margin-top: 24px;
+}
+.center {
+  height: 367px;
+  border-bottom: 1px solid #BDC7D2;
+  overflow: hidden;
+  color: #748796;
+  padding-bottom: 37px;
+}
+.h3s {
+  margin-top: 33px;
+  margin-left: 34px;
+}
+.h3s h3 {
+  font-size: 20px;
+  color: #47525D;
+  font-family: "Lantinghei SC";
+  line-height: 29px;
+}
+.text {
+  margin-left: 34px;
+}
+.text button {
+  border-radius: 5px;
+  background-image: linear-gradient(-179deg, #FF9D3B 0%, #FF9326 100%);
+  border: 2px solid rgba(0,0,0,0.05);
+  width: 170px;
+  height: 45px;
+  font-size: 16px;
+  color: #FFFFFF;
+  text-shadow: 0px -1px 0px rgba(0,0,0,0.20);
+  font-weight: bold;
+}
+/* .text p {
+height: 25px;
+} */
+.text a {
+  color: #1C8EC4;
+  text-decoration: none;
+}
+.text span {
+  margin-top: 25px;
+  display: block;
+}
+.thank {
+  margin-top: 35px;
+  margin-left: 34px;
+}
+.thank span {
+  height: 17px;
+}
+.bottom {
+  color: #748796;
+}
+.bottom p {
+  margin-left: 34px;
+  margin-top: 25px;
+} 
+.bottom dl {
+  float: left;
+  margin-left: 34px;
+  width: 250px;
+}
+.bottom dl dt {
+  float: left;
+  margin-right: 15px;
+}
+.bottom dl dt img {
+  width: 80px;
+  height: 80px;
+}
+.bottom dl dd {
+  position: relative;
+}
+.bottom dl dd img {
+  position: absolute;
+  top: 5px;
+}
+.bottom dl dd span {
+  margin-left: 10px;
+  height: 19px;
+  line-height: 19px;
+  font-size: 12px;
+}
+.micro-blog {
+  width: 180px;
+  height: 38px;
+  background: #F0F3F5;
+  border-radius: 6px;
+  float: right;
+  margin-right: 50px;
+  text-align: center;
+  line-height: 38px;
+  margin-top: 14px;
+}
+.micro-blog a {
+  color: #1C8EC4;
+  text-decoration: none;
+}
+</style>
+<div class="mail-page">
+  <div class="content">
+    <div class="logo"><img src="http://caishuo.com/img/new/logo.png" /></div>
+
+    <div class="center">
+      <div class="h3s">
+        <h3><%= @resource.email %>,<br />
+          欢迎加入财说，践行全新的海外资产配置之道！</h3>
+      </div>
+
+      <div class="text">
+        <p>激活账号后可以使用财说全部服务，并得到邮件通知。</p>
+
+        <p>或点击下面的链接：<br />
+          <%= link_to '激活账号', confirmation_url(@resource, :confirmation_token => @token) %>
+        </p>
+        <span>假如您没有注册财说，请忽略该邮件。</span></div>
+
+      <div class="thank"><span>谢谢！</span><br />
+        <span>财说团队敬上</span></div>
+    </div>
+
+    <div class="bottom">
+      <p>除了网站，财说还提供微博、微信时刻与您保持同步：</p>
+
+      <dl>
+        <dt><img src="http://caishuo.com/img/new/2.7_r4_c3.jpg" /></dt>
+        <dd><img src="http://caishuo.com/img/new/2.7_r5_c6.png" /> <span>掏出微信扫一扫！</span><br />
+        <span>或搜索微信公共账号：</span><br />
+        <span>caishuo-caishuo</span></dd>
+      </dl>
+
+      <div class="micro-blog">新浪微博：<a href="http://weibo.com/touzhuti">@财说组合投资</a></div>
+    </div>
+  </div>
+</div>
+
+

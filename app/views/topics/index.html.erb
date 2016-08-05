@@ -1,0 +1,89 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/home_page.css" %>
+<% end %>
+
+<%= render partial: "home_login_bar" unless user_signed_in?%>
+
+<div class="container">
+  <%= render partial: "index_top" %>
+
+  <%= render partial: "index_list" %>
+</div>
+
+<script type="text/javascript" role="rick">
+  var timedata = <%= markets_time_infos.to_json.html_safe %>;
+  $('#marketUS').timeformat(timedata, '%stat% %datetime%', 'hh:ii', ['us', 'hk', 'cn', 'cn'], ['#marketUS','#marketHK','#marketCN1', '#marketCN2']);
+
+  $(function(){
+    $('#playBox').hotpageslide();
+
+    $("#topic_more").click(function(){
+      addBarloadingDiv();
+      $(this).hide();
+      loadList();
+    })
+  })
+
+  function loadList(){
+    var page = $("#topic_more").attr("data-next-page");
+    var market = $("#topic_more").attr("data-market");
+    $.get("/topics/list.js", {page: page, market: market}, function(){
+      $("#topic_more").attr("data-next-page", parseInt(page)+1);
+      $("#topic_more").show();
+    })
+  }
+
+  function addBarloadingDiv(){
+    removeBarloadingDiv();
+    $("#topics_list").append("<div class='barloading' style='min-height:200px;clear:both;'></div>");
+  }
+
+  function removeBarloadingDiv(){
+    $("#topics_list .barloading").remove();
+  }
+
+  function setNoMoreContent(){
+    $("#topic_more").parent().html("<a href='javascript:'>没有更多了...</a>");
+  }
+
+  (function($){
+    $.fn.hotpageslide = function(){
+      var cur=0, step=1,loop=320,$this=$(this);
+      function _run(){
+        cur += step;
+        if (cur>loop){
+          cur=0;
+          var idx = $this.find('dt i.active').index(),len = $this.find('dt i').length, next = (idx+1)%len;
+          $this.find('dt i').eq(next).addClass('active').siblings().removeClass('active');
+          $this.find('dd a').eq(next).show('fade').siblings().hide('fade');
+        }
+        requestAnimFrame(_run);
+      }
+      return $(this).each(function(){
+        var items = $(this).find('dd a'),len=items.length;
+        for (var i=0;i<len;i++){
+          $(this).find('dt').append('<i/>');
+        }
+        var $tmp = $('<div/>'), $obj= $(this).find('dd');
+        $obj.children().appendTo($tmp);
+        $tmp.children().appendTo($obj.empty());
+        $(this).find('dt i').eq(0).addClass('active');
+        $(this).find('dd a').eq(0).addClass('active').siblings().hide();
+        $(this).find('dt i').hover(function(){
+          var idx = $(this).index()
+          step=0;
+          cur = 0;
+          $(this).addClass('active').siblings().removeClass('active');
+          $obj.find('a').eq(idx).show('fade').siblings().hide('fade');
+        },function(){
+          step=1;
+        });
+        requestAnimFrame(_run);
+      });
+    }
+  })(jQuery);
+
+  window.setInterval(function(){
+    $('.marketInfo a:first-child').toggleClass('active')
+  },3000);
+</script>

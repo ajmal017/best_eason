@@ -1,0 +1,41 @@
+<%= form_for @base_stock, url: admin_base_stock_path(@base_stock), method: :put  do |f|%>
+  <%= hidden_field_tag :referer_url, request.referer %>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field">股票名称</td>
+        <td><%= @base_stock.c_name%></td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>上市状态:</td>
+        <td>
+          <%= f.select :listed_state, BaseStock::LISTED_STATE_NAMES.invert.to_a, {}, {:name => "base_stock[listed_state]"} %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>交易所:</td>
+        <td>
+          <%= f.text_field :exchange, name: "base_stock[exchange]" %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>可否搜索:</td>
+        <td>
+          <%= f.select :normal, [['是', true], ['否', false]], {}, {name: "base_stock[normal]"} %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b>*</b>可否加入组合:</td>
+        <td>
+          <%= f.select :qualified, [['是', true], ['否', false]], {}, {name: "base_stock[qualified]"} %>
+        </td>
+      </tr>      
+      <tr>
+        <td class="field"></td>
+        <td>
+          <%= f.submit "提交"%>
+        </td>
+      </tr>
+     </tbody>
+  </table>
+<% end -%>

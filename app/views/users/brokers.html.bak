@@ -1,0 +1,56 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/investment.css" %>
+<% end %>
+
+<div class="container">
+  <%= render :partial => "/shared/sub_menus/positions" %>
+
+  <div class="content">
+    <h2>交易账号管理</h2>
+
+    <% if @user_binding %>
+      <div class="existAccount clearfix">
+        <div>
+          <% if @user_binding.broker.name == 'unicorn' %>
+            <%= image_tag("/images/v2/crop_yiqun.png") %>
+          <% elsif @user_binding.broker.name == 'ib' %>
+            <%= image_tag("/images/v2/crop_yingtong.png") %>
+          <% end %>
+            已经绑定。
+          <%=link_to '解除绑定', user_binding_path(@user_binding), method: :delete, data: {confirm: '您确定要解除现有账号的绑定么?'}%>
+        </div>
+      </div>
+
+    <% else %>
+      
+    <div class="bindaccountbox">
+      <div class="center">
+        <h1>已经有券商账户？立即绑定：</h1>
+        <div class="cooperate">
+          <a href="/user_brokers/new?name=unicorn">
+            <%= image_tag("/images/v2/crop_yiqun.png", alt: "UNICORNSecurities 益群證券") %>
+          </a>
+          <a href="/user_brokers/new?name=ib">
+            <%= image_tag("/images/v2/crop_yingtong.png", alt: "Interactive Brokers 盈透证券") %>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="bindintro">
+      <h1 class="center">还没有券商账户？快捷开通：</h1>
+      <table>
+        <tbody><tr>
+          <td>
+            <%=image_tag "../images/v2/crop_intro1.jpg", alt: "UNICORNSecurities 益群證券"%>
+          </td>
+          <td>
+            <%=image_tag "../images/v2/crop_intro2.jpg", alt: "intro" %>
+            <a class="btn normal" href="https://unicorn.caishuo.com" target="_blank">查看详情</a> &nbsp; &nbsp; 
+            <a href="https://www.caishuo.com/about/account" target="_blank">开户指南 &gt;</a>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+    <% end %>
+  </div>
+</div>

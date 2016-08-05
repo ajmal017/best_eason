@@ -1,0 +1,77 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%= link_to "添加Feed类型", "/admin/feed_categories/new" %>
+  </span>
+</h1>
+
+<% search_params = [:time_rule, :recommend_type, :title, :recommend_category, :date, :weight, :pics] %>
+
+
+<!--搜索框-->
+<div class="box">
+  时间维度:  &nbsp;&nbsp;
+  <a href="<%= admin_md_feed_categories_path(params.slice(*search_params).merge(time_rule: nil))%>" class="<%='current' if params[:time_rule].blank?%>" title="全部">全部</a>
+  <% ::MD::FeedRule::TimeRule.all.each do |time_rule| %>
+    <% if params[:time_rule].to_s == time_rule.id.to_s %>
+      <%= link_to "#{time_rule.name}(#{time_rule.desc})", admin_md_feed_categories_path(params.slice(*search_params).merge(time_rule: time_rule.id)), title: "#{time_rule.name}(#{time_rule.desc})", class: "current" %>
+    <% else %>
+      <%= link_to time_rule.name, admin_md_feed_categories_path(params.slice(*search_params).merge(time_rule: time_rule.id)), title: "#{time_rule.name}(#{time_rule.desc})" %>
+    <% end -%>
+  <% end -%>
+
+  <%= link_to "不推送", admin_md_feed_categories_path(params.slice(*search_params).merge(time_rule: 'null')), title: "不推送", class: params[:time_rule] == 'null' ? 'current' : '' %>
+
+  <a href="?time_rule=now&recommend_type=<%=params[:recommend_type]%>&recommend_category=<%=params[:recommend_category]%>&title=<%=params[:title]%>" class="<%='current' if params[:time_rule] == "now"%>">当前时间维度: <%= MD::FeedRule::TimeRule.get_rule_name * "+"%></a>
+
+  <a href="javascript:;" onclick="remote_dialog('/admin/feeds/time_rules', '规则说明', 310, 350);" class="gray">帮助?</a>
+  <div style="float: right"> 当前时间: <%= Time.now.strftime("%H:%M:%S") %></div>
+</div>
+
+
+<div class="box">
+  过期策略:  &nbsp;&nbsp;
+  <a href="<%= admin_md_feed_categories_path(params.slice(*search_params).merge(ttl_rule: nil))%>" class="<%='current' if params[:ttl_rule].blank?%>" title="全部">全部</a>
+  <% ::MD::FeedRule::TTLRule.all.each do |ttl_rule| %>
+    <% if params[:ttl_rule].to_s == ttl_rule.id.to_s %>
+      <%= link_to "#{ttl_rule.name}", admin_md_feed_categories_path(params.slice(*search_params).merge(ttl_rule: ttl_rule.id)), title: ttl_rule.name, class: "current" %>
+    <% else %>
+      <%= link_to ttl_rule.name, admin_md_feed_categories_path(params.slice(*search_params).merge(ttl_rule: ttl_rule.id)), title: ttl_rule.name %>
+    <% end -%>
+  <% end -%>
+
+</div>
+
+<%= page_info(@feed_categories) %>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>模块</th>
+      <th>Feed展示模版</th>
+      <th>默认权重</th>
+      <th>时间策略</th>
+      <th>过期策略</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @feed_categories.each do |feed_category| %>
+      <tr>
+        <td class="align_left"><%= feed_category.category_id %></td>
+        <td class="align_left"><%= feed_category.name %></td>
+        <td class="align_left"><%= feed_category.recommend_category %> / <%= feed_category.feed_type %></td>
+        <td><%= feed_category.weight %></td>
+        <td class="align_left"><%= feed_category.time_rule_name %></td>
+        <td class="align_left"><%= feed_category.ttl_rule_name %></td>
+        <td class="align_left"><%= feed_category.created_at.to_s(:short) %></td>
+        <td>
+          <%= link_to "修改", [:edit, :admin, feed_category], class: "action"%>
+          <%#= link_to "删除", [:admin, feed_category], method: :delete, class: "action", data: {confirm: "该操作无法恢复"}%>
+        </td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>
+

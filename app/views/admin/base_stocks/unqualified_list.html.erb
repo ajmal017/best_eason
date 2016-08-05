@@ -1,0 +1,45 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%=link_to "重置A股可否加入组合状态", reset_cn_qualified_admin_base_stocks_path, method: :post, :data => {confirm: '你确认根据是否停牌重置a股qualified状态?'}, remote: true%>
+    <%=link_to "重置三版", reset_neeq_qualified_admin_base_stocks_path, method: :post, :data => {confirm: '你确认重置三版吗?'}, remote: true%>
+  </span>   
+</h1>
+<div class="box">
+  <%= search_form_for @q, url: unqualified_list_admin_base_stocks_path, class: "form-inline", role: "form" do |f| %>
+    <%= f.text_field :symbol_cont, :placeholder => "股票代码", class: "form-control" %>
+    <%= f.select :listed_state_eq, BaseStock::LISTED_STATE_NAMES.map{|key, value| [value, key]}, {include_blank: "全部"} %>
+    <%= f.select :exchange_eq, BaseStock::MARKET_NAMES.invert.to_a, {include_blank: "全部"}%>
+    <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+  <% end %>
+</div>
+  <%= page_info(@base_stocks) %>
+
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <%= content_tag :th, sort_link(@q, :symbol, '股票代码') %>
+        <%= content_tag :th, sort_link(@q, :name, '名称') %>
+        <th>交易所</th>
+        <th>可否加入组合？</th>
+        <th>状态</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @base_stocks.each_with_index do |bs, index| %>
+        <tr>
+          <td><%= bs.id %></td>
+          <td><%= bs.symbol %></td>
+          <td class="align_left"><%= bs.com_name %></td>
+          <td><%= bs.exchange %></td>
+          <td><%= bs.qualified %></td>
+          <td><%= BaseStock::LISTED_STATE_NAMES[bs.listed_state] %></td>
+          <td class="action">
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @base_stocks %>

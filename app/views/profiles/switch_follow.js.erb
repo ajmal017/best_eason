@@ -1,0 +1,9 @@
+<% unless @bubble %>
+  $(".userContrl").children(":first").remove();
+  $(".userContrl").prepend("<%= following_or_followed(current_user, @user)%>");
+<% else %>
+  $(".information button.j_follow").remove();
+  $(".information").append("<%= following_or_followed_button(current_user, @user)%>");
+<% end %>
+
+caishuo.adjustFooter();

@@ -1,0 +1,27 @@
+<% orders.each do |order| %>
+  <tr onclick="javascript:window.open('<%=accounts_orders_path(q: {account: @trading_account.pretty_id, query_word: order.sn})%>')">
+    <td class="text-left">
+      <% if order.basket? %>
+        <%= link_to order.basket.title.to_s, accounts_orders_path(q: {account: @trading_account.pretty_id, query_word: order.sn}), target: '_blank' %>
+      <% elsif order.order_details.first.present? %>
+        <%= link_to order.order_details.first.try(:stock).try(:truncated_com_name), accounts_orders_path(q: {account: @trading_account.pretty_id, query_word: order.sn}), target: '_blank' %>
+      <% end %>
+    </td>
+    <td class="text-left"><%= order.created_at.to_date %></td>
+    <td class="text-center"><%= order.basket? ? "--" : order.order_details.first.try(:real_shares).to_i %></td>
+    <td><%= order.basket? ? "--" : order.order_details.first.try(:stock).try(:currency_unit).to_s + order.order_details.first.try(:avg_price).to_s %></td>
+    <td>
+      <% if order.buy_order? %>
+        --
+      <% else %>
+        <%= number_to_currency(order.real_profit, unit: order.order_details.first.try(:stock).try(:currency_unit), format:"%u%n", negative_format: "%u-%n") %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>
+
+<% if orders.blank? %>
+  <tr class="noContent">
+    <td colspan="5">尚无交易</td>
+  </tr>
+<% end %>

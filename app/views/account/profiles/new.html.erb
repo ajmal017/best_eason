@@ -1,0 +1,174 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/register.css" %>
+<% end %>
+
+<%- @page_title = "注册 完善账户资料" -%>
+
+    <div class="container">
+        <div class="lastRegistStep">
+            <strong>仅需2步，完善资料，即可开户全球投资旅程！</strong>
+            <span><i>1</i> 设置密码</span>
+            <span class="step3 current"><i></i> 请完善账户资料</span>
+        </div>
+    </div>
+    <div class="container">
+        <%= form_for @current_user, url: account_profile_path, method: :post, html: {id: 'j_registration_profile', remote: true, onsubmit: "javascript:disableButton();"} do |f| %>
+            <div class="registContent">
+                <h3>基本信息<%= link_to "跳过", root_path, class: "b_btn trade" %></h3>
+                <dl class="clearfix">
+                    <dt>我是谁</dt>
+                    <dd>
+                        <%= f.text_field :headline, class: 'nickname' %>
+                        <span>4-30位任意字符、数字、标点（不包括空格）</span><br />
+                        <span>例如：金融分析师 / 决策师 / 登山爱好者</span>
+                    </dd>
+                    <dt class="bottomdl">所在地</dt>
+                    <dd class="bottomdl">
+                        <div class="selectbox">
+                            <input type="hidden" value="" name="user[province]">
+                            <label>省直辖市</label><kbd></kbd>
+                            <ul class="selectoption provinces" style="display: none;">
+                                <% @provinces.each do |province|%>
+                                  <li data-value="<%= province.code %>" class="<%='active' if @current_user.province == province.code.to_i%>"><%= province.name %></li>
+                                <% end %>
+                            </ul>
+                        </div>
+                        <div class="selectbox">
+                            <input type="hidden" value="" name="user[city]">
+                            <label>区县</label><kbd></kbd>
+                            <ul class="selectoption cities" style="display: none;">
+                              <% @user_cities.each do |city| %>
+                                <li data-value="<%= city.code %>" class="<%='active' if @current_user.city == city.code%>"><%= city.name %></li>
+                              <% end %>
+                            </ul>
+                        </div>
+                    </dd>
+                    <dt class="bottomdl">性别</dt>
+                    <dd class="bottomdl">
+                        <span class="sex">
+                          <input type="radio" id="radio1" name="user[gender]" value="true" <%= 'checked' if @current_user.gender %> />
+                          <label for="radio1">男</label>
+                        </span>
+                        <span class="sex">
+                          <input type="radio" id="radio2" name="user[gender]" value="false" <%= 'checked' unless @current_user.gender %> />
+                          <label for="radio2">女</label>
+                        </span>
+                    </dd>
+                </dl>
+                <%= f.fields_for(:profile, @profile) do |profile| %>
+                <h3>专业领域<label>一下信息将显示在个人首页、展现您的专业魅力</label></h3>
+                <dl class="clearfix">
+                    <dt>您的投资方向？</dt>
+                    <dd class="invest">
+                      <%= profile.fields_for :orientations, (@profile.orientations || {}) do |orientation_fields| %>
+                        <% Profile::ORIENTATION.each do |key, orientation_val| -%>
+                          <div class="checkgroup">
+                            <label><%= orientation_fields.check_box key, {checked: @profile.orientations[key].to_i == 1 ? true : false}  %><%= orientation_val %></label>
+                          </div>
+                        <% end -%>
+                      <% end -%>
+                    </dd>
+                    <dt>投资时您最关注哪些？</dt>
+                    <dd class="attention">
+                      <%= profile.fields_for :concerns, (@profile.concerns || {}) do |concern_fields| %>
+                        <% Profile::CONCERN.each do |key, concern_val| -%>
+                          <div class="checkgroup">
+                            <label><%= concern_fields.check_box key, {checked: @profile.concerns[key].to_i == 1 ? true : false} %><%= concern_val %></label>
+                          </div>
+                        <% end -%>
+                      <% end -%>
+                    </dd>
+                    <dt class="bottomdl">一般持仓时间：</dt>
+                    <dd class="bottomdl">
+                        <div class="selectbox">
+                            <input type="hidden" value="" name="user[profile_attributes][duration]">
+                            <label style="width: 80px;">不填写</label><kbd></kbd>
+                            <ul class="selectoption" style="display: none;">
+                              <% Profile::DURATION.each do |key, value| %>
+                                <li data-value="<%= key %>" class="<%= 'active' if @profile.duration.to_i == key %>"><%= value %></li>
+                              <% end %>
+                            </ul>
+                        </div>
+                    </dd>
+                </dl>
+                <h3>能力圈<label>最多选择3个，更方便找到同伴</label></h3>
+                <div class="taglink clearfix">
+                  <% ::Tag::Group.hot.order(:sort).each_with_index do |tag,i| %>
+                    <label>
+                      <input type="checkbox" value="<%= tag.id %>" name="profile[taggings_attributes][<%= i %>][tag_id]" id="profile_taggings_attributes_<%= i %>_tag_id" <%= 'checked' if @profile.tagged_by?(tag.id) %>>
+                      <span><%= tag.name %></span>
+                    </label>
+                  <% end -%>
+                </div>
+                <% end -%>
+            </div>
+            <div class="subtn">
+              <input type="submit" class="b_btn enter" value="完成注册，进入财说">
+              <%= link_to "跳过", root_path %>
+            </div>
+        <% end %>
+        <!--<div class="saveing save-success" style="display:none;"></div>-->
+    </div>
+    
+<script type="text/javascript">
+  $(function () {
+      $('.taglink label ').click(function () {
+          if ($('.taglink input:checked').length >= 3) {
+              $('.taglink input:not(:checked)').prop({ disabled: true });
+          } else {
+              $('.taglink input:not(:checked)').prop({ disabled: false });
+          }
+      });
+      $(window).dblclick(function () {
+          // console.log($('.taglink input:checked').length);
+      });
+
+      $('#j_registration_profile').validate({
+        rules: {
+          'user[headline]': {
+            required:false,
+            min_can_blank: 4,
+            max: 30
+          }
+        }, 
+        messages: {
+          'user[headline]': {
+            min: '不能小于4位！',
+            max: '不能大于30位！'
+          }
+        }
+      });
+
+      $("#user_headline").on("click", function(){
+        enableButton();
+      })
+  });
+
+  function disableButton(){
+    $("input.enter").attr("disabled", "disabled");
+  }
+
+  function enableButton(){
+    $("input.enter").removeAttr("disabled");
+  }
+</script>
+
+<style type="text/css">
+  .errorTip {float: left;}
+</style>
+
+<script type="text/javascript">
+  $(function(){
+    <% if show_analytics? && @new_user %>
+      <% if current_user.mobile %>
+        XmoTag8477();
+      <% else %>
+        XmoTag8305();
+      <% end %>
+    <% end %>
+  })
+
+  function registerSucesss(){
+    window.location.href = "/topics";
+  }
+</script>

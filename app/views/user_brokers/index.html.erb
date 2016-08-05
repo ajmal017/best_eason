@@ -1,0 +1,15 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/investment.css" %>
+<% end %>
+
+<div class="container">
+  <div class="content">
+    
+    <div class="bindaccountbox">
+      <h1 class="center"></h1>
+        <div class="entercode" style="color:red;">
+          <%= flash[:notice] || "交易账号绑定失败" %>。
+        </div>
+    </div>
+  </div>
+</div>

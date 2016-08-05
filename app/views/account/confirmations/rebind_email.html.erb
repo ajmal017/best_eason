@@ -1,0 +1,27 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/register.css" %>
+<% end %>
+
+<div class="container complete">
+  <% if @result %>
+    <em></em>
+    <span class="blue">您已完成绑定</span>
+    <span><i id="timer">5</i>秒后离开此页面</span>
+    <%= link_to "返回>", "/setting/bind"  %>
+  <% else %>
+    链接已经失效，请重新进行邮箱绑定
+  <% end %>
+</div>
+
+<script language="javascript" type="text/javascript"> 
+  var i = 5; 
+  var intervalid = setInterval("fun()", 1000); 
+  function fun() { 
+    if (i == 0) { 
+    window.location.href = "/setting/bind";
+    clearInterval(intervalid);
+    }
+    $('#timer').text(i);
+    i--;
+  }
+</script> 

@@ -1,0 +1,8 @@
+<% if @basket.temp_image.errors.present? %>
+  alert("<%=@basket.temp_image.errors.first%>");
+<% else %>
+  //hideCropModal();
+  CaishuoDialog.close();
+  $("#j_basket_preview").find('img:first').attr('src', '<%= @basket.temp_image.image.url(:large) + "?" + Time.now.to_i.to_s %>');
+  $("#copy_upload_temp_picture").val("true");
+<% end %>

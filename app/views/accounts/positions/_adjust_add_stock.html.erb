@@ -1,0 +1,16 @@
+<tr class="processing" area="<%= stock.market_area %>">
+  <input type="hidden" value="<%= stock.id %>" class="j_stock_id" />
+  <th class="j_stock_symbol"><%= link_to stock.symbol, stock_path(stock.id), target: "_blank", class: "flag #{stock.market_area}" %></th>
+  <th><%= link_to stock.com_name, stock_path(stock.id), target: "_blank" %></th>
+  <td></td>
+  <td class="j_stock_count">0</td>
+  <td></td>
+  <td>
+    <%= stock.currency_unit %>
+    <%= stock.realtime_price %>
+    (<%= up_down_style(stock.change_percent, postfix: "%") %>)
+  </td>
+  <td class="asButton" stock_id="<%= stock.id %>">
+    <a href="javascript:" class="sbtn buy">买入</a>
+  </td>
+</tr>

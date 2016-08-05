@@ -1,0 +1,54 @@
+<%= render partial: "nav" %>
+<div class="title compre">
+  <div>
+    <span>排行</span>
+    <span>总收益率</span>
+    <span>排名变化</span>
+  </div>
+</div>
+<section class="comprehensive">
+  <div class="list" id="list">
+    <%= render partial: "ranks", locals: {ranks: @ranks} %>
+
+    <div id="stock_more" data-next-page="2">加载更多</div>
+  </div>
+</section>
+
+<script type="text/javascript">
+  $(function(){
+      $("#stock_more").click(function(){
+        addBarloadingDiv();
+        $(this).hide();
+        loadList();
+      });
+  })
+  function loadList(){
+      var page = $("#stock_more").attr("data-next-page");
+      $.get("<%= mobile_link ranks_mobile_events_shipan_index_path(format: :js) %>", {page: page}, function(){
+        BindUserBasket();
+      })
+    }
+
+  function addBarloadingDiv(){
+    removeBarloadingDiv();
+    $(".list").append("<div class='barloading' style='min-height:80px;clear:both;'></div>");
+  }
+
+  function removeBarloadingDiv(){
+    $("body .barloading").remove();
+  }
+
+  function setNoMoreContent(){
+    $("#stock_more").text("没有更多了...");
+    removeBarloadingDiv();
+    $("#stock_more").show();
+  }
+
+  var BindUserBasket=function(){
+    $("#list a[href]").removeAttr("href").click(function(){
+      var data = $(this).data();
+      Caishuo.trigger("openpage", {"goto":"basket", id:data.id, match_id: 3});
+    });
+  }
+  Caishuo.connect("index", BindUserBasket);
+</script>

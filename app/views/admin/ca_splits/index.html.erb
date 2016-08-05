@@ -1,0 +1,38 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+  </span>   
+</h1>
+<div class="box">
+   <%= search_form_for @q, url: "", class: "form-inline", role: "form" do |f| %>
+      <%= f.text_field :symbol_eq, :placeholder => "股票代码", class: "form-control" %>
+      <%= f.text_field :base_stock_id_eq, :placeholder => "内部ID", class: "form-control" %>
+      <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+    <% end %>
+</div>
+<%= page_info(@ca_splits) %>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>股票名称</th>
+      <th>factor</th>
+      <th>base_stock_id</th>
+      <th>拆股时间</th>
+      <th>创建时间</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @ca_splits.each do |ca| %>
+    <tr>
+      <td><%= ca.id %></td>
+      <td><%= ca.symbol %></td>
+      <td><%= ca.factor %></td>
+      <td><%= ca.base_stock_id %></td>
+      <td><%= ca.date %></td>
+      <td><%= ca.created_at %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= will_paginate @ca_splits %>  

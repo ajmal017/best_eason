@@ -1,0 +1,255 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+
+<div class="container userEdit clearfix">
+  <%=render partial: 'shared/setting_left_box'%>
+
+  <div class="rightBox editBox bind">
+    <h2>帐号绑定</h2>
+
+    <% unless current_user.show_completion? %>
+      <%=form_for current_user, url: bind_or_update_mobile_ajax_users_path, method: :put, remote: true, html: {id: 'bind_mobile_form', class: "boxBorder personal", onsubmit: "bindFail($('#mobile_form_btn'), 3000);"} do |f| %>
+
+        <h3 class="show">绑定手机号<a href="javascript:;">修改</a><span><%= current_user.mobile.present? ? "已绑定：#{hide_mobile current_user.mobile}" : "未绑定"%></span></h3>
+
+        <div class="content">
+          <dl class="clearfix">
+              <dd class="china"><span>中国&nbsp;86</span><%= f.text_field :mobile, autocomplete: :off, value: nil, placeholder: "手机号"  %>
+              </dd>
+              <dd class="captcha">
+                <%= text_field_tag "user[code]", nil, class: "number1", placeholder: "验证码"%>
+                <input type="button" id="btnSendCode" class="w_btn" onclick="sendMessage()" value="发送验证码" style="line-height: 1.5;padding: 6px 14px 4px 14px;margin-left: 10px;vertical-align: middle;"/>
+              </dd>
+          </dl>
+          <div class="saveBox">
+            <%= f.submit '绑定', class: 'b_btn dialog_btn_y', id: "mobile_form_btn"%>
+            <a class="b_btn dialog_btn_c">取消</a>
+          </div>
+        </div>
+      <% end %>
+
+      <%=form_for current_user, url: bind_or_update_email_ajax_users_path, method: :put, remote: true, html: {id: 'bind_email_form', class: "boxBorder personal", onsubmit: "bindFail($('#email_form_btn'),3000);"} do |f| %>
+
+        <h3 class="show Bmail">绑定邮箱<a href="javascript:;">修改</a><span><%= current_user.email.present? ? "已绑定：#{hide_mobile current_user.email}" : "未绑定"%></span></h3>
+
+        <div class="content">
+          <dl class="clearfix">
+              <dd><%= f.text_field :email, autocomplete: :off, class: "mail1", value: nil, placeholder: "邮箱" %></dd>
+              <dd class="input_dd captcha">
+                <%= text_field_tag "user[captcha]", nil, class: "number1", placeholder: "验证码"%>
+                <a href="javascript:void(0);" onclick="javascript:refresh_captcha();">
+                  <%= captcha_tag({id: 'img_captcha', alt: '点击刷新图片', onclick: 'javascript:refresh_captcha();', style: 'cursor:pointer;'}) %>
+                </a>
+              </dd>
+          </dl>
+          <div class="saveBox">
+            <%= f.submit '绑定', class: 'b_btn dialog_btn_y', id: "email_form_btn"%>
+            <a class="b_btn dialog_btn_c">取消</a>
+          </div>
+        </div>
+      <% end %>
+
+    <% else %>
+      <%=form_for current_user, url: bind_mobile_and_password_ajax_users_path, method: :put, remote: true, html: {id: 'bind_mobile_and_password_form', class: "boxBorder personal", onsubmit: "bindFail($('#mobile_and_password_form_btn'), 3000);"} do |f| %>
+
+        <h3 class="show Bbomplete" id="Bbomplete">补全帐号信息<a href="javascript:;"><em>补全</em></a></h3>
+
+        <div class="content">
+          <dl class="clearfix bomplete">
+              <dd class="china"><span>中国&nbsp;86</span><%= f.text_field :mobile, autocomplete: :off, value: nil, placeholder: "手机号" %>
+              </dd>
+              <dd class="captcha">
+                <%= text_field_tag "user[code]", nil, class: "number1", placeholder: "验证码"%>
+                <input type="button" id="btnSendCode" class="w_btn" onclick="sendMessage()" value="发送验证码" style="line-height: 1.5;padding: 6px 14px 4px 14px;margin-left: 10px;vertical-align: middle;"/>
+              </dd>
+              <dd><%= f.password_field :password, placeholder: "密码", class: "password1" %></dd>
+          </dl>
+          <div class="saveBox">
+            <%= f.submit '保存', class: 'b_btn dialog_btn_y', id: "mobile_and_password_form_btn"%>
+            <a class="b_btn dialog_btn_c">取消</a>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
+    <form class="personal boxBorder" data-change="0" onsubmit="return false;">
+      <h4 class="show Bweixin">
+        绑定微信
+        <% if current_user.wechat_provider_actived.present? %>
+          <% if current_user.can_remove_bind? %>
+            <a href="#" onclick="Cancelbind('/auth/wechat/remove_bind')"><em>取消绑定</em></a>
+          <% else %>
+            <a><em></em></a>
+          <% end %>
+        <% else %>
+          <a href="#" onclick="openProviderWindow('wechat')"><em>绑定</em></a>
+        <% end %>
+        <span>
+          <%= current_user.wechat_provider_actived.present? ? "已绑定：#{current_user.wechat_provider_actived.nick_name}" : "未绑定" %>
+        </span>
+      </h4>
+    </form>
+
+    <form class="personal boxBorder" data-change="0" onsubmit="return false;">
+      <h4 class="show Bqq">
+        绑定QQ
+        <% if current_user.qq_provider_actived.present? %>
+          <% if current_user.can_remove_bind? %>
+            <a href="#" onclick="Cancelbind('/auth/qq/remove_bind')"><em>取消绑定</em></a>
+          <% else %>
+            <a><em></em></a>
+          <% end %>
+        <% else %>
+          <a href="#" onclick="openProviderWindow('qq')"><em>绑定</em></a>
+        <% end %>
+        <span>
+          <%= current_user.qq_provider_actived.present? ? "已绑定：#{current_user.qq_provider_actived.nick_name}" : "未绑定" %>
+        </span>
+      </h4>
+    </form>
+
+    <form class="personal boxBorder" data-change="0" onsubmit="return false;">
+      <h4 class="show Bweibo">
+        绑定微博
+        <% if current_user.weibo_provider_actived.present? %>
+          <% if current_user.can_remove_bind? %>
+            <a href="#" onclick="Cancelbind('/auth/weibo/remove_bind')"><em>取消绑定</em></a>
+          <% else %>
+            <a><em></em></a>
+          <% end %>
+        <% else %>
+          <a href="#" onclick="openProviderWindow('weibo')"><em>绑定</em></a>
+        <% end %>
+        <span>
+          <%= current_user.weibo_provider_actived.present? ? "已绑定：#{current_user.weibo_provider_actived.nick_name}" : "未绑定" %>
+        </span>
+      </h4>
+    </form>
+
+  </div>
+</div>
+
+<div style="display:none">
+  <dl id="bindPopup">
+    <dt></dt>
+    <dd>绑定失败</dd>
+    <dd class="bindtext"></dd>
+  </dl>
+</div>
+
+<script type="text/javascript">
+  var InterValObj; //timer变量，控制时间
+  var curCount = 60;//当前剩余秒数
+
+  function sendMessage() {
+    //如果手机号验证没有通过，不发送验证码
+    if($("#user_mobile").valid()){
+      //向后台发送处理数据
+      $.ajax({
+          type: "PUT",
+          url: '/ajax/users/send_sms_code',
+          data: { mobile: $("#user_mobile").val() },
+          error: function (XMLHttpRequest, textStatus, errorThrown) { },
+          success: function (msg){
+            if(msg['status']){
+              Countdown();
+            } else {
+              console.log(msg['msg'])
+              CaishuoAlert(msg['msg']);
+            }
+          }
+      });
+    }
+  }
+  //timer处理函数
+  function SetRemainTime() {
+    if (curCount == 1) {
+      window.clearInterval(InterValObj);//停止计时器
+      $("#btnSendCode").removeAttr("disabled");//启用按钮
+      $("#btnSendCode").val("重新发送");
+      curCount = 60; //重置时间
+    }
+    else {
+      curCount--;
+      $("#btnSendCode").val("重新发送(" + curCount + ")");
+    }
+  }
+
+  function Countdown() {
+    //设置button效果，开始计时
+    $("#btnSendCode").attr("disabled", "true");
+    $("#btnSendCode").val("重新发送(" + curCount + ")");
+    InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+  }
+
+  function refresh_captcha(){
+    var current_date = new Date();
+    var captcha_url = "/captcha?i=" + current_date.getTime().toString();
+    $("#img_captcha").attr("src", captcha_url);
+  }
+
+  function bindFail(dom,timer){
+    $(dom).attr('disabled','disabled')
+    setTimeout(function(){
+      $(dom).removeAttr('disabled')
+    }, timer)
+  }
+
+
+  function Cancelbind(url){
+    window.argu = arguments;
+    CaishuoDialog.open({theme:'confirm',title:'取消绑定<i class="close-window" onclick="CaishuoDialog.close()"></i>',content:'解除绑定后，您将无法使用该第三方账号登陆，确认解除么？',callback:function(){
+        window.location.href = url;
+    }})
+  }
+
+  function openProviderWindow(provider){
+    window.open ('/auth/'+provider,'newwindow','height=500,width=700,top=20,left=20,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no')
+  }
+
+  function binderror( mes ){
+    window.argu = arguments;
+      CaishuoDialog.open({theme:'custom',title:'绑定提示<i class="close-window" onclick="CaishuoDialog.close()"></i>',
+        content:$('#bindPopup'),btntext:'false',reset:function(){
+          this.content.find(".bindtext").text( mes )
+        }
+    })
+  }
+
+  $(function(){
+    $('.editBox h3').click(function(){
+      var tips ;
+      if( $(this).attr("id")=="Bbomplete" ){
+        tips = "补全"
+      }else{
+        tips = "修改"
+      }
+      var _this=this,action = function(){
+        $(_this).toggleClass('contentShow');
+        $(_this).children('a').html($(_this).next('div').is(':visible')?'收起':tips);
+        caishuo.adjustFooter();
+      }
+      if($(this).closest('form').attr('data-change')=='1'){
+        ShowMsg('提示','当前信息尚未保存，修改其它项目将导致当前正在编辑的信息丢失，是否继续？',function(){
+          $(_this).closest('form').attr('data-change',0)[0].reset();
+          action();
+          return true;
+        });
+      }else{
+        action();
+      }
+    });
+    $('form .dialog_btn_c').click(function(){
+      $(this).closest('form').find('h3').trigger('click');
+    });
+
+    $('.taglinks label').click(function(){
+        if ($('.taglinks input:checked').length >= 3) {
+            $('.taglinks input:not(:checked)').prop({ disabled: true });
+        } else {
+            $('.taglinks input:not(:checked)').prop({ disabled: false });
+        }
+    });
+  });
+</script>

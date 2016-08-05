@@ -1,0 +1,41 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%=link_to '新的推送', new_admin_push_path%>
+  </span>
+</h1>
+<div class="box">
+状态: &nbsp;&nbsp;
+  <a href="/admin/pushs" class="<%='current' if params[:status].blank? %>">全部</a>
+  <% PushLog::STATUS.each do |k,v| %>
+    <a href="?status=<%=k%>" class="<%='current' if params[:status] == k %>"><%= v %></a>
+  <% end %>
+</div>
+<%= page_info(@push_logs) %>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>创建人</th>
+      <th>推送类型</th>
+      <th>推送对象</th>
+      <th>推送内容</th>
+      <th>状态</th>
+      <th>创建时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @push_logs.each do |pl| %>
+      <tr>
+        <td><%= pl.id %></td>
+        <td><%= pl.staffer.fullname %></td>
+        <td><%= pl.push_type_zh %></td>
+        <td><%= pl.push_key %></td>
+        <td><%= pl.content.truncate(30) %></td>
+        <td><%= pl.status_zh %></td>
+        <td style="max-width: 100px;"><%= pl.created_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @push_logs %>

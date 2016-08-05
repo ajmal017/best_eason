@@ -1,0 +1,15 @@
+<% if order_logs.size > 0 %>
+  <% order_logs.each do |ol| %>
+    <tr>
+      <td><%= ol.sequence%></td>
+      <td><%= ol.order_id %></td>
+      <td><%= ol.base_stock.symbol %></td>
+      <td><%= ol.created_at%></td>
+      <td><%= ol.total_filled %></td>
+      <td><%= ol.filled %></td>
+      <td><%= ol.remaining%></td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr><td colspan="7">暂无order_logs数据</td></tr>
+<% end %>

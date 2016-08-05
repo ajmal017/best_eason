@@ -1,0 +1,8 @@
+$("#stock_more").before("<%= j render partial: 'ranks', locals: {ranks: @ranks} %>");
+<% if @ranks.size > 0 %>
+  $("#stock_more").attr("data-next-page", parseInt($("#stock_more").attr("data-next-page"))+1);
+  removeBarloadingDiv();
+  $("#stock_more").show();
+<% else %>
+  setNoMoreContent();
+<% end %>

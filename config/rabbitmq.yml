@@ -1,0 +1,101 @@
+development:
+  user: admin
+  password: www.caishuo.c0m
+  host: 192.168.1.10
+  port: 15672
+  vhost: 'caishuo'
+  exchanges:
+  - name:                 caishuox.unroutable
+    type:                 fanout
+    internal:             true
+  - name:                 caishuox.deadletter
+    type:                 direct
+    internal:             true
+    alternate_exchange: caishuox.unroutable
+  - name:                 caishuox.default
+    type:                 direct
+    internal:             false
+    alternate_exchange: caishuox.unroutable
+  - name:                 caishuox.fanout
+    type:                 fanout
+    internal:             false
+    alternate_exchange: caishuox.unroutable
+  queues:
+  - name: unroutable.catchall
+  - name: com.caishuo.pms.deadletter
+  - name: com.unicorn.cts.deadletter 
+  - name: com.caishuo.orderstatus.deadletter    
+  - name: com.caishuo.pms
+    dead_letter_exchange: caishuox.deadletter
+    dead_letter_routing_key: com.caishuo.pms.deadletter
+  - name: com.unicorn.cts
+    dead_letter_exchange: caishuox.deadletter
+    dead_letter_routing_key: com.unicorn.cts.deadletter
+  - name: com.caishuo.orderstatus
+    dead_letter_exchange: caishuox.deadletter
+    dead_letter_routing_key: com.caishuo.orderstatus.deadletter
+  bindings:
+  - source:           caishuox.deadletter
+    destination:      com.caishuo.pms.deadletter
+    destination_type: queue
+    routing_key:      com.caishuo.pms.deadletter
+  - source:           caishuox.deadletter
+    destination:      com.unicorn.cts.deadletter
+    destination_type: queue
+    routing_key:      com.unicorn.cts.deadletter
+  - source:           caishuox.deadletter
+    destination:      com.caishuo.orderstatus.deadletter
+    destination_type: queue
+    routing_key:      com.caishuo.orderstatus.deadletter
+  - source:           caishuox.unroutable
+    destination:      unroutable.catchall
+    destination_type: queue
+    routing_key:
+  - source:           caishuox.default
+    destination:      com.caishuo.pms
+    destination_type: queue
+    routing_key:      com.caishuo.pms
+  - source:           caishuox.fanout
+    destination:      com.unicorn.cts
+    destination_type: queue
+    routing_key:      
+  - source:           caishuox.fanout
+    destination:      com.caishuo.orderstatus
+    destination_type: queue
+    routing_key:      
+  
+test:
+  user: guest
+  password: guest
+  exchanges:
+  - name:                 ohx.unroutable
+    type:                 fanout
+    internal:             true
+  - name:                 ohx.deadletter
+    type:                 direct
+    internal:             true
+    alternate_exchange: ohx.unroutable
+  - name:                 ohx.example
+    type:                 direct
+    internal:             false
+    alternate_exchange: ohx.unroutable
+  queues:
+  - name: ohq.unroutable.catchall
+  - name: ohq.example.deadletter
+  - name: ohq.example.update
+    dead_letter_exchange: ohx.deadletter
+    dead_letter_routing_key: example.update
+    message_expiration: 60000
+  bindings:
+  - source:           ohx.deadletter
+    destination:      ohq.example.update.deadletter
+    destination_type: queue
+    routing_key:      example.update
+  - source:           ohx.example
+    destination:      ohq.example.update
+    destination_type: queue
+    routing_key:      example.update
+  - source:           ohx.unroutable
+    destination:      ohq.unroutable.catchall
+    destination_type: queue
+    routing_key:

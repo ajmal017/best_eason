@@ -1,0 +1,26 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+ <span class="title_right">
+  <a href="/admin/panels/edit_all">修改</a>
+  </span>
+</h1>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>标题</th>
+      <th>类型</th>
+      <th>类型对象id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @panels.each_with_index do |panel, i| %>
+      <tr>
+        <td><%= i+1 %></td>
+        <td><%= panel.title %></td>
+        <td><%= panel.type_zh %></td>
+        <td><%= panel.obj_id %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

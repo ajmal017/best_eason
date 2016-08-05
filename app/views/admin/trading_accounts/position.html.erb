@@ -1,0 +1,28 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+</h1>
+
+<%= page_info(@positions) %>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>用户ID</th>
+      <th>股票</th>
+      <th>组合</th>
+      <th>持有数量</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @positions.each do |position| %>
+      <tr>
+        <td><%= position.id %></td>
+        <td><%= position.user_id %></td>
+        <td><%= position.base_stock.c_name %><%= position.base_stock.symbol %></td>
+        <td><%= position.basket.try(:name) %></td>
+        <td><%= position.shares %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

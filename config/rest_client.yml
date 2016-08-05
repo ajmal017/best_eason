@@ -1,0 +1,25 @@
+defaults: &defaults
+  rest_url: http://rest.testing.caishuo.com
+  trading_url: http://trading.testing.caishuo.com
+
+development:
+  <<: *defaults
+  rest_url: http://localhost:9292
+  trading_url: http://localhost:9292
+
+staging:
+  <<: *defaults
+  rest_url: http://rest.office.caishuo.com
+  trading_url: http://trading.office.caishuo.com
+
+testing:
+  <<: *defaults
+  rest_url: http://rest.testing.caishuo.com
+
+production:
+  <<: *defaults
+  rest_url: http://10.10.0.4:8080
+  trading_url: http://10.10.0.4:8081
+
+docker_dev:
+  <<: *defaults

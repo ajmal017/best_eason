@@ -1,0 +1,19 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+<% end %>
+<%- @page_title = "加入我们" -%>
+<div class="container userEdit clearfix contactUs">
+    <%= render :partial => "left_bar" %>
+    
+    <div class="rightBox">
+      <h2>加入我们</h2>
+      <div class="about_right join_us">
+         <h5>Ruby/PHP/Python高级工程师/架构师</h5>
+         <p class="p_margin">职位描述<br />1. 带领团队完成服务器端以及Web端程序的设计；<br />2. 负责核心模块的开发；</p>
+         <p>职位要求<br />1. Geek；<br />2. 2年以上实际项目经验，热爱服务端开发，对后台服务的整体架构设计有成功经验；<br />3. 精通Ruby on Rail 或者PHP；<br />4. 具备良好的编码习惯和逻辑条理性，对复杂业务逻辑能快速理解并转化为技术需求；<br />5. 追求代码高质量；<br />6.如果你在较大压力下仍然表现出色，并有良好的团队合作精神，ok，就你了。</p>
+         <h5>IOS开发工程师</h5>
+         <p class="p_margin">职位描述<br />1. 负责iOS端产品研发，通用基础库和架构搭建，完善；<br />2. 主导或独立完成移动平台研发项目；<br />3. 分析产品使用情况，提出优化建议。</p>
+         <p>职位要求<br />1. 相关开发1年及以上工作经历；<br />2. 主导或独立iOS平台开发经验；<br />3. 熟练掌握Xcode，Obj-C语言，深刻了解语言特性；<br />4. 熟悉iOS开发技术，包括UI，网络等方面，熟悉各个不同版本iOS的特点，能够给出适配方案；<br />5. 了解多线程和网络编程，对高性能程序设计，架构有较多的工程经验，能够做到灵活应用；<br />6. 有App Store上线的产品优先；</p>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<%= form_for [:admin, @tag_basis] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b>*</b>名称</td>
+        <td>
+          <% if @can_edit %>
+            <%= f.text_field :name, size: 30 %>
+          <% else %>
+            此标签已有热点使用，不能被修改名称！
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field">热门</td>
+        <td><%= f.check_box :hot %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+

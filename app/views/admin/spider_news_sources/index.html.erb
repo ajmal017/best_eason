@@ -1,0 +1,60 @@
+<h1 class="title">
+  <span class="title_left"><%= @page_title %></span>
+  <span class="title_right">
+    <%= link_to "新建", new_admin_md_source_spider_news_source_path %>
+  </span>   
+</h1>
+
+
+<% search_params = [:category_id, :status] %>
+<div class="box">
+  <%= link_to '全部', admin_md_source_spider_news_sources_path, class: params[:category_id].blank? ? 'current' : '' %>
+  <% MD::Source::SpiderNewsCategory.all.each do |category| %>
+    <%= link_to category.name, admin_md_source_spider_news_sources_path(params.slice(*search_params).merge(category_id: category.category_id)), class: category.category_id == params[:category_id] ? 'current' : '' %>
+  <% end %>
+</div>
+<div class="box">
+  <%= link_to '全部', admin_md_source_spider_news_sources_path, class: params[:status].blank? ? 'current' : '' %>
+  <% MD::Source::SpiderNewsSource::STATUS_NAME.each do |(status, name)| %>
+    <%= link_to name, admin_md_source_spider_news_sources_path(params.slice(*search_params).merge(status: status)), class: status.to_s == params[:status] ? 'current' : '' %>
+  <% end %>
+</div>
+
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>分类</th>
+      <th>爬虫名称</th>
+      <th>Feed来源显示</th>
+      <th>间隔</th>
+      <th>状态</th>
+      <th>今日抓取</th>
+      <th>最后运行时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @sources.each do |source| %>
+    <tr>
+      <td class="align_left"><%= source.name %></td>
+      <td class="align_left"><%= source.category_name %></td>
+      <td class="align_left"><%= source.crawler_name %></td>
+      <td class="align_left"><%= source.source_name %></td>
+      <td class="align_left"><%= source.interval_time %><%= source.auto_adjust ? '(自动调整)' : '' %></td>
+      <td class="align_left"><%= source.status_name %></td>
+      <td class="align_left"><%= @logs[source.id.to_s] %></td>
+      <td class="align_left"><%= source.last_run_at %></td>
+      <td class="action">
+      <%= link_to '立即运行', [:run, :admin, source] %>
+      <%= link_to "新闻", admin_es_spider_news_index_path(index: source.id) %>
+      <%= link_to '编辑', [:edit, :admin, source] %>
+      <%= link_to '删除', [:admin, source], method: :delete, data: { confirm: '你确定删除吗?' } %>
+      </td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>

@@ -1,0 +1,6 @@
+<% unless @ret[:error] %>
+  openSavedSuccessfully();
+  setTimeout("goToOrders();", 1000);
+<% else %>
+  CaishuoAlert("<%= @ret[:error_msg] %>");
+<% end %>

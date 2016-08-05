@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="hot-detail clearfix">
+        <div class="hot-title">
+            <i><%= @topic.market_desc %></i> 
+            <%= @topic.title %> 
+            <label><%= @topic.sub_title %></label>
+            <span><%= @topic.modified_at.to_s(:long) %></span>
+        </div>
+        <div class="float-left">
+          <%= image_tag @topic.img_url(:large), size: "190x152" %>
+        </div>
+        <div class="introContent">
+            <%= @topic.summary %>
+        </div>
+        <div class="infoContent" style="display:none;">
+            <%= @topic.safe_description.html_safe %>
+        </div>
+        <div class="text-right"><a href="javascript:void(0)" id="swapContent">查看更多</a></div>
+    </div>
+</div>

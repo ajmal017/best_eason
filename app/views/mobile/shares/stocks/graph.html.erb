@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= @page_title %></title>
+  <script type="text/javascript">
+  window.stock_id = <%=@stock.id%>;
+  </script>
+  <%= javascript_include_tag "http://localhost/assets/mobile/shares/stocks.js", "http://localhost/javascripts/arc.js" %>
+  <style type="text/css">
+    .contentThree {/*width: 160px;*/margin: 0 auto;background: url(../../images/v2/contbg.png) no-repeat;background-size: 160;text-align: center;}
+  </style>
+</head>
+<body style='width:160px;margin:0'>
+  <%= render '/shared/analytics/gtm'%>
+  <div class="contentThree">
+    <div id="stock_chart"></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+real_time_stock:
+  every: 10m
+  class: SyncRealTimeStock
+  queue: rt_sync
+  args: -1
+  description: "同步实时股票信息"
+
+historical_stock:
+  every: 6h
+  class: SyncHistoricalStock
+  queue: his_sync
+  args:
+    - -1
+    - -2
+  description: "同步历史股票信息"

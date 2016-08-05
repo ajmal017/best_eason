@@ -1,0 +1,64 @@
+<div class="index_top clearfix">
+  <div class="hotNewsList">
+    <% if @recommend_topic %>
+    <a href="<%= topic_path(@recommend_topic) %>" target="_blank">
+      <strong><i>头条</i><%= @recommend_topic.title %>&nbsp;&nbsp;<em><%= @recommend_topic.sub_title %></em></strong>
+      <% @recommend_topic.topic_stocks.includes(:base_stock).first(4).map(&:base_stock).in_groups_of(2, false).each do |group| %>
+        <% group.each do |stock| %>
+          <i><%= stock.truncated_com_name %>(<%= stock.symbol %>)</i>
+        <% end %>
+        <br/>
+      <% end %>
+    </a>
+    <% end -%>
+    <% if @recommend_basket %>
+    <a href="<%= basket_path(@recommend_basket) %>" target="_blank">
+      <span class="payback"><b>累计回报</b><%= up_down_style(@recommend_basket.total_return, postfix: "%") %></span>
+      <strong><i class="recommend">组合</i><%= @recommend_basket.title %></strong>
+      <span class="avator">
+        <% if @recommend_basket.author %>
+          <%= image_tag @recommend_basket.author.avatar_url(:small), size: "24" %>
+          <%= @recommend_basket.author.username %>
+        <% end %>
+      </span>
+    </a>
+    <% end -%>
+
+    <a href="<%= @recommend_stock_search["url"] %>" target="_blank">
+      <strong><i class="recommend">选股</i><%= @recommend_stock_search["title"] %></strong>
+      <span><%= @recommend_stock_search["desc"] %>等 <b><%= @recommend_stock_search["count"] %></b> 只个股</span>
+    </a>
+  </div>
+
+  <dl id="playBox">
+    <dt></dt>
+    <dd>
+      <% @banner_infos.each do |url, infos| %>
+        <a href="<%= infos[:url] %>" target="_blank">
+          <%= image_tag infos[:image_url] %><span><%= infos[:title] %></span>
+        </a>
+      <% end %>
+    </dd>
+  </dl>
+  <div class="marketInfo">
+    <a href="/stocks" target="_blank">
+      <dfn>
+        <span>上证指数</span> <b id="marketCN1"></b>
+        <%= topic_market_index(:sh, @market_indexes, true) %>
+      </dfn>
+      <dfn>
+        <span>创业板</span> <b id="marketCN2"></b>
+        <%= topic_market_index(:gem, @market_indexes, true) %>
+      </dfn>
+      </dfn>
+    </a>
+    <a href="/stocks" target="_blank">
+      <span>标普500</span> <b id="marketUS"></b>
+      <%= topic_market_index(:bp, @market_indexes) %>
+    </a>
+    <a href="/stocks" target="_blank">
+      <span>恒生指数</span> <b id="marketHK"></b>
+      <%= topic_market_index(:hs, @market_indexes) %>
+    </a>
+  </div>
+</div>

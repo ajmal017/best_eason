@@ -1,0 +1,46 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css" %>
+  <%= javascript_include_tag "jquery.timeago", "jquery.timeago.settings" %>
+<% end %>
+
+<div class="container userEdit clearfix">
+  <%=render partial: 'shared/setting_left_box'%>
+
+  <div class="rightBox">
+    <div class="review privateLetter j_talk_list">
+      <h2>私信</h2>
+      <ul>
+        <% @talks.each do |talk| %>
+        <% next if talk.subscriber.nil? %>
+        <li talk-id="<%=talk.id%>">
+          <%=link_to_user talk.subscriber, inner: image_tag(talk.subscriber.avatar_url(:small), width: 40, height: 40), target: '_blank', class: 'comment_avator'%>
+          <%=link_to_user talk.subscriber, inner: talk.subscriber.username.to_s + ' ' + content_tag(:span, talk.subscriber.headline), class: 'username', target: '_blank'%>
+          <p onclick="window.location.href='<%= message_path(talk) %>'">
+            <%= sanitize talk.recent_message.content %>
+          </p>
+          <div class="commentActions">
+            <span class="date"><%= timeago(talk.recent_message.created_at) %></span>
+            <%= link_to "删除", ajax_message_talk_path(talk), :method=>:delete, :title=>"删除", data: {:confirm=>"你确认删除吗?", id: talk.id}, class: 'j_talk_list' %><%=link_to '回复', message_path(talk) %><%= link_to_report_abuse_user talk.subscriber %>
+          </div>
+        </li>
+        <% end %>
+
+        <% if @talks.size.zero? %>
+          <article class="noContents p_letter" style="display: block;"></article>
+        <% end %>
+      </ul>
+    </div>
+
+    <%= will_paginate @talks, :class => "pageNav", inner_window: 2, outer_window: 0, previous_label: "上一页", next_label: "下一页" %>
+  </div>
+</div>
+<script>
+  $(function(){
+    $.get('/ajax/message_talks/counter', {ids: <%=@talks.map(&:id).to_s%>}, function(){
+      $.post('/ajax/message_talks/mark_read', {ids: <%= @talks.map(&:id).to_s %>})
+    });
+
+    $(".timeago").timeago();
+  })
+
+</script>

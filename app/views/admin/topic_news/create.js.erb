@@ -1,0 +1,6 @@
+<% if @topic_news.valid? %>
+  $("#topic_news_url").val("");
+  $("#topic_news_table tbody").append("<%= j render partial: 'admin/topics/news_item', locals: {news: @topic_news} %>");
+<% else %>
+  alert("抓取失败，请复制完整url！");
+<% end %>

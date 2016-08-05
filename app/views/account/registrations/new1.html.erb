@@ -1,0 +1,35 @@
+<%- @page_title = "注册 设置登录名" -%>
+
+<div class="container register">
+  <nav class="createStep regStepBox">
+    <strong>注册财说</strong>
+    <span class="current"><i>1</i> 设置登录名</span><span><i>2</i> 填写账户信息</span><span class="step3"><i></i> 注册成功</span>
+  </nav>
+  <%= form_for @user || User.new, url: account_registrations_path, html: {id: 'j_registration_first'} do |f| %>
+  <dl>
+    <dt>邀请码</dt>
+    <dd>
+      <%= f.text_field :invite_code, value: params[:invite_code], class: 'exlarge' %>
+    </dd>
+    <dt>电子邮箱</dt>
+    <dd>
+      <%= f.text_field :email, class: 'exlarge' %>
+    </dd>
+    <dt>验证码</dt>
+    <dd id="Captcha">
+      <%= f.text_field :captcha, class: 'exlarge' %>
+      <a href="javascript:void(0);" onclick="javascript:refresh_captcha();">
+        <%= captcha_tag({id: 'img_captcha', alt: '点击刷新图片', onclick: 'javascript:refresh_captcha();', style: 'cursor:pointer;'}) %>
+      </a>
+    </dd>
+    <dd>
+      <input type="checkbox" name="isAgree" id="agree1" class="custom1" checked="checked"/>
+      <label for="agree1">我已阅读并接受</label>
+      <a href="/account/protocols" target="_blank">《财说用户协议》</a>
+    </dd>
+    <dd>
+      <%=f.submit '下一步', class: 'btn large' %>
+    </dd>
+  </dl>
+  <% end %>
+</div>

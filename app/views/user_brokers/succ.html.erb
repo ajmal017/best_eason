@@ -1,0 +1,69 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/investment.css", "/stylesheets/v3/creat1.css" %>
+<% end %>
+
+<div class="container">
+  <%= render :partial => "/shared/sub_menus/positions" %>
+
+  <div class="content">
+
+    <nav class="createStep">
+    <strong>交易账号管理</strong>
+    <span><i>1</i> 绑定交易账号</span><span class="current"><i>2</i> 绑定状态</span>
+    </nav>
+    <% if current_user.has_binding_account? %>
+      <div class="existAccount clearfix">
+        <div>
+          <% if current_user.user_binding.broker.name == 'ib' %>
+            <%= image_tag "/images/v2/crop_yingtong.png" %>
+          <% else %>
+            <%= image_tag "/images/v2/crop_yiqun.png" %>
+          <% end %>
+          <p>客户编号: <%= current_user.user_binding.broker_user_id %> 已经与财说系统绑定。</p>
+        </div>
+      </div>
+    <% else %>
+      <div class="bindaccountbox">
+        <strong>绑定信息审核中</strong>
+        <p>您提交的客户编号: <%= @user_broker.broker_no %> 财说已经收到。<br />我们将在5个工作日内确认，请耐心等待。</p>
+        <% if @user_broker.broker.name == "ib" %>
+        <br />
+        <br />
+        <!-- <p><a href="#">取消绑定申请，更换绑定账号</a></p> -->
+        <strong>您尚需连接盈透证券账号至顾问/经销商</strong>
+          <p><%=image_tag "/images/v3/bind-samp2.jpg", width: 500, alt: '盈透证券'%></p>
+          <div class="examp">
+            <table>
+              <tr>
+                <td>顾问/经销商管理账户号码：</td>
+                <td><input value="I8019219" readonly="readonly"></td>
+              </tr>
+              <tr>
+                <td>顾问/经销商管理账户名称：</td>
+                <td><input value="unicorn securities co ltd" readonly="readonly"></td>
+              </tr>
+            </table>
+          </div>
+          <label class="alert">请您使用以上信息，在 <a href="https://www.ibkr.com.cn/sso/Login" target="_blank">盈透证券</a> 的网站最终完成账号绑定</label>
+          <a class="b_btn btn_attend" href="https://www.ibkr.com.cn/sso/Login" target="_blank">现在就去绑定</a>
+          <br />
+          <br />
+          <br />
+        <% end %>
+      </div>
+      <% if @user_broker.broker.name == "unicorn" %>
+        <div class="bindintro noBorder">
+          <table>
+            <tbody>
+              <tr>
+                <td><%=image_tag "../images/v2/crop_intro1.jpg", alt: "UNICORNSecurities 益群證券"%></td>
+                <td><img src="../images/v2/crop_intro2.jpg" alt="intro"><a href="http://unicornsecurities.hk/" class="b_btn dialog_btn_y" target="_blank">查看详情</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+</div>

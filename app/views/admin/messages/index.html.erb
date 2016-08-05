@@ -1,0 +1,183 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+  <span class="title_center"><%=@msg%></span>
+</h1>
+<div class="box">
+  <%= search_form_for @q, url: "", class: "form-inline", role: "form" do |f| %>
+    <select style="width: 12%" class="sender_user_search" name="q[sender_id_eq]" id="sender">
+    </select>
+    <input type="button" value="重置" id="sender_clear">&nbsp;&nbsp;
+    <select style="width: 12%" class="receiver_user_search" name="q[receiver_id_eq]" id="receiver">
+    </select>
+    <input type="button" value="重置" id="receiver_clear">&nbsp;&nbsp;
+    <%= f.text_field :content_cont, :placeholder => "内容", class: "form-control" %>&nbsp;&nbsp;
+    <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;",:id => "suosuo"%>
+  <% end %>
+</div>
+<%= page_info(@messages) %>
+<table class="grid" id="role-grid">
+  <thead>
+    <tr>
+      <td colspan="5" style="text-align:right;">
+        <a id="destry" style="color:red !important;" href="#" onclick="get_checkbox()">删除</a>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <input type="checkbox" class="top_tree">
+      </th>
+      <th>ID</th>
+      <th>发送者</th>
+      <th>接收者</td>
+      <th>内容</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% if @messages != [] %>
+    <% @messages.each do |m| %>
+      <tr id="check_<%= m.id %>">
+        <td width="20px;">
+          <input type="checkbox" class="bottom_tree" value="<%= m.id %>">
+        </td>
+        <td width="50px;"><%= m.id %></td>
+        <td class="align_left" width="150px;">
+          <%= m.sender.try(:username) %>
+        </td>
+        <td class="align_left" width="150px;">
+          <%= m.receiver.try(:username) %>
+        </td>
+        <td class="menu" style="text-align:left !important;">
+            <%= sanitize m.content %>
+        </td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="5" style="color:red;">没有符合条件的消息!</td>
+    </tr>
+  <% end %> 
+  </tbody>
+</table>
+<%= will_paginate @ca_splits %>
+
+<script type="text/javascript">
+  
+  function get_checkbox(){
+    ids = []
+    ids = get_checkout_ids();
+    if(ids.length > 0){
+      var c = confirm("你确定删除吗？")
+      if (c == true) {
+        $.post("/admin/messages/ajax_del_message?ids="+ids,{},function(){
+          location.reload();
+        })
+      }else{
+        location.reload();
+      }
+    }else{
+      alert("请选择要删除的消息!")
+    }
+  }
+  
+  $(".sender_user_search").select2({
+    placeholder: "发送者",
+    ajax: {
+      url: "/ajax/global/search_user",
+      dataType: 'json',
+      delay: 300,
+      data: function(params){
+        return {
+          q: params.term
+        };
+      },
+      processResults: function (data, page) {
+        return {
+          results: data.users
+        };
+      }
+    },
+    templateResult: formatUser, //显示查询结果
+    templateSelection: formatSenderSelection, //显示选中的对象
+    escapeMarkup: function (markup) { return markup; }
+  });
+
+  //搜索之后赋值
+  $(document).ready(function(){
+    $("#receiver_clear").hide();
+    $("#sender_clear").hide();
+    var sender_user = "<%= @sender_user %>"
+    if (sender_user.length > 2) {
+      $("#sender_clear").show();
+      var user_id = "<%= @sender_user[0] %>"
+      var user_name = "<%= @sender_user[1] %>"
+      $("select[name='q[sender_id_eq]']:eq(0)").append("<option value="+user_id+"></option>"); 
+      $("select[name='q[sender_id_eq]']:eq(0)").select2("val", user_id)
+      $("#sender").next().children().children().children().first().get(0).innerHTML = user_name
+
+      $("#sender_clear").click(function(){
+        $("select[name='q[sender_id_eq]']:eq(0)").select2("val", "")
+        $("#sender").next().children().children().children().first().get(0).innerHTML = "发送者"
+      });
+    }
+
+    var receiver_user = "<%= @receiver_user %>"
+    if (receiver_user.length > 2) {
+      $("#receiver_clear").show();
+      var user_id = "<%= @receiver_user[0] %>"
+      var user_name = "<%= @receiver_user[1] %>"
+      $("select[name='q[receiver_id_eq]']:eq(0)").append("<option value="+user_id+"></option>"); 
+      $("select[name='q[receiver_id_eq]']:eq(0)").select2("val", user_id)
+      $("#receiver").next().children().children().children().first().get(0).innerHTML = user_name
+      $("#receiver_clear").click(function(){
+        $("select[name='q[receiver_id_eq]']:eq(0)").select2("val", "")
+        $("#receiver").next().children().children().children().first().get(0).innerHTML = "接收者"
+      });
+    }
+
+  });
+
+  $(".receiver_user_search").select2({
+    placeholder: "接收者",
+    ajax: {
+      url: "/ajax/global/search_user",
+      dataType: 'json',
+      delay: 300,
+      data: function(params){
+        return {
+          q: params.term
+        };
+      },
+      processResults: function (data, page) {
+        return {
+          results: data.users
+        };
+      }
+    },
+    templateResult: formatUser, //显示查询结果
+    templateSelection: formatReceiverSelection, //显示选中的对象
+    escapeMarkup: function (markup) { return markup; }
+  });
+
+  function formatUser (user) {
+    if (user.loading) return user.text; // 返回正在加载数据
+    var markup = "<div style='float:center;color:#4F4F4F;'>"+user.username+"</div> " 
+    return markup;
+  }
+
+  function formatSenderSelection (sender) {
+    if (sender.username == undefined){
+      return "发送者";
+    } else {
+      return sender.username;
+    }
+  }
+
+  function formatReceiverSelection (receiver) {
+    if (receiver.username == undefined){
+      return "接收者";
+    } else {
+      return receiver.username;
+    }
+  }
+  
+</script>

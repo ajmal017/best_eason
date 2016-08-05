@@ -1,0 +1,144 @@
+<h1 class="title">
+  <span class="title_left">Historical quote cn详情页面</span>
+  <span class="title_right">
+    <%= link_to "编辑", [:edit, :admin, @historical_quote_cn], style: "margin-right: 10px;" %>
+    <%= link_to "返回列表", admin_historical_quote_cns_path %>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">Id</td>
+      <td>
+        <%= @historical_quote_cn.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Base stock</td>
+      <td>
+        <%= @historical_quote_cn.base_stock_id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Symbol</td>
+      <td>
+        <%= @historical_quote_cn.symbol %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Last</td>
+      <td>
+        <%= @historical_quote_cn.last %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Open</td>
+      <td>
+        <%= @historical_quote_cn.open %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">High</td>
+      <td>
+        <%= @historical_quote_cn.high %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Low</td>
+      <td>
+        <%= @historical_quote_cn.low %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Last close</td>
+      <td>
+        <%= @historical_quote_cn.last_close %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Change from open</td>
+      <td>
+        <%= @historical_quote_cn.change_from_open %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Percent change from open</td>
+      <td>
+        <%= @historical_quote_cn.percent_change_from_open %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Change from last close</td>
+      <td>
+        <%= @historical_quote_cn.change_from_last_close %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Percent change from last close</td>
+      <td>
+        <%= @historical_quote_cn.percent_change_from_last_close %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Index</td>
+      <td>
+        <%= @historical_quote_cn.index %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Volume</td>
+      <td>
+        <%= @historical_quote_cn.volume %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Date</td>
+      <td>
+        <%= @historical_quote_cn.date %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Currency</td>
+      <td>
+        <%= @historical_quote_cn.currency %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Created at</td>
+      <td>
+        <%= @historical_quote_cn.created_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Updated at</td>
+      <td>
+        <%= @historical_quote_cn.updated_at %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Ma5</td>
+      <td>
+        <%= @historical_quote_cn.ma5 %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Ma10</td>
+      <td>
+        <%= @historical_quote_cn.ma10 %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Ma20</td>
+      <td>
+        <%= @historical_quote_cn.ma20 %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">Ma30</td>
+      <td>
+        <%= @historical_quote_cn.ma30 %>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,15 @@
+<div class="themeListNav clearfix">
+    <div class="top-bar">
+        <label class="selname">排序：</label>
+        <div class="selectbox dropdlst">
+            <input type="hidden" value="">
+            <label>一日收益</label><kbd></kbd>
+            <ul class="selectoption" style="display: none;">
+                <li data-value="1d_return">一日收益</li>
+                <li data-value="1m_return">两日收益</li>
+                <li data-value="1y_return">三日收益</li>
+            </ul>
+        </div>
+        <span>共<i class="j_baskets_count"><%= @baskets.try(:count) %></i>支组合</span>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+<% if @comment.commentable_type == "Basket" %>
+  if ($(".pk-discussion > .active").attr("comment_id") == "<%= @comment.id %>"){
+  	resetAllCommentsAtTopic();
+	$("#<%= @comment.id %>").after("<%= j render('comment', comment: @comment, portfolio: @portfolio) %>");
+	$("#<%= @comment.id %>").hide();
+  }
+<% end %>

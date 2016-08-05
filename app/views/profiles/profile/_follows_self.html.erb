@@ -1,0 +1,42 @@
+<div class="customs">
+  <h3 class="multiselect clearfix">
+    <span class="active">自选股票(<%= @user.following_stocks_count %>)<a href="/users/stocks" target="_blank" class="righta">编辑自选股</a></span>
+    <span>自选组合(<%= @user.following_baskets_count %>)<a href="/users/baskets" target="_blank" class="righta">编辑自选组合</a></span>
+  </h3>
+  <div class="tabItem" style="display:block;">
+    <% if @followed_stocks.size.zero? %>
+    <div class="noContents">
+      <a class="addtoFocus" href="/users/stocks" target="_blank">添加自选</a>
+    </div>
+    <% else %>
+    <table class="forstocks">
+      <thead>
+        <tr>
+          <td>名称/代码</td>
+          <td>现价/关注价</td>
+          <td><span class="sortcolumn">涨跌</span></td>
+          <td><span class="sortcolumn">市值</span></td>
+          <td><span class="sortcolumn">市盈率</span></td>
+          <td>交易</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @followed_stocks.each do |follow, stock| %>
+          <%= render partial: "profiles/profile/stock_item_self", locals: {stock: stock, follow: follow} %>
+        <% end %>
+      </tbody>
+      <% if @stock_follows.next_page %>
+      <tfoot>
+        <tr>
+          <th colspan="6"><a href="javascript:void(0)" class="viewmore">查看全部</a></th>
+        </tr>
+      </tfoot>
+      <% end %>
+    </table>
+    <% end %>
+  </div>
+  
+  <div class="tabItem">
+    <div class="loadMore text-center"><div class="barloading"></div></div>
+  </div>
+</div>

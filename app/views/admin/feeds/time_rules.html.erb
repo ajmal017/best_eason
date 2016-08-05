@@ -1,0 +1,9 @@
+<ul class="time_rules_box">
+  <% @time_rules.each do |time_rule|%>
+    <li><%= raw time_rule.name_with_desc %></li>
+  <% end -%>
+</ul>
+
+<style type="text/css">
+  .time_rules_box b{width: 60px;display: inline-block;}
+</style>

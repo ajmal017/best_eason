@@ -1,0 +1,28 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+</h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th style="width:25%;">标题</th>
+      <th style="width:25%;">关联文章标题</th>
+      <th style="width:20%;">关联文章id</th>
+      <th style="width:30%;">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @suggests.each_with_index do |s, index| %>
+      <tr>
+        <td><%= s.title %></td>
+        <td><%= s.article.try(:title) %></td>
+        <td><%= s.article.try(:id) %></td>
+        <td>
+          <%= link_to "修改", edit_admin_suggest_path(s) %>
+          <%= link_to "推荐位图片", pic_admin_suggest_path(s) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @suggests %>

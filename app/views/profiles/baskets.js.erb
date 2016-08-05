@@ -1,0 +1,5 @@
+<% @baskets.each do |basket| %>
+  $(".baskets tbody").append("<%= j render partial: "profiles/profile/basket_item_#{@render_type}", locals: {basket: basket, followed: basket.followed_by_user?(current_user.try(:id))} %>");
+<% end %>
+
+customTimeago();

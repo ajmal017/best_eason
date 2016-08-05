@@ -1,0 +1,56 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/register.css" %>
+<% end %>
+
+<div class="container registration forget_password">
+  <h5>密码找回</h5>
+  <ul class="tab_ul">
+    <li><a href="javascript:;" class="active">手机号找回</a></li>
+    <li><a href="javascript:;">邮箱找回</a></li>
+  </ul>
+  <div class="R_dls">
+    <%=form_for User.new, url: account_password_path, html: {id: 'new_account_passwords_phone'} do |f| %>
+      <dl class="dl_phone">
+        <dd class="hint">请输入你注册时填写的手机号</dd>
+        <dd>
+          <%=f.text_field :mobile, class: 'medium', placeholder: "手机号" %>
+        </dd>
+        <dd class="captcha">
+          <%= f.text_field :captcha, class: 'medium', placeholder: "验证码"%><span class="w_btn" id="bindPhone">发送验证码</span>
+        </dd>
+        <dd>
+          <%=f.submit '提交', class: 'b_btn trade btn_phone'%>
+        </dd>
+      </dl>
+    <% end %>
+    <%=form_for User.new, url: account_password_path, html: {id: 'new_account_passwords'} do |f| %>
+      <dl class="dl_mail">
+        <dd class="hint">输入邮箱，我们将向您的邮箱发送重置密码的链接</dd>
+        <dd>
+          <%=f.text_field :email, class: 'medium', placeholder: "邮箱" %>
+        </dd>
+        <dd id="Captcha">
+          <%= f.text_field :captcha, class: 'medium', placeholder: "验证码"%>
+          <a href="javascript:void(0);">
+            <%= captcha_tag({id: 'img_captcha', alt: '点击刷新图片', onclick: 'javascript:refresh_captcha();', style: 'cursor:pointer;'}) %>
+          </a>
+        </dd>
+        <dd>
+          <%=f.submit '提交', class: 'b_btn trade btn_phone'%>
+        </dd>
+      </dl>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+  $(function (){
+    $(".tab_ul").tabso({
+      cntSelect:".R_dls",
+      tabEvent:"click",
+      onStyle : "active",
+      menuChildSel : "li"
+    });
+  });
+</script>

@@ -1,0 +1,62 @@
+<div class="signup">
+  <div class="container">
+    <h2>距离全球资产配置，只有一次鼠标点击的距离 ...</h2>
+    <%=form_for resource, :as => resource_name, :url => registration_path(resource_name), html: {class: 'form-horizontal', role: 'form'} do |f|%>
+      <div class="form-group <%=devise_group_class(resource, :invite_code)%>">
+        <label for="invitationCode" class="col-md-2 control-label">邀请码</label>
+        <div class="col-md-3">
+          <%=f.text_field :invite_code, class: 'form-control', placeholder: '请输入邀请码'%>
+          <%=devise_feedback_span(resource, :invite_code)%>
+        </div>
+        <%=devise_error_info(resource, :invite_code)%>
+      </div>
+      <div class="form-group <%=devise_group_class(resource, :username)%>">
+        <%=f.label :username, class: 'col-md-2 control-label'%>
+        <div class="col-md-3">
+          <%=f.text_field :username, class: 'form-control', placeholder: '4 - 16字符内', minlength: '4', maxlength: '16'%>
+          <%=devise_feedback_span(resource, :username) %>
+        </div>
+        <%=devise_error_info(resource, :username)%>
+      </div>
+      <div class="form-group <%=devise_group_class(resource, :email)%>">
+        <%=f.label :email, class: 'col-md-2 control-label'%>
+        <div class="col-md-3">
+          <%=f.text_field :email, class: 'form-control', placeholder: '登录用，请牢记'%>
+          <%=devise_feedback_span(resource, :email) %>
+        </div>
+        <%=devise_error_info(resource, :email)%>
+      </div>
+      <div class="form-group <%=devise_group_class(resource, :password)%>">
+        <%=f.label :password, class: 'col-md-2 control-label'%>
+        <div class="col-md-3">
+          <%=f.password_field :password, class: 'form-control', placeholder: '6 - 16位'%>
+          <%=devise_feedback_span(resource, :password) %>
+        </div>
+        <%=devise_error_info(resource, :password)%>
+      </div>
+      <div class="form-group <%=devise_group_class(resource, :password_confirmation)%>">
+        <%=f.label :password_confirmation, class: 'col-md-2 control-label'%>
+        <div class="col-md-3">
+          <%=f.password_field :password_confirmation, class: 'form-control', placeholder: '再输一次密码以确认'%>
+          <%=devise_feedback_span(resource, :password_confirmation) %>
+        </div>
+        <%=devise_error_info(resource, :password_confirmation)%>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-4">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> 我已阅读并同意<a href="">《财说服务协议》</a>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-3">
+          <button type="submit" class="btn btn-primary">注册</button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+

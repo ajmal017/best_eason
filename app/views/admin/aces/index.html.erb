@@ -1,0 +1,28 @@
+<h1 class="title">
+ <span class="title_left"><%=@page_title%></span>
+ <span class="title_right">
+  <a href="/admin/aces/edit_all">修改</a>
+  </span>
+</h1>
+<table class="grid">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>用户id</th>
+      <th>展示类型</th>
+      <th>标签</th>
+      <th>组合id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @aces.each_with_index do |ace, i| %>
+      <tr>
+        <td><%= i+1 %></td>
+        <td><%= ace.user_id %></td>
+        <td><%= ace.value_type %></td>
+        <td><%= ace.tag %></td>
+        <td><%= ace.basket_id %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

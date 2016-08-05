@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <%= favicon_link_tag '/images/favicon_32.ico', type: "image/x-icon" -%>
+  <title>财说炒股大赛-实盘资金资格赛，现金炒股，收益大赛</title>
+  <%= stylesheet_link_tag "/zt/150424/stylesheets/index.css?v=0.05", "/zt/stylesheets/head_foot.css?v=0.05" -%>
+</head>
+<body class="siteIndex">
+  <%= render '/shared/analytics/gtm'%>
+  <%= render :partial => "layouts/zt_header" %>
+  
+  <div class="contest">
+    <div class="banner">
+      <p><strong>温馨提示</strong>：本次大赛已圆满结束，感谢所有用户的支持！诚邀前50名用户参加50强争霸赛。<a href="https://www.caishuo.com/zt/150520/">走进50强争霸赛>></a></p>
+    </div>
+    
+    <% cache "cs:dasai:rank", skip_digest: true do %>
+      <% if @top_basket %>
+      <div class="ranking clearfix">
+        <div class="ranking_img"></div>
+        <div class="first">
+          <%=image_tag("/zt/150424/images/pic2_3.png", alt: "Skype", class: "first_pic")%>
+          <a href="/baskets/<%=@top_basket.id%>" class="themeItem" target="_blank">
+            <%=image_tag(@top_basket.img_url(:large), alt: @top_basket.title)%>
+            <span class="shadow">
+                <span class="intro">
+                    <%= html_to_text(@top_basket.description.to_s, 42) %>
+                </span>
+            </span>
+            <div class="article clearfix">
+                <div class="circle float-left"><%= image_tag @top_basket.author.try(:avatar_url, :normal) %></div>
+                <div class="art_title float-left">
+                    <label class="at-name"></label>
+                </div>
+            </div>
+            <p><span class="p_name"><%= @top_basket.author.try(:username) %></span><span>收益<%=up_down_style(@scores[@top_basket.id], postfix: '%', with_arrow: true, operator: false)%></span></p>
+          </a>
+        </div>
+
+        <% page = 0 %>
+        <% @baskets.in_groups_of(5, false) do |group| %>
+        <ul class="<%='margin_right' if (page % 3 == 1) %>">
+          <% group.each_with_index do |basket, index|%>
+          <% score  = @scores[basket.id] %>
+          <li>
+            <a href="/baskets/<%=basket.id%>" target="_blank" title="<%=basket.try(:username)%>"><%= basket_rank(index + page*5 +2) -%><span class="name"><%= basket.try(:username) %></span><span>收益<%=up_down_style(score, postfix: '%')%></span></a>
+          </li>
+          <% end -%>
+        </ul>
+        <% page += 1 %>
+        <% end -%>
+        
+      </div>
+      <% end -%>
+    <% end -%>
+    
+    <% cache "cs:dasai:recommend", skip_digest: true do %>
+    <div class="skype">
+      <div class="exhibition"></div>
+      <div class="scroll">
+        <div class="bt-l"></div>
+          <div class="bt-r"></div>
+          <div class="list" style="margin-left:95px;">
+            <ol>
+                <li>
+              <a class="veido_a" target="_blank" href="http://v.qq.com/page/p/3/d/p0153pvly3d.html"><%=image_tag("/zt/150424/images/veido2.png")%></a>
+              <a class="con_a" target="_blank" href="https://www.caishuo.com/baskets/4545">
+                <span class="author"><img src="http://cdn9.caishuo.com/static/uploads/user/avatar/3611/small_8ad9fc080be2eb9d88c2e49db3ae3c47.jpg" alt=""><em>无肉不欢</em></span>
+                <span class="group">
+                  <span class="group_name">Ta的组合：证券+军工</span>
+                  <span>&nbsp;组合收益：<%=up_down_style(BasketRankCache.score(4545), postfix: '%')%></span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a class="veido_a" target="_blank" href="http://v.qq.com/page/t/z/i/t0153b9mfzi.html"><%=image_tag("/zt/150424/images/veido1.png")%></a>
+              <a class="con_a" target="_blank" href="https://www.caishuo.com/baskets/3649">
+                <span class="author"><img src="//cdn9.caishuo.com/static/uploads/user/avatar/8062/small_0f49d78625ce158d36fbd97ad065a701.JPG" alt=""><em>诗和远方</em></span>
+                <span class="group">
+                  <span class="group_name">Ta的组合：苹果神话</span>
+                  <span>&nbsp;组合收益：<%=up_down_style(BasketRankCache.score(3649), postfix: '%')%></span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a class="veido_a" target="_blank" href="http://v.qq.com/page/j/t/j/j0153bwrmtj.html"><%=image_tag("/zt/150424/images/veido3.png")%></a>
+              <a class="con_a" target="_blank" href="https://www.caishuo.com/baskets/4081">
+                <span class="author"><img src="//cdn8.caishuo.com/images/v3/userEditLogo.png" alt=""><em>Coolfeng</em></span>
+                <span class="group">
+                  <span class="group_name">Ta的组合：军民融合一家亲</span>
+                  <span>&nbsp;组合收益：<%=up_down_style(BasketRankCache.score(4081), postfix: '%')%></span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a class="veido_a" target="_blank" href="http://v.qq.com/page/m/7/i/m0153s9dq7i.html"><%=image_tag("/zt/150424/images/veido4.png")%></a>
+              <a class="con_a" target="_blank" href="https://www.caishuo.com/baskets/5814">
+                <span class="author"><img src="http://cdn9.caishuo.com/static/uploads/user/avatar/3205/small_e746aaa7d9462fd80be8a4d7b2b8a725.png" alt=""><em>仁者无敌</em></span>
+                <span class="group">
+                  <span class="group_name">Ta的组合：永恒的地产</span>
+                  <span>&nbsp;组合收益：<%=up_down_style(BasketRankCache.score(5814), postfix: '%')%></span>
+                </span>
+              </a>
+            </li>
+              </ol>
+          </div>
+      </div>
+    </div>
+    <% end -%>
+    <div class="rule_right foot">
+      <!-- <h5></h5> -->
+      <p>秀出你的投资策略，赢取互动大礼！</p>
+      <a href="http://skype.gmw.cn/external/skypebutton.html?skypeId=live:pengshiyan&style=bigclassic&interval=5000">现在就来告诉我吧</a>
+      <!-- <span><img src="./images/font3.png" alt=""></span> -->
+    </div>
+    <div class="prize">
+      <ul>
+        <li>此活动结束后将开启千万实盘大赛送豪礼活动，敬请期待；</li>
+        <li>本次活动所获得的实盘资金将用于下次实盘大赛操作资金,亏损部分由财说承担，盈利归选手所有；</li>
+        <li>具体以实盘大赛细则为准；</li>
+      </ul>
+    </div>
+    <div class="rule clearfix">
+      <div class="rule_left">
+        <h3></h3>
+        <ul>
+          <li>根据组合收益率高低进行排名；</li>
+          <li>单只股票仓位不得高于50%；</li>
+          <li>停牌股票以停牌前的股价计算收益；</li>
+          <li>以活动最后1个交易日收盘价计算最终收益；</li>
+          <li>收益计算区间：5月11日开盘-5月22日收盘；</li>
+          <li>连续5天没有登录的用户视为放弃比赛；</li>
+          <li>只能购买沪深A股，不能购买首日上市新股及不设涨跌幅限制的股票；</li>
+          <li>每个参赛者仅能创建1个参赛组合；</li>
+          <li>活动最终解释权归财说所有。</li>
+        </ul>
+        <a href="https://www.caishuo.com/articles/205" title＝"查看大赛详情" target="_blank">查看详情>></a>
+      </div>
+      <div class="rule_right">
+        <h3></h3>
+        <h1 id="joiners_count"><%=@members_count%></h1>
+        <h5></h5>
+        <p>秀出你的投资策略<br />赢取互动大礼！</p>
+        <a href="http://skype.gmw.cn/external/skypebutton.html?skypeId=live:pengshiyan&style=bigclassic&interval=5000">现在就来告诉我吧</a>
+        <span><%=image_tag("/zt/150424/images/font3.png", alt: "Skype")%></span>
+        <!-- <h5><img src="./images/font3.png" alt=""></h5>
+        <p>&nbsp;&nbsp;秀出你的投资策略，就有机会获得财说额外定制大礼哦！ </p>
+        <a href="https://www.caishuo.com/articles/205">查看详情>></a> -->
+      </div>
+    </div>
+    <div class="line"></div>
+  </div>
+  
+  <%= render :partial => "layouts/zt_footer" %>
+
+  <%= javascript_include_tag "/javascripts/jquery-1.11.1.min.js" %>
+
+  <script type="text/javascript">
+
+    ;(function ($) {
+        var Marquee = function(element, options) {
+        this.settings = $.extend({},  $.fn.marquee.defaults , options);
+        this.els = {
+                    wrap: element,
+                    ul: element.children(),
+                    li: element.children().children()
+                };
+            this.liOuterWidth = this.els.li.outerWidth(true);
+            this.liOuterHeight = this.els.li.outerHeight(true);
+            var wrapWidth = wrapHeight = ulWidth = ulHeight = 0;
+            var floatStyle = 'none';
+            this.lt= '';
+            this.stepSize = 0;
+        this.timer;
+            switch (this.settings.type) {
+                case 'horizontal':
+                    wrapWidth = this.settings.visible * this.liOuterWidth;
+                    wrapHeight = ulHeight = 'auto';
+                    ulWidth = 9999;
+                    floatStyle = 'left';
+                    this.stepSize = this.settings.stepLen * this.liOuterWidth;
+                    this.lt = 'left';
+                break;
+                case 'vertical':
+                    wrapWidth = ulWidth = 'auto';
+                    wrapHeight = this.settings.visible * this.liOuterHeight;
+                    ulHeight = 9999;
+                    floatStyle = 'none';
+                    
+                    this.stepSize = this.settings.stepLen * this.liOuterHeight;
+                    this.lt = 'top';
+                break;
+                
+                default:;break;
+            }
+            element.css({
+                position: 'relative',
+                width: wrapWidth,
+                height: wrapHeight,
+          overflow:'hidden'
+                
+            });
+            this.els.ul.css({
+                position: 'relative',
+                width: ulWidth,
+                height: ulHeight
+            });
+            this.els.li.css({
+                float: floatStyle
+            });
+      }
+          Marquee.prototype._refreshEls = function() {
+                 var _this = this;
+                 _this.els['ul'] = _this.els['wrap'].children();
+                 _this.els['li'] = _this.els['wrap'].children().children();
+                 return _this.els;
+            };
+        Marquee.prototype.play = function( flags ){
+         var _this = this,
+             cloneobj,
+           dir = flags ? -1:1,
+           st = _this.settings;
+         var animateCss = {};
+            if (st.type === 'horizontal') {
+                    animateCss = {left: '+='+ dir*_this.stepSize};
+                } else if (st.type === 'vertical') {
+                    animateCss = {top: '+='+ dir*_this.stepSize};
+                }
+                if( flags){
+           
+               cloneobj = _this._refreshEls().li.slice(0,_this.settings.stepLen);
+               cloneobj.clone().appendTo( _this.els.ul);
+            }else{   
+               cloneobj = _this._refreshEls().li.slice(-_this.settings.stepLen);
+               cloneobj.clone().prependTo( _this.els.ul);
+               _this.els.ul.css(_this.lt,-_this.stepSize);
+          }   
+              
+          _this._refreshEls().ul.not(':animated').animate(animateCss,st.speed,function(){
+               if(flags){_this.els.ul.css(_this.lt,0)};
+               cloneobj.remove();
+            
+          })
+        }
+        Marquee.prototype.init = function(){
+          
+          var _this = this,
+              st = _this.settings;
+          _this.settings.rightBtn.bind('click',function(){
+            _this.play( true );
+          });
+          _this.settings.leftBtn.bind('click',function(){
+            _this.play( false );
+          });
+        }
+        $.fn.marquee = function(options) {
+            return this.each(function() {
+                var mar = new Marquee($(this), options);
+                mar.init();
+            });
+        };
+        $.fn.marquee.defaults = {
+            auto: true,
+            interval: 2000,
+            speed: 500,
+            rightBtn: '',
+            leftBtn: '',
+            visible: 1,
+            stepLen: 1,
+            type: 'horizontal',
+        };
+    })(jQuery);
+      $(function() {
+          $('.list').marquee({
+              auto: true,
+              leftBtn: $('.bt-l'),
+              rightBtn: $('.bt-r'),
+              visible: 3,
+              stepLen: 2,
+              type: 'horizontal'
+          });
+      })
+  </script>
+  <script type="text/javascript">
+        $('.addFav').click(function () {
+            $(this).parent('.themeItem').toggleClass('favAdded');
+            return false;
+        });
+
+    
+    </script>
+</body>
+</html>

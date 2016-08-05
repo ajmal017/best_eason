@@ -1,0 +1,14 @@
+<dd class="otherLogin <%= "clearfix" if request.path =~ /events\/shipan/ %> <%= "addition" if controller_name == "registrations" %>">
+  <span>使用其它账号登录</span>
+  <p>
+    <a onclick="openProviderWindow('wechat')" href="#" class="weixin"><%= "微信" if defined?(show_text).nil? %></a>
+    <a onclick="openProviderWindow('qq')" href="#" class="qq"><%= "QQ" if defined?(show_text).nil? %></a>
+    <a onclick="openProviderWindow('weibo')" href="#" class="weibo"><%= "微博" if defined?(show_text).nil? %></a>
+  </p>
+</dd>
+
+<script type="text/javascript">
+  function openProviderWindow(provider){
+    window.open ('/auth/'+provider,'newwindow','height=500,width=700,top=20,left=20,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no')
+  }
+</script>

@@ -1,0 +1,23 @@
+<li basket-id="<%= basket.id %>">
+    <a href="/baskets/<%=basket.id%>" target="_blank" class="">
+        <span class="themeItem <%= special_class %>">
+            <%= image_tag basket.try(:img_url, :large) %>
+            <i class="j_follow_basket addFav"></i>
+            <span class="shadow">
+                <span class="intro">
+                    <%= html_to_text(basket.description.to_s, 42) %>
+                </span>
+            </span>
+            <div class="article clearfix">
+                <div class="circle float-left"><%= image_tag basket.author.try(:avatar_url, :normal) %></div>
+                <div class="art_title float-left">
+                    <label class="at-name"><%= basket.author.try(:username) %></label>
+                </div>
+            </div>
+        </span>
+        
+        <div class="themeTags"></div>
+        <span class="j-goto-basket name"><%= basket.title.truncate(28) rescue nil %></span>
+        <span class="j-goto-basket recieve"><%= basket_return_at_list_page(basket, order_param) %></span>
+    </a>
+</li>

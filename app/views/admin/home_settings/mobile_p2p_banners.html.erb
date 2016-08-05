@@ -1,0 +1,80 @@
+<h1 class="title">
+  <span class="title_left">手机理财推荐位设置</span>
+  <span class="title_right">
+    <%= link_to "返回首页设置", admin_home_settings_path%>
+  </span>
+</h1>
+
+<%= render partial: "sub_menus" %>
+
+<div class="box">
+  <h1 class="title">
+    <span class="title_left j_new_banner"><a href="javascript:">新建banner</a></span>
+
+    <span class="f_right">
+      拖动一列进行排序，排序完成后请点击<input type="button" value="保存排序结果" class="j_sort_banner"></input>
+    </span>
+  </h1>
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>类型</th>
+        <th>链接到</th>
+        <th width="450">图片</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody class="sortable">
+      <% @m_p2p_banners.each do |banner_upload_id, infos| %>
+        <tr data-id="<%= banner_upload_id %>">
+          <td><%= MobileP2pRecommend::TYPE.find{|type| type.last == infos[:type]}.first %></td>
+          <td><%= infos[:url] %></td>
+          <td><%= image_tag infos[:image_url], width: "300" %></td>
+          <td class="action">
+            <a href="javascript:" class="j_update_banner">修改</a>
+            <a href="javascript:" class="j_delete_banner">删除</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<script type="text/javascript">
+  $(function(){
+    $(".j_new_banner").click(function(){
+      remote_dialog("/admin/mobile_p2p_banners/new", "新建推荐位", 500, 300);
+    });
+
+    $(".j_update_banner").click(function(){
+      var banner_upload_id = $(this).parent().parent().attr("data-id");
+      remote_dialog("/admin/mobile_p2p_banners/"+banner_upload_id+"/edit", "修改推荐位", 500, 300);
+    });
+
+    $(".j_delete_banner").click(function(){
+      if (confirm("确定要删除吗？")){
+        var banner_upload_id = $(this).parent().parent().attr("data-id");
+        $.post("/admin/mobile_p2p_banners/"+banner_upload_id, {_method: "delete"}, function(){
+          window.location.reload();
+        })
+      }
+    });
+
+    $(".j_sort_banner").click(function(){
+      var upload_ids = [];
+      $(".sortable tr").each(function(){
+        upload_ids.push($(this).attr("data-id"));
+      })
+      $.post("/admin/mobile_p2p_banners/update_sort", {_method: "patch", upload_ids: upload_ids}, function(){
+        alert("保存成功！");
+      })
+    });
+    $( ".sortable" ).sortable({
+      items: "tr",
+      placeholder: "ui-state-highlight"
+    });
+
+  })
+</script>
+

@@ -1,0 +1,18 @@
+<tr id='pt_application_<%= pt_application.id %>'>
+  <td><%= link_to pt_application.user_id, [:admin, pt_application] %></td>
+  <td><%= link_to pt_application.user.username, [:admin, pt_application] %></td>
+  <td><%= link_to pt_application.mobile, [:admin, pt_application] %></td>
+  <td><%= (pt_application.current_step==1) ? "第1步" : "第2步" %></td>
+  <td><%= link_to pt_application.status_name %></td>
+  <td class="action">
+    <%= link_to '查看', [:admin, pt_application] %>
+    <%= link_to '通过', [:approve, :admin, pt_application], remote: true %>
+    <%= link_to '不通过', [:reject, :admin, pt_application], remote: true %>
+    <% if pt_application.noticed %>
+      已通知
+    <% else %>
+      <%= link_to '通知用户', [:notice, :admin, pt_application], remote: true %>
+    <% end -%>
+  </td>
+  <td><%=pt_application.created_at%></td>
+</tr>

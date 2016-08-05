@@ -1,0 +1,60 @@
+<div class="leftBox">
+	<h3>消息箱</h3>
+	<ul>
+    <li>
+      <%= link_to mention_notifications_path, class: "link1 #{'active' if action_name == 'mention'}" do %>
+        我的
+        <% if counter && counter.unread_mention_count > 0 %>
+          (<b><%= counter.unread_mention_count %></b>)
+        <% end %>
+      <% end %>
+    </li>
+    <li>
+      <!--新版未读数量都未显示-->
+      <%= link_to comment_notifications_path, class: "link2 #{'active' if action_name == 'comment'}" do %>
+        评论与赞
+        <% if counter && counter.comment_with_like > 0 %>
+          (<b><%=counter.comment_with_like%></b>)
+        <% end %>
+      <% end %>
+    </li>
+    <li>
+    <%= link_to messages_path, class: "link3 #{'active' if controller_name == 'messages'}" do %>
+      私信
+      <% if counter && counter.unread_message_count > 0 %>
+        (<b><%=counter.unread_message_count%></b>)
+      <% end %>
+    <% end %>
+    </li>
+    <li>
+    <%= link_to system_notifications_path, class: "link4 #{'active' if %w[system reminder].include?(action_name)}" do %>
+      通知
+      <% if counter && (counter.system + counter.stock_reminder + counter.position) > 0 %>
+        (<b><%= counter.system + counter.stock_reminder + counter.position %></b>)
+      <% end %>
+    <% end %>
+    </li>
+    <li>
+      <%= link_to '红包', hongbao_setting_index_path, class: 'link8' %>
+    </li>
+	</ul>
+	<h3>账号设置</h3>
+	<ul>
+		<li>
+      <%= link_to "个人资料", profile_setting_index_path, class: "link5 #{'active' if action_name == 'profile'}" %>
+    </li>
+		<li>
+      <%= link_to "头像", avatar_setting_index_path, class: "link6 #{'active' if action_name == 'avatar' || action_name == 'save_avatar'}" %>
+    </li>
+		<li>
+      <%= link_to "修改密码", password_setting_index_path, class: "link7 #{'active' if action_name == 'password'}"%>
+    </li>
+    <li>
+      <%= link_to "账号绑定", bind_setting_index_path, class: "link9 #{'active' if action_name == 'bind'}"%>
+    </li>
+		<!-- <li>
+      <%#= link_to "绑定手机号", mobile_setting_index_path, class: "link9 #{'active' if action_name == 'mobile'}"%>
+    </li> -->
+	</ul>
+  <a href="<%= hongbao_setting_index_path %>" class="hongbao"><img src="../images/ad/hongbao.jpg"></a>
+</div>

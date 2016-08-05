@@ -1,0 +1,12 @@
+<h4>热门标签</h4>
+<ul class="taglink clearfix j_filter_tag">
+    <li>
+      <a href="<%= baskets_path(search: @search.merge(tag: "all")) %>" class="themes-blue-btn" data-value="all" data-remote="true">全部</a>
+    </li>
+    
+    <% @tags.each do |tag| %>
+      <li>
+        <%= link_to tag.name, baskets_path(search: @search.merge(tag: tag.id)), "data-value" => tag.id, class: "themes-wihte-btn" %>
+      </li>
+    <% end %>
+</ul>

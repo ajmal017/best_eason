@@ -1,0 +1,20 @@
+<% if @stock.nil? %>
+  $.alert({text: "股票不存在"});
+<% else %>
+  var exist = false;
+  $(".j_stock_symbol:contains('<%=@stock.symbol%>')").each(function(){
+    if($.trim($(this).text()) == "<%=@stock.symbol%>"){
+      exist = true;
+      return false;
+    }
+  });
+
+  if(exist){
+    $.alert({text: '您选择的股票本组合里已经有了！'});
+  }else{
+    $("#j_stocks_tbody").append("<%=j render partial: '/baskets/custom_element', locals: {stock: @stock}%>");
+    WeightSlider.initSlider("<%= @stock.id %>");
+    WeightSlider.adjustStocksWeight($("#slider_<%= @stock.id%>"));
+    StockChart.draw();
+  }
+<% end %>

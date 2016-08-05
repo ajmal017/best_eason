@@ -1,0 +1,13 @@
+$(".combines .focususer:eq(0) .loadMore").remove();
+
+<% if @followed_users.total_entries.zero? %>
+  $(".combines .focususer:eq(0)").append('<div class="empty">暂无关注</div>');
+<% end %>
+
+<% @followed_users.each do |user| %>
+  $(".combines .focususer:eq(0)").append("<%= j render partial: "profiles/profile/user_item", locals: {user: user} %>");
+<% end %>
+
+<% if @followed_users.current_page < @followed_users.total_pages%>
+  $(".combines .focususer:eq(0)").append('<%= j render partial: "profiles/profile/load_more" %>').attr("next_page", <%= @followed_users.next_page %>);
+<% end %>

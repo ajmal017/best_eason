@@ -1,0 +1,48 @@
+<% @page_title = "下载客户端"%>
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.download.css" -%>
+  <%= javascript_include_tag  "base", "/javascripts/jquery.fullPage.min.js" %>
+<% end %>
+
+<% if @click_all %>
+
+  <a href="<%= @link %>" data-ga-category="MO_APP" data-ga-action="Download" data-ga-label="<%= @ga_label %>" target="_blank">
+    <em class="section page1">
+      <i></i>
+      <span></span>
+    </em>
+    <em class="section page2">
+      <i></i>
+      <span></span>
+    </em>
+    <em class="section page3">
+      <i></i>
+    </em>
+  </a>
+
+<% else %>
+
+<section>
+  <% (1..3).to_a.each do |i| %>
+    <article class="section page<%= i %>">
+      <a class="down_and j_event_tracking" href="<%= @link %>" data-ga-category="MO_APP" data-ga-action="Download" data-ga-label="<%= @ga_label %>" target="_blank" id="app_down_btn"></a>
+      <span id="down"></span>
+    </article>
+  <% end %>
+</section>
+
+<% end %>
+
+<%= content_for :script do %>
+<script type="text/javascript">
+  $('<%= @click_all ? "a" : "section" %>').fullpage({
+    css3: true,
+    anchors: ['page1', 'page2', 'page3']
+  });
+  
+  $(function(){
+    addTrackEvent('MO_APP','View','<%= channel %>');
+  })
+</script>
+
+<% end %>

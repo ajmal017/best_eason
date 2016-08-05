@@ -1,0 +1,110 @@
+<div class="demo_left">
+  <h2>Demo:</h2>
+  <div class="demo_box">
+    <div class="page_info" style="margin-left: 1%;">当前： <b>1&nbsp;-&nbsp;20</b> / 总数： <b>8326</b></div>
+    <table class="grid">
+      <thead>
+        <tr>
+          <th><a href="/admin/base_stocks?q%5Bs%5D=symbol+asc" class="sort_link">股票代码</a></th>
+          <th><a href="/admin/base_stocks?q%5Bs%5D=ib_symbol+asc" class="sort_link">IB股票代码</a></th>
+          <th><a href="/admin/base_stocks?q%5Bs%5D=name+asc" class="sort_link">名称</a></th>
+          <th>交易所</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a title="查看详情" target="_blank" href="/stocks/8331">NEWR</a></td>
+          <td>NEWR</td>
+          <td class="align_left">New Relic</td>
+          <td>NYSE</td>
+          <td class="action">
+            <a href="/admin/base_stocks/8331/setting">logo</a>
+          </td>
+        </tr>
+        <tr>
+          <td><a title="查看详情" target="_blank" href="/stocks/8330">NEFF</a></td>
+          <td>NEFF</td>
+          <td class="align_left">Neff Corporation</td>
+          <td>NYSE</td>
+          <td class="action">
+            <a href="/admin/base_stocks/8330/setting">logo</a>
+          </td>
+        </tr>
+        <tr>
+          <td><a title="查看详情" target="_blank" href="/stocks/8329">MPG</a></td>
+          <td>MPG</td>
+          <td class="align_left">Metaldyne Performance Group</td>
+          <td>NYSE</td>
+          <td class="action">
+            <a href="/admin/base_stocks/8329/setting">logo</a>
+          </td>
+        </tr>
+        <tr>
+          <td><a title="查看详情" target="_blank" href="/stocks/8324">GTT</a></td>
+          <td>GTT</td>
+          <td class="align_left">Global Telecom &amp; Technolgy I</td>
+          <td>NYSE</td>
+          <td class="action">
+            <a href="/admin/base_stocks/8324/setting">logo</a>
+          </td>
+        </tr>
+        <tr>
+          <td><a title="查看详情" target="_blank" href="/stocks/8323">DIAX</a></td>
+          <td>DIAX</td>
+          <td class="align_left">Nuveen Dow 30sm Dynamic Over</td>
+          <td>NYSE</td>
+          <td class="action">
+            <a href="/admin/base_stocks/8323/setting">logo</a>
+          </td>
+        </tr>
+        <tr>
+          <td><a title="查看详情" target="_blank" href="/stocks/8322">AVOL</a></td>
+          <td>AVOL</td>
+          <td class="align_left">Avolon Holdings Limited</td>
+          <td>NYSE</td>
+          <td class="action">
+            <a href="/admin/base_stocks/8322/setting">logo</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination"><span class="previous_page disabled">上一页</span> <em class="current">1</em> <a href="/admin/base_stocks?page=2" rel="next">2</a> <a href="/admin/base_stocks?page=3">3</a> <a href="/admin/base_stocks?page=4">4</a> <a href="/admin/base_stocks?page=5">5</a> <a href="/admin/base_stocks?page=6">6</a> <a href="/admin/base_stocks?page=7">7</a> <a href="/admin/base_stocks?page=8">8</a> <a href="/admin/base_stocks?page=9">9</a> <span class="gap">…</span> <a href="/admin/base_stocks?page=416">416</a> <a href="/admin/base_stocks?page=417">417</a> <a href="/admin/base_stocks?page=2" rel="next" class="next_page">下一页</a></div>
+  </div>
+  <br/><br/><br/><br/>
+  <h4>当数据为空时候:</h4><br/>
+  <div class="demo_box">
+    <table class="grid">
+      <thead>
+        <tr>
+          <th><a href="/admin/base_stocks?q%5Bs%5D=symbol+asc" class="sort_link">股票代码</a></th>
+          <th><a href="/admin/base_stocks?q%5Bs%5D=ib_symbol+asc" class="sort_link">IB股票代码</a></th>
+          <th><a href="/admin/base_stocks?q%5Bs%5D=name+asc" class="sort_link">名称</a></th>
+          <th>交易所</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="5">暂无数据</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="demo_right">
+  <h2>代码:</h2>
+  <%== code(:page_info, :erb) %>
+  <%== code(:grid, :erb) %>
+  <h4>当数据为空时候:</h4><br/>
+  <%== code(:blank_grid, :erb) %>
+  <br/>
+  <h2 class="title">使用说明:</h2>
+  <p>
+    1. page_info(@collection), 显示当前范围和总数<br/><br/>
+    2. grid, 加载数据table的样式<br/><br/>
+    3. align_left, 左对齐<br/><br/>
+    4. align_right, 右对齐<br/><br/>
+    5. action, 默认链接均为灰色，如果td添加该class，则置为蓝色，一般用在操作列上 <br/><br/>
+  </p>
+</div>

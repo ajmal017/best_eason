@@ -1,0 +1,28 @@
+<% if !@trading_account.is_a?(TradingAccountPassword) %>
+<tr>
+  <td class="text-left noline">可用现金</td>
+  <td></td>
+  <td class="noline">
+    <%= number_to_currency(changes[:total_cash], unit: changes[:currency_unit], format:"%u%n", negative_format: "%u-%n") %>
+  </td>
+  <td></td>
+  <td></td>
+</tr>
+<% else %>
+<tr>
+  <td class="text-left noline" colspan="5">
+    可用现金：<%= number_to_currency(changes[:usable_cash], unit: changes[:currency_unit], format:"%u%n", negative_format: "%u-%n") %>
+  </td>
+</tr>
+<tr>
+  <td class="text-left noline" colspan="5">
+    冻结资金：<%= number_to_currency(changes[:frozen_cash], unit: changes[:currency_unit], format:"%u%n", negative_format: "%u-%n") %>
+  </td>
+</tr>
+<% end %>
+<tr>
+  <td class="text-left noline" colspan="5">
+    账户净值：<%= number_to_currency(changes[:total_property], unit: changes[:currency_unit], format:"%u%n", negative_format: "%u-%n") %>
+  </td>
+</tr>
+

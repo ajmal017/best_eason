@@ -1,0 +1,6 @@
+<% if @push_log.valid? %>
+  alert("Push成功！");
+  window.location.reload();
+<% else %>
+  alert("<%= @push_log.errors.messages.values.join(", ") %>");
+<% end %>

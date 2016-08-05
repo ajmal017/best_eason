@@ -1,0 +1,6 @@
+<div class="box">
+  <%= search_form_for search, url: admin_reconcile_request_lists_path, class: "form-inline", role: "form" do |f| %>
+    <%= f.text_field :broker_user_id_cont, :placeholder => "broker账号", class: "form-control" %>
+    <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+  <% end %>
+</div>

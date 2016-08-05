@@ -1,0 +1,70 @@
+<a name="Combination"></a>
+<div class="stocks_portfolio" id="stock-portfolio">
+  <h3>个股组合<a href="javascript:" class="rightbar <%= user_signed_in? ? "j_adjust_records" : "j-login-popup" %>">调仓记录</a></h3>
+  <div class="tbdiv">
+    <table class="themeStocks noflag baseketPie">
+        <thead>
+            <tr>
+                <th width="70">比重</th>
+                <th width="90">代码</th>
+                <th width="110">公司名称</th>
+                <th>当前价</th>
+                <th width="80">1月回报</th>
+                <th width="80">1年回报</th>
+                <th width="80">P/E值</th>
+                <th width="80">市值(亿)</th>
+                <th width="120">入选理由</th>
+            </tr>
+        </thead>
+        <% @grouped_basket_stocks.each do |sector_name, basket_stocks| %>
+        <tbody>
+            <tr>
+              <th colspan="9" class="sector">
+                <div class="sectorPie"></div><%= sector_name %> (<span><%= @sector_percents[sector_name] %>%</span>)
+              </th>
+            </tr>
+            <% basket_stocks.each do |basket_stock| %>
+              <tr>
+                  <td><%= basket_stock.weight_percent %>%</td>
+                  <td>
+                    <a href="<%= stock_path(basket_stock.stock) %>" class=" flag <%= basket_stock.market_area %> j_tip j_bop" target="_blank" data-sid="<%= basket_stock.stock_id %>"><%= basket_stock.symbol %></a>
+                  </td>
+                  <td>
+                    <a href="<%= stock_path(basket_stock.stock) %>" class="limitLength j_tip j_bop" target="_blank" data-sid="<%= basket_stock.stock_id %>"><%= basket_stock.stock.truncated_com_name %></a>
+                  </td>
+                  <td>
+                    <%= number_to_currency(basket_stock.realtime_price, unit: basket_stock.currency_unit, format:"%u%n") %>
+                    <%= stock_change_percent_style(basket_stock.stock, postfix: "%") %>
+                  </td>
+                  <td>
+                    <%= up_down_style(basket_stock.stock.try(:one_month_return), postfix: "%") %>
+                  </td>
+                  <td>
+                    <%= up_down_style(basket_stock.stock.try(:one_year_return), postfix: "%") %>
+                  </td>
+                  <td>
+                    <%= basket_stock.stock.adj_pe_ratio %>
+                  </td>
+                  <td>
+                    <%= basket_stock.stock.market_capitalization_by_c_yi_unit %>
+                  </td>
+                  <td>
+                    <div class="add_reason" title="<%= basket_stock.notes %>">
+                      <%= basket_stock.notes %>
+                    </div>
+                  </td>
+              </tr>
+            <% end %>
+        </tbody>
+        <% end %>
+        <tfoot>
+            <tr>
+                <td><%= @cash_percent %>%</td>
+                <td align="center">现金</td>
+                <td colspan="2"></td>
+                <td colspan="5"><div class="scrollBar"><i><%= @cash_percent %>%</i></div></td>
+            </tr>
+        </tfoot>
+    </table>
+  </div>
+</div>

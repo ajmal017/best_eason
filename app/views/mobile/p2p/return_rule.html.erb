@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>炒股宝玩法</title>
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1, user-scalable=no">
+  <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.global.css", "/stylesheets/mobile/mo.intro.css" %>
+</head>
+<body>
+<div id="PageHeader">
+  例：沪深300最新是3522.82点，近1个月涨幅30.0%。如果1个月前您买了看涨，您将获得的年化收益是：
+</div>
+<div id="IntroChart"></div>
+<section>
+  <h1>怎么计算浮动收益回报</h1>
+  <p>
+    浮动收益回报＝（结束日的指数收盘价－起息日前一天指数收盘价）／起息日前一天的指数收盘价
+  </p>
+</section>
+<section>
+  <h1>沪深300 - 买涨</h1>
+  <p>
+    看涨沪深300，产品保底收益10%，浮动收益挂钩沪深300指数，投资期间，沪深300涨幅越大，浮动收益越大，最高可到30%。
+  </p>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>指数涨幅(%)</th>
+          <th>基本收益</th>
+          <th>浮动收益</th>
+          <th>总年化收益</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>x &gt;= 30%</td>
+          <td>10%</td>
+          <td class="plus">30%</td>
+          <td class="plus">(10 + 30)%</td>
+        </tr>
+        <tr>
+          <td>30% &gt; x &gt;= 0%</td>
+          <td>10%</td>
+          <td class="plus">x%</td>
+          <td>(10 + x)%</td>
+        </tr>
+        <tr>
+          <td>指数下跌</td>
+          <td>10%</td>
+          <td class="plus">0%</td>
+          <td>(10 + 0)%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section>
+  <h1>沪深300 - 买跌</h1>
+  <p>
+    看跌沪深300，产品保底收益10%，浮动收益挂钩沪深300指数，投资期间，沪深300跌幅越大，浮动收益越大，最高可到30%。
+  </p>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>指数跌幅(%)</th>
+          <th>基本收益</th>
+          <th>浮动收益</th>
+          <th>总年化收益</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>x &gt;= 30%</td>
+          <td>10%</td>
+          <td class="plus">30%</td>
+          <td class="plus">(10 + 30)%</td>
+        </tr>
+        <tr>
+          <td>30% &gt; x &gt;= 0%</td>
+          <td>10%</td>
+          <td class="plus">x%</td>
+          <td>(10 + x)%</td>
+        </tr>
+        <tr>
+          <td>指数上涨</td>
+          <td>10%</td>
+          <td class="plus">0%</td>
+          <td>(10 + 0)%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</body>
+</html>

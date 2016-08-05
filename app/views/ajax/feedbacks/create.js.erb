@@ -1,0 +1,8 @@
+<% if @feedback.valid? %>
+  $("#feedback_content").val("");
+  $("#feedback_contact_way").val("");
+  $("#feedback_div").hide();
+  $(".thanks_feedback").show();
+<% else %>
+  CaishuoAlert("请填写反馈内容或者联系方式！");
+<% end %>

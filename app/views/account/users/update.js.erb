@@ -1,0 +1,7 @@
+<% if @ret %>
+  CaishuoAlert('更新成功');
+  $('input:password').val('');
+  setTimeout(function(){window.location.reload();}, 2000);
+<% else %>
+  CaishuoAlert('更新失败');
+<% end %>

@@ -1,0 +1,164 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require jquery-ui
+ *= require admin/base
+ *= require admin/dialog
+ *= require simple_form
+ *= require jquery.Jcrop
+ *= require admin/demo
+ *= require select2.min
+ */
+
+
+.form-title{
+   display:inline-block !important; 
+   width: 140px;
+   text-align: right;
+}
+
+.list-show{
+  line-height: 20px;
+}
+
+.form-content{
+  margin-left: 10px;
+  padding: 0;
+}
+
+/* 上传图片图层css */
+#real_avatar {
+  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  width: 0px;
+  height: 0px;
+  filter: alpha(opacity=0);
+}
+
+#FloatWindow { 
+  position: fixed;
+  background: rgba(0,0,0,.7); 
+  top:0; 
+  bottom: 0; 
+  left: 0;
+  right: 0; 
+  z-index: 1000; 
+  outline: 0; 
+  display: none;
+  overflow: auto;
+}
+
+#FloatWindow .FloatContent {
+  position: relative; 
+  margin:120px auto; 
+  width:500px; 
+  min-height: 200px;
+  background: white; 
+  display: none;
+}
+
+#FloatWindow .themeFile {
+  width: 650px;
+}
+
+#FloatWindow .width640 {
+  width: 640px;
+}
+
+#FloatWindow .width700 {
+  width: 700px;
+}
+
+#FloatWindow .FloatContent .header {
+  padding: 30px 30px 20px;
+}
+
+#FloatWindow .FloatContent .header h2 {
+  padding:0; margin:0; font-size: 16px;
+}
+
+#FloatWindow .FloatContent .textbody {
+  padding:30px;
+  border:1px solid #e5e5e5; 
+  background: #fdfdfd; 
+  border-style: solid none;
+}
+
+#FloatWindow .FloatContent .textbody p {
+  font-size: 14px;
+}
+
+#FloatWindow .FloatContent .footer {
+  padding: 30px 0;
+  text-align: center;
+}
+
+i.close-window {
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  font-style:normal;
+  border-radius: 20px;
+  box-shadow: 0 0 2px 0 #ccc;
+  position: absolute;
+  right: 9px;
+  top: 10px;
+  cursor: pointer;
+  background: #ccc url(/images/v2/delx.png) no-repeat 50% 50%;
+  background-size: 12px;
+}
+
+i.close-window:hover {
+  background: #666666 url(/images/v2/delx.png) no-repeat 50% 50%;
+  background-size: 12px;
+}
+
+i.iconQuestion {
+  font: 12px/16px normal "Helvetica Neue";
+  cursor: help;
+  display: inline-block;
+  background: #424458;
+  height: 16px; 
+  width: 16px; 
+  border-radius: 16px;
+  color: white;
+  text-align: center;
+}
+
+i.iconError {
+  height: 14px;
+  width: 14px;
+  background: #e4462e url(../../images/v2/delx.png) no-repeat 50% 50%;
+  background-size: 10px;
+  border-radius: 7px;
+  display: inline-block;
+  vertical-align: text-bottom;
+  box-shadow: 0 0 1px 0 #e4462e;
+}
+
+img.emo {
+  border: none;
+  display: inline-block;
+  vertical-align: text-bottom;
+  font-size: 22px;
+  height: 1em;
+  width: 1em;
+  margin: 0 1px;
+}
+
+mark {
+  background-color: #FFFFFF;
+}
+
+.float_left{
+  float: left;
+}

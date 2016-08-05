@@ -1,0 +1,44 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%= link_to "修改新闻", [:edit, :admin, @announcement] %>
+    <a href="/admin/es/announcements">返回列表</a>
+  </span>
+</h1>
+
+<table class="grid_form">
+  <tbody>
+    <tr>
+      <td class="field">id:</td>
+      <td>
+        <%= @announcement.id %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">来源:</td>
+      <td>
+        <%= @announcement.source %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">标题:</td>
+      <td>
+        <%= @announcement.title %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">URL:</td>
+      <td>
+        <%= link_to @announcement.url, @announcement.url, target: "_blank" %>
+      </td>
+    </tr>
+    <tr>
+      <td class="field">内容:</td>
+      <td>
+        <%= simple_format @announcement.body %>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+

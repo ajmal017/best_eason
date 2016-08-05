@@ -1,0 +1,69 @@
+<div class="content clearfix chart_data">
+  <div class="float-left" id="chart_div">
+    <div class="clearfix">
+      <ol class="asSwitchBtn" id="chart_type_btns" style="margin-bottom:13px;">
+        <li onclick="StockShow.showQuotePricesChartDiv();" class="active">分时图</li>
+        <li onclick="javascript:StockShow.showKlinesChartDiv('day');">日K</li>
+        <li onclick="javascript:StockShow.showKlinesChartDiv('week');">周K</li>
+        <li onclick="javascript:StockShow.showKlinesChartDiv('month');">月K</li>
+      </ol>
+
+      <ol class="asSwitchBtn float-right" id="time_period">
+        <li data="<%= stock_start_trade_timestamp(@stock.market_area)  %>" class="active">今日</li>
+        <li data="<%= (Exchange::Base.previous_5_workday(@stock.market_area).to_time+8.hours).to_i*1000 %>">5日</a>
+        <li data="<%= timestamp_for_chart(@stock.market_area, 1.month) %>">1月</li>
+        <li data="<%= timestamp_for_chart(@stock.market_area, 3.month) %>">3月</li>
+        <li data="<%= timestamp_for_chart(@stock.market_area, 6.month) %>">6月</li>
+        <li data="<%= to_js_timestamp(Time.now.beginning_of_year) %>">今年</li>
+        <li data="<%= timestamp_for_chart(@stock.market_area, 1.year) %>">1年</li>
+        <li data="<%= timestamp_for_chart(@stock.market_area, 3.year) %>">3年</li>
+        <li data="<%= timestamp_for_chart(@stock.market_area, 5.year) %>">5年</li>
+      </ol>
+    </div>
+    <!-- 分时 -->
+    <div>
+      <div id="minutes_chart_info" style="position:absolute;z-index:10;margin-top:4px;"></div>
+      <div id="stock_chart" style="width:721px;height:351px;" class="barloading"></div>
+    </div>
+    <!-- k线 -->
+    <div style="position:relative;display:none;">
+      <div id="kline_mainfo" style="display:none;position:absolute;z-index:10;margin-top:4px;margin-left:6px;">
+        MA5：<span style="color:#D2691E;"></span> MA10：<span style="color:#6A5ACD;"></span> MA20：<span style="color:#4daf7b;"></span> MA30：<span style="color:#D02090;"></span>
+      </div>
+      <div id="kline_chart" style="width:720px;height:351px;" class="barloading"></div>
+    </div>
+  </div>
+  <div class="float-right" id="StockInfoSwitch">
+    <ol class="asSwitchBtn">
+      <li class="active">基本面</li>
+      <% if @stock.is_cn? && !@is_index %>
+        <li>逐笔</li>
+      <% end %>
+    </ol>
+    
+    <ul id="StockBasicInfo" class="dataList">
+      <% unless @is_index %>
+        <li><span>买一：</span><%= pretty_bid_offer(@stock.bid, @stock.previous_close, "rt_bid") %>  <em id="rt_bid_size"><%= pretty_stock_volume(@stock.bid_size, @stock) %><%= @stock.pretty_volume_unit %></em></li>
+        <li><span>卖一：</span><%= pretty_bid_offer(@stock.ask, @stock.previous_close, "rt_offer") %> <em id="rt_offer_size"><%= pretty_stock_volume(@stock.ask_size, @stock) %><%= @stock.pretty_volume_unit %></em></li>
+      <% end %>
+      <li><span>今日最低：</span><em id="day_low"><%= format_number(@stock.low) %></em></li>
+      <li><span>今日最高：</span><em id="day_high"><%= format_number(@stock.high) %></em></li>
+      <li><span>52周最低：</span><em id="year_low"><%= format_number(@stock.low52_weeks) %></em></li>
+      <li><span>52周最高：</span><em id="year_high"><%= format_number(@stock.high52_weeks) %></em></li>
+      <li><span>今开：</span><%= format_number(@stock.open) %></li>
+      <li><span>昨收：</span><%= format_number(@stock.previous_close) %></li>
+      <li><span>成交量：</span><%= pretty_stock_volume(@stock.lastest_volume, @stock) %><%= @stock.pretty_volume_unit %></li>
+      <li><span>30日均量：</span><%= pretty_stock_volume(@stock.thirty_days_volume_avg, @stock) %><%= @stock.pretty_volume_unit %></li>
+      <% unless @is_index %>
+        <li><span>市值：</span><%= humanlize_capitalization(@stock.adj_market_capitalization) %></li>
+        <li><span>P/E市盈率：</span><%= @stock.adj_pe_ratio %></li>
+      <% end %>
+    </ul>
+    
+    <ul id="StockTradeInfo" class="dataList">
+      
+    
+    </ul>
+
+  </div>
+</div>

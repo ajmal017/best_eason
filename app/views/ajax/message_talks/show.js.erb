@@ -1,0 +1,3 @@
+if($('.j_find_more').attr('data-id') == <%= params[:last_msg_id] %>){
+  $('.msgBox .findMore').replaceWith("<%=j render partial: 'messages/message_collect', locals: {messages: @messages, talk: @message_talk}%>");
+}

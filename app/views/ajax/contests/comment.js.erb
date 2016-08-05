@@ -1,0 +1,12 @@
+<% if user_signed_in? && @comment && @comment.valid? %>
+  $("#comment_tx").val("");
+  $(".comments").prepend("<%= j render partial: '/shared/comments/comment_item', locals: {comment: @comment} %>");
+  Comment.incrementCommentTotal();
+<% elsif !user_signed_in? %>
+  CaishuoAlert('请登录后评论！');
+<% else %>
+  CaishuoAlert('<%= @comment.errors.messages.values.join(", ") %>！');
+<% end %>
+Comment.enableCommentButton();
+
+initBubbleBox();

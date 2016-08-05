@@ -1,0 +1,25 @@
+<div class="float-left install_left">
+  <h2>消息</h2>
+  <div class="news">
+    <!--a href="#">交易通知</a-->
+    <a href="/notifications/system" class="<%='active' if controller_name == 'notifications' and action_name == 'system'%>">
+      系统通知
+      <% if @unread_system_notify_count > 0 %> 
+        （<em class="plus"><%= @unread_system_notify_count %></em>）
+      <% end %>
+    </a>
+    <a href="/notifications/comment" class="<%='active' if controller_name == 'notifications' and action_name == 'comment'%>">
+      评论与赞
+      <% if @unread_comment_notify_count > 0 %>
+        （<em class="plus"><%= @unread_comment_notify_count %></em>）
+      <% end %>
+    </a>
+  </div>
+  <div class="border"></div>
+  <h2>设置</h2>
+  <div class="news">
+    <a href="/setting/password" class="<%='active' if controller_name == 'setting' and action_name == 'password'%>">修改密码</a>
+    <a href="/setting" class="<%='active' if controller_name == 'setting' and action_name == 'index'%>">个人资料</a>
+    <!--a href="#">偏好设置</a-->
+  </div>
+</div>

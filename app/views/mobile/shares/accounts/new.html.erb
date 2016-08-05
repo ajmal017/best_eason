@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>绑定<%=@broker.cname%>账号</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <%= stylesheet_link_tag "/stylesheets/mobile/mo.bindaccount.css" %>
+  <%= javascript_include_tag "jquery", "jquery_ujs", "/javascripts/mo.caishuo.bridge.min.js" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <%= render '/shared/analytics/gtm'%>
+  <div id="errorTip"></div>
+  <div class="logo">
+    <%=image_tag @broker.logo_url(:large) %>
+  </div>
+    <%= form_tag(mobile_link("/mobile/shares/brokers/#{@broker.id}/accounts"), method: "post", remote: true) do %>
+    <ul class="account">
+      <li>
+        <input placeholder="资金账号" type="text" name="trading_account[broker_no]" id="j_broker_no_field" value="<%= params[:broker_no]%>"/>
+        <span class="empty"></span>
+      </li>
+      <li>
+        <input placeholder="密码" type="password" name="trading_account[password]" id="j_password_field"/>
+        <span class="empty"></span>
+      </li>
+      <% if @broker.need_communication_password? %>
+      <li>
+        <input placeholder="通讯密码" type="password" name="trading_account[safety_info]"/>
+        <span class="empty"></span>
+      </li>
+      <% end %>
+    </ul>
+    <dl class="confirm">
+        <dt>您的数据已加密。密码仅用于券商公司验证身份，财说不会保存。</dt>
+        <dd class="j_submit_form">同意协议并关联</dd>
+        <dt class="agreement">我已阅读并同意<a href="<%= mobile_link('/mobile/help/agreement') %>">《财说证券交易协议》</a></dt>
+    </dl>
+    <% end %>
+</body>
+    <script type="text/javascript">
+        var allowSubmit = true;
+        $('.j_submit_form').click(function(){
+          if($("#j_broker_no_field").val().length == 0 || $("#j_password_field").val().length == 0){
+            $("#errorTip").text("资金账号和密码不能为空").show();
+            return false;
+          }else if(allowSubmit){
+            allowSubmit = false;
+            $("form").submit();
+            // 防止表单重复提交,4秒后可以提交
+            setTimeout(function(){window.allowSubmit = true}, 4000)
+          }
+        })
+        $('.account input').bind('keyup blur focus input', function(){
+            $("#errorTip").text("").hide();
+            $(this).siblings('span.empty').toggle(this.value!='');
+        });
+        $('.account li span.empty').click(function(){
+            $(this).hide().siblings('input').val('').focus();
+        });
+        
+        Caishuo.connect('bindaccount');
+    </script>
+</html>

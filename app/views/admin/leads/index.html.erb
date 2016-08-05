@@ -1,0 +1,114 @@
+<h1 class="title">
+  <span class="title_left"><%=@page_title%></span>
+  <span class="title_right">
+    <%=link_to '添加受邀请人', new_admin_lead_path, target: '_blank' %>
+    <a href="javascript:void(0);" class="j_multi_set">批量设置邀请码</a>
+    <a href="javascript:void(0);" class="j_multi_send_email">批量发送邮件</a>
+  </span>
+</h1>
+
+<div class="box">
+  <%= form_tag(import_admin_leads_path, role: "form", multipart: true) do %>
+      <label>批量导入:</label> <%= file_field_tag 'file' %>
+    <%= submit_tag "导入", class: "btn btn-default" %>
+  <% end %>
+</div>
+
+<div class="box">
+  <%= link_to '全部', admin_leads_path, class: (params[:q].blank? ? "current" : nil) %>
+  <%= link_to '来自邀请码申请', admin_leads_path(:q => {:landing_id_not_eq => 'null'}), class: (params[:q] && params[:q][:landing_id_not_eq].present? ? "current" : nil) %>
+  <%= link_to '已发邮件', admin_leads_path(:q => {:invited_eq => true}), class: (params[:q] && params[:q][:invited_eq].present? ? "current" : nil) %>
+  <%= link_to '未发邮件', admin_leads_path(:q => {:invited_not_eq => true}), class: (params[:q] && params[:q][:invited_not_eq].present? ? "current" : nil) %>
+  <%= search_form_for @q, url: admin_leads_path, class: "form-inline", role: "form" do |f| %>
+    <%= f.text_field :email_cont, :placeholder => "email", class: "form-control" %>
+    <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+  <% end %>
+</div>
+
+<%= page_info(@leads) %>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th><input type="checkbox" />全部</th>
+      <th>ID</th>
+      <th>姓名</th>
+      <th>申码时间</th>
+      <th>发送时间</th>
+      <th>电子邮箱</th>
+      <th>财说ID</th>
+      <th>财说用户名</th>
+      <th>邀请码</th>
+      <th>邀请邮件</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @leads.each do |lead| %>
+    <tr>
+    <td data="<%=lead.id%>"><input type="checkbox"/></td>
+    <td><%= lead.id%></td>
+    <td><%= lead.username %></td>
+    <td><%= lead.landing.try(:created_at) %></td>
+    <td><%= lead.send_at %></td>
+    <td><%= lead.email %></td>
+    <td><%= lead.user_id %></td>
+    <td><%= lead.user.try(:username) %></td>
+    <td><%= lead.invitation_codes.map(&:code).join(',') rescue '' %></td>
+    <td><%= lead.invited ? '已经发送' : ''%></td>
+    <td class="action">
+      <%=link_to '详情', admin_lead_path(lead) %>
+      <%=link_to '邀请码', edit_admin_lead_path(lead)%>
+      <%=link_to '编辑', edit_info_admin_lead_path(lead) %>
+      <%=link_to '发送邮件', send_email_admin_lead_path(lead), method: :post, remote: true %>
+      <%=link_to '删除', admin_lead_path(lead), method: :delete, data: {confirm: '你确认删除吗？'}%>
+    </td>
+  </tr>
+<% end %>
+  </tbody>
+</table>
+<%= will_paginate @leads %>
+
+<script>
+  $(function(){
+    $(":checkbox:first").bind('click', function(){
+      if($(this).is(":checked")){
+        $(":checkbox").prop('checked', true);
+      }else{
+        $(":checkbox").prop('checked', false);
+      }
+    }) 
+
+    $(".j_multi_set").bind('click', function(){
+      var _lead_ids = $(":checkbox:checked").parent('td').map(function(){return $(this).attr('data')})
+      if(_lead_ids.length <= 0){
+        alert('请选择受邀请人');
+        return false;
+      }
+      
+      $.get('/admin/leads/multi_set?lead_ids=' + _lead_ids.get().join(), function(datas){
+        if(datas){
+          alert('设置成功');
+          window.location.reload();
+        }
+      })
+    })
+
+    $(".j_multi_send_email").bind('click', function(){
+      var _lead_ids = $(":checkbox:checked").parent('td').map(function(){return $(this).attr('data')})
+      if(_lead_ids.length <= 0){
+        alert('请选择受邀请人');
+        return false;
+      }
+
+      $(this).unbind('click');
+
+      $.get('/admin/leads/multi_send?lead_ids=' + _lead_ids.get().join(), function(datas){
+        if(datas){
+          alert('批量发送成功');
+        }
+        window.location.reload();
+      })
+    })
+  })
+</script>

@@ -1,0 +1,88 @@
+<div class="container">
+	<%=form_for current_user, url: mobile_link(info_mobile_account_registrations_path) do |f| %>
+	<div class="logo"></div>
+	<div id="errorTip">&nbsp;</div>
+	<ul class="account">
+	  <li>
+	    <%= f.text_field :username, id: :nickname, placeholder: '昵称' %>
+	    <span class="empty" style="display: none;"></span>
+	  </li>
+	  <li class="emleft">
+	    <em>性别：</em>
+	    <%= f.collection_radio_buttons :gender, User::GENDERS, :first, :last %>
+	  </li>
+	  <li class="emleft"><em>所在地：</em>
+	    <%= f.select :province, [["选择省份", ""]] + @provinces.map { |p| [p.name, p.code] } %>
+	    <%= f.select :city, @user_cities.map { |c| [c.name, c.code]} %>
+	  </li>
+	</ul>
+	<dl class="confirm">
+	  <dd onclick="checkForm()">完成注册</dd>
+	</dl>
+	<% end %>
+</div>
+<% content_for :script do %>
+<script type="text/javascript">
+  <% if @message %>
+    showError('<%= @message %>', 1800);
+  <% end %>
+  $('.account input').bind('keyup blur focus input', function(){
+    $(this).siblings('span.empty').toggle(this.value!='');
+  });
+  $('.account li span.empty').click(function(){
+    $(this).hide().siblings('input').val('').focus();
+  });
+ $("#user_province").change(function(){
+  $.ajax({
+    url: '<%= mobile_link "/mobile/account/registrations/fetch_cities.json?callback=?" %>',
+    data:{
+      province_id: $(this).val(),
+    },
+    dataType: 'json',
+    jsonp:'callback', 
+    success: function(data){
+      var str = ''
+      for(var index in data.cities){
+        str = str.concat('<option value="'+data.cities[index]+'">'+data.cities[index]+'</option>')
+      }
+      $('#user_city').empty();
+      $('#user_city').html(str);
+    }
+  });
+ });
+
+  String.prototype.strlen = function(){
+    var len = 0;
+    for (var i=0; i<this.length; i++) {
+      var c = this.charCodeAt(i);
+      if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {
+        len++;
+      }else {
+        len+=2;
+      }
+    }
+    return len;
+  }
+  function showError(txt,delay){
+    $('#errorTip').text(txt).clearQueue().stop().fadeTo(500,1);
+    if (delay>0){
+      window.setTimeout(function(){
+        $('#errorTip').clearQueue().stop().fadeTo(500,0);
+      },delay);
+    }
+  }
+  function checkForm(){
+    var nickname = $('#nickname')[0].value;
+    if (!nickname.length){
+      showError('请输入昵称', 1800);
+    }else if(nickname.strlen()<4 || nickname.strlen()>30 ||
+      /[^\w\u4e00-\u9fa5\-]/g.test(nickname) || /^\d*$/.test(nickname)){
+      showError('昵称长度4-30个字符', 1800);
+    }else if (!$('input[name="user[gender]"]:checked').length){
+      showError('请选择您的性别',1800);
+    }else{
+      $('form').submit();
+    }
+  }
+</script>
+<% end %>

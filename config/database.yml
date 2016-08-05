@@ -1,0 +1,48 @@
+development:
+  adapter: mysql2
+  encoding: utf8mb4
+  reconnect: true
+  # database: caishuo
+  database: caishuo_test_8
+  database: caishuo_test_151111
+  pool: 5
+  username: caishuo
+  password: caishuo
+  host: localhost
+  # host: office.caishuo.com
+  host: testing.caishuo.com
+  timeout: 5000
+
+staging:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: true
+  database: caishuo
+  pool: 5
+  username: caishuo
+  password: caishuo
+  host: 192.168.1.10
+  timeout: 5000
+
+test:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: true
+  database: caishuo_test
+  pool: 5
+  username: caishuo
+  password: caishuo
+  timeout: 5000
+  host: localhost
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: true
+  database: caishuo
+  database: caishuo_test_8
+  pool: 5
+  username: caishuo
+  password: caishuo
+  host: localhost
+  timeout: 5000

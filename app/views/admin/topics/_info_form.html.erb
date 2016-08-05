@@ -1,0 +1,80 @@
+<%= content_for :header do %>
+  <%= javascript_include_tag "admin/topics.js" %>
+<% end %>
+
+
+<div class="box">
+  <h1 class="title">
+    <span class="title_left">上传图片<b style="color:red;">*</b></span>
+  </h1>
+  <div id="j_topic_preview" style="margin-top:5px;">
+    列表页图（尺寸5：4）：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <%=image_tag @topic.img_url(:small) %>
+    <input type="button" class="btn btn-primary" value="上传图片" onclick="javascript:$('#real_avatar').trigger('click');" />
+    <i style="color:red;">上传图片宽度最好大于600</i>
+      <%=form_for @topic, url: save_img_admin_topic_path(@topic), method: :put, html: {target: 'curform', class: 'real-file'} do |f|%>
+        <%= f.file_field :img, id: 'real_avatar', name: 'topic[img]', accept: 'image/png, image/git,image/jpeg,image/bmp' %>
+      <% end %>
+  </div>
+</div>
+
+<!-- <div class="box">
+  <h1 class="title">
+    <span class="title_left">相关新闻</span>
+  </h1>
+  <div class="mt5 ml10 height30">
+    <span class="left">
+      <input type="text" placeholder="外网新闻网址" id="topic_news_url" size="100"/>
+      <input type="button" value="增加" onclick="javascript:fetchNewsByUrl();"/>
+    </span>
+    <span class="f_right">
+      拖动一列进行排序，排序完成后请点击<input type="button" value="保存排序结果" onclick="javascript:saveNewsPositions();"></input>
+    </span>
+  </div>
+  <table class="grid" id="topic_news_table">
+    <thead>
+      <tr>
+        <th width="450">标题</th>
+        <th>来源</th>
+        <th>日期</th>
+        <th colspan="1">操作</th>
+      </tr>
+    </thead>
+    <tbody class="sortable">
+      <% @topic.topic_news.each_with_index do |news, index| %>
+        <%= render partial: "news_item", locals: {news: news} %>
+      <% end %>
+    </tbody>
+  </table>
+</div> -->
+
+
+<div id="FloatWindow">
+  <div class="FloatContent" style="width:600px;">
+    <i class="close-window" onclick="javascript:window.location.reload();"></i>
+    <div class="header">
+      <h2>剪裁图片</h2>
+    </div>
+    <%=form_for @topic, url: crop_pic_admin_topic_path(@topic), method: :put, remote: true do |f|%>
+      <% %w(x y w h).each do |attribute| %>
+        <%= f.hidden_field "crop_#{attribute}", id: "topic_crop_#{attribute}", name: "topic[crop_#{attribute}]" %>
+      <% end %>
+
+      <div class="textbody center">
+      </div>
+      <div class="footer">
+        <%=f.submit '确定', class: 'btn btn-primary'%>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+  var _topic_id = <%= @topic.id %>;
+  var _basket_ids = "<%= @topic.basket_ids.to_s %>";
+</script>
+<style>
+  .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+</style>  

@@ -1,0 +1,33 @@
+<%= form_for [:admin, @player] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b></b><%= f.label :user_id %></td>
+        <td><%= f.number_field :user_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :contest_id %></td>
+        <td><%= f.collection_select :contest_id, Contest.all, :id, :name %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :original_money %></td>
+        <td><%= f.text_field :original_money, value: (f.object.original_money||f.object.original_cash), size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :status %></td>
+        <td><%= f.collection_select :status, Player.status_options, :first, :last %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :trading_account_id %></td>
+        <td><%= f.number_field :trading_account_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+

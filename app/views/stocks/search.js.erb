@@ -1,0 +1,21 @@
+$(".j_stocks_count").text("<%= number_with_delimiter(@stocks.count) %>");
+removeBarloadingDiv();
+
+<% if @refresh %>
+	$(".j_stocks_search").empty();
+<% end %>
+<% @stocks.each do |stock| %>
+	$(".j_stocks_search").append("<%= j render partial: 'stock_item', locals: { stock: stock } %>");
+<% end %>
+if($(".j_stocks_count").text() == $(".j_stocks_search").children().length){
+	$(".j_stocks_addmore").hide();	
+}else{
+	$(".j_stocks_addmore").show();	
+}
+<% if @scroll %>
+	window.scrollTo(0,0);
+<% end %>
+
+$(".j_stocks_search").attr("current_page", "<%= @stocks.current_page %>");
+
+caishuo.adjustFooter();

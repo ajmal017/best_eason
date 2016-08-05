@@ -1,0 +1,15 @@
+zh-CN:
+  feeds:
+    stock_follow: 关注股票 %{num}支
+    basket_follow: 关注组合 %{num}支
+    topic_comment: 评论了头条
+    basket_comment: 评论组合
+    stock_comment: 评论股票
+    article_comment: 评论专栏
+    contest_comment: 评论大赛
+    news_comment: 评论新闻
+    trading_account: 绑定了券商交易账户
+    friend: 添加好友 %{num}位
+    basket_create: 创建了组合
+    basket_update: 调仓了组合
+    comment_like: 赞了评论

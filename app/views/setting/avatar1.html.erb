@@ -1,0 +1,54 @@
+<div class="account-container setting-container">
+  <%=render 'sidebar'%> 
+  <div class="setting-body">
+    <div class="cs-set-tab" id="cs-set-tab">
+
+      <div class="head-set row" id="cs-tab-2">
+        <div class="col-md-4" id="j_avatar_preview">
+          <%=image_tag current_user.avatar_url(:large), width: 180, height: 180%>
+        </div>
+        <div class="head-set-right col-md-8">
+          <div class="form-group">
+            <label for="avatar" style="margin-bottom:15px;" class="col-md-5 control-label">上传头像</label>
+            <div class="col-md-9 file setting-head" style="position:relative;">
+              <a class="set-a btn-file">
+                <span class="set-span">
+                  <%= image_tag("/images/pic.png") -%>  上传
+                </span>
+              </a>
+              <p class="help-block">可以上传JPG、JPEG、GIF、PNG、BMP类型文件，5M以内。</p>
+              <div class='setting_hidden_form' style="position:absolute;top:0px;left:15px;opacity:0;filter:alpha(opacity=0);">
+                <%=form_for current_user, url: save_avatar_ajax_user_path(current_user), method: :put, html: {target: 'curform'} do |f| %>
+                  <%=f.file_field :avatar, id: 'real_setting_avatar', accept:".jpg,.jpeg,.png,.gif"%>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="j_crop_logo">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">剪裁头像</h4>
+      </div>
+      <%=form_for current_user, url: setting_crop_ajax_user_path(current_user), method: :put, remote: true do |f|%>
+        <% %w(x y w h).each do |attribute| %>
+        <%= f.hidden_field "crop_#{attribute}" %>
+    <% end %>
+      <div class="modal-body pic-height">
+        <p></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <%=f.submit '确定', class: 'btn btn-primary'%>
+      </div>
+    <% end %>
+    </div>
+  </div>
+</div>

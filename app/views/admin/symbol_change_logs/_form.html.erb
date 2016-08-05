@@ -1,0 +1,30 @@
+<%= form_for [:admin, @symbol_change_log] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+
+      <tr>
+        <td class="field"><b></b><%= f.label :base_stock_id %></td>
+        <td><%= f.number_field :base_stock_id, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :field %></td>
+        <td><%= f.text_field :field, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :log %></td>
+        <td><%= f.text_field :log, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :log_type %></td>
+        <td><%= f.text_field :log_type, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+

@@ -1,0 +1,81 @@
+<h1 class="title">
+  <span class="title_left">标签列表</span>
+  <span class="title_right">
+    <%= link_to "新建标签", new_admin_tag_group_path %>
+  </span>   
+</h1>
+
+<div class="box">
+  <%= link_to raw("全部(#{::Tag::Group.count})"), admin_tag_groups_path, class: (@hot_eq.blank? ? "current" : nil)%>
+  <%= link_to raw("显示(#{::Tag::Group.hot.count})"), admin_tag_groups_path(:q => {:hot_eq => true}), class: (@hot_eq == "true" ? "current" : nil)%>
+</div>
+
+<div class="page_info">
+  <span class="left">
+    总数： <b><%= @tag_bases.total_entries %></b>
+  </span>
+  <span class="right">
+    拖动一列进行排序，完成后请点击&nbsp;<input type="button" value="保存排序结果" onclick="javascript:saveTagsPositions();"></input>
+  </span>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>名称</th>
+      <th>类型</th>
+      <th>是否显示到注册页</th>
+      <th>最后更新</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody id="sortable">
+  
+  <% @tag_bases.each do |tag_basis| %>
+    <tr data-id="<%= tag_basis.id %>">
+      <td><%= tag_basis.id %></td>
+      <td><%= tag_basis.name %></td>
+      <td>能力圈</td>
+      <td><%= tag_basis.hot? ? "是" : "否" %></td>
+      <td><%= tag_basis.updated_at %></td>
+      <td class="action"><%= link_to '编辑', [:edit, :admin, tag_basis], target: "_blank" %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+<%= will_paginate @tag_bases %>
+
+<script>
+$(function() {
+  
+    $( "#sortable" ).sortable({
+      items: "tr",
+      placeholder: "ui-state-highlight"
+    });
+    $( "#sortable" ).disableSelection();
+  });
+  
+  function saveTagsPositions(){
+    var ids = [];
+    $("#sortable tr").each(function(){
+      console.log($(this).attr("data-id"));
+      ids.push($(this).attr("data-id"));
+    })
+    updatePositions(ids);
+  }
+
+  function updatePositions(ids){
+    if(ids.length > 0){
+      $.post("/admin/tag/groups/positions", {ids: ids}, function(res){
+        if(res.status){
+          $(".notice").text("排序保存成功！");
+        }
+      });
+    }
+  }
+</script>
+<style>
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+</style>

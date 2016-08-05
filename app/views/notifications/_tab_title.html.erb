@@ -1,0 +1,2 @@
+<a href="<%=action_name == 'system' ? '#' : '/notifications/system'%>" class="<%='active' if action_name == 'system'%>">系统通知<%if @unread_systems_count.to_i > 0%><i class="<%='plus' unless action_name == 'system'%>"><%= "（#{@unread_systems_count}）"%></i><%end%></a>
+<a href="<%=action_name == 'reminder' ? '#' : '/notifications/reminder'%>" class="<%='active' if action_name == 'reminder'%>">提醒通知<%if @unread_reminders_count.to_i > 0%><i class="<%='plus' unless action_name == 'reminder'%>"><%= "（#{@unread_reminders_count}）"%></i><%end%></a>

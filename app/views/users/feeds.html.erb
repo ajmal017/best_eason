@@ -1,0 +1,204 @@
+<%= content_for :header do %>
+  <%= stylesheet_link_tag "jquery-ui" %>
+  <%= javascript_include_tag "/assets/kindeditor/plugins/autoheight/autoheight.js"%>
+  <%= include_swfupload %>
+<% end %>
+<div class="container" style="margin-top:50px;">
+  <div>
+    <h2>基本资料</h2>
+    <%=@user.username%>
+    粉丝：<%=@user.followers_count%>
+  关注：<%=@user.followings_count%>
+  投资组合：<%=@user.baskets_count%>
+  <br/>
+    <br/>
+    <span class="follow_span"> 
+      <% if user_signed_in? && current_user.followed?(@user.id) %>
+        <a href="#" class="j_unfollow" data-id="<%= @user.id %>" id="j_follow_<%= @user.id %>">取消关注</a> 
+    <% else %>
+        <a href="#" class="j_follow" data-id="<%=@user.id%>" id="j_follow_<%=@user.id%>">关注</a> 
+    <% end %>
+    </span>
+    <% if user_signed_in? %>
+      <a href="javascript:void(0);" id='j_private_message'>私信</a> 
+  <% else %>
+      <a href="javascript:void(0);" class="popup_login">私信</a> 
+  <% end %>
+
+    <% if user_signed_in? && current_user == @user %>
+      <a href='/setting/info'>修改资料</a>
+  <% end %>
+  </div>
+
+  <div>
+    <h2>feed展示区</h2>
+    <%=render 'sidebar'%>
+    <div><h3>FEEDS列表</h3></div>
+    <%= form_for FeedStatus.new, url: ajax_feeds_path, method: :post, remote: true do |f|%>
+    <%=f.kindeditor :content, :editor_id => 'feed_content_editor', items: [], width: '70%', height: 50, resizeType: 0, autoHeightMode: true%></br>
+    <a href="javascript:void(0);" id="weibo_file">插入图片</a>
+    <%=f.submit '发表'%>
+  <% end %>
+
+    <div>
+      <% @feeds.each do |feed| %>
+        <div style="margin-top: 20px;">
+        <div><%=feed.content%></div>
+        <div>
+          <a href="javascript:void(0);" class="j_feed_like" data-id="<%=feed.id%>">赞(<%=feed.likes_count%>)</a> 
+          <a href="javascript:void(0);" class="j_feed_favorite" data-id="<%=feed.id%>">收藏(<%=feed.favorites_count%>)</a>
+          <a href="javascript:void(0);" class="j_feed_comment" data-id="<%=feed.id%>">评论(<%=feed.comments_count%>)</a>
+        </div>
+        <div id="feed_<%=feed.id%>_div">
+        </div>
+      </div>
+    <% end %>
+    </div>
+  </div>
+</div>
+
+<div id="dialog" title="给<%=@user.username%>发私信" style="display:none;">
+  <%=form_for Message.new, url: messages_path, method: :post, remote: true do |f|%>
+    <%=f.hidden_field :receiver_id, value: @user.id%>
+  <%=f.text_area :content, cols: 25, rows: 4%><br/>
+  <%=f.submit '发送'%>
+<% end %>
+</div>
+
+<style type="text/css">
+.ke-toolbar {
+  padding: 0px 0px;
+  border-bottom: 0px solid #CCC;
+}
+.ke-statusbar{
+  display: hidden;
+}
+</style>
+
+<script>
+
+$(function() {
+    $("#dialog" ).dialog({
+autoOpen: false,
+height: 200,
+width: 400,
+resizable: false,
+modal: true
+});
+    });
+
+$(document).on('click', '.j_follow', function(){
+    <% if user_signed_in? %>
+      $.post("/ajax/users/" + $(this).attr('data-id') + "/follow");
+    <% else %>
+      alert("请登录");
+    <% end %>
+    })
+
+$(document).on('click', '.j_unfollow', function(){
+    if(confirm('你确认要取消关注吗？')){
+    $.post("/ajax/users/" + $(this).attr('data-id') + "/unfollow");
+    }
+    })
+
+$(document).on('click', '.j_feed_like', function(){
+    <% if user_signed_in? %>
+      $.post("/ajax/feeds/" + $(this).attr('data-id') + "/like");
+    <% else %>
+      alert("请登录");
+    <% end %>
+    })
+
+$(document).on('click', '.j_feed_favorite', function(){
+    <% if user_signed_in? %>
+      $.post("/ajax/feeds/" + $(this).attr('data-id') + "/favorite");
+    <% else %>
+      alert("请登录");
+    <% end %>
+    })
+
+$(document).on('click', '.j_feed_comment', function(){
+    <% if user_signed_in? %>
+      feedCommentDiv = $("#feed_" + $(this).attr('data-id') + "_div");
+      if(feedCommentDiv.children().length > 0){
+      feedCommentDiv.empty(); 
+      }else{
+      $.get("/ajax/feeds/" + $(this).attr('data-id') + "/comments"); 
+      }
+    <% else %>
+      alert("请登录");
+    <% end %>
+    })
+
+$('#j_private_message').on('click', function(){
+    $("#dialog").dialog('open');
+    })
+
+</script>
+
+
+<script type="text/javascript">
+var swfu;
+
+window.onload = function() {
+  var settings = {
+flash_url : "/swfupload/swfupload.swf",
+            upload_url: "<%= uploadify_ajax_feeds_path_with_session_info %>",
+            file_post_name: "image",
+            post_params: {"authenticity_token" : "<%= form_authenticity_token -%>"},
+            file_size_limit : "3 MB",
+            file_types : "*.jpg;*.gif;*.png;*.jpeg",
+            file_types_description : "图片",
+            file_upload_limit : 0,
+            //file_queue_limit : 0,
+            //custom_settings : {
+            //  progressTarget : "fsUploadProgress",
+            //  cancelButtonId : "btnCancel"
+            //},
+            debug: false,
+            prevent_swf_caching: true,
+
+            // Button settings
+            button_image_url: "/images/TestImageNoText_65x29.png",
+            button_width: "100",
+            button_height: "27",
+            button_placeholder_id: "weibo_file",
+            button_text: '<span class="theFont">图片</span>',
+            button_text_style: ".theFont { font-size: 16; }",
+            button_text_left_padding: 12,
+            button_text_top_padding: 3,
+
+            // The event handler functions are defined in handlers.js
+            file_queued_handler : fileQueued,
+            file_queue_error_handler : fileQueueError,
+            file_dialog_complete_handler : fileDialogComplete,
+            upload_start_handler : uploadStart,
+            upload_progress_handler : uploadProgress,
+            upload_error_handler : uploadError,
+            upload_success_handler : uploadSuccess,
+            upload_complete_handler : uploadComplete,
+            //queue_complete_handler : queueComplete  // Queue plugin event
+  };
+  swfu = new SWFUpload(settings);
+};
+
+function uploadSuccess(file, serverData, responseReceived){
+  var json = jQuery.parseJSON(serverData);
+  img = "<img src='" + json.thumb_url + "'>";
+  feed_content_editor.insertHtml(img);
+  // img插入之后动态设置iframe大小  
+  $(img).load(function(){
+      var edit = feed_content_editor.edit;
+      var body = edit.doc.body;
+      var minHeight = KindEditor.removeUnit(feed_content_editor.height);
+      edit.iframe.height(minHeight);
+      feed_content_editor.resize(null, Math.max((KindEditor.IE ? body.scrollHeight : body.offsetHeight) + 76, minHeight));    
+  })
+}
+
+function uploadError(file, error, message){
+  alert('上传出错!!!'); 
+}
+
+</script>
+

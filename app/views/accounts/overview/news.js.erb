@@ -1,0 +1,3 @@
+$(".j_related_news").append("<%=j render partial: '/accounts/overview/news_list', locals: {news: @news} if @news.is_a?(Hash) %>");
+
+Overview.initLoadMoreNews();

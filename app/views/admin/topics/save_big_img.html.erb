@@ -1,0 +1,10 @@
+<script type="text/javascript">
+<% if @topic.temp_big_image.errors[:image].present? %>
+  window.parent.$("#FloatWindow").find("#FloatWindow .textbody").html("<center><%= @topic.temp_big_image.errors[:image].first %></center>");
+<% else %>
+  window.parent.setFloatWindowAttrs("900px", "<%= crop_big_pic_admin_topic_path(@topic) %>");
+  window.parent.showCropModal();
+  window.parent.$("#FloatWindow").find(".textbody").html("<img src='<%=@topic.temp_big_image.image.url(:normal)%>' id='cropbox'></img>");
+  window.parent.JcropInit(0.5628571428571428, 1.7766497461928934);
+<% end %>
+</script>

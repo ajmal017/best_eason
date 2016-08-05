@@ -1,0 +1,17 @@
+<!-- 用户面板 -->
+<% if user_signed_in? %>
+  <% if @basket_rank %>
+    <%= render partial: "player_panel" %>
+  <% else %>
+    <% if current_user.has_finished_baskets? %>
+      <%= render partial: "not_player_with_basket_panel" %>
+    <% else %>
+      <%= render partial: "not_player_without_basket_panel" %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= render partial: "login" %>
+<% end %>
+
+<!-- 用户面板 -->
+

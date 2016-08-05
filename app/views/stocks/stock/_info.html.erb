@@ -1,0 +1,59 @@
+<div class="content">
+  <dl class="stockName clearfix">
+    <dt>
+      <span><%= @stock.com_name %> ( <%= @stock.market_name %> : <b><%= @stock.symbol %></b> )<% if @stock.trading_halt? %> <i class="halt">停牌</i><% end %><% if @stock.trading_delist? %> <i class="halt">退市</i><% end %><% if @stock.listed_state == BaseStock::LISTED_STATE[:unlisted] %> <i class="halt">未上市</i><% end %></span>
+      <% if @stock.trading_normal? %>
+        <label class="tradeTime"><i></i> <i><%= @stock.trade_time_str %></i> (<%= market_time_desc(@stock.market_area) %>)</label>
+      <% end %>
+    </dt>
+    <dd>
+      最新价格<span id="stock_realtime_price"><em class="<%= up_or_down_class(@stock.change_from_previous_close) %>"><%= number_to_currency(@stock.realtime_price, unit: '', format:"%u%n") %></em></span>
+    </dd>
+    <dd>
+      涨跌(%)
+      <% if @stock.realtime_price > 0 %>
+        <span id="stock_realtime_updown"><em class="<%= up_or_down_class(@stock.change_from_previous_close) %>"><%= number_with_operator(@stock.change_from_previous_close.round(2)) %>(<%= number_with_operator(@stock.change_percent) %>%)</em></span>
+      <% else %>
+        <span>--</span>
+      <% end %>
+    </dd>
+    <% unless @is_index %>
+    <dd class="rateStar">
+      财说SCORE
+      <span class="showFloatTip" data-hover-tip="#tip1">
+        <mark class="ratestar"><mark style="width:<%= stock_ratestar_width(@stock_screener.try(:score)) %>%;"></mark></mark>
+        <% if @stock_screener.try(:score).present? %>
+          <em><%= @stock_screener.try(:score).try(:round, 1) %></em>
+        <% else %>
+          <em class="nodata">暂无评分</em>
+        <% end %>
+      </span>
+    </dd>
+    <% end %>
+  </dl>
+
+  <div class="stockIntroText noneSelect">
+
+    <div class="introText showFLoatTip">
+      <% unless @is_index %>
+      <a href="#com_desc" onclick="javascript:$('.j_com_desc').trigger('click');"><%= @stock.com_intro.truncate(288).present? ? @stock.com_intro.truncate(144) : "公司简介暂无" %></a>
+      <% end %>
+    </div>
+      
+    <% if @already_follow %>
+      <span class="w_btn addMyFocus btn_dropDown <%= 'text-gap' unless @is_index %> follow_or_unfollow">已关注<a href="javascript:">取消关注</a></span>
+    <% else %>
+      <span class="b_btn addMyFocus btn_add <%= 'text-gap' unless @is_index %> <%= user_signed_in? ? "follow_or_unfollow" : "j-login-popup" %>">关注</span>
+    <% end %>
+
+    <% if @stock.can_trade? %>
+      <% if user_signed_in? %>
+        <span class="b_btn trade" onclick="Stock.toggleTrade(this);">交易</span>
+      <% else %>
+        <span class="j-login-popup b_btn trade">交易</span>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div id="trade_div" style="display: none;"></div>
+

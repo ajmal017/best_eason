@@ -1,0 +1,41 @@
+<h1 class="title">
+  <span class="title_left">活动设置</span>
+  <span class="title_right"><a href="/admin/home_settings">返回首页设置</a></span>
+</h1>
+
+<%= render partial: "sub_menus" %>
+
+<div class="box">
+  <table class="grid_form">
+    <thead>
+      <tr>
+        <th width="200"></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="sortable">
+      <tr>
+        <td class="field">虚拟盘大赛初始人数：</td>
+        <td>
+          <%= @count %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field">设置：</td>
+        <td>
+          <input type="text" placeholder="" id="counter_id" size="10"/>
+          <input type="button" value="保存" onclick="javascript:setJoinersCount();"/>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  function setJoinersCount(){
+    var count = $("#counter_id").val();
+    $.post("/admin/home_settings/contest_count", {count: count}, function(){
+      window.location.reload();
+    })
+  }
+</script>

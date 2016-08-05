@@ -1,0 +1,88 @@
+<%=content_for :header do %>
+  <%= stylesheet_link_tag "/stylesheets/v3/userEdit.css", "/stylesheets/v3/commentPack.css" %>
+  <%= javascript_include_tag "/javascripts/commentPack.min.js"%>
+<% end %>
+<div class="container userEdit dialogReply clearfix">
+  <%=render partial: 'shared/setting_left_box'%>  
+  <div class="rightBox">
+    <h2>
+      <a href="/messages" class="backNotice">
+        <%= message_talk_title(@talk.subscriber.try(:username)) %>
+      </a>
+      <%= link_to_report_abuse_user @talk.subscriber %>
+    </h2>
+    <div class="msgBox">
+      <%=render partial: 'message_collect', locals: {messages: @messages, talk: @talk}%>
+    </div>
+    <div id="Dialog" class="comments">
+      <article>
+        <form action="" method="post">
+          <div class="editArea"><textarea></textarea></div>
+          <div class="actionArea">
+            <label class="quoteAction"><span class="emotion">表情</span><span class="stocks">股票代码</span></label>
+            <button class="b_btn middle">回复</button>
+          </div>
+        </form>
+      </article>
+    </div>
+  </div>
+</div>
+
+<div id="emotionBox"></div>
+<dl id="autoComplete"></dl>
+<div id="eraseComment" class="noneSelect">
+  <label>确定要删除这条评论么？</label>
+  <button class="b_btn dialog_btn_y">确定</button>
+  <button class="b_btn dialog_btn_c">取消</button>
+</div>
+
+<script>
+  var talkId = <%= @talk.id %>, receiverId = <%= @talk.subscriber_id %>;
+
+  function msgScrollToButtom(){
+    var msgHeight = $('.msgBox').height();
+    var msgContentHeight = $('.msgBox')[0].scrollHeight;
+    $('.msgBox').scrollTop(msgContentHeight - msgHeight);
+  }
+
+  $('#eraseComment button.dialog_btn_c').click(function(){
+    $(this).parent().hide();
+  });
+  
+  $('body').on("click", ".j_del_msg",function(e){
+    var $target = $('#eraseComment'), offset = $(e.target).offset(), message = $(this).data();
+    $target.css({'top':offset.top - $target.height() - 36,'left':offset.left - $target.outerWidth()/3}).show()
+      .find('button.dialog_btn_y').unbind('click').click(function(){
+        $(this).parent().hide();
+        
+        $.ajax({
+          url: "/messages/" + message.id + "?talk_id=" + message.tid,
+          type: "delete"
+        });
+
+      });
+  });
+
+  $(function(){
+    msgScrollToButtom();
+  })
+</script>
+
+<%=content_for :script do %>
+<script type="text/javascript" role="rick">
+commentPack.init({
+  holder:'#Dialog',
+  Emotion: {imagePrefix: '<%= Setting.cdn_host %>/images/emotions/'},
+  Completer:{allow:/\$/},
+  Dialog:{
+    postEvent:function(content, callback){
+      var lastMessageId = $('.j_message_bubble:last').attr('msg-id');
+        $.post("/messages", { "message[content]": content, "message[receiver_id]": receiverId, "talk_id": talkId, "last_msg_id": lastMessageId }, function(data){
+          // 成功之后调用，清空表单、使按钮enable
+          callback(); 
+      });
+    }
+  }
+});
+</script>
+<% end %>

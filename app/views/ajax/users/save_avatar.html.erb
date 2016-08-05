@@ -1,0 +1,9 @@
+<script>
+<% if current_user.temp_image.errors[:image].present? %>
+  window.parent.$("#j_crop_logo").find(".upload-head").html("<center><%= current_user.temp_image.errors[:image].first %></center>");
+<% else %>
+  window.parent.$("#j_crop_logo").modal('show');
+  window.parent.$("#j_crop_logo").find(".upload-head").html("<img src='<%=current_user.temp_image.image.url(:normal)%>' id='cropbox'></img>");
+  window.parent.userJcropInit();
+<% end %>
+</script>

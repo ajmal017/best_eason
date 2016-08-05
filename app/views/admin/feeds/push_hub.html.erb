@@ -1,0 +1,71 @@
+<div class="float_left" style="width:500px;">
+  <h1 class="title">
+   <span class="title_left">指定Push发送对象</span>
+  </h1>
+
+  <%= form_tag "/admin/feeds/hub/#{@feed_hub.id.to_s}/confirm_push", remote: true do %>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td>
+          <%= radio_button_tag :receiver, "", @emails.include?(current_admin_staffer.email) ? false : true %>&nbsp;所有用户&nbsp;&nbsp;
+          <% @users.each do |user| %>
+            <%= radio_button_tag :receiver, user.id, user.email == current_admin_staffer.email %>&nbsp;<%= user.username %>&nbsp;&nbsp;
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= text_area_tag :content, @feed_hub.get_title, cols:"70", rows:"3" %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= password_field_tag :password, "", :size=>20, placeholder: "请输入密码" %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= submit_tag "确认发布" %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          本内容历史Push记录：<br/>
+          <% @feed_push_logs.each do |push_log| %>
+            <%= push_log.created_at.to_s(:short) %> &nbsp;&nbsp;
+            To：<%= push_log.receivers %><br/>
+          <% end %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <% end %>
+</div>
+
+<div class="float_left" style="width:500px;">
+  <h1 class="title">
+   <span class="title_left">历史已Push内容</span>
+  </h1>
+
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>文章标题</th>
+        <th>push时间</th>
+        <th>接收人</th>
+        <th>操作人</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @push_logs.each do |push_log| %>
+        <tr>
+          <td><%= push_log.content %></td>
+          <td><%= push_log.created_at.to_s(:short) %></td>
+          <td><%= push_log.receivers %></td>
+          <td><%= push_log.staffer.fullname %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

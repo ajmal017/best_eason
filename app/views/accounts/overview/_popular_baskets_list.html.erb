@@ -1,0 +1,22 @@
+<% popular_baskets.each do |basket| %>
+  <dd>
+  <a href="/baskets/<%=basket.id%>" target="_blank">
+    <b><%= basket.title.truncate(28) %></b>
+    <span class="chartinfo clearfix">
+      <span class="chart">
+        <div class="chart basket_chart" data-basket-id="<%= basket.id %>" id="basket_chart_<%= basket.id %>">
+        </div>
+      </span>
+      <% basket.basket_stocks.order(weight: :desc).limit(3).includes(:stock).each do |bs| %>
+        <span class="info"><%= bs.weight_percent %>% <%= bs.stock.symbol %> <%= bs.stock.name %></span>
+      <% end %>
+    </span>
+    <span class="links clearfix">
+      <span class="avator">
+        <%=image_tag basket.author.avatar_url(:small), width: 24, height: 24 %> <%= basket.author.try(:username) %>
+      </span>
+      <span class="recieve">创建至今 <%=up_or_down_style_with_arrow(basket.total_return, '%', 'ico')%></span>
+    </span>
+  </a>
+  </dd>
+<% end %>

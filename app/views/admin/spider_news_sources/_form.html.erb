@@ -1,0 +1,51 @@
+<%= form_for [:admin, @source] do |f| -%>
+  <table class="grid_form">
+    <tbody>
+      <tr>
+        <td class="field"><b></b><%= f.label :name %></td>
+        <td>
+          <%= f.text_field :name %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :category_id %></td>
+        <td><%= f.collection_select :category_id, MD::Source::SpiderNewsCategory.all, :category_id, :name, prompt: true %>
+        </td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :crawler_name %></td>
+        <td>
+          <%= crawler_name = @source.crawler_name||"Spider::News::RecommendList" %>
+          <%= f.hidden_field :crawler_name, value: crawler_name %>
+        </td>
+      </tr>
+      <% if crawler_name == "Spider::News::RecommendList" %>
+        <tr>
+          <td class="field"><b></b><%= f.label :list_page_url %></td>
+          <td>
+            <%= f.text_field :list_page_url %>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td class="field"><b></b><%= f.label :source_name %></td>
+        <td><%= f.text_field :source_name, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :interval_time %></td>
+        <td><%= f.collection_select :interval_time, @source.class.interval_lvls, :to_s, :to_s %>分钟</td>
+      </tr>
+      <tr>
+        <td class="field"><b></b><%= f.label :auto_adjust %></td>
+        <td><%= f.check_box :auto_adjust, size: 30 %></td>
+      </tr>
+      <tr>
+        <td class="field"></td>
+        <td><%= f.submit '提交' %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+<% end -%>
+
+

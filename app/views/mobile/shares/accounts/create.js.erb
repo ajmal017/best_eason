@@ -1,0 +1,11 @@
+<% if @current_user.blank? %>
+  // token失效、未登录，通知客户端强制用户登录
+  Caishuo.trigger('sendback', {'event':'forcelogin', 'status':'authfailed'});
+<% elsif @trading_account.persisted? && @trading_account.errors.empty? %>
+  // 绑定成功调用
+  Caishuo.trigger('sendback', {'event':'bindaccount','status':'success'});
+<% else %>
+  $("#errorTip").text("<%= @trading_account.errors[:broker_no].try(:first) %>").show();
+<% end %>
+
+window.allowSubmit = true;

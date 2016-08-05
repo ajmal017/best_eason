@@ -1,0 +1,29 @@
+<%= render partial: '/mobile/filters/style' %>
+
+<div class="tableholder">
+  <label><%= @page_title %><div class="last-update"><em><%= @update_date %></em> 更新</div></label>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>名称</th>
+          <td>最新价</td>
+          <td>股份金额(万)</td>
+          <td>股份数量(股)</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @filters.each do |filter| %>
+        <tr data-id="<%= filter.base_stock_id %>" data-name="<%=filter.cname%>" data-symbol="<%= filter.symbol %>">
+          <th><a data-id="<%= filter.base_stock_id %>" data-name="<%=filter.cname%>" data-symbol="<%= filter.symbol %>"><span><%= filter.cname %></span><i><%= filter.symbol %></i></a></th>
+          <td><em class="plus"><%= ::Rs::Stock.find(filter.base_stock_id).realtime_price %></em></td>
+          <td><%= (filter.value / 10000).round(2)%></td>
+          <td><%= number_to_cash(filter.shares.to_i, unit: '') %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= render partial: '/mobile/filters/base' %>

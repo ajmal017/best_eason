@@ -1,0 +1,20 @@
+/*列表头部*/
+.themeListNav {padding:25px 30px 25px 0;text-align: right;margin-left: 25px;border-bottom: 1px solid #f3f3f3;color:#383a4c;}
+.themeListNav em {color:#e4462e;}
+.themeListNav .floatLeft {float: left;}
+.themeListNav strong {padding-right: 18px;margin-right: 18px;border-right: 1px solid #cacaca;}
+.themeListNav.pageNav a {margin-left: -1px;}
+    
+/*分页链接*/
+.pageNav a {padding: 0 10px;margin:0;line-height: 2;font-size: 12px;color: #666;border: 1px solid #c3c4c6; text-decoration: none;display: inline-block;outline: 0;background: -webkit-linear-gradient(bottom, #efeff0, #fdfdfd);background: -moz-linear-gradient(bottom, #efeff0, #fdfdfd);}
+.pageNav a:hover {background: -webkit-linear-gradient(bottom, #e8e8e8, #ffffff);box-shadow: 1px 3px 3px #e5e5e5;color: #64a0d7;}
+.pageNav em:current {background: #FFFFFF;}
+.pageNav em.current {background: #FFFFFF;color: #e4462e;border: none;box-shadow: none;}
+.pageNav a.previous_page {position: relative;padding-left: 18px;}
+.pageNav a.next_page {position: relative;padding-right: 18px;}
+.pageNav a.previous_page:before {content:"";display:block;width:24px;position:absolute; left:0; top:0;bottom:0;background: url('../../images/v2/arrow_prev_next.png') 100% 50% no-repeat;background-size: 56px 28px;}
+.pageNav a.next_page:before {content:"";display:block;width:24px;position:absolute; right:0;top:0;bottom:0;background: url('../../images/v2/arrow_prev_next.png') 0% 50% no-repeat;background-size: 56px 28px;}
+.pageNav span {color: black !important;margin: 0 !important;padding: 0 !important;}
+    
+    
+    

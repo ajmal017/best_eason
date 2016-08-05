@@ -1,0 +1,42 @@
+<div class="content acountBox">
+  <h2>授权中的账号</h2>
+  <% accounts.each do |account| %>
+  <div class="item">
+    <table>
+      <tr>
+        <th class="logo">
+          <%=image_tag "/images/v3/trader/#{broker_logo_name(account.broker.name)}.png", alt: account.broker.cname %>
+          <label>申请授权的客户编号：#<%=account.broker_no%></label>
+        </td>
+        <td>
+          <div class="stepProgress">
+            <div class="widget"></div>
+            <span class="step1 active">
+              <i>1</i>
+              <label><em>授权申请</em><%=account.created_at.strftime('%Y/%m/%d')%></label>
+            </span>
+            <span class="step2 <%=account_auditing_class(account)%>">
+              <i></i>
+              <label>
+                <em><%=account_auditing_name(account)%></em>
+                <% if account.auditing? %>
+                预计<%=account_auditing_days(account)%>个工作日
+                <% else %>
+                  <%= account.audited_date %>
+                <% end %>
+              </label>
+            </span>
+            <span class="step3">
+              <i>3</i>
+              <label><em><%=account.is_a?(TradingAccountEmail) ? '邮件确认' : '授权成功'%></em></label>
+            </span>
+          </div>
+        </td>
+        <th class="button">
+          <a href="javascript:void(0)" onclick="cancelAuthRequest(this)" class="b_btn dialog_btn_c" account-id="<%=account.pretty_id%>">取消申请</a>
+        </th>
+      </tr>
+    </table>
+  </div>
+  <% end %>
+</div>

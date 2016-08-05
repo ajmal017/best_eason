@@ -1,0 +1,12 @@
+<div class="box">
+<%= search_form_for search, url: admin_orders_path, class: "form-inline", role: "form" do |f| %>
+  <%= f.text_field :id_eq, :placeholder => "订单id", class: "form-control" %>
+  <%= f.text_field :sn_cont, :placeholder => "订单号", class: "form-control" %>
+  <%= f.text_field :user_id_eq, :placeholder => "user_id", class: "form-control" %>
+  <%= f.text_field :created_at_gteq, class: "datetimepicker", :placeholder => "起始时间", "data-date-format" => "yyyy-MM-dd"%>
+  <%= f.text_field :created_at_lteq, class: "datetimepicker", :placeholder => "结束时间", "data-date-format" => "yyyy-MM-dd"%>
+  <%= f.select :instance_id_eq, [['全部', 'all'], ["股票", 'others'], ['组合', 'basket']], {prompt: "类型"}, {class: "form-control"} %>
+  <%= f.select :market_eq, Exchange::AREAS, {prompt: "交易地区"}, {class: "form-control"} %>
+  <%= f.submit "搜索", :class => "btn btn-primary",:style => "width:5%;" %>
+<% end %>
+</div>

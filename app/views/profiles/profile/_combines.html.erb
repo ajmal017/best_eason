@@ -1,0 +1,37 @@
+<div class="combines">
+  <h3 class="multiselect clearfix">
+    <span class="active">动态</span>
+    <span>专栏</span>
+    <span id="myFocusOn">关注(<%= @followed_users_count %>)</span>
+    <span id="FocusOnMe">粉丝(<%= @followers_count %>)</span>
+    <% if @both_followed_count %>
+    <span id="bothFocus">共同关注(<%=  @both_followed_count %>)</span>
+    <% end %>
+  </h3>
+  <div id="Feeds" class="comments tabItem" style="display:block;">
+    <div class="empty">暂无动态</div>
+    <form id="replyComment" action="" method="post">
+      <div class="editArea"><textarea></textarea></div>
+      <div class="actionArea">
+        <label class="quoteAction"><span class="emotion">表情</span><span class="friends">名字</span><span class="stocks">股票代码</span></label>
+        <button class="b_btn middle">回复</button>
+      </div>
+    </form>
+  </div>
+  
+  <div class="tabItem">
+    <div class="empty">暂无专栏</div>
+  </div>
+  
+  <div class="focususer tabItem" data-path="followed_users"> <!-- 关注 -->
+    <%= render partial: "profiles/profile/load_more"%>
+  </div>
+  
+  <div class="focususer tabItem" data-path="followers">
+    <%= render partial: "profiles/profile/load_more"%>
+  </div>
+  
+  <div class="focususer tabItem" data-path="both_followed">
+    <%#= render partial: "profiles/profile/load_more"%>
+  </div>
+</div>

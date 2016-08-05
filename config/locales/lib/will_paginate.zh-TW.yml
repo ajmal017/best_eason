@@ -1,0 +1,16 @@
+zh-TW:
+  will_paginate:
+    previous_label: "上一頁"
+    next_label: "下一頁"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page:
+        zero:  "全部: 0"
+        one:   "全部: 1"
+        other: "全部: %{count}"
+      single_page_html:
+        zero:  "全部: <b>0</b>"
+        one:   "全部: <b>1</b> "
+        other: "全部: <b>%{count}</b> "
+      multi_page: "當前：  %{from} - %{to} / 總數： %{count}"
+      multi_page_html: "當前： <b>%{from}&nbsp;-&nbsp;%{to}</b> / 總數： <b>%{count}</b> "

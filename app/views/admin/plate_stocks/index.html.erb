@@ -1,0 +1,58 @@
+<h1 class="title">
+  <span class="title_left">板块股票映射列表页</span>
+  <span class="title_right">
+    <%#= link_to "新建Plate stock", new_admin_plate_stock_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_plate_stocks_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :plate_id_eq, :placeholder => '板块ID', class: 'form-control' %>
+    <%= f.text_field :base_stock_id_eq, :placeholder => 'BaseStockID', class: 'form-control' %>
+    <%= f.select :status_eq, Plate::Base::STATUSES.zip(["新建", "正常", "失效"]).map{|k, v| [v, k]}, { include_blank: "全部状态" }%>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @plate_stocks.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>板块ID</th>
+      <th>股票Id</th>
+      <th>权重</th>
+      <th>开始日期</th>
+      <th>截止日期</th>
+      <th>状态</th>
+      <th>创建时间</th>
+      <th>更新时间</th>
+      <!--th colspan="3">操作</th-->
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @plate_stocks.each do |plate_stock| %>
+    <tr>
+      <td><%= plate_stock.id %></td>
+      <td><%= plate_stock.plate_id %></td>
+      <td><%= plate_stock.base_stock_id %></td>
+      <td><%= plate_stock.weight %></td>
+      <td><%= plate_stock.start_on %></td>
+      <td><%= plate_stock.end_on %></td>
+      <td><%= plate_stock.status %></td>
+      <td><%= plate_stock.created_at %></td>
+      <td><%= plate_stock.updated_at %></td>
+      <!--td class="action"><%#= link_to '删除', [:admin, plate_stock], method: :delete, data: { confirm: '你确定删除吗?' } %></td-->
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @plate_stocks %>

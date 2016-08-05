@@ -1,0 +1,58 @@
+<%- @page_title = "注册 填写账户信息" -%>
+
+<div class="container register">
+  <% if @user.persisted? && @user.errors.empty? %>
+  <nav class="createStep regStepBox">
+    <strong>注册财说</strong>
+    <span class="done"><i>1</i> 设置登录名</span><span class="current"><i>2</i> 填写账户信息</span><span class="step3"><i></i> 注册成功</span>
+  </nav>
+  <%= form_for @user, url: account_user_path, method: :post, html: {id: 'j_registration_second'} do |f| %>
+    <input type="hidden" name="confirmation_token" value="<%=params[:confirmation_token]%>">  
+  <dl>
+    <dt>登录名</dt>
+    <dd class="barText largeFont"><%= @user.email %></dd>
+    <dt>登录密码</dt>
+    <dd>
+      <%=f.password_field :password, class: 'exlarge'%>
+      <span class="prompt" style="display:none;">6位以上任意字符、数字、标点（不包括空格）</span>
+      </dd>
+    <dt>确认密码</dt>
+    <dd>
+      <%=f.password_field :password_confirmation, class: 'exlarge' %>
+      <span class="prompt" style="display:none;">6位以上任意字符、数字、标点（不包括空格）</span>
+    </dd>
+    <dt>昵称</dt>
+    <dd>
+      <%= f.text_field :username, class: 'exlarge' %>
+      <span class="prompt" style="display:none;">2位以上任意字符</span>
+    </dd>
+    <dt>性别</dt>
+    <dd class="barText">
+      <span>
+        <input type="radio" id="radio-1-1" name="user[gender]" class="custom" value="true" checked/>
+        <label for="radio-1-1">男</label>
+      </span>
+      <span>
+        <input type="radio" id="radio-1-2" name="user[gender]" class="custom" value="false"/>
+        <label for="radio-1-2">女</label>
+      </span>
+    </dd>
+    <dd>
+      <%= f.submit '完成', class: 'btn large'%>
+    </dd>
+  </dl>
+  <% end %>
+
+  <% elsif @user.persisted? && @user.errors.has_key?(:confirmation_token) %>
+    
+    <center>激活邮件已超过有效期，点此<a href="javascript:void(0);" onclick="javascript:$('form').submit();">重新发送</a></center>
+    <%= form_tag account_confirmations_path, method: :post, remote: true do %>
+      <%=hidden_field_tag "user[email]", params[:email], value: @user.email%>
+    <% end %>
+  
+  <% else %>
+    
+    <center>激活邮件不正确</center>
+
+  <% end %>
+</div>

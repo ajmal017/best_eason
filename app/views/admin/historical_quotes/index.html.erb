@@ -1,0 +1,75 @@
+<h1 class="title">
+  <span class="title_left">美股港股历史数据列表页</span>
+  <span class="title_right">
+    <%#= link_to "新建Historical quote", new_admin_historical_quote_path %>
+  </span>   
+</h1>
+
+<%= notice_tag -%>
+
+<div class="box">
+  <%= search_form_for @q, url: admin_historical_quotes_path, class: 'form-inline', role: 'form' do |f| -%>
+    <%= f.text_field :base_stock_id_eq, :placeholder => 'BaseStockId', class: 'form-control' %>
+    <%= f.text_field :date_eq, :placeholder => 'Date', class: 'form-control' %>
+    <%= f.submit '搜索', :class => 'btn btn-primary', :style => 'width:5%;' %>
+  <% end -%>
+</div>
+
+<div class="page_info">
+  总数： <b><%= @historical_quotes.total_entries %></b>
+</div>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>StockId</th>
+      <th>股票代码</th>
+      <th>闭式价格</th>
+      <th>今开</th>
+      <th>最高</th>
+      <th>最低</th>
+      <th>昨收</th>
+      <th>Index</th>
+      <th>Volume</th>
+      <th>Date</th>
+      <th>创建时间</th>
+      <th>更新日期</th>
+      <th>单位</th>
+      <th>Ma5</th>
+      <th>Ma10</th>
+      <th>Ma20</th>
+      <th>Ma30</th>
+      <th colspan="3">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+  <% @historical_quotes.each do |historical_quote| %>
+    <tr>
+      <td><%= historical_quote.id %></td>
+      <td><%= historical_quote.base_stock_id %></td>
+      <td><%= historical_quote.symbol %></td>
+      <td><%= historical_quote.last %></td>
+      <td><%= historical_quote.open %></td>
+      <td><%= historical_quote.high %></td>
+      <td><%= historical_quote.low %></td>
+      <td><%= historical_quote.last_close %></td>
+      <td><%= historical_quote.index %></td>
+      <td><%= historical_quote.volume %></td>
+      <td><%= historical_quote.date %></td>
+      <td><%= historical_quote.created_at %></td>
+      <td><%= historical_quote.updated_at %></td>
+      <td><%= historical_quote.currency %></td>
+      <td><%= historical_quote.ma5 %></td>
+      <td><%= historical_quote.ma10 %></td>
+      <td><%= historical_quote.ma20 %></td>
+      <td><%= historical_quote.ma30 %></td>
+      <td class="action"><%= link_to '详情', [:admin, historical_quote] %></td>
+    </tr>
+  <% end %>
+ 
+  </tbody>
+</table>
+
+<%= will_paginate @historical_quotes %>
